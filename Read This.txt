@@ -1,0 +1,15 @@
+		NOTE
+
+** The framework uses LESS-API (the less code the better)
+
+- Miranda is a project that I wish to seriously simplify the way people look at code. I wish for it to
+  accomodate programmers of almost all levels regardless of whether it's their first time or not.
+
+ - My plan is to make it as less CLI, less configuration and as less WEB-like as possible.
+
+- I wish even for first-time programmers to feel less intimidated by it's API.
+
+P.S: I understand the code lacks MANY software engineering techniques and principles (including OOP), and doesn't comply to
+	 PEP-8 python principles... as I am still learning. BUT, I wish to learn from everyone of you.
+
+	 Re-design or modify the code where necessary.
