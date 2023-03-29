@@ -35,11 +35,14 @@ from framework.kernel.runner.app import App
 from framework.controls.widgets.button import Button
 from framework.controls.widgets.checkbox import CheckBox
 from framework.controls.widgets.calendar import Calendar
+from framework.controls.widgets.groupbox import GroupBox
 from framework.controls.widgets.radiobutton import RadioButton
 from framework.controls.widgets.label import Label
 from framework.controls.widgets.window import Window
 from framework.controls.widgets.combobox import ComboBox
 from framework.controls.widgets.layouts.olayout import OLayout
+from framework.controls.widgets.layouts.vlayout import VerticalLayout
+from framework.controls.widgets.layouts.hlayout import HorizontalLayout
 from framework.controls.widgets.layouts.grid import GridLayout
 from framework.controls.widgets.spinbox import SpinBox
 from framework.controls.widgets.progressbar import ProgressBar
@@ -76,7 +79,7 @@ from framework.controls.dockers.menubar.menubar import Menubar
 
 from framework.controls.widgets.containers.tab import Tab
 from framework.controls.widgets.containers.tabitem import TabItem
-from framework.controls.widgets.fluent.folderlist import FolderList
+# from framework.controls.widgets.fluent.folderlist import FolderList
 
 # Playground code
 # from playground.fromtemplate import TemplateGenerator
@@ -174,33 +177,61 @@ lua = LuaRuntime(unpack_returned_tuples=True)
 
 lua.globals().Window = Window
 lua.globals().Button = Button
+lua.globals().CheckBox = CheckBox
+lua.globals().Calendar = Calendar
+
+lua.globals().GroupBox = GroupBox
+lua.globals().RadioButton = RadioButton
+lua.globals().DDialog = DDialog
+lua.globals().MessageBox = MessageBox
+
+lua.globals().InputDialog = InputDialog
+lua.globals().__AboutPopup = AboutPopup
+lua.globals().__CriticalPopup = CriticalPopup
+lua.globals().__InformationPopup = InformationPopup
+
+lua.globals().__QuestionPopup = QuestionPopup
+lua.globals().__WarningPopup = WarningPopup
+lua.globals().Clipboard = Clipboard
+lua.globals().CMD = CMD
+
+lua.globals().File = File
+lua.globals().Paths = Paths
+lua.globals().Menubar = Menubar
 lua.globals().Label = Label
+
 lua.globals().Segmenter = Segmenter
 lua.globals().ListBox = ListBox
 lua.globals().TextEdit = TextEdit
 lua.globals().GridLayout = GridLayout
 lua.globals().Layout = OLayout
+
 lua.globals().Slider = Slider
 lua.globals().Menu = Menu
 lua.globals().MenuItem = MenuItem
 lua.globals().Timer = Timer
+
 lua.globals().Notification = Notification
 lua.globals().SysTray = Tray
 lua.globals().Toolbar = Toolbar
 lua.globals().ToolbarButton = ToolbarButton
+
 lua.globals().ComboBox = ComboBox
 lua.globals().ProgressBar = ProgressBar
 lua.globals().Spinner = SpinBox
 lua.globals().Tab = Tab
-lua.globals().TabItem = TabItem
 
+lua.globals().TabItem = TabItem
 lua.globals().Theme = Theme
 lua.globals().str = str
 lua.globals().eval = eval
 lua.globals().images = images
-lua.globals().scripts = scripts
 
-lua_code = open(scripts('calculator.lua'), 'r').read()
+lua.globals().scripts = scripts
+lua.globals().VLayout = VerticalLayout
+lua.globals().HLayout = HorizontalLayout
+
+lua_code = open(scripts('groupbox.lua'), 'r').read()
 
 lua.execute(lua_code)
 

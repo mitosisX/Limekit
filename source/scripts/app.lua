@@ -1,3 +1,7 @@
+-- //Theme to be used
+theme = Theme('material');
+theme.setTheme('light_blue')
+
 window = Window("Limekit - Lua GUI framework");
 window.setIcon(images("lua.png"));
 window.setSize(400, 100);
@@ -47,9 +51,6 @@ window.addToolbar(toolbar);
 
 -- //menu = Menu(window);
 
--- //Theme to be used
-theme = Theme('modern');
-
 mainLayout = Layout("horizontal");
 
 mainLay1 = Layout();
@@ -57,7 +58,8 @@ mainLay1 = Layout();
 button = Button();
 button.setText("Developed by Omega Msiska");
 button.setToolTip("I am a tooltip");
-button.onClick(function (x)
+button:onClick(function (x)
+
   -- Clipboard.setText("Hello, from Clipboard!!");
 
   -- alert(window, "Alert title", Clipboard.getText());
@@ -163,7 +165,7 @@ styles.onItemSelect(function (sender, style)
 end);
 
 mainLay1.addChild(combo, spin, progress, slider, edit, styles);
-mainLay1.setLayout(lay1, lay2);
+mainLay1.addLayout(lay1, lay2);
 
 mainLay1.addChild(totalLabel);
 
@@ -206,7 +208,7 @@ tab.addTabitem(tabitem3, "Credit &Card");
 
 mainLay1.addChild(tab);
 
-mainLayout.setLayout(mainLay1, mainLay2);
+mainLayout.addLayout(mainLay1, mainLay2);
 
-window.setLayout(mainLayout);
+window.addLayout(mainLayout);
 window.show();

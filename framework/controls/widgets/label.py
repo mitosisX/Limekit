@@ -31,7 +31,7 @@ class Label(QLabel):
         align = alignment.lower()
         
         if align == 'left':
-            self.setAlignment(Qt.AlignLeft)
+            self.setLabelAlignment(Qt.AlignLeft)
             
         elif align == 'right':
             self.setAlignment(Qt.AlignRight)

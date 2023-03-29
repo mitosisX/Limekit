@@ -23,9 +23,9 @@ class OLayout:
             self.layout.addWidget(child)
             # self.layout.addStretch()       
         
-    def setLayout(self, *children):
+    def addLayout(self, *children):
         for child in children:
-            self.layout.addLayout(child.offer())
+            self.layout.addLayout(child.layout)
     
     def offer(self):
         return self.layout

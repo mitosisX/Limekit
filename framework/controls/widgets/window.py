@@ -1,18 +1,18 @@
-from PySide6.QtWidgets import QMainWindow
-from PySide6.QtWidgets import QWidget
-from PySide6.QtWidgets import QVBoxLayout
-from PySide6.QtWidgets import QStyleFactory
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget,QVBoxLayout,QStyleFactory
 from PySide6.QtCore import Qt, QFile
+
+from framework.kernel.runner.app import App
+from PySide6.QtGui import QAction, QScreen, QIcon
 
 from framework.controls.dockers.toolbar.toolbar import Toolbar
 from framework.controls.dockers.dockerwidget.docking import Docker
 
-from framework.kernel.runner.app import App
-from PySide6.QtGui import QAction, QScreen, QIcon
-from PySide6.QtWidgets import QApplication
+from multipledispatch import dispatch
+from .layouts.olayout import OLayout
+from qt_material import QtStyleTools
 
 class Window(QMainWindow):
-    def __init__(self, title="MirandaJS - Active Apps"):
+    def __init__(self, title="Limekit Lua"):
         super().__init__()
         self.widget = QWidget()
 
@@ -38,15 +38,14 @@ class Window(QMainWindow):
 
     def setLocation(self, x, y):
         self.move(x, y)
-
+    
     def addChild(self, *children):
         for child in children:
             self.layout.addWidget(child)
-            # self.layout.addStretch()
 
-    def setLayout(self, *layouts: QWidget):
+    def addLayout(self, *layouts: QWidget):
         for each_layout in layouts:
-            self.layout.addLayout(each_layout.layout)
+            self.layout.addLayout(each_layout)
             
     def addDock(self, pos, dock):
         self.addDockWidget(dock, pos)

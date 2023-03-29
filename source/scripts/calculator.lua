@@ -5,8 +5,8 @@ local window = Window()
 window:setIcon(images("calc.png"))
 window:setSize(280, 80)
 
--- local theme = Theme("material")
--- theme:setTheme("light_blue")
+local theme = Theme("misc")
+theme:setTheme("ue")
 
 local mainLay = Layout("vertical")
 local display = TextEdit()
@@ -15,7 +15,7 @@ display.setFixedHeight(35)
 mainLay:addChild(display)
 
 local grid = GridLayout()
-mainLay.setLayout(grid)
+mainLay.addLayout(grid)
 
 local buttonMap = {}
 
@@ -58,5 +58,5 @@ buttonMap["C"]:onClick(function ()
   display.setText("")
 end)
 
-window:setLayout(mainLay)
+window:addLayout(mainLay)
 window.show()

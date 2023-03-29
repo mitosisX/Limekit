@@ -2,3 +2,4 @@ PySide6
 qdarkstyle
 qt_material
 multipledispatch
+text2num

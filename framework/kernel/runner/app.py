@@ -13,13 +13,6 @@ from qdarkstyle.light.palette import LightPalette  # noqa: E402
 
 class App(object):
     app = QApplication([])
-    
-        
-    file = open(r"D:\Projects\Limekit\framework\controls\widgets\theme.qss") 
-    content = file.read()
-    file.close()
-    
-    app.setStyle(content)
 
     # Tis prevents the program from closing once all windows
     # have been closed; the programs runs in the background
