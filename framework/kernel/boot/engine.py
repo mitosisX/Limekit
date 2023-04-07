@@ -50,16 +50,16 @@ from framework.controls.dialogs.popups.information_popup import InformationPopup
 from framework.controls.dialogs.popups.question_popup import QuestionPopup
 from framework.controls.dialogs.popups.warning_popup import WarningPopup
 
-from framework.handler.theming.material.theme import MaterialStyle
-from framework.handler.system.clipboard import Clipboard
-from framework.handler.system.timer import Timer
-from framework.handler.system.cmdargs import CMD
+from framework.handle.theming.material.theme import MaterialStyle
+from framework.handle.system.clipboard import Clipboard
+from framework.handle.system.timer import Timer
+from framework.handle.system.cmdargs import CMD
 
-from framework.handler.system.file import File
-from framework.handler.system.paths import Paths
-from framework.handler.system.taskbar_progress import TaskbarProgress
-from framework.handler.system.notifcation import Notification
-from framework.handler.system.tray import Tray
+from framework.handle.system.file import File
+from framework.handle.system.paths import Paths
+from framework.handle.system.taskbar_progress import TaskbarProgress
+from framework.handle.system.notifcation import Notification
+from framework.handle.system.tray import Tray
 
 from framework.controls.dockers.menu.menu import Menu
 from framework.controls.dockers.menu.menuitem import MenuItem

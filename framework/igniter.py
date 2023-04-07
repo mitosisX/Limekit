@@ -40,10 +40,9 @@ from framework.controls.widgets.radiobutton import RadioButton
 from framework.controls.widgets.label import Label
 from framework.controls.widgets.window import Window
 from framework.controls.widgets.combobox import ComboBox
-from framework.controls.widgets.layouts.olayout import OLayout
-from framework.controls.widgets.layouts.vlayout import VerticalLayout
-from framework.controls.widgets.layouts.hlayout import HorizontalLayout
-from framework.controls.widgets.layouts.grid import GridLayout
+from framework.controls.layouts.vlayout import VerticalLayout
+from framework.controls.layouts.hlayout import HorizontalLayout
+from framework.controls.layouts.grid import GridLayout
 from framework.controls.widgets.spinbox import SpinBox
 from framework.controls.widgets.progressbar import ProgressBar
 from framework.controls.widgets.slider import Slider
@@ -62,16 +61,16 @@ from framework.controls.dialogs.popups.information_popup import InformationPopup
 from framework.controls.dialogs.popups.question_popup import QuestionPopup
 from framework.controls.dialogs.popups.warning_popup import WarningPopup
 
-from framework.handler.theming.themer import Theme
-from framework.handler.system.clipboard import Clipboard
-from framework.handler.system.timer import Timer
-from framework.handler.system.cmdargs import CMD
+from framework.handle.theming.themer import Theme
+from framework.handle.system.clipboard import Clipboard
+from framework.handle.system.timer import Timer
+from framework.handle.system.cmdargs import CMD
 
-from framework.handler.system.file import File
-from framework.handler.system.paths import Paths
-from framework.handler.system.taskbar_progress import TaskbarProgress
-from framework.handler.system.notifcation import Notification
-from framework.handler.system.tray import Tray
+from framework.handle.system.file import File
+from framework.handle.system.paths import Paths
+from framework.handle.system.taskbar_progress import TaskbarProgress
+from framework.handle.system.notifcation import Notification
+from framework.handle.system.tray import Tray
 
 from framework.controls.dockers.menu.menu import Menu
 from framework.controls.dockers.menu.menuitem import MenuItem

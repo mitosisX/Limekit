@@ -1,0 +1,6 @@
+Modules to use
+     py_compile
+     - This compiled to bytecode
+
+     pyarmor
+     - Obfuscate entire module without problems.

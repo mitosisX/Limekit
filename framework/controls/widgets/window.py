@@ -8,7 +8,6 @@ from framework.controls.dockers.toolbar.toolbar import Toolbar
 from framework.controls.dockers.dockerwidget.docking import Docker
 
 from multipledispatch import dispatch
-from .layouts.olayout import OLayout
 from qt_material import QtStyleTools
 
 class Window(QMainWindow):
