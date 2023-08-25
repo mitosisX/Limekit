@@ -1,0 +1,15 @@
+    To-Do list
+
+1. Replace explicit use of PySide6 with qt.py for easy integration with various Qt frameworks
+2. Determine whether the app is being run in "iDE" or build mode (after freeze)
+
+Such emptiness!
+
+
+    Features
+
+1. 
+
+    Important
+
+use "py -m pip install -e ." for "hot reload"

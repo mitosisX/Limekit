@@ -1,2 +1,0 @@
-class Dock:
-    pass

@@ -1,0 +1,5 @@
+PySide6
+qdarkstyle
+qt_material
+qrcode
+Faker
