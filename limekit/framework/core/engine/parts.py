@@ -8,3 +8,4 @@ class EnginePart:
     """
 
     name = ""
+    premium = False  # To be used for license restrictions

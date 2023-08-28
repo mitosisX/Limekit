@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QComboBox
 from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QComboBox
 from limekit.framework.core.engine.parts import EnginePart
 
 # setMaxCount - sets maximum ComboBox items limit
@@ -11,6 +11,7 @@ from limekit.framework.core.engine.parts import EnginePart
 # QComboBox.InsertAfterCurrent	Insert after current item
 # QComboBox.InsertBeforeCurrent	Insert before current item
 # QComboBox.InsertAlphabetically	Insert in alphabetical order
+from lupa import LuaRuntime
 
 
 class ComboBox(EnginePart, QComboBox):
@@ -35,8 +36,8 @@ class ComboBox(EnginePart, QComboBox):
         self.addItem(icon, text)
 
     def addImageItems(self, data):
-        for values in data:
-            icon = QIcon(values[0])
+        for values in data.values():
             text = values[1]
+            icon = QIcon(values[2])
 
             self.addItem(icon, text)

@@ -1,0 +1,8 @@
+Widgets
+==========
+
+.. toctree::
+   :maxdepth: 1
+
+   widgets/button
+   widgets/combobox

@@ -1,4 +1,4 @@
-local app = {
+app = {
     readFile = function(file)
         return __file.read_file(file)
     end,

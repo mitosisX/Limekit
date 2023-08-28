@@ -17,7 +17,7 @@ from PySide6.QtCore import QUrl
 
 
 class Window(EnginePart, QMainWindow):
-    def __init__(self, title="limekit.js Framework"):
+    def __init__(self, title="limekit - lua framework"):
         super().__init__()
 
         self.widget = QWidget()
@@ -34,7 +34,7 @@ class Window(EnginePart, QMainWindow):
     def setTitle(self, title):
         self.setWindowTitle(title)
 
-    def setCentralChild(self, child):
+    def setMainWidget(self, child):
         self.setCentralWidget(child)
 
     def setSize(self, width, height):
@@ -130,3 +130,6 @@ class Window(EnginePart, QMainWindow):
         desktop = QApplication.primaryScreen().size()
         w, h = desktop.width(), desktop.height()
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
+
+    def show(self):
+        super().show()
