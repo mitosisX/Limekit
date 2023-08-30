@@ -1,6 +1,7 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QComboBox
 from limekit.framework.core.engine.parts import EnginePart
+import lupa
 
 # setMaxCount - sets maximum ComboBox items limit
 
@@ -18,7 +19,7 @@ class ComboBox(EnginePart, QComboBox):
     def __init__(self):
         super().__init__()
 
-    def onItemSelect(self, func):
+    def onItemSelected(self, func):
         self.currentIndexChanged.connect(lambda: func(self, self.currentText()))
 
     def getSelectedItem(self):
@@ -41,3 +42,13 @@ class ComboBox(EnginePart, QComboBox):
             icon = QIcon(values[2])
 
             self.addItem(icon, text)
+
+    def addDataItems(self, data):
+        data_ = ""
+
+        try:
+            data_ = list(data.values())
+        except AttributeError:
+            data_ = data
+
+        self.addItems(data_)

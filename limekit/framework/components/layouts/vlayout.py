@@ -23,3 +23,6 @@ class VerticalLayout(EnginePart, QVBoxLayout):
     def addLayouts(self, *layouts):
         for layout in layouts:
             self.addLayout(layout)
+
+    def addLayout(self, lay, fake=None):
+        super().addLayout(lay)

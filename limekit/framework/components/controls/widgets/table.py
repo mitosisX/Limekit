@@ -2,7 +2,6 @@ from PySide6.QtWidgets import QTableWidget, QTableWidgetItem
 from limekit.framework.core.engine.parts import EnginePart
 from PySide6.QtWidgets import QAbstractItemView
 
-
 """
 To set the number of columns of available
     table.setColumnCount(num)
@@ -21,8 +20,6 @@ class TableGrid(EnginePart, QTableWidget):
     def __init__(self, rows=None, columns=None, parent=None):
         super().__init__(rows, columns, parent)
 
-        # super().__init__(rows, columns, parent)
-
     def onCellEditFinish(self, func):
         self.cellChanged.connect(
             lambda row, column: self.__handleCellEdit(row, column, func)
@@ -37,15 +34,22 @@ class TableGrid(EnginePart, QTableWidget):
     def setColumnHeaders(self, headers):
         self.setHorizontalHeaderLabels(headers.values())
 
-    def setColumns(self, columns):
+    def setRowHeaders(self, headers):
+        self.setVerticalHeaderLabels(headers.values())
+
+    def setMaxColumns(self, columns):
         self.setColumnCount(columns)
 
-    def setRows(self, rows):
+    def setMaxRows(self, rows):
         self.setRowCount(rows)
 
     # Can only be set after headers have been applied
-    def setHeaderToolTip(self, header, tooltip):
+    def setColumnHeaderToolTip(self, header, tooltip):
         self.horizontalHeaderItem(header).setToolTip(tooltip)
+
+    # The header number you want to get the text of
+    def getColumnHeaderText(self, num):
+        return self.horizontalHeaderItem(num).text()
 
     def setGridVisible(self, visibility):
         self.setShowGrid(visibility)
@@ -70,3 +74,10 @@ class TableGrid(EnginePart, QTableWidget):
             if editable
             else QAbstractItemView.NoEditTriggers
         )
+
+    def setAltRowColors(self, setAlt):
+        self.setAlternatingRowColors(setAlt)
+
+    # Whether to allow column headers to be sorted
+    def setColumnSorting(self, sorting):
+        self.setSortingEnabled(sorting)

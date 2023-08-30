@@ -30,7 +30,7 @@ app = {
         __wPopup(parent, title, message)
     end,
     execute = function(script)
-        __js_execute(script)
+        __lua_execute(script)
     end,
     setClipboardText = function(text)
         __clipboard.setText(text)

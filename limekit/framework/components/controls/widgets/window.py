@@ -9,27 +9,30 @@ from limekit.framework.components.controls.dockers.toolbar.toolbar import Toolba
 from limekit.framework.components.controls.dockers.dockerwidget.docking import Docker
 
 from limekit.framework.core.runner.app import App
-from PySide6.QtGui import QAction, QScreen, QIcon
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
-from PySide6.QtCore import QUrl
 
 # from limekit.framework.handler.plugins.plugin_manager import PluginManager
 
 
 class Window(EnginePart, QMainWindow):
+    just_shown = False  # To be used for any first launch logic: center()
+    onShownEvent = None
+    onResizeEvent = None
+    onCloseEvent = None
+    onResizeEvent = None
+
     def __init__(self, title="limekit - lua framework"):
         super().__init__()
 
         self.widget = QWidget()
+
         self.setCentralWidget(self.widget)
-
-        # self.setGeometry(500, 100, 500, 500)
-
         self.setSize(500, 300)
 
-        self.center()
-
         self.setTitle(title)
+
+        self.center()
 
     def setTitle(self, title):
         self.setWindowTitle(title)
@@ -127,9 +130,39 @@ class Window(EnginePart, QMainWindow):
         self.addDockWidget(dock_area, dock)
 
     def center(self):
-        desktop = QApplication.primaryScreen().size()
-        w, h = desktop.width(), desktop.height()
-        self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
+        qr = self.frameGeometry()
+        cp = QApplication.primaryScreen().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
+    def getSize(self):
+        return (self.size().width(), self.size().height())
+
+    # Events ----------------------
+    def setOnShown(self, func):
+        self.onShownEvent = func
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        if self.onShownEvent:
+            self.onShownEvent(self)
+
+    def setOnClose(self, func):
+        self.onCloseEvent = func
+
+    # event has: ignore and accept
+    def closeEvent(self, event):
+        if self.onCloseEvent:
+            self.onCloseEvent(self, event)
+
+    def setOnResize(self, func):
+        self.onResizeEvent = func
+
+    def resizeEvent(self, event):
+        if self.onResizeEvent:
+            self.onResizeEvent(self)
+
+    # ---------------------- Events
 
     def show(self):
         super().show()

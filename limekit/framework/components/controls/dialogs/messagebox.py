@@ -44,9 +44,12 @@ class MessageBox(EnginePart):
     def getText(self):
         return str(self.dialog[0])
 
+    def show(self):
+        self.dialog.exec()
+
     # This resolves info type and returns right QMessage property
     def __decideIcon(self, _icon):
-        icon = _icon.lower()
+        icon = str(_icon).lower()
 
         if icon == "question":
             return QMessageBox.Question
@@ -88,7 +91,7 @@ class MessageBox(EnginePart):
 
         if _buttons:
             for _button in _buttons:
-                button = _button.lower()
+                button = str(_button).lower()
 
                 if button == "ok":
                     buttons |= QMessageBox.Ok

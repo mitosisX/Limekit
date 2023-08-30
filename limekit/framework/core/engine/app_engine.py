@@ -10,10 +10,11 @@ The code is a mess, I know.... get over it... or simply fix it ;-)
 """
 
 import os
+import sys
 import importlib
 import sqlite3
 
-import lupa
+from lupa import lua54
 from lupa import LuaRuntime
 from faker import Faker
 
@@ -41,23 +42,23 @@ class Engine:
 
         self.limekit_root_dir = settings.limekit_SITEPACKAGE_DIR
 
-        self.engine = None  # holds the js2py engine
+        self.engine = None  # holds the lua engine
 
     # Init the JavaScript engine
-    def init_JsEngine(self):
-        self.engine = LuaRuntime(unpack_returned_tuples=True)
+    def init_lua_engine(self):
+        self.engine = LuaRuntime(unpack_returned_tuples=False)
 
     def start(self):
         self.fix_vital_dirs()
         # self.init_plugins()  # Has to load first coz we don't walk the engine to run with only our py objects
 
-        self.init_JsEngine()  # Set the py objects to the engine
-        self.gather_js_engine_objects()
+        self.init_lua_engine()  # Set the py objects to the engine
+        self.gather_lua_engine_objects()
         self.execute_vital_lua()  # Set the py objects to the engine
         self.execute_main_lua()  # Set the py objects to the engine
         self.set_eventloop()  # Set the PySide6 mainloop running. VITAL!!!!!!
 
-    # All core js code for the limekit framework
+    # All core lua code for the limekit framework
     def execute_vital_lua(self):
         vital_files = [
             "limekit.framework.scripts.limekit",
@@ -77,12 +78,32 @@ class Engine:
     """
 
     def execute(self, script):
-        with open(script) as js_script:
-            lua_content = js_script.read()
+        with open(script) as lua_script:
+            lua_content = lua_script.read()
 
-            self.engine.execute(lua_content)
+            try:
+                self.engine.execute(lua_content)
+            except TypeError as exception:
+                excep_msg = str(exception)
 
-    # The user's main.js entry point code
+                if "takes exactly one argument" in excep_msg:
+                    end = excep_msg.index("()") + 2
+
+                    exce_ = str(excep_msg)[:end]
+                    print(
+                        f"NativeMethodError: Use of 'syntactic sugar' on {exce_.replace('.',':')}. Use {exce_} instead."
+                    )
+                else:
+                    print(exception)
+
+                sys.exit()
+
+            except lua54.LuaSyntaxError as exception:
+                print(exception)
+
+                sys.exit()
+
+    # The user's main.lua entry point code
     def execute_main_lua(self):
         path_to_main = Path.scripts("main.lua")
         self.execute(path_to_main)
@@ -105,7 +126,7 @@ class Engine:
     def fix_app_folders(self):
         pass
 
-    def gather_js_engine_objects(self):
+    def gather_lua_engine_objects(self):
         self.gather_from_dirs()
         self.gather_additional_parts()
 
@@ -126,17 +147,16 @@ class Engine:
 
     def gather_additional_parts(self):
         """
-        Some additional functions such as using len() in js or anything required but not
+        Some additional functions such as using len() in lua or anything required but not
         really that essential (well, some)
         """
         other_parts = {
             "scripts": Path.scripts,
             "images": Path.images,
-            "__js_execute": self.execute,
-            "sqlite": sqlite3,
+            "__lua_execute": self.execute,
+            "sqlite3": sqlite3,
             "fake": Faker(),
             "len": len,
-            "console.log": print,
             "print": print,
             "str": str,
             "eval": eval,
@@ -162,16 +182,16 @@ class Engine:
                     and issubclass(class_, EnginePart)
                     and class_ is not EnginePart
                 ):
-                    class_for_js = class_
+                    class_for_lua = class_
 
                     object_name = (
-                        class_for_js.name
-                        if class_for_js.name
-                        else class_for_js.__name__
+                        class_for_lua.name
+                        if class_for_lua.name
+                        else class_for_lua.__name__
                     )
 
                     # Create the lua objects
-                    self.engine.globals()[object_name] = class_for_js
+                    self.engine.globals()[object_name] = class_for_lua
 
     def fix_vital_dirs(self):
         """
@@ -181,8 +201,8 @@ class Engine:
         if not Path.check_path(Path.scripts_dir()):
             os.mkdir(Path.scripts_dir())
 
-        # if not Path.check_path(Path.plugins_dir()):
-        #     os.mkdir(Path.plugins_dir())
+        if not Path.check_path(Path.misc_dir()):
+            os.mkdir(Path.misc_dir())
 
         if not Path.check_path(Path.images_dir()):
             os.mkdir(Path.images_dir())

@@ -18,6 +18,10 @@ class Path(EnginePart):
         return cls.join_paths(cls.user_project_dir(), "plugins")
 
     @classmethod
+    def misc_dir(cls):
+        return cls.join_paths(cls.user_project_dir(), "misc")
+
+    @classmethod
     def images_dir(cls):
         return cls.join_paths(cls.user_project_dir(), "images")
 
