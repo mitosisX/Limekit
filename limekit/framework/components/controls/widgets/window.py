@@ -16,13 +16,13 @@ from PySide6.QtWidgets import QApplication
 
 
 class Window(EnginePart, QMainWindow):
-    just_shown = False  # To be used for any first launch logic: center()
+    just_shown = False  # To be used for any first launch logic: center()...
     onShownEvent = None
     onResizeEvent = None
     onCloseEvent = None
     onResizeEvent = None
 
-    def __init__(self, title="limekit - lua framework"):
+    def __init__(self, title="Limekit - lua framework"):
         super().__init__()
 
         self.widget = QWidget()

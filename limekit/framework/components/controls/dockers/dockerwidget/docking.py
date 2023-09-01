@@ -51,7 +51,7 @@ class Docker(EnginePart, QDockWidget):
     def setMagneticAreas(self, areas):
         allowed_areas = Qt.NoDockWidgetArea
 
-        for area in areas:
+        for area in list(areas.values()):
             if area == "top":
                 allowed_areas |= Qt.TopDockWidgetArea
             elif area == "bottom":

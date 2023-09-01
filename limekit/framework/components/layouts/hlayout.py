@@ -2,12 +2,6 @@ from PySide6.QtWidgets import QHBoxLayout
 from limekit.framework.core.engine.parts import EnginePart
 
 
-"""
-OLayout is simply an Orientational Layout (OLayout)
-Either Horizontal or Vertical
-"""
-
-
 class HorizontalLayout(EnginePart, QHBoxLayout):
     name = "HLayout"
 

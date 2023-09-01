@@ -4,7 +4,7 @@ from limekit.framework.core.engine.parts import EnginePart
 
 
 class MenuItem(EnginePart, QMenu):
-    def __init__(self, title=None):
+    def __init__(self, title):
         super().__init__(title)
 
     def onClick(self, func):

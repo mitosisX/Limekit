@@ -37,5 +37,8 @@ app = {
     end,
     getClipboardText = function()
         return __clipboard.getText()
+    end,
+    listFolder = function(path)
+        return __Path.listDir(path)
     end
 }

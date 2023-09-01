@@ -3,6 +3,7 @@ import fnmatch
 import limekit
 from js2py import base
 from limekit.framework.core.engine.parts import EnginePart
+import os
 
 
 class Path(EnginePart):
@@ -28,6 +29,10 @@ class Path(EnginePart):
     @classmethod
     def user_project_dir(cls):
         return cls.project_path
+
+    @classmethod
+    def listDir(cls, path):
+        return os.listdir(path)
 
     @classmethod
     def walk_dir_get_files(cls, dir, ext=".py"):

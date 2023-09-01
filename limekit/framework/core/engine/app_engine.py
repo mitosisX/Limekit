@@ -22,7 +22,8 @@ from limekit.framework.core.config import settings
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.core.runner.app import App
 from limekit.framework.handle.paths.path import Path
-from limekit.framework.handle.plugins.plugin_manager import PluginManager
+
+from qfluentwidgets import FluentIcon
 
 
 class Engine:
@@ -160,6 +161,7 @@ class Engine:
             "print": print,
             "str": str,
             "eval": eval,
+            "FluentIcon": FluentIcon,
         }
 
         for obj_name, object_ in other_parts.items():

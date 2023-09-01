@@ -1,10 +1,6 @@
 from PySide6.QtWidgets import QVBoxLayout
 from limekit.framework.core.engine.parts import EnginePart
-
-"""
-OLayout is simply an Orientational Layout (OLayout)
-Either Horizontal or Vertical
-"""
+from PySide6.QtCore import Qt
 
 
 class VerticalLayout(EnginePart, QVBoxLayout):
@@ -15,6 +11,19 @@ class VerticalLayout(EnginePart, QVBoxLayout):
 
     def addChild(self, child):
         self.addWidget(child)
+
+    def setContentAlignment(self, alignment):
+        align = None
+        selected_area = alignment.lower()
+
+        if selected_area == "top":
+            align = Qt.AlignLeft
+        elif selected_area == "hcenter":
+            align = Qt.AlignHCenter
+        elif selected_area == "justify":
+            align = Qt.AlignJustify
+
+        self.setAlignment(align)
 
     def addChildren(self, *children):
         for eachChild in children:
