@@ -143,6 +143,7 @@ class Window(EnginePart, QMainWindow):
         self.onShownEvent = func
 
     def showEvent(self, event):
+        self.center()
         super().showEvent(event)
         if self.onShownEvent:
             self.onShownEvent(self)

@@ -8,8 +8,8 @@ Either Horizontal or Vertical
 
 
 class GridLayout(EnginePart, QGridLayout):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
     # This is a Grid layout; every child widget is positioned
     # x and y

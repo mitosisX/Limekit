@@ -28,7 +28,5 @@ setuptools.setup(
     ],
     project_urls={
         'Documentation': 'https://pyqt-fluent-widgets.readthedocs.io/',
-        'Source Code': 'https://github.com/mitosisX/Miranda',
-        'Bug Tracker': 'https://github.com/mitosisX/Miranda/issues',
     }
 )

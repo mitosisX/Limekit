@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QLabel
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap, QMovie
 from limekit.framework.core.engine.parts import EnginePart
 
 #   Alignments
@@ -49,6 +49,11 @@ class Label(EnginePart, QLabel):
 
         elif align == "center":
             self.setAlignment(Qt.AlignCenter)
+
+    def setMoGraph(self, mog):
+        mov = QMovie(mog)
+        self.setMovie(mov)
+        mov.start()
 
     def setImage(self, path):
         pixmap = QPixmap(path)

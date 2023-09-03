@@ -2,16 +2,13 @@ from limekit.framework.core.engine.parts import EnginePart
 from PySide6.QtWidgets import QVBoxLayout
 from qfluentwidgets import (
     CaptionLabel,
-    FluentIcon,
-    CardWidget,
-    RoundMenu,
-    Action,
+    ElevatedCardWidget,
     ImageLabel,
 )
-from PySide6.QtCore import Qt, QPoint
+from PySide6.QtCore import Qt
 
 
-class EmojiCard(EnginePart, CardWidget):
+class EmojiCard(ElevatedCardWidget, EnginePart):
     def __init__(self, iconPath: str, label="Emoji", parent=None):
         super().__init__(parent)
         self.iconWidget = ImageLabel(iconPath, self)
@@ -28,12 +25,5 @@ class EmojiCard(EnginePart, CardWidget):
 
         self.setFixedSize(168, 176)
 
-    def onMoreButtonClicked(self):
-        menu = RoundMenu(parent=self)
-        menu.addAction(Action(FluentIcon.SHARE, "Share", self))
-        menu.addAction(Action(FluentIcon.CHAT, "Chat", self))
-        menu.addAction(Action(FluentIcon.PIN, "PIN", self))
-
-        x = (self.moreButton.width() - menu.width()) // 2 + 10
-        pos = self.moreButton.mapToGlobal(QPoint(x, self.moreButton.height()))
-        menu.exec(pos)
+    def onClick(self, func):
+        self.clicked.connect(lambda: func(self))

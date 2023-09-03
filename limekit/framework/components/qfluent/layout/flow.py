@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt
 
 class FlowLayout(FlowLayout, EnginePart):
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
 
     def setSize(self, width, height):
         self.resize(width, height)

@@ -5,8 +5,8 @@ from limekit.framework.core.engine.parts import EnginePart
 class HorizontalLayout(EnginePart, QHBoxLayout):
     name = "HLayout"
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
     def addChild(self, child):
         self.addWidget(child)

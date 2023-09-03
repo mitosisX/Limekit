@@ -1,8 +1,9 @@
 from limekit.framework.core.engine.parts import EnginePart
-from PySide6.QtWidgets import QVBoxLayout
+from PySide6.QtWidgets import QWidget
 from PySide6.QtGui import QIcon
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication
+import sys
 
 import qfluentwidgets
 
@@ -15,27 +16,44 @@ from qfluentwidgets import (
     Theme,
     SplitFluentWindow,
 )
-from qframelesswindow import FramelessWindow, StandardTitleBar
 
 
-class FluentWindow(FluentWindow, EnginePart):
+def isWin11():
+    return sys.platform == "win32" and sys.getwindowsversion().build >= 22000
+
+
+if isWin11():
+    from qframelesswindow import AcrylicWindow as Window
+else:
+    from qframelesswindow import FramelessWindow as Window
+
+
+class QFluentWindow(Window, EnginePart):
+    name = "FluentWindow"
     just_shown = False  # To be used for any first launch logic: center()...
     onShownEvent = None
     onResizeEvent = None
     onCloseEvent = None
     onResizeEvent = None
 
-    def __init__(self, title="Limekit - lua framework"):
+    def __init__(self, title="Limekit - lua framework", theme="dark"):
         super().__init__()
-        self.setTitleBar(MSFluentTitleBar(self))
-        self.windowEffect.setMicaEffect(self.winId(), isDarkTheme())
 
-        self.layout_ = QVBoxLayout()
-        self.widgetLayout.addLayout(self.layout_)
+        self.setTitleBar(MSFluentTitleBar(self))
+
+        setTheme(Theme.DARK)
+
+        if self.__isWin11():
+            self.windowEffect.setMicaEffect(self.winId(), isDarkTheme())
+
+        self.layout_ = QWidget(self)
 
         # self.setSize(500, 300)
 
         self.setTitle(title)
+
+    def __isWin11(self):
+        return sys.platform == "win32" and sys.getwindowsversion().build >= 22000
 
     def center(self):
         qr = self.frameGeometry()
@@ -79,9 +97,6 @@ class FluentWindow(FluentWindow, EnginePart):
     def setMainLayout(self, layout):
         pass
 
-    def setTheme(self, theme):
-        qfluentwidgets.setTheme(Theme.DARK if theme.lower() == "dark" else Theme.LIGHT)
-
     def setTitle(self, title):
         self.setWindowTitle(title)
 
@@ -99,6 +114,7 @@ class FluentWindow(FluentWindow, EnginePart):
         self.onShownEvent = func
 
     def showEvent(self, event):
+        self.center()
         if self.onShownEvent:
             self.onShownEvent(self)
 

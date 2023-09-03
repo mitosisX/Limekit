@@ -16,8 +16,11 @@ from lupa import LuaRuntime
 
 
 class ComboBox(EnginePart, QComboBox):
-    def __init__(self):
+    def __init__(self, items):
         super().__init__()
+
+        if items:
+            self.addDataItems(items)
 
     def onItemSelected(self, func):
         self.currentIndexChanged.connect(lambda: func(self, self.currentText()))

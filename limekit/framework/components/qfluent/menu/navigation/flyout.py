@@ -12,5 +12,26 @@ class FluentFlyout(Flyout, EnginePart):
         self.window = window
         self.view = view
 
-    def show(self, target):
-        self.make(self.view, target, self.window, FlyoutAnimationType.FADE_IN)
+    def show(self, target, fly_animation: str):
+        animation_ = fly_animation.lower()
+        animation_type = FlyoutAnimationType.DROP_DOWN
+
+        if animation_ == "dropdown":
+            animation_type = FlyoutAnimationType.DROP_DOWN
+
+        elif animation_ == "fadein":
+            animation_type = FlyoutAnimationType.FADE_IN
+
+        elif animation_ == "pullup":
+            animation_type = FlyoutAnimationType.PULL_UP
+
+        elif animation_ == "slideleft":
+            animation_type = FlyoutAnimationType.SLIDE_LEFT
+
+        elif animation_ == "slideright":
+            animation_type = FlyoutAnimationType.SLIDE_RIGHT
+
+        self.make(self.view, target, self.window, animation_type)
+
+    def getAnimations(self):
+        return ["dropdown", "fadein", "pullup", "slideleft", "slideright"]
