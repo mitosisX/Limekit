@@ -1,9 +1,11 @@
+import PySide6.QtCore
 from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QPixmap
 from limekit.framework.core.engine.parts import EnginePart
+from PySide6.QtCore import QObject, QEvent
 
 
-class MenuItem(EnginePart, QMenu):
+class MenuItem(QMenu, EnginePart):
     def __init__(self, title):
         super().__init__(title)
 

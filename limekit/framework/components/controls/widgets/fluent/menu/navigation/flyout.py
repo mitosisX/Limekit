@@ -2,6 +2,7 @@ from limekit.framework.core.engine.app_engine import EnginePart
 from qfluentwidgets import Flyout, FlyoutAnimationType
 
 
+# a Popup with MenuItems next to them
 class FluentFlyout(Flyout, EnginePart):
     name = "Flyout"
     window = None
@@ -12,7 +13,7 @@ class FluentFlyout(Flyout, EnginePart):
         self.window = window
         self.view = view
 
-    def show(self, target, fly_animation: str):
+    def show(self, target, fly_animation: str = "dropdown"):
         animation_ = fly_animation.lower()
         animation_type = FlyoutAnimationType.DROP_DOWN
 

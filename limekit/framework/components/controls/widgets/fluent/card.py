@@ -49,6 +49,9 @@ class Card(EnginePart, CardWidget):
         self.moreButton.setFixedSize(32, 32)
         self.moreButton.clicked.connect(self.onMoreButtonClicked)
 
+    def onClick(self, func):
+        self.clicked.connect(lambda: func(self))
+
     def onMoreButtonClicked(self):
         menu = RoundMenu(parent=self)
         menu.addAction(Action(FluentIcon.SHARE, "Share", self))

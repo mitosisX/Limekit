@@ -41,7 +41,7 @@ class QFluentWindow(Window, EnginePart):
 
         self.setTitleBar(MSFluentTitleBar(self))
 
-        setTheme(Theme.DARK)
+        setTheme(Theme.DARK if theme.lower() == "dark" else Theme.LIGHT)
 
         if self.__isWin11():
             self.windowEffect.setMicaEffect(self.winId(), isDarkTheme())

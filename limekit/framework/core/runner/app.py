@@ -1,6 +1,7 @@
 import sys
 from PySide6.QtWidgets import QApplication
 
+
 class App:
     app = QApplication([])
 
@@ -11,4 +12,4 @@ class App:
     # Start the mainloop
     @staticmethod
     def execute():
-        sys.exit(App.app.exec_())
+        sys.exit(App.app.exec())

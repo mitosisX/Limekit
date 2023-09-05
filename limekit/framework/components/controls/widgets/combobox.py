@@ -16,7 +16,7 @@ from lupa import LuaRuntime
 
 
 class ComboBox(EnginePart, QComboBox):
-    def __init__(self, items):
+    def __init__(self, items=None):
         super().__init__()
 
         if items:
