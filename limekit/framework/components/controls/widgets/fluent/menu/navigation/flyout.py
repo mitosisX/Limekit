@@ -13,7 +13,7 @@ class FluentFlyout(Flyout, EnginePart):
         self.window = window
         self.view = view
 
-    def show(self, target, fly_animation: str = "dropdown"):
+    def show(self, target, fly_animation: str = "pullup"):
         animation_ = fly_animation.lower()
         animation_type = FlyoutAnimationType.DROP_DOWN
 
