@@ -54,7 +54,7 @@ class Engine:
         # self.init_plugins()  # Has to load first coz we don't walk the engine to run with only our py objects
 
         self.init_lua_engine()  # Set the py objects to the engine
-        self.gather_lua_engine_objects()
+        self.gather_lua_engine_objects()  # loads all required classes from INSTALLED_APPS and additional method
         self.execute_vital_lua()  # Set the py objects to the engine
         self.execute_main_lua()  # Set the py objects to the engine
         self.set_eventloop()  # Set the PySide6 mainloop running. VITAL!!!!!!
@@ -154,12 +154,20 @@ class Engine:
         other_parts = {
             "scripts": Path.scripts,
             "images": Path.images,
+            "misc": Path.misc,
             "__lua_execute": self.execute,
             "sqlite3": sqlite3,
             "fake": Faker(),
             "len": len,
             "print": print,
+            # --------- Data types
             "str": str,
+            "dict": dict,
+            "int": int,
+            "tuple": tuple,
+            "list": list,
+            "zip": zip,
+            # Data types ---------
             "eval": eval,
             "FluentIcon": FluentIcon,
         }

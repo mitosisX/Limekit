@@ -22,5 +22,7 @@ class Theme:
 
     @classmethod
     def __read(cls, mode):
-        with open(os.path.join(cls.current_directory, f"{mode}\\theme.qss")) as theme:
+        with open(
+            os.path.join(cls.current_directory, f"{mode}\\theme.qss"), encoding="utf-8"
+        ) as theme:
             return theme.read()

@@ -5,3 +5,5 @@ multipledispatch
 qrcode
 qtmodern
 PyTaskbarProgress
+psutil
+emoji

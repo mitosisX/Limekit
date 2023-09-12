@@ -21,6 +21,8 @@ from qfluentwidgets import (
     PopUpAniStackedWidget,
 )
 
+from qframelesswindow import TitleBar
+
 
 def isWin11():
     return sys.platform == "win32" and sys.getwindowsversion().build >= 22000
@@ -31,6 +33,36 @@ def isWin11():
 # else:
 #     from qframelesswindow import FramelessWindow as Window
 from qframelesswindow import AcrylicWindow as Window
+
+
+class CustomTitleBar(TitleBar):
+    """Title bar with icon and title"""
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        # add window icon
+        self.iconLabel = QLabel(self)
+        self.iconLabel.setFixedSize(18, 18)
+        self.hBoxLayout.insertSpacing(0, 10)
+        self.hBoxLayout.insertWidget(
+            1, self.iconLabel, 0, Qt.AlignLeft | Qt.AlignBottom
+        )
+        self.window().windowIconChanged.connect(self.setIcon)
+
+        # add title label
+        self.titleLabel = QLabel(self)
+        self.hBoxLayout.insertWidget(
+            2, self.titleLabel, 0, Qt.AlignLeft | Qt.AlignBottom
+        )
+        self.titleLabel.setObjectName("titleLabel")
+        self.window().windowTitleChanged.connect(self.setTitle)
+
+    def setTitle(self, title):
+        self.titleLabel.setText(title)
+        self.titleLabel.adjustSize()
+
+    def setIcon(self, icon):
+        self.iconLabel.setPixmap(QIcon(icon).pixmap(18, 18))
 
 
 class QFluentWindow(Window, EnginePart):
@@ -44,7 +76,7 @@ class QFluentWindow(Window, EnginePart):
     def __init__(self, title="Limekit - lua framework", theme="dark"):
         super().__init__()
 
-        self.setTitleBar(MSFluentTitleBar(self))
+        self.setTitleBar(CustomTitleBar(self))
 
         setTheme(Theme.DARK if theme.lower() == "dark" else Theme.LIGHT)
 
@@ -56,13 +88,13 @@ class QFluentWindow(Window, EnginePart):
         self.hBoxLayout = QHBoxLayout(self)
 
         # Holds the menu items on the left side
-        self.navigationInterface = NavigationInterface(self, showMenuButton=True)
+        # self.navigationInterface = NavigationInterface(self, showMenuButton=True)
 
         # User content goes in here
         self.stackWidget = PopUpAniStackedWidget(self)
 
         # self.setSize(500, 300)
-        self.__initLayout()
+        # self.__initLayout()
         self.__initWindow()
 
         self.setTitle(title)
@@ -133,10 +165,10 @@ class QFluentWindow(Window, EnginePart):
         # self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
 
     def addChild(self, child):
-        self.stackWidget.addWidget(child)
+        self.hBoxLayout.addWidget(child)
 
     def setMainLayout(self, layout):
-        self.stackWidget.addLayout(layout)
+        self.hBoxLayout.addLayout(layout)
 
     def setContentAlignment(self, alignment):
         align = None
@@ -157,10 +189,10 @@ class QFluentWindow(Window, EnginePart):
 
     def addLayouts(self, *layouts):
         for layout in layouts:
-            self.stackWidget.addLayout(layout)
+            self.hBoxLayout.addLayout(layout)
 
     def addLayout(self, lay):
-        self.stackWidget.addLayout(lay)
+        self.hBoxLayout.addLayout(lay)
 
     def setIcon(self, icon):
         self.setWindowIcon(QIcon(icon))

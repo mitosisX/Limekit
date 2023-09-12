@@ -78,6 +78,11 @@ class Path(EnginePart):
     def images(cls, resource):
         return cls.path_res_joiner("images", resource)
 
+    # The path to the user's project images dir
+    @classmethod
+    def misc(cls, resource):
+        return cls.path_res_joiner("misc", resource)
+
     # The path to the user's project plugins dir
     @classmethod
     def plugins(cls):

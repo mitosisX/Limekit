@@ -28,7 +28,7 @@ class Window(EnginePart, QMainWindow):
         self.widget = QWidget()
 
         self.setCentralWidget(self.widget)
-        self.setSize(500, 300)
+        self.setSize(500, 500)
 
         self.setTitle(title)
 
@@ -37,7 +37,7 @@ class Window(EnginePart, QMainWindow):
     def setTitle(self, title):
         self.setWindowTitle(title)
 
-    def setMainWidget(self, child):
+    def setMainWidget(self, child: QWidget):
         self.setCentralWidget(child)
 
     def setSize(self, width, height):

@@ -2,7 +2,7 @@ from limekit.framework.core.engine.parts import EnginePart
 from PySide6.QtCore import QRect, QPropertyAnimation, Qt
 
 
-class Animation(EnginePart):
+class Animation:
     animation_type = None
     animation = None
 

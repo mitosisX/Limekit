@@ -1,9 +1,19 @@
 app = {
-    readFile = function(file)
-        return __file.read_file(file)
+    emoji = function(emoji)
+        return __emoji.get(emoji)
     end,
-    writeFile = function(file, content)
-        __file.write_file(file, content)
+    ---- ##### File utils
+    readFile = function(file, encoding)
+        if not encoding then
+            encoding = "UTF-8"
+        end
+        return __file.read_file(file,encoding)
+    end,
+    writeFile = function(file, content, encoding)
+        if not encoding then
+            encoding = "UTF-8"
+        end
+        __file.write_file(file, content, encoding)
     end,
     createFile = function(file)
         __file.create_file(file)
@@ -14,6 +24,10 @@ app = {
     writeBytes = function(file, bytes)
         __file.writeBytes(file, bytes)
     end,
+    readJSON= function(file)
+        return __fileutils.read_file_json(file)
+    end,
+    -- ##### File utils
     aPopup = function(parent, title, message)
         __aPopup(parent, title, message)
     end,
@@ -40,5 +54,25 @@ app = {
     end,
     listFolder = function(path)
         return __Path.listDir(path)
-    end
+    end,
+    -- ##### CPU or Sys related
+    getProcesses = function()
+        return __sysutils.get_processes()
+    end,
+    killProcess = function(pid)
+        return __sysutils.kill_process(pid)
+    end,
+    getCPUCount = function()
+        return __sysutils.get_all_cpus()
+    end,
+    getUsers = function()
+        return __sysutils.get_users()
+    end,
+    getBatteryInfo = function()
+        return __sysutils.get_battery_percent()
+    end,
+    getDiskPartitions = function()
+        return __sysutils.get_driver_letters()
+    end,
+    -- ##### 
 }
