@@ -12,23 +12,30 @@ class Path(EnginePart):
 
     @classmethod
     def scripts_dir(cls):
-        return cls.join_paths(cls.user_project_dir(), "scripts")
+        return cls.join_paths(cls.current_project_dir(), "scripts")
 
     @classmethod
     def plugins_dir(cls):
-        return cls.join_paths(cls.user_project_dir(), "plugins")
+        return cls.join_paths(cls.current_project_dir(), "plugins")
 
     @classmethod
     def misc_dir(cls):
-        return cls.join_paths(cls.user_project_dir(), "misc")
+        return cls.join_paths(cls.current_project_dir(), "misc")
 
     @classmethod
     def images_dir(cls):
-        return cls.join_paths(cls.user_project_dir(), "images")
+        return cls.join_paths(cls.current_project_dir(), "images")
 
+    # Project currently running
     @classmethod
-    def user_project_dir(cls):
+    def current_project_dir(cls):
         return cls.project_path
+
+    # Where user all projects reside
+    @classmethod
+    def projects_dir(cls):
+        the_path = cls.current_project_dir()
+        return the_path[: the_path.rfind("\\")]
 
     @classmethod
     def listDir(cls, path):

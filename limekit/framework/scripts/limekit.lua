@@ -7,7 +7,7 @@ app = {
         if not encoding then
             encoding = "UTF-8"
         end
-        return __file.read_file(file,encoding)
+        return __file.read_file(file, encoding)
     end,
     writeFile = function(file, content, encoding)
         if not encoding then
@@ -24,7 +24,7 @@ app = {
     writeBytes = function(file, bytes)
         __file.writeBytes(file, bytes)
     end,
-    readJSON= function(file)
+    readJSON = function(file)
         return __fileutils.read_file_json(file)
     end,
     -- ##### File utils
@@ -73,6 +73,6 @@ app = {
     end,
     getDiskPartitions = function()
         return __sysutils.get_driver_letters()
-    end,
+    end
     -- ##### 
 }

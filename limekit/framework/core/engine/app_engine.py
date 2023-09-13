@@ -1,11 +1,16 @@
 """
-20 March, 2023 8:23 AM (Monday) (UTC+02:00)
+            20 March, 2023 8:23 AM (Monday) (UTC+02:00)
 
 The code is a mess, I know.... get over it... or simply fix it ;-)
 
-27 July, 2023 16:04 (or 4:04 PM) (Thursday) (UTC+02:00)
+            27 July, 2023 16:04 (or 4:04 PM) (Thursday) (UTC+02:00)
 
 - Hihi! Had to fix my own mess. No more thousand imports.
+
+            13 September, 2023 08:43 AM (Wednesday)
+
+The project is going pretty great. Haven't yet released it yet. nor developed
+a project creation script, nor how the virtual env shall work.
 
 """
 
@@ -22,6 +27,7 @@ from limekit.framework.core.config import settings
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.core.runner.app import App
 from limekit.framework.handle.paths.path import Path
+from limekit.framework.handle.system.file import File
 
 from qfluentwidgets import FluentIcon
 
@@ -38,6 +44,8 @@ class Engine:
         return cls._instance
 
     def __init__(self):
+        self.projects_dir = Path.projects_dir()
+
         self.app = App()  # holds the PySide6 application
         # self.plugin_manager = PluginManager()  # The code that init all user plugins
 
@@ -55,6 +63,7 @@ class Engine:
 
         self.init_lua_engine()  # Set the py objects to the engine
         self.gather_lua_engine_objects()  # loads all required classes from INSTALLED_APPS and additional method
+        self.set_custom_lua_require_path()
         self.execute_vital_lua()  # Set the py objects to the engine
         self.execute_main_lua()  # Set the py objects to the engine
         self.set_eventloop()  # Set the PySide6 mainloop running. VITAL!!!!!!
@@ -70,7 +79,7 @@ class Engine:
                 Path.remove_last_dir(settings.limekit_SITEPACKAGE_DIR),
                 f"{Path.dot_path(vital_file)}.lua",
             )
-            self.execute(clean_path_file)
+            self.execute(File.read_file(clean_path_file))
 
     """
     For executing any incoming JavaScript code
@@ -78,40 +87,60 @@ class Engine:
     Has to redesigned to determine whether or not the framework is being run after freeze or in "IDE"
     """
 
-    def execute(self, script):
-        with open(script) as lua_script:
-            lua_content = lua_script.read()
+    def execute(self, lua_content):
+        try:
+            self.engine.execute(lua_content)
+        except TypeError as exception:
+            excep_msg = str(exception)
 
-            try:
-                self.engine.execute(lua_content)
-            except TypeError as exception:
-                excep_msg = str(exception)
+            if "takes exactly one argument" in excep_msg:
+                end = excep_msg.index("()") + 2
 
-                if "takes exactly one argument" in excep_msg:
-                    end = excep_msg.index("()") + 2
-
-                    exce_ = str(excep_msg)[:end]
-                    print(
-                        f"NativeMethodError: Use of 'syntactic sugar' on {exce_.replace('.',':')}. Use {exce_} instead."
-                    )
-                else:
-                    print(exception)
-
-                sys.exit()
-
-            except lua54.LuaSyntaxError as exception:
+                exce_ = str(excep_msg)[:end]
+                print(
+                    f"NativeMethodError: Use of 'syntactic sugar' on {exce_.replace('.',':')}. Use {exce_} instead."
+                )
+            else:
                 print(exception)
 
-                sys.exit()
+            sys.exit()
+
+        except lua54.LuaSyntaxError as exception:
+            print(exception)
+
+            sys.exit()
 
     # The user's main.lua entry point code
     def execute_main_lua(self):
         path_to_main = Path.scripts("main.lua")
-        self.execute(path_to_main)
+        self.execute(File.read_file(path_to_main))
 
     # The PySide6 engine that handles the mainloop of the program
     def set_eventloop(self):
         self.app.execute()
+
+    def set_custom_lua_require_path(self):
+        """
+        This method looks for a ".require" file in user projects dir and sets the paths in lua's
+        global package.path
+
+        Add a trailing ?.lua to each path during iteration
+        """
+
+        require_file = File.read_file(os.path.join(self.projects_dir, ".require"))
+        dirs_for_require = (
+            require_file.split(";") if ";" in require_file else require_file.split("\n")
+        )
+
+        paths = ""
+
+        for dir in dirs_for_require:
+            if dir != "":
+                proper_path = f"{os.path.join(dir,'')}?.lua;"
+                paths += proper_path
+
+        fix_slash = paths.replace("\\", "/")
+        self.execute(f"package.path = '{fix_slash}' .. package.path")
 
     """
     Load and intialize all plugins from the user
@@ -165,8 +194,8 @@ class Engine:
             "dict": dict,
             "int": int,
             "tuple": tuple,
-            "list": list,
-            "zip": zip,
+            "list": self.list_,
+            "zip": self.zip_,
             # Data types ---------
             "eval": eval,
             "FluentIcon": FluentIcon,
@@ -174,6 +203,33 @@ class Engine:
 
         for obj_name, object_ in other_parts.items():
             self.engine.globals()[obj_name] = object_
+
+    # redefining some of the in-built python methods
+
+    """
+            Using zip() method in lua
+            
+    names = {'John', 'Mary', 'Martha', 'James'}
+    grades = {10, 80, 100, 56}
+    col = zip(names, grades)
+    output: [('John', 10), ('Mary', 80), ('Martha', 100), ('James', 56)]
+    
+    and when one passes to dict(), it returns {'John': 10, 'Mary': 80, 'Martha': 100, 'James': 56}
+    """
+
+    # The crazy thing about list() is that, when you use it on lua table, and try to access the
+    # elements in lua is that, the indexing starts at 0, same as python. Python's indexing takes dominance
+    # over lua's indexing (which starts at 1)
+    # is dmonita
+    def list_(self, list_items):
+        ret_list = []
+        for a in range(len(list_items)):
+            ret_list.append(list_items[a + 1])  # + 1 coz lua indexes at 1
+
+        return ret_list
+
+    def zip_(self, arg1, arg2):
+        return list(zip(self.list_(arg1), self.list_(arg2)))
 
     def load_classes(self, files):
         # all_instances = {}

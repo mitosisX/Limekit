@@ -61,7 +61,7 @@ class TableGrid(EnginePart, QTableWidget):
 
     # ---------------- Events
 
-    def setData(self, row, column, data):
+    def setDataItem(self, row, column, data):
         self.setItem(row, column, QTableWidgetItem(data))
 
     def setTableData(self, data):
@@ -76,7 +76,6 @@ class TableGrid(EnginePart, QTableWidget):
 
         # Load an image using QPixmap
         pixmap = QPixmap(image)
-        # pixmap = pixmap.scaledToWidth(item.sizeHint().width())
 
         # Set the image for the item
         # item.setData(1, pixmap)

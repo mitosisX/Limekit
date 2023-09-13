@@ -2,19 +2,6 @@ from limekit.framework.core.engine.app_engine import EnginePart
 import json
 
 __all__ = [
-    "__author__",
-    "__copyright__",
-    "__description__",
-    "__email__",
-    "__license__",
-    "__title__",
-    "__version__",
-    "assert_dir",
-    "assert_exists",
-    "assert_file",
-    "assert_not_dir",
-    "assert_not_exists",
-    "assert_not_file",
     "clean_dir",
     "convert_size_bytes_to_string",
     "convert_size_string_to_bytes",
@@ -101,6 +88,7 @@ class FileUtils(EnginePart):
         content = ""
         with open(path, encoding=encoding) as file:
             content = file.read()
+
         return content
 
     @classmethod
