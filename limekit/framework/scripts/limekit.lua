@@ -1,8 +1,37 @@
 app = {
+    bytesToReadableSize = function(bytes)
+        return __converters.convert_bytes(bytes)
+    end,
+    -- ################## encoding
+    toBase64 = function(text)
+        return __encoding.base64_encode(text)
+    end,
+    fromBase64 = function(text)
+        return __encoding.base64_decode(text)
+    end,
+    -- Encoding #######################
+    setFont = function(font, size)
+        __font.set_font(font, size)
+    end,
     emoji = function(emoji)
         return __emoji.get(emoji)
     end,
-    ---- ##### File utils
+    ---- ################## File and folder utils
+    checkIsDir = function(path)
+        return __fileutils.is_dir(path)
+    end,
+    checkIfExists = function(path)
+        return __fileutils.exists(path)
+    end,
+    checkFileEmpty = function(file)
+        return __fileutils.is_empty_file(file)
+    end,
+    checkDirEmpty = function(dir)
+        return __fileutils.is_empty_dir(dir)
+    end,
+    getFileSize = function(file)
+        return __fileutils.get_file_size(file)
+    end,
     readFile = function(file, encoding)
         if not encoding then
             encoding = "UTF-8"
@@ -27,7 +56,10 @@ app = {
     readJSON = function(file)
         return __fileutils.read_file_json(file)
     end,
-    -- ##### File utils
+    writeJSON = function(file, content)
+        __fileutils.write_file_json(file, content)
+    end,
+    -- File and folder utils ##################
     aPopup = function(parent, title, message)
         __aPopup(parent, title, message)
     end,
@@ -55,7 +87,10 @@ app = {
     listFolder = function(path)
         return __Path.listDir(path)
     end,
-    -- ##### CPU or Sys related
+    createDir = function(path)
+        __fileutils.make_dirs(path)
+    end,
+    -- ################## CPU or Sys related
     getProcesses = function()
         return __sysutils.get_processes()
     end,
@@ -73,6 +108,13 @@ app = {
     end,
     getDiskPartitions = function()
         return __sysutils.get_driver_letters()
+    end,
+    -- Gets information for disk; total; free; used; percentage
+    getDiskInfo = function(disk)
+        return __sysutils.get_drive_info(disk)
+    end,
+    getBootTime = function()
+        return __sysutils.get_boot_time()
     end
-    -- ##### 
+    -- CPU or Sys related ##################
 }

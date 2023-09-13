@@ -1,6 +1,8 @@
+from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.components.controls.widgets.tableitem import TableItem
+
 from PySide6.QtWidgets import QTableWidget, QTableWidgetItem, QAbstractItemView
 from PySide6.QtCore import Qt
-from limekit.framework.core.engine.parts import EnginePart
 from PySide6.QtGui import QPixmap, QIcon
 
 """
@@ -17,7 +19,7 @@ The constructor can be explicity passes number of rows and column and its parent
 """
 
 
-class TableGrid(EnginePart, QTableWidget):
+class Table(EnginePart, QTableWidget):
     cellEditFinishedFunc = None
     cellClickedFunc = None
     cellDoubleClickedFunc = None
@@ -169,3 +171,9 @@ class TableGrid(EnginePart, QTableWidget):
 
     def removeRowAt(self, position):
         self.removeRow(position)
+
+    # Clearing --------------
+
+    def getItemAt(self, row, column):
+        item = self.item(row, column)
+        return item

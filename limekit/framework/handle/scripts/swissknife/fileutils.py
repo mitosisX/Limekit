@@ -1,5 +1,8 @@
 from limekit.framework.core.engine.app_engine import EnginePart
+from limekit.framework.handle.system.file import File
 import json
+import os
+import zipfile
 
 __all__ = [
     "clean_dir",
@@ -76,6 +79,20 @@ __all__ = [
     "write_file_json",
 ]
 
+"""
+            DONE
+
+read_file
+read_file_json
+is_empty
+is_empty_dir
+is_empty_file
+get_file_size
+is_dir
+
+
+"""
+
 
 class FileUtils(EnginePart):
     name = "__fileutils"
@@ -99,3 +116,80 @@ class FileUtils(EnginePart):
         content = cls.read_file(path)
         data = json.loads(content)
         return data
+
+    @classmethod
+    def write_file_json(cls, path, data):
+        """
+        Write a json file at the given path with the specified data encoded in json format.
+        """
+        content = json.dumps(dict(data))
+        File.write_file(path, content)
+
+    @classmethod
+    def is_dir(cls, path) -> bool:
+        """
+        Determine whether the specified path represents an existing directory.
+        """
+        return os.path.isdir(path)
+
+    @classmethod
+    def is_empty(cls, path) -> bool:
+        """
+        Determine whether the specified path represents an empty directory or an empty file.
+        """
+        if cls.is_dir(path):
+            return cls.is_empty_dir(path)
+        return cls.is_empty_file(path)
+
+    @classmethod
+    def is_empty_dir(cls, path) -> bool:
+        """
+        Determine whether the specified path represents an empty directory.
+        """
+        if not cls.exists(path):
+            return -1
+        return len(os.listdir(path)) == 0
+
+    @classmethod
+    def is_empty_file(cls, path) -> bool:
+        """
+        Determine whether the specified path represents an empty file.
+        """
+        if not cls.exists(path):
+            return -1
+        return cls.get_file_size(path) == 0
+
+    @classmethod
+    def get_file_size(cls, path) -> int:
+        """
+        Get the directory size in bytes.
+        """
+        if not cls.exists(path):
+            return -1
+        size = os.path.getsize(path)
+        return size
+
+    @classmethod
+    def exists(cls, path) -> bool:
+        """
+        Check if a directory of a file exists at the given path.
+        """
+        return os.path.exists(path)
+
+    @classmethod
+    def make_dirs(cls, path):
+        """
+        Create the directories needed to ensure that the given path exists.
+        If a file already exists at the given path an OSError is raised.
+        """
+        if cls.is_dir(path):
+            return -1
+
+        os.makedirs(path, exist_ok=True)
+
+    @classmethod
+    def is_file(cls, path) -> bool:
+        """
+        Determine whether the specified path represents an existing file.
+        """
+        return os.path.isfile(path)
