@@ -18,13 +18,18 @@ import os
 import sys
 import importlib
 import sqlite3
+from xlsxwriter import Workbook
+
+from playsound import playsound
 
 from lupa import lua54
 from lupa import LuaRuntime
 from faker import Faker
+import requests
 
 from limekit.framework.core.config import settings
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.handle.scripts.swissknife.converters import Converter
 from limekit.framework.core.runner.app import App
 from limekit.framework.handle.paths.path import Path
 from limekit.framework.handle.system.file import File
@@ -187,7 +192,11 @@ class Engine:
             "__lua_execute": self.execute,
             "sqlite3": sqlite3,
             "fake": Faker(),
+            "Workbook": Workbook,
+            "Sound": playsound,
+            "py_kwargs": Converter.py_kwargs,
             "len": len,
+            "dir": dir,
             "print": print,
             # --------- Data types
             "str": str,

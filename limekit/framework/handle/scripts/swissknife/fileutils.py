@@ -3,6 +3,7 @@ from limekit.framework.handle.system.file import File
 import json
 import os
 import zipfile
+from typing import Iterable
 
 __all__ = [
     "clean_dir",
@@ -193,3 +194,48 @@ class FileUtils(EnginePart):
         Determine whether the specified path represents an existing file.
         """
         return os.path.isfile(path)
+
+    @classmethod
+    def extract_zip_file(
+        cls,
+        path,
+        dest,
+        # autodelete: bool = False,
+        content_paths: Iterable[str | zipfile.ZipInfo] | None = None,
+    ):
+        """
+        Extract zip file at path to dest path.
+        If autodelete, the archive will be deleted after extraction.
+        If content_paths list is defined,
+        only listed items will be extracted, otherwise all.
+        """
+        cls.make_dirs(dest)
+        try:
+            with zipfile.ZipFile(path, "r") as file:
+                file.extractall(dest, members=content_paths)
+                return True
+
+        except FileNotFoundError:
+            return -1
+
+        # if autodelete:
+        #     remove_file(path)
+
+    def read_file_lines_count(cls, path) -> int:
+        """
+        Read file lines count.
+        """
+        lines_count = 0
+        with open(path, "rb") as file:
+            file.seek(0)
+            lines_count = sum(1 for line in file)
+        return lines_count
+
+    def rename_file(path, name: str) -> None:
+        """
+        Rename a file with the given name.
+        If a directory or a file with the given name already exists, an OSError is raised.
+        """
+        dirpath, filename = split_filepath(path)
+        dest = join_filepath(dirpath, name)
+        os.rename(path, dest)

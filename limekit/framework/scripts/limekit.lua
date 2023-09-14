@@ -1,4 +1,7 @@
 app = {
+    readFileLines = function(file)
+        return __fileutils.read_file_lines_count(file)
+    end,
     bytesToReadableSize = function(bytes)
         return __converters.convert_bytes(bytes)
     end,
@@ -17,6 +20,9 @@ app = {
         return __emoji.get(emoji)
     end,
     ---- ################## File and folder utils
+    extractZip = function(file, dest)
+        return __fileutils.extract_zip_file(file, dest)
+    end,
     checkIsDir = function(path)
         return __fileutils.is_dir(path)
     end,
@@ -91,6 +97,9 @@ app = {
         __fileutils.make_dirs(path)
     end,
     -- ################## CPU or Sys related
+    playSound = function(file)
+        __sound.play_sound(file)
+    end,
     getProcesses = function()
         return __sysutils.get_processes()
     end,

@@ -1,9 +1,8 @@
 PySide6
 qdarkstyle
 qt_material
-multipledispatch
-qrcode
 qtmodern
 PyTaskbarProgress
 psutil
 emoji
+xlsxwriter

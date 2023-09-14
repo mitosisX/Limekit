@@ -10,23 +10,22 @@ setuptools.setup(
     license="GNU",
     packages=setuptools.find_packages(),
     package_data={
-        'limekit.framework.handle.theming.misc': ['themes/**'],
-        'limekit.framework': ['scripts/**']
+        "limekit.framework.handle.theming.misc": ["themes/**"],
+        "limekit.framework": ["scripts/**"],
     },
     install_requires=[
-        'PySide6',
-        'qdarkstyle',
-        'qt_material',
-        'qrcode',
+        "PySide6",
+        "qdarkstyle",
+        "qt_material",
         # 'win11toast',
-        'Faker'
+        "Faker",
     ],
     classifiers=[
-        'Programming Language :: Python :: 3',
-        'License :: OSI Approved :: GNU General Public License',
-        'Operating System :: OS Independent'
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: GNU General Public License",
+        "Operating System :: OS Independent",
     ],
     project_urls={
-        'Documentation': 'https://pyqt-fluent-widgets.readthedocs.io/',
-    }
+        "Documentation": "https://pyqt-fluent-widgets.readthedocs.io/",
+    },
 )
