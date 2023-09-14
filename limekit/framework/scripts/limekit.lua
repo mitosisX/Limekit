@@ -1,4 +1,7 @@
 app = {
+    hexToRGB = function(hex)
+        return __converters.hex_to_rgb(hex)
+    end,
     readFileLines = function(file)
         return __fileutils.read_file_lines_count(file)
     end,
