@@ -1,4 +1,5 @@
 import psutil
+import platform
 from limekit.framework.core.engine.app_engine import EnginePart
 
 """
@@ -95,3 +96,41 @@ class SystemUtils(EnginePart):
     @classmethod
     def get_boot_time(cls):
         return psutil.boot_time()
+
+    @classmethod
+    def get_machine_type(cls):
+        # Susch as AMD64
+        return platform.machine()
+
+    @classmethod
+    def get_network_node_name(cls):
+        # Gets network node name
+        return platform.node()
+
+    @classmethod
+    def get_processor(cls):
+        # Intel Family 6 Model 142
+        return platform.processor()
+
+    @classmethod
+    def get_platform_name(cls):
+        # Windo1-10-10.0.22621-SP0
+        return platform.platform()
+
+    @classmethod
+    def get_system_release(cls):
+        # returns: 10 when using windows 11
+        return platform.release()
+
+    @classmethod
+    def get_os_name(cls):
+        # Window, Darwin, Linux
+        return platform.system()
+
+    @classmethod
+    def get_os_release(cls):
+        return platform.release()
+
+    @classmethod
+    def get_os_version(cls):
+        return platform.version()

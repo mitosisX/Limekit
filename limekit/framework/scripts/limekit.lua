@@ -124,12 +124,36 @@ app = {
     getDiskPartitions = function()
         return __sysutils.get_driver_letters()
     end,
-    -- Gets information for disk; total; free; used; percentage
     getDiskInfo = function(disk)
+        -- Gets information for disk; total; free; used; percentage
         return __sysutils.get_drive_info(disk)
     end,
     getBootTime = function()
         return __sysutils.get_boot_time()
+    end,
+    getMachineType = function()
+        return __sysutils.get_machine_type()
+    end,
+    getNetworkNodeName = function()
+        return __sysutils.get_network_node_name()
+    end,
+    getProcessorName = function()
+        return __sysutils.get_processor()
+    end,
+    getPlatformName = function()
+        return __sysutils.get_platform_name()
+    end,
+    getSystemRelease = function()
+        return __sysutils.get_system_release()
+    end,
+    getOSName = function()
+        return __sysutils.get_os_name()
+    end,
+    getOSRelease = function()
+        return __sysutils.get_os_release()
+    end,
+    getOSVersion = function()
+        return __sysutils.get_os_release()
     end
     -- CPU or Sys related ##################
 }

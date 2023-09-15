@@ -221,6 +221,7 @@ class FileUtils(EnginePart):
         # if autodelete:
         #     remove_file(path)
 
+    @classmethod
     def read_file_lines_count(cls, path) -> int:
         """
         Read file lines count.
@@ -230,12 +231,3 @@ class FileUtils(EnginePart):
             file.seek(0)
             lines_count = sum(1 for line in file)
         return lines_count
-
-    def rename_file(path, name: str) -> None:
-        """
-        Rename a file with the given name.
-        If a directory or a file with the given name already exists, an OSError is raised.
-        """
-        dirpath, filename = split_filepath(path)
-        dest = join_filepath(dirpath, name)
-        os.rename(path, dest)
