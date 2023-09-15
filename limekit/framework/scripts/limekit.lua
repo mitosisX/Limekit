@@ -1,4 +1,7 @@
 app = {
+    makeHash = function(type_, text)
+        return __converters.make_hash_string(type_, text)
+    end,
     hexToRGB = function(hex)
         return __converters.hex_to_rgb(hex)
     end,

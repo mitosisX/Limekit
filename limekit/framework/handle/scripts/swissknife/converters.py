@@ -1,4 +1,5 @@
 from limekit.framework.core.engine.app_engine import EnginePart
+import hashlib
 
 
 class Converter(EnginePart):
@@ -18,7 +19,7 @@ class Converter(EnginePart):
         return f"{size_bytes:.2f} {suffixes[-1]}"  # If the file size is very large
 
     @classmethod
-    def py_kwargs_old(cls, *args):
+    def py_kwargs_(cls, *args):
         # kwargs = {key: value for key, value in data.items() if key != "location"}
         py_method = args[0]  # the first is always the target py method
         kwargs = dict(args[-1])  # the last bit should be a lua table
@@ -36,17 +37,23 @@ class Converter(EnginePart):
                 # py_method(*[None], **kwargs)
                 print(ex)
 
-    # redesign of the above method. Just remebered about unboxing and to shorten it.
+    # redesign of the above method. Just remebered about unboxing, so had to shorten it.
     # 14 September, 2023 (4:57 PM) (Thursday) (Mzuzu)
-    @classmethod
-    def py_kwargs(cls, *args_):
+    # @classmethod
+    def py_kwargs(*args_):
         # Custom designed method that allows passing of *ags and **kwargs to any python method
+
+        # NOTE: if an error occurs of _LuaTable.. json().. what what, user should just convert their lua table to dict()
+
         py_method, *args, kwargs = args_
+        kwargs = dict(kwargs)
         try:
             if args:
-                return py_method(*args, **kwargs)
+                ret_method_args = py_method(*args, **kwargs)
+                return ret_method_args
             else:
-                return py_method(**kwargs)
+                ret_method_kwargs = py_method(**kwargs)
+                return ret_method_kwargs
         except TypeError as ex:
             # py_method(*[None], **kwargs)
             print(ex)
@@ -66,3 +73,13 @@ class Converter(EnginePart):
         hlen = len(hex)
 
         return list(int(hex[i : i + hlen // 3], 16) for i in range(0, hlen, hlen // 3))
+
+    # available hashes: md5, sha1, sha224, sha256, sha384, sha512, sha3_224, sha3_256, sha3_384, sha3_512
+    @classmethod
+    def make_hash_string(cls, hash_type, text: str):
+        try:
+            h = hashlib.new(hash_type)
+            h.update(text.encode("utf-8"))
+            return h.hexdigest()
+        except ValueError as exception:
+            print(exception)

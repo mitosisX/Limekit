@@ -115,6 +115,11 @@ class Engine:
 
             sys.exit()
 
+        except lua54.LuaError as exception:
+            print(exception)
+
+            sys.exit()
+
     # The user's main.lua entry point code
     def execute_main_lua(self):
         path_to_main = Path.scripts("main.lua")
@@ -194,6 +199,7 @@ class Engine:
             "fake": Faker(),
             "Workbook": Workbook,
             "Sound": playsound,
+            "requests": requests,
             "py_kwargs": Converter.py_kwargs,
             "len": len,
             "dir": dir,
