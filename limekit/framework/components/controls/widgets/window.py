@@ -38,6 +38,7 @@ class Window(EnginePart, QMainWindow):
         self.setWindowTitle(title)
 
     def setMainWidget(self, child: QWidget):
+        self.setCentralWidget(None)
         self.setCentralWidget(child)
 
     def setSize(self, width, height):
@@ -46,10 +47,10 @@ class Window(EnginePart, QMainWindow):
     def setLocation(self, x, y):
         self.move(x, y)
 
-    def addChild(self, *children):
-        for child in children:
-            self.layout.addWidget(child)
-            self.layout.addStretch()
+    # def addChild(self, *children):
+    #     for child in children:
+    #         self.layout.addWidget(child)
+    #         self.layout.addStretch()
 
     def setLayout(self, layout):
         self.widget.setLayout(layout)
