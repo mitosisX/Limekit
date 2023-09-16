@@ -26,6 +26,10 @@ class Path(EnginePart):
     def images_dir(cls):
         return cls.join_paths(cls.current_project_dir(), "images")
 
+    @classmethod
+    def project_file(cls):
+        return cls.join_paths(cls.current_project_dir(), "app.config")
+
     # Project currently running
     @classmethod
     def current_project_dir(cls):
