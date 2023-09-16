@@ -28,7 +28,7 @@ class Path(EnginePart):
 
     @classmethod
     def project_file(cls):
-        return cls.join_paths(cls.current_project_dir(), "app.config")
+        return cls.join_paths(cls.current_project_dir(), "app.json")
 
     # Project currently running
     @classmethod

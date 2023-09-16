@@ -33,8 +33,10 @@ from limekit.framework.handle.scripts.swissknife.converters import Converter
 from limekit.framework.core.runner.app import App
 from limekit.framework.handle.paths.path import Path
 from limekit.framework.handle.system.file import File
+from limekit.framework.handle.scripts.swissknife.fileutils import FileUtils
 
 from qfluentwidgets import FluentIcon
+from limekit.framework.handle.routing.routes import Routing
 
 
 class Engine:
@@ -52,6 +54,7 @@ class Engine:
         self.projects_dir = Path.projects_dir()
 
         self.app = App()  # holds the PySide6 application
+        self.routing = Routing()
         # self.plugin_manager = PluginManager()  # The code that init all user plugins
 
         self.limekit_root_dir = settings.limekit_SITEPACKAGE_DIR
@@ -69,9 +72,18 @@ class Engine:
         self.init_lua_engine()  # Set the py objects to the engine
         self.gather_lua_engine_objects()  # loads all required classes from INSTALLED_APPS and additional method
         self.set_custom_lua_require_path()
-        self.execute_vital_lua()  # Set the py objects to the engine
-        self.execute_main_lua()  # Set the py objects to the engine
+
+        self.init_routing_system()
+
+        self.execute_vital_lua()  # Execute limekit.lua to enable app access
+        self.execute_main_lua()  # execute user entry point file
         self.set_eventloop()  # Set the PySide6 mainloop running. VITAL!!!!!!
+
+    def init_routing_system(self):
+        project_file = Path.project_file()
+        project_file_json = FileUtils.read_file_json(project_file)
+
+        self.routing.set_project_json(project_file_json)
 
     # All core lua code for the limekit framework
     def execute_vital_lua(self):
@@ -94,7 +106,7 @@ class Engine:
 
     def execute(self, lua_content):
         try:
-            self.engine.execute(lua_content)
+            return self.engine.execute(lua_content)
         except TypeError as exception:
             excep_msg = str(exception)
 
@@ -107,18 +119,23 @@ class Engine:
                 )
             else:
                 print(exception)
-
-            sys.exit()
+            self.destroy_engine()
 
         except lua54.LuaSyntaxError as exception:
             print(exception)
-
-            sys.exit()
+            self.destroy_engine()
 
         except lua54.LuaError as exception:
             print(exception)
 
-            sys.exit()
+            self.destroy_engine()
+
+    # Kill the engine if anything goes wrong
+    def destroy_engine(self):
+        sys.exit()
+
+    def eval(self, script):
+        return self.engine.eval(script)
 
     # The user's main.lua entry point code
     def execute_main_lua(self):
@@ -198,6 +215,7 @@ class Engine:
             "sqlite3": sqlite3,
             "fake": Faker(),
             "Workbook": Workbook,
+            "route": self.routing.fetch_resource,
             "Sound": playsound,
             "requests": requests,
             "py_kwargs": Converter.py_kwargs,
