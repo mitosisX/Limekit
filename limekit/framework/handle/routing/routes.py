@@ -1,5 +1,6 @@
 # from limekit.framework.handle.scripts.swissknife.fileutils import FileUtils
 from limekit.framework.handle.paths.path import Path
+from limekit.framework.core.exceptions.routes import RouteException
 
 """
 dir = "D:/sandbox/"
@@ -87,8 +88,8 @@ class Routing:
 
     """
 
-    project_json_ = {}
-    project_json = {
+    project_json = {}
+    project_json_ = {
         "project": {
             "name": "Simple",
             "author": "Limekit",
@@ -150,42 +151,52 @@ class Routing:
                 get_route_resource = route_pointer.get(route_resource)
 
                 if get_route_resource:
-                    self.route_marker_mapping(get_route_resource)
+                    return self.route_marker_mapping(get_route_resource)
         else:
             route_pointer = self.project_json["project"]["routes"]["single"].get(route)
 
             if route_pointer:
-                self.route_marker_mapping(route_pointer)
+                return self.route_marker_mapping(route_pointer)
 
             else:
                 print("Not Found")
 
+    # Takes the images:lua.png as var: route
     def route_marker_mapping(self, route):
         group_label = ""
 
         if ":" not in route:
-            print("Add key")
+            raise RouteException(
+                f'Routing Error: "{route}" does not appear to have a marker. Try "marker:{route}"'
+            )
+            # print("Add key for ", route)
         else:
-            marker, resource = route.split(":")
+            marker, resource = route.split(":")  # ["images", "lua.png"]
 
-            self.marker_redirection(marker, resource)
+            return self.marker_redirection(
+                marker, resource
+            )  # here to map the marker to the resource
 
     def marker_redirection(self, marker, resource):
         allowed_paths = ["misc", "images", "scripts"]
 
         if marker in allowed_paths:
-            joined = Path.join_paths(Path.current_project_dir(), marker, resource)
-            print(joined)
+            joined_resource_path = Path.join_paths(
+                Path.current_project_dir(), marker, resource
+            )
+            return joined_resource_path
         else:
             print("Marker not available")
 
     def fetch_resource(self, route):
         if self.check_routes_available():
-            res = self.route_processor(route)
+            final_resource_path = self.route_processor(route)
+            print(final_resource_path)
+            return final_resource_path
             # print(self.reader(res))
         else:
             print("Add routes first")
 
 
-Routing().fetch_resource("books:Harry Potter")
+# Routing().fetch_resource("books:Harry Potter")
 # print(reader(paths["routes"]["group"]["books"]["Rings"]))

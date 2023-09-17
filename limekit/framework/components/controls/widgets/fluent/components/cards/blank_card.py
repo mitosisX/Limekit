@@ -1,4 +1,4 @@
-from limekit.framework.core.engine.app_engine import EnginePart
+from limekit.framework.core.engine.parts import EnginePart
 from qfluentwidgets import CardWidget
 from PySide6.QtWidgets import QHBoxLayout
 

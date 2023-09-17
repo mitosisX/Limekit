@@ -1,6 +1,6 @@
 from qfluentwidgets import InfoBarManager, InfoBar, InfoBarPosition
 from PySide6.QtCore import QPoint, Qt
-from limekit.framework.core.engine.app_engine import EnginePart
+from limekit.framework.core.engine.parts import EnginePart
 
 
 @InfoBarManager.register("Custom")

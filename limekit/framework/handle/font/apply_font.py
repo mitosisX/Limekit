@@ -1,6 +1,6 @@
 from limekit.framework.core.runner.app import App
 from PySide6.QtGui import QFont, QFontDatabase
-from limekit.framework.core.engine.app_engine import EnginePart
+from limekit.framework.core.engine.parts import EnginePart
 
 
 class Font(EnginePart):

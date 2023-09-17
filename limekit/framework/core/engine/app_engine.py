@@ -35,6 +35,8 @@ from limekit.framework.handle.paths.path import Path
 from limekit.framework.handle.system.file import File
 from limekit.framework.handle.scripts.swissknife.fileutils import FileUtils
 
+from limekit.framework.core.exceptions.routes import RouteException
+
 from qfluentwidgets import FluentIcon
 from limekit.framework.handle.routing.routes import Routing
 
@@ -119,6 +121,7 @@ class Engine:
                 )
             else:
                 print(exception)
+
             self.destroy_engine()
 
         except lua54.LuaSyntaxError as exception:
@@ -126,6 +129,11 @@ class Engine:
             self.destroy_engine()
 
         except lua54.LuaError as exception:
+            print(exception)
+
+            self.destroy_engine()
+
+        except RouteException as exception:
             print(exception)
 
             self.destroy_engine()

@@ -1,6 +1,6 @@
 import psutil
 import platform
-from limekit.framework.core.engine.app_engine import EnginePart
+from limekit.framework.core.engine.parts import EnginePart
 
 """
 Cross-platform system information retrieval

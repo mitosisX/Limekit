@@ -1,4 +1,4 @@
-from limekit.framework.core.engine.app_engine import EnginePart
+from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.handle.system.file import File
 import json
 import os

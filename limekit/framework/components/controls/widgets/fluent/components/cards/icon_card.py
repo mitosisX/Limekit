@@ -1,4 +1,4 @@
-from limekit.framework.core.engine.app_engine import EnginePart
+from limekit.framework.core.engine.parts import EnginePart
 from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout
 from qfluentwidgets import Theme, IconWidget, isDarkTheme
 from PySide6.QtCore import Qt

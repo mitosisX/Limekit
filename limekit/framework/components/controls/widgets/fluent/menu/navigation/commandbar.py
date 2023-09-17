@@ -1,4 +1,4 @@
-from limekit.framework.core.engine.app_engine import EnginePart
+from limekit.framework.core.engine.parts import EnginePart
 from qfluentwidgets import CommandBarView
 from PySide6.QtCore import Qt
 

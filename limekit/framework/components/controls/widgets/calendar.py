@@ -2,12 +2,19 @@ from PySide6.QtWidgets import QDateEdit
 from limekit.framework.core.engine.parts import EnginePart
 
 
-class Calendar(EnginePart, QDateEdit):
+class Calendar(QDateEdit, EnginePart):
+    dateChangedFuction = None
+
     def __init__(self):
         super().__init__(calendarPopup=True)
+        self.userDateChanged.connect(self.__handleDateChanged)
 
-    def onClick(self, func):
-        self.clicked.connect(lambda: func(self))
+    def setOnDateChaged(self, dateChangedFunctio):
+        self.dateChangedFuction = dateChangedFunctio
+
+    def __handleDateChanged(self, date):
+        if self.dateChangedFuction:
+            self.dateChangedFuction(self, date.toString("MM/dd/yyyy"))
 
     def setDate(self, date):
         self.dateTimeFromText(date)
