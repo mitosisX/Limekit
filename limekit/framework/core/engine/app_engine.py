@@ -138,6 +138,11 @@ class Engine:
 
             self.destroy_engine()
 
+        except AttributeError as exception:
+            print(exception)
+
+            self.destroy_engine()
+
     # Kill the engine if anything goes wrong
     def destroy_engine(self):
         sys.exit()
@@ -219,14 +224,15 @@ class Engine:
             "scripts": Path.scripts,
             "images": Path.images,
             "misc": Path.misc,
-            "__lua_execute": self.execute,
+            "__lua_execute": self.execute_from_file,
             "sqlite3": sqlite3,
             "fake": Faker(),
             "Workbook": Workbook,
             "route": self.routing.fetch_resource,
             "Sound": playsound,
             "requests": requests,
-            "py_kwargs": Converter.py_kwargs,
+            "py_params": Converter.py_kwargs,
+            "py_indexing": Converter.py_indexing,
             "len": len,
             "dir": dir,
             "print": print,
@@ -244,6 +250,9 @@ class Engine:
 
         for obj_name, object_ in other_parts.items():
             self.engine.globals()[obj_name] = object_
+
+    def execute_from_file(self, file):
+        self.execute(File.read_file(file))
 
     # redefining some of the in-built python methods
 

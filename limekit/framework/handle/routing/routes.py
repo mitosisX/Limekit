@@ -159,7 +159,7 @@ class Routing:
                 return self.route_marker_mapping(route_pointer)
 
             else:
-                print("Not Found")
+                raise RouteException("Route Error: Route resource not Found")
 
     # Takes the images:lua.png as var: route
     def route_marker_mapping(self, route):
@@ -173,7 +173,7 @@ class Routing:
         else:
             marker, resource = route.split(":")  # ["images", "lua.png"]
 
-            return self.marker_redirection(
+            return Path.resource_path_resolver(
                 marker, resource
             )  # here to map the marker to the resource
 
@@ -191,11 +191,13 @@ class Routing:
     def fetch_resource(self, route):
         if self.check_routes_available():
             final_resource_path = self.route_processor(route)
-            print(final_resource_path)
+
             return final_resource_path
             # print(self.reader(res))
         else:
-            print("Add routes first")
+            raise RouteException(
+                "Route Error: No routes added to app.json. Add routes first"
+            )
 
 
 # Routing().fetch_resource("books:Harry Potter")

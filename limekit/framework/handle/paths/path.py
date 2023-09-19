@@ -127,3 +127,24 @@ class Path(EnginePart):
     @classmethod
     def check_path(cls, path):
         return True if os.path.exists(path) else False
+
+    @classmethod
+    def resource_path_resolver(cls, marker, resource):
+        allowed_paths = ["misc", "images", "scripts"]
+
+        if marker in allowed_paths:
+            joined_resource_path = Path.join_paths(
+                Path.current_project_dir(), marker, resource
+            )
+            return joined_resource_path
+        else:
+            print("Marker not available")
+
+    # Handles the redirection to resource when user accesses resource by a marker
+    # Example: misc:file.txt
+    @classmethod
+    def process_route_makers(cls, route):
+        marker, resource = route.split(":")
+        res_path = cls.resource_path_resolver(marker, resource)
+
+        return res_path

@@ -1,4 +1,7 @@
 app = {
+    doQuickSort = function(list)
+        return __sorter.quick_sort(list)
+    end,
     makeHash = function(type_, text)
         return __converters.make_hash_string(type_, text)
     end,
@@ -48,7 +51,7 @@ app = {
         if not encoding then
             encoding = "UTF-8"
         end
-        return __file.read_file(file, encoding)
+        return __file.script_file_reader(file, encoding)
     end,
     writeFile = function(file, content, encoding)
         if not encoding then

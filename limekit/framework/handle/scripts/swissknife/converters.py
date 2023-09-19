@@ -58,6 +58,17 @@ class Converter(EnginePart):
             # py_method(*[None], **kwargs)
             print(ex)
 
+    # Allows using python indexing [:], [::2], [::-1]
+    @classmethod
+    def py_indexing(cls, input_data, index_spec):
+        try:
+            # Evaluate the index_spec to create a slice object
+            result = eval(f"""{input_data}{index_spec}""")
+            # Use the slice object to extract the desired portion
+            return result
+        except (TypeError, IndexError, SyntaxError) as ex:
+            return ex
+
     @classmethod
     def test(cls, location, name="", age=None):
         if location:

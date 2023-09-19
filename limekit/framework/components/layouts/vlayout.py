@@ -9,8 +9,8 @@ class VerticalLayout(EnginePart, QVBoxLayout):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def addChild(self, child):
-        self.addWidget(child)
+    def addChild(self, *child):
+        self.addChildren(*child)
 
     def setContentAlignment(self, alignment):
         align = None

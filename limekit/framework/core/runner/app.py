@@ -12,4 +12,7 @@ class App:
     # Start the mainloop
     @staticmethod
     def execute():
-        sys.exit(App.app.exec())
+        try:
+            sys.exit(App.app.exec())
+        except Exception as ex:
+            print("Sorry man! Error")

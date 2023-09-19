@@ -1,4 +1,5 @@
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.handle.paths.path import Path
 
 
 class File(EnginePart):
@@ -9,6 +10,13 @@ class File(EnginePart):
     def read_file(cls, file, encoding="utf-8"):
         with open(file, "r", encoding=encoding) as file:
             return file.read()
+
+    @classmethod
+    def script_file_reader(cls, file, encoding):
+        if ":" in file and not "\\" in file and not "//" in file:
+            file = Path.process_route_makers(file)
+
+        return cls.read_file(file, encoding)
 
     @classmethod
     def write_file(cls, file, content, encoding="utf-8"):

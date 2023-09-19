@@ -9,7 +9,7 @@ from limekit.framework.components.controls.dockers.toolbar.toolbar import Toolba
 from limekit.framework.components.controls.dockers.dockerwidget.docking import Docker
 
 from limekit.framework.core.runner.app import App
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QCursor, QPixmap
 from PySide6.QtWidgets import QApplication
 
 # from limekit.framework.handler.plugins.plugin_manager import PluginManager
@@ -33,6 +33,21 @@ class Window(EnginePart, QMainWindow):
         self.setTitle(title)
 
         self.center()
+        self.setAnimated(True)
+
+    """
+    This method only overrides the cursor for the MainWindow due to the fact that overriding the whole
+    QApplication renders the control box uninteractive or unresponsive.
+    """
+
+    def setCustomCursor(self, cursor):
+        cursor_image = QPixmap(cursor)  # Replace with the actual file path
+
+        # Create a custom cursor using the QPixmap
+        custom_cursor = QCursor(cursor_image)
+
+        # Set the custom cursor for the main window
+        self.setCursor(custom_cursor)
 
     def setTitle(self, title):
         self.setWindowTitle(title)
@@ -43,6 +58,15 @@ class Window(EnginePart, QMainWindow):
 
     def setSize(self, width, height):
         self.resize(width, height)
+
+    def setMinSize(self, width, height):
+        self.setMinimumSize(width, height)
+
+    def setMinHeight(self, height):
+        self.setMinimumHeight(height)
+
+    def setMinWidth(self, width):
+        self.setMinimumWidth(width)
 
     def setLocation(self, x, y):
         self.move(x, y)
@@ -132,7 +156,7 @@ class Window(EnginePart, QMainWindow):
 
     def center(self):
         qr = self.frameGeometry()
-        cp = QApplication.primaryScreen().availableGeometry().center()
+        cp = App.app.primaryScreen().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 

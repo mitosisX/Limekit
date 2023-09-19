@@ -4,7 +4,7 @@ from limekit.framework.core.engine.parts import EnginePart
 
 class LCDNumber(EnginePart, QLCDNumber):
     def __init__(self):
-        super().__init__(calendarPopup=True)
+        super().__init__()
 
     def onClick(self, func):
         self.clicked.connect(lambda: func(self))

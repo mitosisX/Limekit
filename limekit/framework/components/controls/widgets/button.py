@@ -5,11 +5,16 @@ from limekit.framework.core.engine.parts import EnginePart
 
 
 class Button(EnginePart, QPushButton):
+    onClickFunc = None
+
     def __init__(self, text="Button"):
         super().__init__()
         self.setText(text)
 
-    def onClick(self, func):
+        self.clicked.connect(self.__handleOnClick)
+
+    def setOnClick(self, onClickFunc):
+        self.onClickFunc = onClickFunc
         # mouse_event = QApplication.mouseButtons()
 
         # if mouse_event == Qt.LeftButton:
@@ -21,7 +26,12 @@ class Button(EnginePart, QPushButton):
         # if self.button.underMouse() and self.button.clickCount() == 2:
         #     print("Double click")
 
-        self.clicked.connect(lambda: func(self))
+    def __handleOnClick(self):
+        if self.onClickFunc:
+            try:
+                self.onClickFunc(self)
+            except Exception as ex:
+                print(ex)
 
     def getText(self):
         return self.text()

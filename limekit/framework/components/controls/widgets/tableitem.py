@@ -10,4 +10,5 @@ class TableItem(EnginePart):
         return self.item.text()
 
     def setText(self, text):
-        self.item.setText(text)
+        if self.item:
+            self.item.setText(text)
