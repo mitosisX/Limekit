@@ -276,7 +276,7 @@ class Engine:
     soup = BeautifulSoup(site.text, "html.parser")
     local divs = py_getatrr(soup).findAll('div','col-sm-4 col-lg-4 col-md-4')
     
-    - This method works wonders:
+    - This method works wonders.
     
     PS. Haven't yet met anything requiring py_getitem yet
     """
