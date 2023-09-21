@@ -151,6 +151,13 @@ class Engine:
 
             self.destroy_engine()
 
+        except KeyError as exception:
+            print(
+                f"Access Error: Could not access {exception}. Possible way, try using: py_getattr(py_method)"
+            )
+
+            self.destroy_engine()
+
     # Kill the engine if anything goes wrong
     def destroy_engine(self):
         sys.exit()
