@@ -7,6 +7,8 @@ The code is a mess, I know.... get over it... or simply fix it ;-)
 
 - Hihi! Had to fix my own mess. No more thousand imports.
 
+                - ABOVE ARE FROM MirandaJS -
+
             13 September, 2023 08:43 AM (Wednesday)
 
 The project is going pretty great. Haven't yet released it yet. nor developed
@@ -22,10 +24,16 @@ from xlsxwriter import Workbook
 
 from playsound import playsound
 
+import lupa
 from lupa import lua54
 from lupa import LuaRuntime
 from faker import Faker
+
 import requests
+from bs4 import BeautifulSoup
+
+# from requests_html import HTMLSession
+# import pandas
 
 from limekit.framework.core.config import settings
 from limekit.framework.core.engine.parts import EnginePart
@@ -231,6 +239,10 @@ class Engine:
             "route": self.routing.fetch_resource,
             "Sound": playsound,
             "requests": requests,
+            "BeautifulSoup": BeautifulSoup,
+            "py_getatrr": self.py_getattr,
+            "py_getitem": self.py_getitem,
+            # "pandas": pandas,
             "py_params": Converter.py_kwargs,
             "py_indexing": Converter.py_indexing,
             "len": len,
@@ -253,6 +265,27 @@ class Engine:
 
     def execute_from_file(self, file):
         self.execute(File.read_file(file))
+
+    """
+    # Lupa sometimes wraps python object or return them as is.
+    
+    - IndexError may sometimes be raises when trying to access some attributes.
+    - The way around this is to pass the object to 
+    
+    site = requests.get('https://webscraper.io/test-sites/e-commerce/allinone')
+    soup = BeautifulSoup(site.text, "html.parser")
+    local divs = py_getatrr(soup).findAll('div','col-sm-4 col-lg-4 col-md-4')
+    
+    - This method works wonders:
+    
+    PS. Haven't yet met anything requiring py_getitem yet
+    """
+
+    def py_getattr(self, py_obj):
+        return lupa.as_attrgetter(py_obj)
+
+    def py_getitem(self, py_obj):
+        return lupa.as_itemgetter(py_obj)
 
     # redefining some of the in-built python methods
 

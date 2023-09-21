@@ -2,7 +2,7 @@ PySide6
 qdarkstyle
 qt_material
 qtmodern
-PyTaskbarProgress
 psutil
 emoji
 xlsxwriter
+PySide6-Fluent-Widgets[full]

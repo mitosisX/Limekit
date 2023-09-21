@@ -1,4 +1,7 @@
 app = {
+    splitString = function(text, delimeter)
+        return __converters.string_split(text, delimeter)
+    end,
     doQuickSort = function(list)
         return __sorter.quick_sort(list)
     end,

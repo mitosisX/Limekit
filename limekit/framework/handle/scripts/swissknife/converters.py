@@ -94,3 +94,7 @@ class Converter(EnginePart):
             return h.hexdigest()
         except ValueError as exception:
             print(exception)
+
+    @classmethod
+    def string_split(cls, string, delimeter):
+        return list(string.split(delimeter))

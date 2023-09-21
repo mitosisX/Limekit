@@ -12,6 +12,6 @@ class ListBox(EnginePart, QListWidget):
     def getSelectedItem(self):
         return self.currentText()
 
-    def setItems(self, items):
+    def setItem(self, *items):
         for item in items:
             self.addItem(str(item))

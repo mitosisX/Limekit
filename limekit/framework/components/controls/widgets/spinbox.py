@@ -25,12 +25,18 @@ def value()
 
 class SpinBox(EnginePart, QSpinBox):
     name = "Spinner"
+    onValueChangedFunc = None
 
     def __init__(self):
         super().__init__()
+        self.valueChanged.connect(self.__handleValueChange)
 
-    def onValueChange(self, func):
-        self.valueChanged.connect(lambda: func(self, self.getValue()))
+    def setOnValueChange(self, onValueChangedFunc):
+        self.onValueChangedFunc = onValueChangedFunc
+
+    def __handleValueChange(self):
+        if self.onValueChangedFunc:
+            self.onValueChangedFunc(self, self.getValue())
 
     def getValue(self):
         return self.value()
