@@ -78,20 +78,20 @@ app = {
         __fileutils.write_file_json(file, content)
     end,
     -- File and folder utils ##################
-    aPopup = function(parent, title, message)
-        __aPopup(parent, title, message)
+    aboutPopup = function(parent, title, message)
+        return __aPopup(parent, title, message)
     end,
-    cPopup = function(parent, title, message)
-        __cPopup(parent, title, message)
+    criticalPopup = function(parent, title, message)
+        return __cPopup(parent, title, message)
     end,
-    iPopup = function(parent, title, message)
-        __iPopup(parent, title, message)
+    infoPopup = function(parent, title, message)
+        return __iPopup(parent, title, message)
     end,
-    qPopup = function(parent, title, message, buttons)
-        __qPopup(parent, title, message, buttons)
+    questionPopup = function(parent, title, message, buttons)
+        return __qPopup(parent, title, message, buttons)
     end,
-    wPopup = function(parent, title, message)
-        __wPopup(parent, title, message)
+    warningPopup = function(parent, title, message)
+        return __wPopup(parent, title, message)
     end,
     execute = function(script)
         __lua_execute(script)

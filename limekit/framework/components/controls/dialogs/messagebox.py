@@ -29,7 +29,9 @@ from limekit.framework.core.engine.parts import EnginePart
 
 
 class MessageBox(EnginePart):
-    name = "alert"
+    # name = "alert"
+
+    result = None
 
     def __init__(
         self, parent=None, title="Title", text="Dialog content", icon="ok", buttons=[]
@@ -45,7 +47,7 @@ class MessageBox(EnginePart):
         return str(self.dialog[0])
 
     def show(self):
-        self.dialog.exec()
+        self.result = self.dialog.exec()
 
     # This resolves info type and returns right QMessage property
     def __decideIcon(self, _icon):

@@ -7,7 +7,7 @@ This is a Dumb Dialog. Oftenly used for "Ok", "Cancel" operations
 """
 
 
-class DDialog(QDialog, EnginePart):
+class Dialog(QDialog, EnginePart):
     def __init__(self, parent=None):
         super().__init__(parent)
 

@@ -98,3 +98,11 @@ class Converter(EnginePart):
     @classmethod
     def string_split(cls, string, delimeter):
         return list(string.split(delimeter))
+
+    @classmethod
+    def list_(cls, list_items):
+        ret_list = []
+        for a in range(len(list_items)):
+            ret_list.append(list_items[a + 1])  # + 1 coz lua indexes at 1
+
+        return ret_list

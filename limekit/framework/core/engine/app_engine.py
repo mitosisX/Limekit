@@ -29,8 +29,10 @@ from lupa import lua54
 from lupa import LuaRuntime
 from faker import Faker
 
-import requests
-from bs4 import BeautifulSoup
+import schedule
+
+# import requests
+# from bs4 import BeautifulSoup
 
 # from requests_html import HTMLSession
 # import pandas
@@ -245,8 +247,9 @@ class Engine:
             "Workbook": Workbook,
             "route": self.routing.fetch_resource,
             "Sound": playsound,
-            "requests": requests,
-            "BeautifulSoup": BeautifulSoup,
+            "schedule": schedule,
+            # "requests": requests,
+            # "BeautifulSoup": BeautifulSoup,
             "py_getatrr": self.py_getattr,
             "py_getitem": self.py_getitem,
             # "pandas": pandas,
