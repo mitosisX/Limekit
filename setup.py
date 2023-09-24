@@ -2,11 +2,11 @@ import setuptools
 
 setuptools.setup(
     name="limekit",
-    version="0.1",
-    keywords="pyside javascript",
+    version="1.0",
+    keywords="gui lua",
     author="Omega Msiska",
     author_email="omegamsiskah@gmail.com",
-    description="Limekit is a wrapper for the cross-platform PySide6 GUI library. It allows developers to create applications for Windows, macOS, and Linux using JavaScript",
+    description="Limekit is the first-ever lua GUI framework",
     license="GNU",
     packages=setuptools.find_packages(),
     package_data={
@@ -14,11 +14,18 @@ setuptools.setup(
         "limekit.framework": ["scripts/**"],
     },
     install_requires=[
-        "PySide6",
-        "qdarkstyle",
-        "qt_material",
-        # 'win11toast',
-        "Faker",
+        # # "PySide6",
+        # "qt_material",
+        # "Faker",
+        # "qdarkstyle",
+        # "qtmodern",
+        # "psutil",
+        # "emoji",
+        # "xlsxwriter",
+        # "PySide6-Fluent-Widgets[full]",
+        "playsound",
+        "lupa",
+        "pyecharts",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

@@ -1,14 +1,15 @@
 Metadata-Version: 2.1
 Name: limekit
-Version: 0.1
-Summary: Limekit is a wrapper for the cross-platform PySide6 GUI library. It allows developers to create applications for Windows, macOS, and Linux using JavaScript
+Version: 1.0
+Summary: Limekit is the first-ever lua GUI framework
 Author: Omega Msiska
 Author-email: omegamsiskah@gmail.com
 License: GNU
 Project-URL: Documentation, https://pyqt-fluent-widgets.readthedocs.io/
-Project-URL: Source Code, https://github.com/mitosisX/Miranda
-Project-URL: Bug Tracker, https://github.com/mitosisX/Miranda/issues
-Keywords: pyside javascript
+Keywords: gui lua
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: GNU General Public License
 Classifier: Operating System :: OS Independent
+Requires-Dist: playsound
+Requires-Dist: lupa
+Requires-Dist: pyecharts

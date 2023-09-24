@@ -1,0 +1,16 @@
+"""
+* Initially I was thinking of creating one Popup class and given a parameter
+of type to allow the class to determine and set the right QMessageBox, but I then
+though that maybe it would be better off creating individual classes but only
+like wPopup, aPopup, cPopup, qPopup, iPopup: warning, about, respectively
+            -------------------
+
+All Popup types available plus thair particular implementation based
+on original documentation
+
+def about(parent: PySide6.QtWidgets.QWidget, title: str, text: str) -> None: ...
+def critical(parent: PySide6.QtWidgets.QWidget, title: str, text: str, button0: PySide6.QtWidgets.QMessageBox.StandardButton, button1: PySide6.QtWidgets.QMessageBox.StandardButton) -> int: ...
+def information(parent: PySide6.QtWidgets.QWidget, title: str, text: str, button0: PySide6.QtWidgets.QMessageBox.StandardButton, button1: PySide6.QtWidgets.QMessageBox.StandardButton = ...) -> PySide6.QtWidgets.QMessageBox.StandardButton: ...
+def question(parent: PySide6.QtWidgets.QWidget, title: str, text: str, button0: PySide6.QtWidgets.QMessageBox.StandardButton, button1: PySide6.QtWidgets.QMessageBox.StandardButton) -> int: ...
+def warning(parent: PySide6.QtWidgets.QWidget, title: str, text: str, button0: PySide6.QtWidgets.QMessageBox.StandardButton, button1: PySide6.QtWidgets.QMessageBox.StandardButton) -> int: ...
+"""

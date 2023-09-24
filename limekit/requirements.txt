@@ -4,5 +4,9 @@ qt_material
 qtmodern
 psutil
 emoji
+Faker
 xlsxwriter
 PySide6-Fluent-Widgets[full]
+playsound
+lupa
+pyecharts
