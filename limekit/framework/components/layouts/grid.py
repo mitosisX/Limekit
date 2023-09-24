@@ -14,8 +14,9 @@ class GridLayout(EnginePart, QGridLayout):
     # This is a Grid layout; every child widget is positioned
     # x and y
     # xPos, yPos -> x position and y position respecitively
-    def addChild(self, child, xPos, yPos):
-        self.addWidget(child, xPos, yPos)
+    # rows, columns -> number of rows and columns to span
+    def addChild(self, child, xPos, yPos, rows=1, columns=1):
+        self.addWidget(child, xPos, yPos, rows, columns)
 
     def addChildren(self, *children):
         for eachChild in children:
@@ -24,6 +25,9 @@ class GridLayout(EnginePart, QGridLayout):
             yPos = eachChild[2]
 
             self.addWidget(child, xPos, yPos)
+
+    def getChildAt(self, row, column):
+        return self.itemAtPosition(row, column).widget()
 
     def offer(self):
         return self

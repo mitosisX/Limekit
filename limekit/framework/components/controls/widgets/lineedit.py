@@ -1,9 +1,9 @@
-from PySide6.QtWidgets import QTextEdit
+from PySide6.QtWidgets import QLineEdit
 from limekit.framework.core.engine.parts import EnginePart
 
 
 # setInputMask("AAAA.AAA.000.000;_"); - limits text to st then ints
-class TextEdit(QTextEdit, EnginePart):
+class LineEdit(QLineEdit, EnginePart):
     def __init__(self):
         super().__init__()
 
@@ -20,13 +20,13 @@ class TextEdit(QTextEdit, EnginePart):
         mode = input_mode.lower()
 
         if mode == "normal":
-            self.setEchoMode(QTextEdit.Normal)
+            self.setEchoMode(QLineEdit.Normal)
 
         elif mode == "password":
-            self.setEchoMode(QTextEdit.Password)
+            self.setEchoMode(QLineEdit.Password)
 
     def setText(self, text):
-        self.setPlainText(text)
+        super().setText(text)
 
     def getText(self):
-        return self.toPlainText()
+        return self.text()
