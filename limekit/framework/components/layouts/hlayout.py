@@ -8,10 +8,7 @@ class HorizontalLayout(EnginePart, QHBoxLayout):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def addChild(self, child):
-        self.addWidget(child)
-
-    def addChildren(self, *children):
+    def addChild(self, *children):
         for eachChild in children:
             self.addWidget(eachChild)
 

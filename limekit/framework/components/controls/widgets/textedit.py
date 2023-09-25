@@ -3,7 +3,7 @@ from limekit.framework.core.engine.parts import EnginePart
 
 
 # setInputMask("AAAA.AAA.000.000;_"); - limits text to st then ints
-class TextEdit(QTextEdit, EnginePart):
+class TextField(QTextEdit, EnginePart):
     def __init__(self):
         super().__init__()
 
@@ -24,6 +24,9 @@ class TextEdit(QTextEdit, EnginePart):
 
         elif mode == "password":
             self.setEchoMode(QTextEdit.Password)
+
+    def setHint(self, hint):
+        self.setPlaceholderText(hint)
 
     def setText(self, text):
         self.setPlainText(text)

@@ -268,6 +268,7 @@ class Engine:
             # Data types ---------
             "eval": eval,
             "FluentIcon": FluentIcon,
+            "__quit": self.__quit,
         }
 
         for obj_name, object_ in other_parts.items():
@@ -275,6 +276,9 @@ class Engine:
 
     def execute_from_file(self, file):
         self.execute(File.read_file(file))
+
+    def __quit(self):
+        self.app.app.instance().quit()
 
     """
     # Lupa sometimes wraps python object or return them as is.

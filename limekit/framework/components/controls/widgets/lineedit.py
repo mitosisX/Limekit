@@ -28,5 +28,8 @@ class LineEdit(QLineEdit, EnginePart):
     def setText(self, text):
         super().setText(text)
 
+    def setHint(self, hint):
+        self.setPlaceholderText(hint)
+
     def getText(self):
         return self.text()

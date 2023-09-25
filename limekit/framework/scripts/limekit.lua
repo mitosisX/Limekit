@@ -1,4 +1,7 @@
 app = {
+    getNextDNAStrand = function(dna)
+        return __converters.next_dna_strand(dna)
+    end,
     splitString = function(text, delimeter)
         return __converters.string_split(text, delimeter)
     end,
@@ -78,6 +81,9 @@ app = {
         __fileutils.write_file_json(file, content)
     end,
     -- File and folder utils ##################
+    quit = function()
+        __quit()
+    end,
     alert = function(parent, title, message, icon, buttons)
         return __alert(parent, title, message, icon, buttons)
     end,
@@ -90,8 +96,8 @@ app = {
     infoPopup = function(parent, title, message)
         return __iPopup(parent, title, message)
     end,
-    questionPopup = function(parent, title, message, buttons)
-        return __qPopup(parent, title, message, buttons)
+    questionPopup = function(parent, title, message)
+        return __qPopup(parent, title, message)
     end,
     warningPopup = function(parent, title, message)
         return __wPopup(parent, title, message)
@@ -163,6 +169,12 @@ app = {
     end,
     getOSVersion = function()
         return __sysutils.get_os_release()
-    end
+    end,
     -- CPU or Sys related ##################
+    -- ################## validators
+    checkUniqueChars = function(text)
+        return __validators.is_contains_unique_chars(text)
+    end
+    -- validators ##################
+
 }
