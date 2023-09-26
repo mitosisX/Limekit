@@ -2,11 +2,11 @@ from PySide6.QtWidgets import QRadioButton
 from limekit.framework.core.engine.parts import EnginePart
 
 
-class RadioButton(EnginePart, QRadioButton):
-    def __init__(self):
+class RadioButton(QRadioButton, EnginePart):
+    def __init__(self, text=""):
         super().__init__()
 
-        self.setText("Radiobutton")
+        self.setText(text)
 
     def onStateChange(self, func):
         self.clicked.connect(lambda: func(self))

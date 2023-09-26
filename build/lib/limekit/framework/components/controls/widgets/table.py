@@ -19,7 +19,7 @@ The constructor can be explicity passes number of rows and column and its parent
 """
 
 
-class Table(EnginePart, QTableWidget):
+class Table(QTableWidget, EnginePart):
     cellEditFinishedFunc = None
     cellClickedFunc = None
     cellDoubleClickedFunc = None

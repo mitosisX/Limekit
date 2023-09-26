@@ -11,7 +11,7 @@ Structure for creating a Menubar
 """
 
 
-class Menubar(EnginePart, QMenuBar):
+class Menubar(QMenuBar, EnginePart):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
 

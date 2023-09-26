@@ -9,7 +9,7 @@ def addSeparator()
 """
 
 
-class Toolbar(EnginePart, QToolBar):
+class Toolbar(QToolBar, EnginePart):
     def __init__(self, name="my toolbar"):
         super().__init__()
         self.setIconSize(QSize(30, 30))

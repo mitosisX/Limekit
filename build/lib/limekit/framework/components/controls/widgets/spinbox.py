@@ -23,7 +23,7 @@ def value()
 """
 
 
-class SpinBox(EnginePart, QSpinBox):
+class SpinBox(QSpinBox, EnginePart):
     name = "Spinner"
     onValueChangedFunc = None
 

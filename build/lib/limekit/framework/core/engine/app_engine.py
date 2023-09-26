@@ -184,20 +184,25 @@ class Engine:
         Add a trailing ?.lua to each path during iteration
         """
 
-        require_file = File.read_file(os.path.join(self.projects_dir, ".require"))
-        dirs_for_require = (
-            require_file.split(";") if ";" in require_file else require_file.split("\n")
-        )
+        req_file_path = os.path.join(self.projects_dir, ".require")
 
-        paths = ""
+        if Path.check_path(req_file_path):
+            require_file = File.read_file(req_file_path)
+            dirs_for_require = (
+                require_file.split(";")
+                if ";" in require_file
+                else require_file.split("\n")
+            )
 
-        for dir in dirs_for_require:
-            if dir != "":
-                proper_path = f"{os.path.join(dir,'')}?.lua;"
-                paths += proper_path
+            paths = ""
 
-        fix_slash = paths.replace("\\", "/")
-        self.execute(f"package.path = '{fix_slash}' .. package.path")
+            for dir in dirs_for_require:
+                if dir != "":
+                    proper_path = f"{os.path.join(dir,'')}?.lua;"
+                    paths += proper_path
+
+            fix_slash = paths.replace("\\", "/")
+            self.execute(f"package.path = '{fix_slash}' .. package.path")
 
     """
     Load and intialize all plugins from the user
@@ -268,6 +273,7 @@ class Engine:
             # Data types ---------
             "eval": eval,
             "FluentIcon": FluentIcon,
+            "__quit": self.__quit,
         }
 
         for obj_name, object_ in other_parts.items():
@@ -275,6 +281,9 @@ class Engine:
 
     def execute_from_file(self, file):
         self.execute(File.read_file(file))
+
+    def __quit(self):
+        self.app.app.instance().quit()
 
     """
     # Lupa sometimes wraps python object or return them as is.

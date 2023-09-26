@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QSystemTrayIcon
 from limekit.framework.core.engine.parts import EnginePart
 
 
-class Tray(EnginePart, QSystemTrayIcon):
+class Tray(QSystemTrayIcon, EnginePart):
     name = "SysTray"
 
     def __init__(self):

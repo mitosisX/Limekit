@@ -8,7 +8,7 @@ def setCheckable(bool)
 """
 
 
-class ToolbarButton(EnginePart, QAction):
+class ToolbarButton(QAction, EnginePart):
     def __init__(self):
         super().__init__()
 

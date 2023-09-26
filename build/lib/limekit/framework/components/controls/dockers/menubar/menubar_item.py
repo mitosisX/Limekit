@@ -9,7 +9,7 @@ To make appear as separator, include empty string or dash '-'
 """
 
 
-class MenuItem(EnginePart, QAction):
+class MenuItem(QAction, EnginePart):
     def __init__(self, title=None):
         super().__init__(text=title)
 

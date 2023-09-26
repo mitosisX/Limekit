@@ -1,7 +1,6 @@
 import os
 import fnmatch
 import limekit
-from js2py import base
 from limekit.framework.core.engine.parts import EnginePart
 import os
 

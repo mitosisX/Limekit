@@ -4,7 +4,7 @@ from limekit.framework.components.controls.dockers.menubar.menubar_item import M
 
 
 # Contains an arrow on it's side to show that it contains submenus
-class Menu(EnginePart, QMenu):
+class Menu(QMenu, EnginePart):
     def __init__(self, title=None, parent=None):
         super().__init__(title=title, parent=parent)
 

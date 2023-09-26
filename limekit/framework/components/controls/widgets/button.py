@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt
 from limekit.framework.core.engine.parts import EnginePart
 
 
-class Button(EnginePart, QPushButton):
+class Button(QPushButton, EnginePart):
     onClickFunc = None
 
     def __init__(self, text="Button"):

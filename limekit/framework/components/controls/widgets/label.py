@@ -23,7 +23,7 @@ label.setWordWrap(bool) makes the label multiline
 """
 
 
-class Label(EnginePart, QLabel):
+class Label(QLabel, EnginePart):
     def __init__(self, text="Label"):
         super().__init__()
 

@@ -9,7 +9,7 @@ Remember to call show() for display
 """
 
 
-class Notification(EnginePart, QSystemTrayIcon):
+class Notification(QSystemTrayIcon, EnginePart):
     def __init__(self, image=""):
         super().__init__(QIcon(image))
         # super().__init__(QIcon(image))

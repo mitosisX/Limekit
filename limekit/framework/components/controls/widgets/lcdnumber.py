@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QLCDNumber
 from limekit.framework.core.engine.parts import EnginePart
 
 
-class LCDNumber(EnginePart, QLCDNumber):
+class LCDNumber(QLCDNumber, EnginePart):
     def __init__(self):
         super().__init__()
 

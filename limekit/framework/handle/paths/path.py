@@ -1,7 +1,6 @@
 import os
 import fnmatch
 import limekit
-from js2py import base
 from limekit.framework.core.engine.parts import EnginePart
 import os
 
@@ -104,17 +103,9 @@ class Path(EnginePart):
     def limekit_sitepackage_path(cls):
         return limekit.__path__[0]  # limekit path in site-packages
 
-    # When the below method is called from JS, the arguments no longer get treated
-    # as a string, rather some js2py type, and that's the whole reason the conditional initialization
     @classmethod
     def path_res_joiner(cls, path, resource):
-        return os.path.join(
-            cls.project_path,
-            path,
-            resource.to_string().value
-            if type(resource) == base.PyJsString
-            else resource,
-        )
+        return os.path.join(cls.project_path, path, resource)
 
     @classmethod
     def dot_path(cls, dot_path):

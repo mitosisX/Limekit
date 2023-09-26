@@ -4,7 +4,7 @@ from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
-class QuestionPopup(EnginePart, QMessageBox):
+class QuestionPopup(QMessageBox, EnginePart):
     name = "__qPopup"
 
     result = None

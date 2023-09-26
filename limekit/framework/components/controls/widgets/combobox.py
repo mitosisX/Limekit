@@ -14,7 +14,7 @@ from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
-class ComboBox(EnginePart, QComboBox):
+class ComboBox(QComboBox, EnginePart):
     def __init__(self, items=None):
         super().__init__()
 
@@ -45,7 +45,7 @@ class ComboBox(EnginePart, QComboBox):
 
             self.addItem(icon, text)
 
-    def addDataItems(self, data):
+    def insertItem(self, data):
         data_ = ""
 
         try:

@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QLabel
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QPixmap, QMovie
+from PySide6.QtGui import QPixmap, QFont
 from limekit.framework.core.engine.parts import EnginePart
 
 #   Alignments
@@ -23,7 +23,7 @@ label.setWordWrap(bool) makes the label multiline
 """
 
 
-class Label(EnginePart, QLabel):
+class Label(QLabel, EnginePart):
     def __init__(self, text="Label"):
         super().__init__()
 
@@ -50,11 +50,6 @@ class Label(EnginePart, QLabel):
         elif align == "center":
             self.setAlignment(Qt.AlignCenter)
 
-    def setMoGraph(self, mog):
-        mov = QMovie(mog)
-        self.setMovie(mov)
-        mov.start()
-
     def setImage(self, path):
         pixmap = QPixmap(path)
         # self.setScaledContents(True)
@@ -62,3 +57,9 @@ class Label(EnginePart, QLabel):
 
     def getText(self):
         return self.text()
+
+    def setFontFile(self, font):
+        pass
+
+    def setFont(self, font, size):
+        super().setFont(QFont(font, size))

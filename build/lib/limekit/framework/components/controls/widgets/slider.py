@@ -3,7 +3,7 @@ from PySide6.QtCore import Qt
 from limekit.framework.core.engine.parts import EnginePart
 
 
-class Slider(EnginePart, QSlider):
+class Slider(QSlider, EnginePart):
     def __init__(self):
         super().__init__(Qt.Horizontal)
 

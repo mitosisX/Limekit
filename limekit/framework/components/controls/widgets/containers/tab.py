@@ -35,7 +35,7 @@ def tabsClosable(self) -> bool: ...
 """
 
 
-class Tab(EnginePart, QTabWidget):
+class Tab(QTabWidget, EnginePart):
     def __init__(self):
         super().__init__()
 

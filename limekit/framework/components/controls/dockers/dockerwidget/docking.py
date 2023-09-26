@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt
 from limekit.framework.core.engine.parts import EnginePart
 
 
-class Docker(EnginePart, QDockWidget):
+class Docker(QDockWidget, EnginePart):
     name = "Dock"
 
     def __init__(self, title="Dock", parent=None):

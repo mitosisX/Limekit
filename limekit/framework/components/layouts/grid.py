@@ -7,7 +7,7 @@ Either Horizontal or Vertical
 """
 
 
-class GridLayout(EnginePart, QGridLayout):
+class GridLayout(QGridLayout, EnginePart):
     def __init__(self, parent=None):
         super().__init__(parent)
 

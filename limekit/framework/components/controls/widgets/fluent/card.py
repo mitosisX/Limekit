@@ -14,7 +14,7 @@ from qfluentwidgets import (
 from PySide6.QtCore import Qt, QPoint
 
 
-class Card(EnginePart, CardWidget):
+class Card(CardWidget, EnginePart):
     def __init__(self, icon, title, content, parent=None):
         super().__init__(parent)
         self.iconWidget = IconWidget(icon)

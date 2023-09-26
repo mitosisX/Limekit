@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QRadioButton
 from limekit.framework.core.engine.parts import EnginePart
 
 
-class RadioButton(EnginePart, QRadioButton):
+class RadioButton(QRadioButton, EnginePart):
     def __init__(self):
         super().__init__()
 

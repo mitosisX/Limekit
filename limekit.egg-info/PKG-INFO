@@ -10,6 +10,15 @@ Keywords: gui lua
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: GNU General Public License
 Classifier: Operating System :: OS Independent
+Requires-Dist: PySide6==6.4.2
+Requires-Dist: qt_material
+Requires-Dist: Faker
+Requires-Dist: qdarkstyle
+Requires-Dist: qtmodern
+Requires-Dist: psutil
+Requires-Dist: emoji
+Requires-Dist: xlsxwriter
+Requires-Dist: PySide6-Fluent-Widgets[full]
 Requires-Dist: playsound
 Requires-Dist: lupa
 Requires-Dist: pyecharts

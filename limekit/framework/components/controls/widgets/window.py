@@ -15,7 +15,7 @@ from PySide6.QtWidgets import QApplication
 # from limekit.framework.handler.plugins.plugin_manager import PluginManager
 
 
-class Window(EnginePart, QMainWindow):
+class Window(QMainWindow, EnginePart):
     just_shown = False  # To be used for any first launch logic: center()...
     onShownEvent = None
     onResizeEvent = None

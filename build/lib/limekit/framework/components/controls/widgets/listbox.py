@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QListWidget
 from limekit.framework.core.engine.parts import EnginePart
 
 
-class ListBox(EnginePart, QListWidget):
+class ListBox(QListWidget, EnginePart):
     def __init__(self):
         super().__init__()
 

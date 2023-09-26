@@ -84,6 +84,12 @@ app = {
     quit = function()
         __quit()
     end,
+    colorPicker = function()
+        return __colorPicker()
+    end,
+    textInput = function(parent, title, message)
+        return __inputDialog(parent, title, message)
+    end,
     alert = function(parent, title, message, icon, buttons)
         return __alert(parent, title, message, icon, buttons)
     end,

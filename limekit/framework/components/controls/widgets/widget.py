@@ -5,6 +5,6 @@ from limekit.framework.core.engine.parts import EnginePart
 
 
 # Might be needed somewhere
-class Widget(EnginePart, QWidget):
+class Widget(QWidget, EnginePart):
     def __init__(self):
         super().__init__()
