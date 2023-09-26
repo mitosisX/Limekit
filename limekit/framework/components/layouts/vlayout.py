@@ -31,3 +31,6 @@ class VerticalLayout(QVBoxLayout, EnginePart):
 
     def addLayout(self, lay):
         super().addLayout(lay)
+
+    def addElasticity(self, stretch=0):
+        self.addStretch(stretch)

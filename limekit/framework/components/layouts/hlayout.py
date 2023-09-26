@@ -11,6 +11,9 @@ class HorizontalLayout(QHBoxLayout, EnginePart):
     def addChild(self, child, stretch=0):
         self.addWidget(child, stretch)
 
+    def addLayout(self, lay):
+        super().addLayout(lay)
+
     def addLayouts(self, *layouts):
         for layout in layouts:
             self.addLayout(layout)
