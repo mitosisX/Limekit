@@ -13,12 +13,15 @@ class FormLayout(QFormLayout, EnginePart):
         super().__init__()
         # self.setFieldGrowthPolicy(self.FieldGrowthPolicy.AllNonFixedFieldsGrow)
         # self.setFormAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
-        # self.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
+        # self.setLabelAlignment(Qt.AlignmentFlag.AlignJustify)
 
     # This is a Grid layout; every child widget is positioned
     # x and y
     # xPos, yPos -> x position and y position respecitively
     def addChild(self, title, child):
+        # Use "" to avoid unwanted spacing
+        # :addChild("", widget)
+        # :addChild("Title", widget) NORMAL METHOD
         if not title:
             self.addRow(child)
         else:

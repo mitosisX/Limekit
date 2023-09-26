@@ -10,3 +10,4 @@ PySide6-Fluent-Widgets[full]
 playsound
 lupa
 pyecharts
+PyTaskbarProgress

@@ -14,6 +14,7 @@ limekit/framework/components/base/__init__.py
 limekit/framework/components/base/base_layout.py
 limekit/framework/components/controls/__init__.py
 limekit/framework/components/controls/dialogs/__init__.py
+limekit/framework/components/controls/dialogs/color_picker.py
 limekit/framework/components/controls/dialogs/ddialog.py
 limekit/framework/components/controls/dialogs/dialog.py
 limekit/framework/components/controls/dialogs/inputdialog.py
@@ -44,6 +45,7 @@ limekit/framework/components/controls/widgets/calendar.py
 limekit/framework/components/controls/widgets/checkbox.py
 limekit/framework/components/controls/widgets/combobox.py
 limekit/framework/components/controls/widgets/groupbox.py
+limekit/framework/components/controls/widgets/horizontal_line.py
 limekit/framework/components/controls/widgets/label.py
 limekit/framework/components/controls/widgets/lcdnumber.py
 limekit/framework/components/controls/widgets/lineedit.py
@@ -56,6 +58,7 @@ limekit/framework/components/controls/widgets/spinbox.py
 limekit/framework/components/controls/widgets/table.py
 limekit/framework/components/controls/widgets/tableitem.py
 limekit/framework/components/controls/widgets/textedit.py
+limekit/framework/components/controls/widgets/vertical_line.py
 limekit/framework/components/controls/widgets/widget.py
 limekit/framework/components/controls/widgets/window.py
 limekit/framework/components/controls/widgets/containers/__init__.py

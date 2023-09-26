@@ -7,9 +7,14 @@ This is a Dumb Dialog. Oftenly used for "Ok", "Cancel" operations
 """
 
 
-class Dialog(QDialog, EnginePart):
+class DialogBox(QDialog, EnginePart):
+    name = "Modal"
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
         self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
         self.buttonBox.button(QDialogButtonBox.Ok).setDefault(True)
+
+    def addLayout(self, lay):
+        super().setLayout(lay)

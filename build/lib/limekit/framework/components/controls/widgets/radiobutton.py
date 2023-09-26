@@ -3,10 +3,10 @@ from limekit.framework.core.engine.parts import EnginePart
 
 
 class RadioButton(QRadioButton, EnginePart):
-    def __init__(self, text=""):
+    def __init__(self):
         super().__init__()
 
-        self.setText(text)
+        self.setText("Radiobutton")
 
     def onStateChange(self, func):
         self.clicked.connect(lambda: func(self))

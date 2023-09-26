@@ -182,6 +182,8 @@ class Engine:
         global package.path
 
         Add a trailing ?.lua to each path during iteration
+
+        Structure: C:/dir1/dir2;D:/dir1; or sep by \n D:/lua;D:/Misc;
         """
 
         req_file_path = os.path.join(self.projects_dir, ".require")

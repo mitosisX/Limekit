@@ -1,11 +1,11 @@
 Metadata-Version: 2.1
 Name: limekit
-Version: 1.0
+Version: 1.0.0
 Summary: Limekit is the first-ever lua GUI framework
 Author: Omega Msiska
 Author-email: omegamsiskah@gmail.com
 License: GNU
-Project-URL: Documentation, https://pyqt-fluent-widgets.readthedocs.io/
+Project-URL: Documentation, 
 Keywords: gui lua
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: GNU General Public License
@@ -22,3 +22,4 @@ Requires-Dist: PySide6-Fluent-Widgets[full]
 Requires-Dist: playsound
 Requires-Dist: lupa
 Requires-Dist: pyecharts
+Requires-Dist: PyTaskbarProgress

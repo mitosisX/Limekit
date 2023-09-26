@@ -28,7 +28,7 @@ class Window(QMainWindow, EnginePart):
         self.widget = QWidget()
 
         self.setCentralWidget(self.widget)
-        self.setSize(500, 500)
+        self.setSize(300, 300)
 
         self.setTitle(title)
 

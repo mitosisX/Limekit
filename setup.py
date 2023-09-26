@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="limekit",
-    version="1.0",
+    version="1.0.0",
     keywords="gui lua",
     author="Omega Msiska",
     author_email="omegamsiskah@gmail.com",
@@ -26,6 +26,7 @@ setuptools.setup(
         "playsound",
         "lupa",
         "pyecharts",
+        "PyTaskbarProgress",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -33,6 +34,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     project_urls={
-        "Documentation": "https://pyqt-fluent-widgets.readthedocs.io/",
+        "Documentation": "",
     },
 )

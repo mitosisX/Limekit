@@ -15,16 +15,29 @@ from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
 class ComboBox(QComboBox, EnginePart):
+    onCurrentIndexChangedFunc = None
+
     def __init__(self, items=None):
         super().__init__()
 
         if items:
-            self.addDataItems(Converter.list_(items))
+            self.insertItem(items)
 
-    def onItemSelected(self, func):
-        self.currentIndexChanged.connect(lambda: func(self, self.currentText()))
+        self.currentIndexChanged.connect(self.__handleCurrentIndexChange)
 
-    def getSelectedItem(self):
+    def onItemSelected(self, onCurrentIndexChangedFunc):
+        self.onCurrentIndexChangedFunc = onCurrentIndexChangedFunc
+
+    def __handleCurrentIndexChange(self):
+        if self.onCurrentIndexChangedFunc:
+            self.onCurrentIndexChangedFunc(
+                self, self.currentText(), self.getCurrentIndex()
+            )
+
+    def getCurrentIndex(self):
+        return self.currentIndex()
+
+    def getText(self):
         return self.currentText()
 
     """

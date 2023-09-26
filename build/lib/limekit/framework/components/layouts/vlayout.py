@@ -9,9 +9,8 @@ class VerticalLayout(QVBoxLayout, EnginePart):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def addChild(self, *children):
-        for eachChild in children:
-            self.addWidget(eachChild)
+    def addChild(self, child, stretch=0):
+        self.addWidget(child, stretch)
 
     def setContentAlignment(self, alignment):
         align = None
@@ -30,5 +29,8 @@ class VerticalLayout(QVBoxLayout, EnginePart):
         for layout in layouts:
             self.addLayout(layout)
 
-    def addLayout(self, lay, fake=None):
+    def addLayout(self, lay):
         super().addLayout(lay)
+
+    def addElasticity(self, stretch=0):
+        self.addStretch(stretch)
