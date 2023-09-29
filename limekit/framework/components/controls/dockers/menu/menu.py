@@ -1,5 +1,7 @@
 from PySide6.QtWidgets import QMenu
 from limekit.framework.core.engine.parts import EnginePart
+
+# from limekit.framework.components.controls.dockers.menubar.menubar_item import MenuItem
 from limekit.framework.components.controls.dockers.menubar.menubar_item import MenuItem
 
 
@@ -12,17 +14,24 @@ class Menu(QMenu, EnginePart):
     # type: Menu
     def addMenuItems(self, *menus):
         for menu in menus:
-            self.__determine_menutype_add_action(menu)
+            self.addAction(menu)
 
     def addMenuItem(self, menu):
-        self.__determine_menutype_add_action(menu)
+        self.addAction(menu)
+
+    def addDropMenu(self, menu):
+        self.addMenu(menu)
 
     # To avoid redundancy in addMenuItem and addMenuItems, this functions shall handle all logic
     def __determine_menutype_add_action(self, menu):
         if isinstance(menu, Menu):
-            self.addAction(menu.menuAction())
-        elif isinstance(menu, MenuItem):
+            # print("Menu")
             self.addAction(menu)
+        if isinstance(menu, MenuItem):
+            print("MenuItem")
+
+            self.addAction(menu)
+        # print(type(menu))
 
     """
     Build menu from JSON template structure

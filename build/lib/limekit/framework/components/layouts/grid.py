@@ -28,6 +28,3 @@ class GridLayout(QGridLayout, EnginePart):
 
     def getChildAt(self, row, column):
         return self.itemAtPosition(row, column).widget()
-
-    def offer(self):
-        return self

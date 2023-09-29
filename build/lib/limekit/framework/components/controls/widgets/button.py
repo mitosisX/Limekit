@@ -40,3 +40,6 @@ class Button(QPushButton, EnginePart):
     # danger, warning, success
     def setMatProperty(self, class_):
         self.setProperty("class", class_)
+
+    def setMenu(self, menu):
+        super().setMenu(menu)

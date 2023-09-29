@@ -1,6 +1,23 @@
-    To-Do list
+            To-Do list
 
-1. Replace explicit use of PySide6 with qt.py for easy integration with various Qt frameworks
+1. ComboBox setInsertMode
+
+    QComboBox.NoInsert	Performs no insert.
+    QComboBox.InsertAtTop	Inserts as first item.
+    QComboBox.InsertAtCurrent	Replaces the currently selected item.
+    QComboBox.InsertAtBottom	Inserts after the last item.
+    QComboBox.InsertAfterCurrent	Inserts after the current item.
+    QComboBox.InsertBeforeCurrent	Inserts before the current item.
+    QComboBox.InsertAlphabetically	Inserts in alphabetical order.
+
+    widget.setInsertPolicy(QComboBox.InsertAlphabetically)
+
+2. Create QDoubleSpinBox; derived from QSpinBox         ********* DONE *********
+
+3. QDial
+
+4. Implement SplitWindow
+
 2. Determine whether the app is being run in "iDE" or build mode (after freeze)
 
 Such emptiness!

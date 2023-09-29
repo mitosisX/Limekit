@@ -22,13 +22,15 @@ class Window(QMainWindow, EnginePart):
     onCloseEvent = None
     onResizeEvent = None
 
-    def __init__(self, title="Limekit - lua framework"):
+    def __init__(self, title="Limekit - lua framework", size=True):
         super().__init__()
 
         self.widget = QWidget()
 
         self.setCentralWidget(self.widget)
-        self.setSize(300, 300)
+
+        if size:
+            self.setSize(300, 300)
 
         self.setTitle(title)
 

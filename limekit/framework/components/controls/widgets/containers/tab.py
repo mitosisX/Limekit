@@ -41,20 +41,20 @@ class Tab(QTabWidget, EnginePart):
 
     def addTabs(self, *tabs):
         for eachTab in tabs:
-            tab = eachTab[0].offer()
+            tab = eachTab[0]
             title = eachTab[1]
 
             self.addTab(tab, title)
 
     def addTabitem(self, tab, title):
-        self.addTab(tab.offer(), title)
+        self.addTab(tab, title)
 
     def addTabitedm(self, tab, path, title):
         pixmap = QPixmap(path)
         # self.setScaledContents(True)
         self.setPixmap(pixmap)
 
-        self.addTab(tab.offer(), pixmap, title)
+        self.addTab(tab, pixmap, title)
 
     def getTabIndex(self):
         return self.currentIndex

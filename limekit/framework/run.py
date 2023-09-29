@@ -2,7 +2,7 @@
 import os
 from limekit.framework.core.engine.app_engine import Engine
 
-print(os.getcwd())
+# print(os.getcwd())
 
-# engine = Engine()
-# engine.start()
+engine = Engine()
+engine.start()

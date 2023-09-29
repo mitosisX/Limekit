@@ -29,5 +29,9 @@ class GridLayout(QGridLayout, EnginePart):
     def getChildAt(self, row, column):
         return self.itemAtPosition(row, column).widget()
 
-    def offer(self):
-        return self
+    # In PySide6, the setColumnStretch method is used to set the stretching
+    # factor for a specific column in a QGridLayout or QFormLayout. This method allows
+    # you to control how the columns of the layout expand or contract when the parent widget is resized.
+
+    def setColumnElastic(self, column, stretch):
+        self.setColumnStretch(column, stretch)

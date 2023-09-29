@@ -14,3 +14,6 @@ void setCheckable(bool checkable)
 class GroupBox(QGroupBox, EnginePart):
     def __init__(self, title="GroupBox"):
         super().__init__(title)
+
+    def setLayout(self, layout):
+        super().setLayout(layout)
