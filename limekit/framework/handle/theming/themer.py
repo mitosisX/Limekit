@@ -3,6 +3,7 @@ from limekit.framework.handle.theming.material.theme import MaterialStyle
 from limekit.framework.handle.theming.misc.theme import MiscellaneousStyle
 
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
 class Theme(EnginePart):

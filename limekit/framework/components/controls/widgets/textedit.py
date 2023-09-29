@@ -8,7 +8,7 @@ class TextField(QTextEdit, EnginePart):
         super().__init__()
 
     def onTextChange(self, func):
-        self.textChanged[str].connect(lambda: func(self, self.text()))
+        self.textChanged.connect(lambda: func(self, self.text()))
 
     def onReturn(self, func):
         self.returnPressed.connect(lambda: func(self))

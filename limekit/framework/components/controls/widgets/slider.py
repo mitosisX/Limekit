@@ -4,8 +4,10 @@ from limekit.framework.core.engine.parts import EnginePart
 
 
 class Slider(QSlider, EnginePart):
+    onValueChangeFunc = None
+
     def __init__(self):
         super().__init__(Qt.Horizontal)
 
-    def onValueChange(self, func):
-        self.valueChanged[int].connect(lambda: func(self, self.value()))
+    def setOnValueChange(self, func):
+        self.valueChanged.connect(lambda: func(self, self.value()))

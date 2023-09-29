@@ -58,7 +58,7 @@ class ComboBox(QComboBox, EnginePart):
 
             self.addItem(icon, text)
 
-    def insertItem(self, data):
+    def addItems(self, data):
         data_ = ""
 
         try:
@@ -66,4 +66,4 @@ class ComboBox(QComboBox, EnginePart):
         except AttributeError:
             data_ = data
 
-        self.addItems(data_)
+        super().addItems(data_)

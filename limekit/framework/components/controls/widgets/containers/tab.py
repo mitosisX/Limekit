@@ -46,7 +46,7 @@ class Tab(QTabWidget, EnginePart):
 
             self.addTab(tab, title)
 
-    def addTabitem(self, tab, title):
+    def addTabItem(self, tab, title):
         self.addTab(tab, title)
 
     def addTabitedm(self, tab, path, title):

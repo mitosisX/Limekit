@@ -4,7 +4,7 @@ from limekit.framework.core.engine.parts import EnginePart
 
 class TabItem(QWidget, EnginePart):
     def __init__(self):
-        pass
+        super().__init__()
 
     def setLayout(self, child):
         super().setLayout(child)

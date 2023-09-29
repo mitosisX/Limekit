@@ -2,7 +2,7 @@ from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.components.controls.widgets.tableitem import TableItem
 
 from PySide6.QtWidgets import QTableWidget, QTableWidgetItem, QAbstractItemView
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QItemSelection
 from PySide6.QtGui import QPixmap, QIcon
 
 """
@@ -23,12 +23,14 @@ class Table(QTableWidget, EnginePart):
     cellEditFinishedFunc = None
     cellClickedFunc = None
     cellDoubleClickedFunc = None
+    cellSelctionDoneFunc = None
 
     def __init__(self, rows=None, columns=None, parent=None):
         super().__init__(rows, columns, parent)
         self.cellChanged.connect(self.__onCellEditFinished)
         self.cellClicked.connect(self.__onCellClicked)
         self.cellDoubleClicked.connect(self.__onCellDoubleClicked)
+        self.selectionModel().selectionChanged.connect(self.__handleCellSelectionDone)
 
     # Events ----------------
 
@@ -53,6 +55,13 @@ class Table(QTableWidget, EnginePart):
         if self.cellDoubleClickedFunc:
             self.cellDoubleClickedFunc(self, row, column)
 
+    def setOnCellSelection(self, cellSelctionDoneFunc):
+        self.cellSelctionDoneFunc = cellSelctionDoneFunc
+
+    def __handleCellSelectionDone(self, selected, deselected):
+        if self.cellSelctionDoneFunc:
+            self.cellSelctionDoneFunc(self, selected, deselected)
+
     # def onCellEditFinish(self, func):
     #     self.cellChanged.connect(
     #         lambda row, column: self.__handleCellEdit(row, column, func)
@@ -63,8 +72,8 @@ class Table(QTableWidget, EnginePart):
 
     # ---------------- Events
 
-    def setDataItem(self, row, column, data):
-        self.setItem(row, column, QTableWidgetItem(data))
+    def addData(self, row, column, data):
+        self.setItem(row, column, QTableWidgetItem(str(data)))
 
     def setTableData(self, data):
         dict_ = data
@@ -176,4 +185,31 @@ class Table(QTableWidget, EnginePart):
 
     def getItemAt(self, row, column):
         item = self.item(row, column)
-        return item
+        if item:
+            return TableItem(item)
+        else:
+            return None
+
+    def getSelectedCells(self):
+        cells = []
+        aa = self.selectedIndexes()
+        selected_items = set((idx.row(), idx.column()) for idx in aa)
+
+        # Print the text in the selected cells
+        for item in selected_items:
+            row, column = item
+
+            print(TableItem(self.getItemAt(row, column)).setBackgroundHex("#fff"))
+            # cells.append(TableItem(item))
+
+        return cells
+
+    def getSelectedCell(self):
+        item = self.currentItem()
+        if item:
+            return TableItem(item)
+        else:
+            return None
+
+    def setSpan(self, f):
+        self.setSpan(1, 2, 2, 1)

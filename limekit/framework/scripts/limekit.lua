@@ -1,7 +1,4 @@
 app = {
-    getNextDNAStrand = function(dna)
-        return __converters.next_dna_strand(dna)
-    end,
     splitString = function(text, delimeter)
         return __converters.string_split(text, delimeter)
     end,

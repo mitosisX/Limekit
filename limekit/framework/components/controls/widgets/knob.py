@@ -31,8 +31,11 @@ class Knob(QDial, EnginePart):
     def setMinValue(self, min_value):
         self.setMinimum(min_value)
 
-    def setIndicatorsVisible(self, visible):
-        self.notchesVisible(visible)
+    def setMaxValue(self, max_value):
+        self.setMaximum(max_value)
 
-    def checkIndicatorsVisible(self):
+    def setIndicators(self, visible):
+        self.setNotchesVisible(visible)
+
+    def hasIndicators(self):
         return self.notchesVisible()

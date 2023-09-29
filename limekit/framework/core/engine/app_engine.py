@@ -160,6 +160,11 @@ class Engine:
 
             self.destroy_engine()
 
+        except RuntimeError as exception:
+            print(exception)
+
+            self.destroy_engine()
+
     # Kill the engine if anything goes wrong
     def destroy_engine(self):
         sys.exit()
