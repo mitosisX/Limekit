@@ -3,11 +3,11 @@ import sys
 
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtGui import QIcon, QDesktopServices
-from PySide6.QtWidgets import QApplication, QFrame, QHBoxLayout
+from PySide6.QtWidgets import QApplication, QFrame, QWidget, QHBoxLayout
 from qfluentwidgets import (
     NavigationItemPosition,
     MessageBox,
-    setTheme,
+    setTheme as apply_theme,
     Theme,
     SplitFluentWindow,
     NavigationAvatarWidget,
@@ -18,7 +18,7 @@ from qfluentwidgets import (
 from qfluentwidgets import FluentIcon as FIF
 from limekit.framework.core.engine.parts import EnginePart
 
-setTheme(Theme.DARK)
+# setTheme(Theme.DARK)
 
 
 class Widget(QFrame):
@@ -53,6 +53,20 @@ class SplitWindow(SplitFluentWindow, EnginePart):
 
         self.initNavigation()
         self.initWindow()
+
+    def addMenu(self, lay):
+        menu = QWidget(self)
+        menu.setLayout(lay)
+
+        self.addSubInterface(menu, FIF.AIRPLANE, "About")
+
+    def setTheme(self, theme: str):
+        theme = theme.lower()
+
+        if theme == "dark":
+            apply_theme(Theme.DARK)
+        elif theme == "light":
+            apply_theme(Theme.LIGHT)
 
     def initNavigation(self):
         self.addSubInterface(self.homeInterface, FIF.HOME, "Home")

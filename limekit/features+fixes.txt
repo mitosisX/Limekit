@@ -14,9 +14,18 @@
 
 2. Create QDoubleSpinBox; derived from QSpinBox         ********* DONE *********
 
-3. QDial
+3. QDial                                                ********* DONE *********
 
 4. Implement SplitWindow
+
+5. File Open and Save Dialog
+
+6. Dir watcher
+
+*7. Dialogs
+    - Should return as such: res, text = app.questionPopup(...)
+
+    
 
 2. Determine whether the app is being run in "iDE" or build mode (after freeze)
 
