@@ -8,9 +8,12 @@ from limekit.framework.handle.scripts.swissknife.converters import Converter
 class ListBox(QListWidget, EnginePart):
     onCurrentItemChangeFunc = None
 
-    def __init__(self):
+    def __init__(self, items=None):
         # By defaulf, the ViewMode is on ListMode
         super().__init__()
+        if items:
+            self.setItems(items)
+
         self.setAlternatingRowColors(True)
         self.currentItemChanged.connect(self.__handleItemSelect)
 
@@ -33,6 +36,10 @@ class ListBox(QListWidget, EnginePart):
 
     def addItem(self, item):
         super().addItem(QListWidgetItem(item))
+
+    def setItems(self, items):
+        for item in items.values():
+            self.addItem(item)
 
     def addImageItem(self, label, image):
         item = QListWidgetItem(label)

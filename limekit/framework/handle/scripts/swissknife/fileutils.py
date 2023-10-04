@@ -99,15 +99,12 @@ class FileUtils(EnginePart):
     name = "__fileutils"
 
     @classmethod
-    def read_file(cls, path, encoding: str = "utf-8"):
+    def read_file(cls, path):
         """
         Read the content of the file at the given path using the specified encoding.
         """
-        content = ""
-        with open(path, encoding=encoding) as file:
-            content = file.read()
-
-        return content
+        with open(path) as file:
+            return file.read()
 
     @classmethod
     def read_file_json(cls, path):

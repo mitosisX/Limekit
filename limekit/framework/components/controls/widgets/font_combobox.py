@@ -1,5 +1,5 @@
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QComboBox
+from PySide6.QtWidgets import QFontComboBox
 from limekit.framework.core.engine.parts import EnginePart
 
 # setMaxCount - sets maximum ComboBox items limit
@@ -14,14 +14,11 @@ from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
-class ComboBox(QComboBox, EnginePart):
+class FontComboBox(QFontComboBox, EnginePart):
     onCurrentIndexChangedFunc = None
 
-    def __init__(self, items=None):
+    def __init__(self):
         super().__init__()
-
-        if items:
-            self.setItems(items)
 
         self.currentIndexChanged.connect(self.__handleCurrentIndexChange)
 

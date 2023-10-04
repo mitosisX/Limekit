@@ -25,9 +25,9 @@ class VerticalLayout(QVBoxLayout, EnginePart):
 
         self.setAlignment(align)
 
-    def addLayouts(self, *layouts):
-        for layout in layouts:
-            self.addLayout(layout)
+    # def addLayouts(self, *layouts):
+    #     for layout in layouts:
+    #         self.addLayout(layout)
 
     def addLayout(self, lay):
         super().addLayout(lay)

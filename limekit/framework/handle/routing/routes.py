@@ -52,7 +52,7 @@ class Routing:
 
         "routes":{
             "single":{
-                "book": "misc:book.txt"
+                "book": "misc::book.txt"
             }
         }
 
@@ -60,7 +60,7 @@ class Routing:
                 Vose (group routing)
 
     - In "group" routing, user can add "group_label" key to the "group", this in turn overides the usage of
-    marking (:) during fetching
+    marking (::) during fetching
 
     - The engine will in turn use the marker to determine where to fetch the resource
     # This technique is reffered to as: Excempt Indidual Marking (EIM)
@@ -72,9 +72,9 @@ class Routing:
         "routes":{
             "group":{
                 "book": {
-                    "book1":"misc:book1.txt",
-                    "book2":"script:book2.lua",
-                    "book3":"images:book3.png",
+                    "book1"::"misc:book1.txt",
+                    "book2"::"script:book2.lua",
+                    "book3"::"images:book3.png",
                     ...
                 }
             }
@@ -100,22 +100,22 @@ class Routing:
             "url": "",
             "routes": {
                 "single": {
-                    "book": "misc:book.txt",
-                    "alarm": "misc:Alarm03.wav",
-                    "app_icon": "images:lua.pg",
+                    "book": "misc::book.txt",
+                    "alarm": "misc::Alarm03.wav",
+                    "app_icon": "images::lua.pg",
                 },
                 "group": {
                     "books": {
                         "group_label": "misc",
-                        "Harry Potter": "misc:hey/Harry Potter.txt",
-                        "Rings": "script:Lord of the rings.txt",
-                        "Tom Clancy": "misc:Tom Clancy.txt",
+                        "Harry Potter": "misc::hey/Harry Potter.txt",
+                        "Rings": "script::Lord of the rings.txt",
+                        "Tom Clancy": "misc::Tom Clancy.txt",
                     },
                     "cities": {
-                        "Zomba": "script:zomba.txt",
-                        "Blantyre": "misc:Blantyre.txt",
-                        "Mzuzu": "images:Mzuzu.txt",
-                        "Lilongwe": "misc:Lilongwe.txt",
+                        "Zomba": "script::zomba.txt",
+                        "Blantyre": "misc::Blantyre.txt",
+                        "Mzuzu": "images::Mzuzu.txt",
+                        "Lilongwe": "misc::Lilongwe.txt",
                     },
                 },
             },
@@ -140,8 +140,8 @@ class Routing:
 
     def route_processor(self, route):
         # Adopts django's routing system of using : after app_name usage
-        if ":" in route:
-            route_key, route_resource = route.split(":")
+        if "::" in route:
+            route_key, route_resource = route.split("::")
 
             route_pointer = self.project_json["project"]["routes"]["group"].get(
                 route_key
@@ -151,7 +151,12 @@ class Routing:
                 get_route_resource = route_pointer.get(route_resource)
 
                 if get_route_resource:
+                    print("here")
                     return self.route_marker_mapping(get_route_resource)
+                else:
+                    raise RouteException(
+                        f"Route Error: Route resource '{route_resource}' not Found"
+                    )
         else:
             route_pointer = self.project_json["project"]["routes"]["single"].get(route)
 
@@ -165,13 +170,13 @@ class Routing:
     def route_marker_mapping(self, route):
         group_label = ""
 
-        if ":" not in route:
+        if "::" not in route:
             raise RouteException(
                 f'Routing Error: "{route}" does not appear to have a marker. Try "marker:{route}"'
             )
             # print("Add key for ", route)
         else:
-            marker, resource = route.split(":")  # ["images", "lua.png"]
+            marker, resource = route.split("::")  # ["images", "lua.png"]
 
             return Path.resource_path_resolver(
                 marker, resource

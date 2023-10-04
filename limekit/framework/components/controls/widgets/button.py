@@ -1,7 +1,10 @@
 from PySide6.QtWidgets import QPushButton
 from PySide6.QtWidgets import QApplication
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QSize
+from PySide6.QtGui import QIcon
 from limekit.framework.core.engine.parts import EnginePart
+
+from PySide6.QtWidgets import QSizePolicy
 
 
 class Button(QPushButton, EnginePart):
@@ -9,6 +12,7 @@ class Button(QPushButton, EnginePart):
 
     def __init__(self, text="Button"):
         super().__init__()
+
         self.setText(text)
 
         self.clicked.connect(self.__handleOnClick)
@@ -28,15 +32,39 @@ class Button(QPushButton, EnginePart):
 
     def __handleOnClick(self):
         if self.onClickFunc:
-            try:
-                self.onClickFunc(self)
-            except Exception as ex:
-                print(ex)
+            self.onClickFunc(self)
 
     def getText(self):
         return self.text()
+
+    def setText(self, text):
+        super().setText(text)
+
+    def setResizeRule(self, horizontal: str, vertical: str):
+        policies = {
+            "fixed": QSizePolicy.Policy.Fixed,  # ignores all size changing
+            "expanding": QSizePolicy.Policy.Expanding,  # makes sure to expand to all available spaces
+            "ignore": QSizePolicy.Policy.Ignored,  # does nothing
+        }
+
+        horizontal = horizontal.lower()
+        vertical = vertical.lower()
+
+        if (horizontal in policies) and (vertical in policies):
+            size_policy = QSizePolicy(policies.get(horizontal), policies.get(vertical))
+            self.setSizePolicy(size_policy)
 
     # Material properties (classes)
     # danger, warning, success
     def setMatProperty(self, class_):
         self.setProperty("class", class_)
+
+    # Also acts as the padding
+    def setMargins(self, left, top, right, bottom):
+        self.setContentsMargins(left, top, right, bottom)
+
+    def setIcon(self, icon):
+        super().setIcon(QIcon(icon))
+
+    def setIconSize(self, width, height):
+        super().setIconSize(QSize(width, height))

@@ -81,6 +81,13 @@ app = {
     quit = function()
         __quit()
     end,
+    ---- ################## Popups
+    getFont = function(parent)
+        return __fontDialog(parent)
+    end,
+    openFile = function(window)
+        return __openFileDialog(window).display(window)
+    end,
     colorPicker = function()
         return __colorPicker()
     end,
@@ -105,6 +112,7 @@ app = {
     warningPopup = function(parent, title, message)
         return __wPopup(parent, title, message)
     end,
+    ---- ################## Popups
     execute = function(script)
         __lua_execute(script)
     end,
