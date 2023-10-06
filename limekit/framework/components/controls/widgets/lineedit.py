@@ -4,8 +4,8 @@ from limekit.framework.core.engine.parts import EnginePart
 
 # setInputMask("AAAA.AAA.000.000;_"); - limits text to st then ints
 class LineEdit(QLineEdit, EnginePart):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, text=""):
+        super().__init__(text)
 
     def onTextChange(self, func):
         self.textChanged[str].connect(lambda: func(self, self.text()))

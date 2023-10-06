@@ -18,6 +18,13 @@ class GridLayout(QGridLayout, EnginePart):
     def addChild(self, child, xPos, yPos, rows=1, columns=1):
         self.addWidget(child, xPos, yPos, rows, columns)
 
+    def addLayout(self, child, xPos, yPos, rows=1, columns=1):
+        super().addLayout(child, xPos, yPos, rows, columns)
+
+    # Also acts as the padding
+    def setMargins(self, left, top, right, bottom):
+        self.setContentsMargins(left, top, right, bottom)
+
     def addChildren(self, *children):
         for eachChild in children:
             child = eachChild[0]

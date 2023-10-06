@@ -69,7 +69,8 @@ class ComboBox(QComboBox, EnginePart):
         self.setInsertPolicy()
 
     def setItems(self, items):
-        for item in items.values():
+        items = items.values() if not isinstance(items, list) else items
+        for item in items:
             self.addItem(item)
 
     def addItem(self, item):

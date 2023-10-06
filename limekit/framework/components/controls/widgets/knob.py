@@ -25,6 +25,9 @@ class Knob(QDial, EnginePart):
         if self.onValueChangedFunc:
             self.onValueChangedFunc(self, self.getValue())
 
+    def setValue(self, value):
+        super().setValue(value)
+
     def getValue(self):
         return self.value()
 

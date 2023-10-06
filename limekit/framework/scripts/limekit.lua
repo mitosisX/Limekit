@@ -82,11 +82,11 @@ app = {
         __quit()
     end,
     ---- ################## Popups
-    getFont = function(parent)
-        return __fontDialog(parent)
+    getFont = function()
+        return __fontDialog().display()
     end,
-    openFile = function(window)
-        return __openFileDialog(window).display(window)
+    openFile = function(window, title, dir, filters)
+        return __openFileDialog(window).display(window, title, dir, filters)
     end,
     colorPicker = function()
         return __colorPicker()

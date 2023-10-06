@@ -61,5 +61,14 @@ class Label(QLabel, EnginePart):
     def setFontFile(self, font):
         pass
 
-    def setFont(self, font, size):
-        super().setFont(QFont(font, size))
+    def setFont(self, font, size=0):
+        if isinstance(font, QFont):
+            super().setFont(font)
+        else:
+            super().setFont(QFont(font, size))
+
+    def f(self, f):
+        super().setFont(f)
+
+    def setWordWrap(self, enable):
+        super().setWordWrap(enable)

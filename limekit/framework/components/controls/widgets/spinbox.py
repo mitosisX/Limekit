@@ -38,5 +38,11 @@ class SpinBox(QSpinBox, EnginePart):
         if self.onValueChangedFunc:
             self.onValueChangedFunc(self, self.getValue())
 
+    def setPrefix(self, prefix):
+        super().setPrefix(prefix)
+
+    def setValue(self, value):
+        super().setValue(value)
+
     def getValue(self):
         return self.value()

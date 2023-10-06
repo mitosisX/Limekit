@@ -49,7 +49,7 @@ from limekit.framework.components.layouts.grid import GridLayout
 from limekit.framework.components.controls.widgets.spinbox import SpinBox
 from limekit.framework.components.controls.widgets.progressbar import ProgressBar
 from limekit.framework.components.controls.widgets.slider import Slider
-from limekit.framework.components.controls.widgets.textedit import TextEdit
+from limekit.framework.components.controls.widgets.textfield import TextEdit
 from limekit.framework.components.controls.widgets.listbox import ListBox
 
 from limekit.framework.components.controls.widgets.segmenter import Segmenter

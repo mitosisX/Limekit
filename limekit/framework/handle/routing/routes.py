@@ -172,7 +172,7 @@ class Routing:
 
         if "::" not in route:
             raise RouteException(
-                f'Routing Error: "{route}" does not appear to have a marker. Try "marker:{route}"'
+                f'Routing Error: "{route}" does not appear to have a marker. Try "marker::{route}"'
             )
             # print("Add key for ", route)
         else:

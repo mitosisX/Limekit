@@ -32,5 +32,9 @@ class VerticalLayout(QVBoxLayout, EnginePart):
     def addLayout(self, lay):
         super().addLayout(lay)
 
-    def addElasticity(self, stretch=0):
+    def addExpansion(self, stretch=0):
         self.addStretch(stretch)
+
+    # Also acts as the padding
+    def setMargins(self, left, top, right, bottom):
+        self.setContentsMargins(left, top, right, bottom)

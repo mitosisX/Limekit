@@ -31,3 +31,10 @@ class HorizontalLayout(QHBoxLayout, EnginePart):
     # def addLayouts(self, *layouts):
     #     for layout in layouts:
     #         self.addLayout(layout)
+
+    def addExpansion(self, stretch=0):
+        self.addStretch(stretch)
+
+    # Also acts as the padding
+    def setMargins(self, left, top, right, bottom):
+        self.setContentsMargins(left, top, right, bottom)

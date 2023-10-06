@@ -9,5 +9,11 @@ class ProgressBar(QProgressBar, EnginePart):
     def setProgress(self, _value):
         self.setValue(_value)
 
+    def setRange(self, start, end):
+        super().setRange(start, end)
+
+    def setValue(self, value):
+        super().setValue(value)
+
     def getValue(self):
         return self.value()
