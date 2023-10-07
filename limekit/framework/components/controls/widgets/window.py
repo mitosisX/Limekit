@@ -10,7 +10,7 @@ from limekit.framework.components.controls.dockers.dockerwidget.docking import D
 
 from limekit.framework.core.runner.app import App
 from PySide6.QtGui import QIcon, QCursor, QPixmap
-from PySide6.QtWidgets import QApplication
+from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 # from limekit.framework.handler.plugins.plugin_manager import PluginManager
 
@@ -111,7 +111,7 @@ class Window(QMainWindow, EnginePart):
             return Qt.BottomDockWidgetArea
 
     def getStyles(self):
-        return QStyleFactory.keys()
+        return Converter.to_lua_table(QStyleFactory.keys())
 
     """
     Platform-dependent Styles obtained from getStyles() method

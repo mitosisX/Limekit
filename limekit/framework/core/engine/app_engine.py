@@ -39,6 +39,9 @@ from pyecharts.charts import Bar
 
 from limekit.framework.core.config import settings
 from limekit.framework.core.engine.parts import EnginePart
+
+# Was experiencing circular import in Converter, thats why I am separating the engine for global use
+from limekit.framework.core.engine.global_ import GlobalEngine
 from limekit.framework.handle.scripts.swissknife.converters import Converter
 from limekit.framework.core.runner.app import App
 from limekit.framework.handle.paths.path import Path
@@ -76,6 +79,7 @@ class Engine:
     # Init the JavaScript engine
     def init_lua_engine(self):
         self.engine = LuaRuntime(unpack_returned_tuples=False)
+        GlobalEngine.global_engine = self.engine
 
     def start(self):
         self.fix_vital_dirs()
@@ -276,6 +280,7 @@ class Engine:
             "int": int,
             "tuple": tuple,
             "list": Converter.list_,
+            "lua_table": Converter.lua_list,
             "zip": Converter.zip_,
             # Data types ---------
             "eval": eval,

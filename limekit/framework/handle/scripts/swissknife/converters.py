@@ -2,6 +2,7 @@ import hashlib
 import re
 
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.core.engine.global_ import GlobalEngine
 
 
 class Converter(EnginePart):
@@ -119,11 +120,18 @@ class Converter(EnginePart):
     # over lua's indexing (which starts at 1)
     @classmethod
     def list_(cls, list_items):
+        return GlobalEngine.global_engine.table(list_items)
+
         ret_list = []
         for a in range(len(list_items)):
             ret_list.append(list_items[a + 1])  # + 1 coz lua indexes at 1
 
         return ret_list
+
+    # The method converts any python list to lua table
+    @classmethod
+    def to_lua_table(cls, list_items):
+        return GlobalEngine.global_engine.table(list_items)
 
     @classmethod
     def zip_(cls, arg1, arg2):
