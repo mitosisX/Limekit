@@ -123,7 +123,7 @@ class Window(QMainWindow, EnginePart):
     def setIcon(self, icon):
         self.setWindowIcon(QIcon(icon))
 
-    def addToolbar(self, toolbar: Toolbar):
+    def addToolbar(self, toolbar):
         self.addToolBar(toolbar)
 
     # Unnecessary, yeah! I know! I just disliked having to CamelCase to the end ;-).. I know it doesn't make sense

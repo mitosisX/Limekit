@@ -9,15 +9,29 @@ def setCheckable(bool)
 
 
 class ToolbarButton(QAction, EnginePart):
-    def __init__(self):
-        super().__init__()
+    onClickFunction = None
+
+    def __init__(self, title=""):
+        super().__init__(title)
+
+        if title == "-":
+            self.setSeparator(True)
+
+        self.triggered.connect(self.__handleOnClick)
+
+    def __handleOnClick(self):
+        if self.onClickFunction:
+            self.onClickFunction(self)
+
+    def setText(slelf, text):
+        super().setText(text)
 
     # Using setIcon complains about QIcon()
     def setImage(self, image):
         self.setIcon(QIcon(image))
 
-    def onClick(self, func):
-        self.triggered.connect(lambda: func(self))
+    def setOnClick(self, onClickFunction):
+        self.onClickFunction = onClickFunction
 
     def setTooltip(self, text):
         self.setText(text)

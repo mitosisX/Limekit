@@ -1,6 +1,7 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QComboBox
 from limekit.framework.core.engine.parts import EnginePart
+from PySide6.QtWidgets import QSizePolicy
 
 # setMaxCount - sets maximum ComboBox items limit
 
@@ -85,3 +86,17 @@ class ComboBox(QComboBox, EnginePart):
             data_ = data
 
         super().addItems(data_)
+
+    def setResizeRule(self, horizontal: str, vertical: str):
+        policies = {
+            "fixed": QSizePolicy.Policy.Fixed,  # ignores all size changing
+            "expanding": QSizePolicy.Policy.Expanding,  # makes sure to expand to all available spaces
+            "ignore": QSizePolicy.Policy.Ignored,  # does nothing
+        }
+
+        horizontal = horizontal.lower()
+        vertical = vertical.lower()
+
+        if (horizontal in policies) and (vertical in policies):
+            size_policy = QSizePolicy(policies.get(horizontal), policies.get(vertical))
+            self.setSizePolicy(size_policy)

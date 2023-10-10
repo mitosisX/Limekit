@@ -19,7 +19,6 @@ a project creation script, nor how the virtual env shall work.
 import os
 import sys
 import importlib
-import sqlite3
 from xlsxwriter import Workbook
 
 from playsound import playsound
@@ -258,7 +257,6 @@ class Engine:
             "images": Path.images,
             "misc": Path.misc,
             "__lua_execute": self.execute_from_file,
-            "sqlite3": sqlite3,
             "fake": Faker(),
             "Workbook": Workbook,
             "route": self.routing.fetch_resource,
@@ -280,7 +278,7 @@ class Engine:
             "int": int,
             "tuple": tuple,
             "list": Converter.list_,
-            "lua_table": Converter.lua_list,
+            "lua_table": Converter.to_lua_table,
             "zip": Converter.zip_,
             # Data types ---------
             "eval": eval,

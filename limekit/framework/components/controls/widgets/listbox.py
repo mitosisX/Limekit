@@ -67,6 +67,10 @@ class ListBox(QListWidget, EnginePart):
     def setIconSizes(self, width, height):
         self.setIconSize(QSize(width, height))
 
+    def getItemAt(self, at):
+        item = self.item(at)
+        return item.text() if item else None
+
     def clearItems(self):
         self.clear()
 

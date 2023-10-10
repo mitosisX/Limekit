@@ -25,6 +25,11 @@
 *7. Dialogs
     - Should return as such: res, text = app.questionPopup(...)
 
+        Projects 
+
+    1. DB Browser
+    2. Notepad
+
     
 
 2. Determine whether the app is being run in "iDE" or build mode (after freeze)

@@ -1,16 +1,30 @@
-import PySide6.QtCore
-from PySide6.QtWidgets import QMenu
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QAction
+from PySide6.QtGui import QPixmap, QFont
 from limekit.framework.core.engine.parts import EnginePart
-from PySide6.QtCore import QObject, QEvent
 
 
-class MenuItem(QMenu, EnginePart):
-    def __init__(self, title):
-        super().__init__(title)
+class MenuItem(QAction, EnginePart):
+    onClickFunction = None
 
-    def onClick(self, func):
-        self.triggered.connect(lambda: func(self))
+    def __init__(self, title=None):
+        super().__init__(text=title)
+
+        if title == "-":
+            self.setSeparator(True)
+
+        font = QFont()
+        font.setPointSize(8)  # Set the font size to 16 points
+
+        self.setFont(font)
+
+        self.triggered.connect(self.__handleOnClick)
+
+    def __handleOnClick(self):
+        if self.onClickFunction:
+            self.onClickFunction(self)
+
+    def setOnClick(self, onClickFunction):
+        self.onClickFunction = onClickFunction
 
     def setImage(self, path):
         pixmap = QPixmap(path)
@@ -24,3 +38,6 @@ class MenuItem(QMenu, EnginePart):
     def addSubmenus(self, *menuitems):
         for menuitem in menuitems:
             self.addAction(menuitem)
+
+    def setShortcut(self, shortcut):
+        super().setShortcut(shortcut)

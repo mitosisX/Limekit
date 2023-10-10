@@ -32,17 +32,20 @@ class OpenFile(QFileDialog, EnginePart):
 
         for title, extensions in to_py_dict:
             c += 1
-            get_ext_only = ["." + filters[title][x] for x in extensions]
+            get_ext_only = [
+                "." if not "." in filters[title][x] else "" + filters[title][x]
+                for x in extensions
+            ]
             filtered_exts = " ".join(["*{}".format(ext) for ext in get_ext_only])
             required_final = (
                 f"{title} ({filtered_exts}){';;' if c != len(to_py_dict) else ''}"
             )
-            print(required_final)
+            # print(required_final)
             final_filters += required_final
-            if c != len(to_py_dict):
-                pass
-            else:
-                print("DOne")
+            # if c != len(to_py_dict):
+            #     pass
+            # else:
+            #     print("DOne")
 
         return final_filters
 

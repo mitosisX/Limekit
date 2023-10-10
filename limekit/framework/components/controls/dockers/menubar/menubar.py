@@ -1,14 +1,7 @@
 from PySide6.QtWidgets import QMenuBar
+from PySide6.QtGui import QFont
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.components.controls.dockers.menu.menuitem import MenuItem
-
-
-"""
-Structure for creating a Menubar
-    Menubar
-        - Menu                  (File, Edit, View, Help)
-            MenuItems           (New File, Open File, Exit)
-"""
 
 
 class Menubar(QMenuBar, EnginePart):

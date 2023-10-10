@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QLabel
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap, QFont
 from limekit.framework.core.engine.parts import EnginePart
+from PySide6.QtWidgets import QSizePolicy
 
 #   Alignments
 # 1. Qt.AlignLeft
@@ -72,3 +73,20 @@ class Label(QLabel, EnginePart):
 
     def setWordWrap(self, enable):
         super().setWordWrap(enable)
+
+    def setCompanion(self, companion):
+        self.setBuddy(companion)
+
+    def setResizeRule(self, horizontal: str, vertical: str):
+        policies = {
+            "fixed": QSizePolicy.Policy.Fixed,  # ignores all size changing
+            "expanding": QSizePolicy.Policy.Expanding,  # makes sure to expand to all available spaces
+            "ignore": QSizePolicy.Policy.Ignored,  # does nothing
+        }
+
+        horizontal = horizontal.lower()
+        vertical = vertical.lower()
+
+        if (horizontal in policies) and (vertical in policies):
+            size_policy = QSizePolicy(policies.get(horizontal), policies.get(vertical))
+            self.setSizePolicy(size_policy)

@@ -68,3 +68,7 @@ class Button(QPushButton, EnginePart):
 
     def setIconSize(self, width, height):
         super().setIconSize(QSize(width, height))
+
+    # Makes the button loose all boarders and appear more like a Label until click
+    def setFlat(self, flat):
+        super().setFlat(flat)

@@ -8,7 +8,7 @@ class Docker(QDockWidget, EnginePart):
     name = "Dock"
 
     def __init__(self, title="Dock", parent=None):
-        super().__init__(parent=parent)
+        super().__init__(title)
 
         self.widget = QWidget()
         self.setWidget(self.widget)

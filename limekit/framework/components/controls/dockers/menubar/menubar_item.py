@@ -1,5 +1,4 @@
-from PySide6.QtGui import QAction
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QAction, QPixmap
 from limekit.framework.core.engine.parts import EnginePart
 
 """
@@ -9,8 +8,8 @@ To make appear as separator, include empty string or dash '-'
 """
 
 
-class MenuItem(QAction, EnginePart):
-    def __init__(self, title=None):
+class MenuItem(QAction):
+    def __init__(self, title=""):
         super().__init__(text=title)
 
         if title == "" or title == "-":

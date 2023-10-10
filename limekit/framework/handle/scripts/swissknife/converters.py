@@ -129,9 +129,19 @@ class Converter(EnginePart):
         return ret_list
 
     # The method converts any python list to lua table
+    # for some reason, just returning the lua table doesn't work as expected
+    # the only way is to make index of 1
     @classmethod
     def to_lua_table(cls, list_items):
-        return GlobalEngine.global_engine.table(list_items)
+        return GlobalEngine.global_engine.table(list_items)[1]
+
+    @classmethod
+    def table(cls):
+        return GlobalEngine.global_engine.table()
+
+    @classmethod
+    def table_from(cls, list_):
+        return GlobalEngine.global_engine.table_from(list_)
 
     @classmethod
     def zip_(cls, arg1, arg2):
