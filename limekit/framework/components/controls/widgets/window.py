@@ -11,6 +11,7 @@ from limekit.framework.components.controls.dockers.dockerwidget.docking import D
 from limekit.framework.core.runner.app import App
 from PySide6.QtGui import QIcon, QCursor, QPixmap
 from limekit.framework.handle.scripts.swissknife.converters import Converter
+import lupa
 
 # from limekit.framework.handler.plugins.plugin_manager import PluginManager
 
@@ -22,20 +23,33 @@ class Window(QMainWindow, EnginePart):
     onCloseEvent = None
     onResizeEvent = None
 
-    def __init__(self, title="Limekit - lua framework", size=True):
+    @lupa.unpacks_lua_table
+    def __init__(self, kwargs):
         super().__init__()
+
+        if "title" in kwargs:
+            self.setTitle(kwargs["title"])
+        else:
+            self.setTitle("Limekit - lua framework")
+
+        if "size" in kwargs:
+            try:
+                width, height = kwargs["size"].values()
+                self.setSize(width, height)
+            except ValueError as ex:
+                self.setSize(500, 500)
+
+                print("Error: Not all sizes provided. Using {500, 500}")
+        else:
+            self.setSize(500, 500)
 
         self.widget = QWidget()
 
         self.setCentralWidget(self.widget)
 
-        if size:
-            self.setSize(300, 300)
-
-        self.setTitle(title)
-
         self.center()
         self.setAnimated(True)
+        
 
     """
     This method only overrides the cursor for the MainWindow due to the fact that overriding the whole
@@ -194,3 +208,10 @@ class Window(QMainWindow, EnginePart):
 
     def show(self):
         super().show()
+
+    # Type: Any QtWidget
+    # Text: visible text on that QtWidget
+    def findChild(self, type_, text):
+        new_action = super().findChild(type_, text)
+        if new_action:
+            new_action.setText("Clicked New")

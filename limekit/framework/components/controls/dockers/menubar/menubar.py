@@ -1,12 +1,21 @@
 from PySide6.QtWidgets import QMenuBar
 from PySide6.QtGui import QFont
 from limekit.framework.core.engine.parts import EnginePart
+
+from limekit.framework.components.controls.dockers.menu.menu import Menu
 from limekit.framework.components.controls.dockers.menu.menuitem import MenuItem
+import lupa
+
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import QMenu
+
+# from PySide6.QtGui import QAction
+# from PySide6.QtWidgets import QMenu
 
 
 class Menubar(QMenuBar, EnginePart):
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
+    def __init__(self):
+        super().__init__(parent=None)
 
     # menus
     # type: Menu
@@ -16,6 +25,42 @@ class Menubar(QMenuBar, EnginePart):
     def addMenuItems(self, *menus):
         for menu in menus:
             self.addMenu(menu)
+
+    def buildFromTemplate(self, template):
+        self.fromTemplate(template, self)
+
+    def fromTemplate(self, items, parent):
+        for item in items.values():
+            if "submenu" in item:
+                submenu = Menu(item["label"])
+                parent.addMenu(submenu)
+                self.fromTemplate(item["submenu"], submenu)
+            else:
+                action = MenuItem(item["label"])
+                if "accelerator" in item:
+                    action.setShortcut(item["accelerator"])
+                # action.triggered.connect(item["click"])
+                parent.addAction(action)
+
+    def buildFromTemplate__(self, items, parent):
+        for item in items.values():
+            if "submenu" in item:
+                # submenu here is of type DropMenu
+                submenu = Menu(item["label"])
+                # print(submenu)
+                parent.addMenuItem(submenu)
+                if parent != self:
+                    self.addMenuItem(parent)
+
+                self.buildFromTemplate_(item["submenu"], submenu)
+            else:
+                # action is of type
+                action = MenuItem(item["label"])
+
+                if "accelerator" in item:
+                    action.setShortcut(item["accelerator"])
+                # action.triggered.connect(item["click"])
+                parent.addMenuItem(action)
 
     # This method isn't working, total waste of time
     def create_menu(self, menu_structure):

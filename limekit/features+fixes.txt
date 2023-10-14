@@ -42,9 +42,21 @@ Such emptiness!
 FontComboBox()
 app.openFile()
 
-    Features
+    Examples -===================
 
-1. 
+1. Timer
+
+    Features -------------------===========
+
+1. use lua table structure for creating most widgets
+2. Electron-js menu create from template
+    - Check "qute" library; menuFromDictionary
+3. MVC
+4. Threading
+5. Logging
+    - https://github.com/Delgan/loguru
+6. Delegates
+    - QStyledItemDelegate
 
     Important
 

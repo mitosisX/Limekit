@@ -2,13 +2,12 @@ from PySide6.QtWidgets import QMenu
 from limekit.framework.core.engine.parts import EnginePart
 
 # from limekit.framework.components.controls.dockers.menubar.menubar_item import MenuItem
-from limekit.framework.components.controls.dockers.menubar.menubar_item import MenuItem
 
 
 # Contains an arrow on it's side to show that it contains submenus
 class Menu(QMenu, EnginePart):
-    def __init__(self, title=None, parent=None):
-        super().__init__(title=title, parent=parent)
+    def __init__(self, title=None):
+        super().__init__(title=title, parent=None)
 
     # menuitems
     # type: Menu
@@ -17,21 +16,22 @@ class Menu(QMenu, EnginePart):
             self.addAction(menu)
 
     def addMenuItem(self, menu):
+        # print(menu.name)
         self.addAction(menu)
 
     def addDropMenu(self, menu):
         self.addMenu(menu)
 
     # To avoid redundancy in addMenuItem and addMenuItems, this functions shall handle all logic
-    def __determine_menutype_add_action(self, menu):
-        if isinstance(menu, Menu):
-            # print("Menu")
-            self.addAction(menu)
-        if isinstance(menu, MenuItem):
-            print("MenuItem")
+    # def __determine_menutype_add_action(self, menu):
+    #     if isinstance(menu, Menu):
+    #         # print("Menu")
+    #         self.addAction(menu)
+    #     if isinstance(menu, MenuItem):
+    #         print("MenuItem")
 
-            self.addAction(menu)
-        # print(type(menu))
+    #         self.addAction(menu)
+    # print(type(menu))
 
     """
     Build menu from JSON template structure
