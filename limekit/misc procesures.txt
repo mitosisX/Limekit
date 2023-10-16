@@ -1,0 +1,11 @@
+        Installation
+
+pip install .
+
+or activate virtual then install
+or ...\limekit_env\Scripts\python.exe -m pip install .
+
+        Changes to be considered
+
+- Commented out "set_eventloop" method to prevent eventloop
+    * Interferred with the project-runner's QApplication
