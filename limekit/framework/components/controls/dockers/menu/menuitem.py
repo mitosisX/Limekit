@@ -6,8 +6,8 @@ from limekit.framework.core.engine.parts import EnginePart
 class MenuItem(QAction, EnginePart):
     onClickFunction = None
 
-    def __init__(self, title=None):
-        super().__init__(text=title)
+    def __init__(self, title=None, parent=None):
+        super().__init__(text=title, parent=parent)
 
         if title == "-":
             self.setSeparator(True)
@@ -30,7 +30,7 @@ class MenuItem(QAction, EnginePart):
         pixmap = QPixmap(path)
         self.setIcon(pixmap)
 
-    def addSubmenu(self, menuitem):
+    def addMenuItem(self, menuitem):
         self.addAction(menuitem)
 
     # namespace: core.controls.dockers.menu.menuitems

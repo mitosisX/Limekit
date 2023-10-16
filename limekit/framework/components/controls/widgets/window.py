@@ -39,17 +39,32 @@ class Window(QMainWindow, EnginePart):
             except ValueError as ex:
                 self.setSize(500, 500)
 
-                print("Error: Not all sizes provided. Using {500, 500}")
+                # print("Error: Not all sizes provided. Using {500, 500}")
         else:
             self.setSize(500, 500)
+
+        if "location" in kwargs:
+            location = kwargs["location"]
+            pos = len(location)
+
+            if pos == 2:
+                x, y = location.values()
+                print(x, y)
+                self.move(x, y)
+        else:
+            self.center()
+
+        if "icon" in kwargs:
+            self.setIcon(kwargs["icon"])
+        else:
+            # set default icon
+            pass
 
         self.widget = QWidget()
 
         self.setCentralWidget(self.widget)
 
-        self.center()
         self.setAnimated(True)
-        
 
     """
     This method only overrides the cursor for the MainWindow due to the fact that overriding the whole
@@ -184,7 +199,7 @@ class Window(QMainWindow, EnginePart):
         self.onShownEvent = func
 
     def showEvent(self, event):
-        self.center()
+        # self.center()
         super().showEvent(event)
         if self.onShownEvent:
             self.onShownEvent(self)

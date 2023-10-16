@@ -14,12 +14,17 @@ from PySide6.QtWidgets import QMenu
 
 
 class Menubar(QMenuBar, EnginePart):
+    objects = {}
+
     def __init__(self):
         super().__init__(parent=None)
 
     # menus
     # type: Menu
     def addMenuItem(self, menu):
+        self.addAction(menu)
+
+    def addDropMenu(self, menu):
         self.addMenu(menu)
 
     def addMenuItems(self, *menus):
@@ -31,16 +36,35 @@ class Menubar(QMenuBar, EnginePart):
 
     def fromTemplate(self, items, parent):
         for item in items.values():
+            label = item["label"]
             if "submenu" in item:
-                submenu = Menu(item["label"])
-                parent.addMenu(submenu)
+                submenu = Menu(label)
+                parent.addDropMenu(submenu)
                 self.fromTemplate(item["submenu"], submenu)
+
+                # self.addToObject(label, submenu)
             else:
-                action = MenuItem(item["label"])
+                # label = item["label"]
+                action = MenuItem(label, self)
+
+                if "-" in label:
+                    self.addSeparator()
+
                 if "accelerator" in item:
                     action.setShortcut(item["accelerator"])
-                # action.triggered.connect(item["click"])
-                parent.addAction(action)
+
+                if "click" in item:
+                    action.triggered.connect(item["click"])
+
+                if "icon" in item:
+                    action.setImage(item["icon"])
+
+                # self.addToObject(label, action)
+
+                parent.addMenuItem(action)
+
+    def addToObject(self, name, obj):
+        self.objects.update(name, obj)
 
     def buildFromTemplate__(self, items, parent):
         for item in items.values():

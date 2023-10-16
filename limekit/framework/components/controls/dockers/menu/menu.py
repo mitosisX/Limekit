@@ -6,8 +6,8 @@ from limekit.framework.core.engine.parts import EnginePart
 
 # Contains an arrow on it's side to show that it contains submenus
 class Menu(QMenu, EnginePart):
-    def __init__(self, title=None):
-        super().__init__(title=title, parent=None)
+    def __init__(self, title=None, parent=None):
+        super().__init__(title=title, parent=parent)
 
     # menuitems
     # type: Menu
