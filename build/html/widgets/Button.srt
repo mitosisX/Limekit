@@ -1,5 +1,0 @@
-Button Widget
-=============
-
-.. automodule:: limekit.widgets.button
-   :members:

@@ -19,6 +19,9 @@ class MenuItem(QAction, EnginePart):
 
         self.triggered.connect(self.__handleOnClick)
 
+    def setText(self, text):
+        super().setText(text)
+
     def __handleOnClick(self):
         if self.onClickFunction:
             self.onClickFunction(self)

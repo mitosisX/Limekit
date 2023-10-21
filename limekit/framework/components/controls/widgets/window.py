@@ -24,7 +24,7 @@ class Window(QMainWindow, EnginePart):
     onResizeEvent = None
 
     @lupa.unpacks_lua_table
-    def __init__(self, kwargs):
+    def __init__(self, kwargs={}):
         super().__init__()
 
         if "title" in kwargs:
@@ -199,7 +199,7 @@ class Window(QMainWindow, EnginePart):
         self.onShownEvent = func
 
     def showEvent(self, event):
-        # self.center()
+        self.center()
         super().showEvent(event)
         if self.onShownEvent:
             self.onShownEvent(self)

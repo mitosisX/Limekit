@@ -1,5 +1,14 @@
         Installation
 
+Firstly, install pyarmor for obfuscation
+    - Before every install, perform >> pyarmor gen .
+
+    When one or packages can't install from cache
+
+perform >> pip install -r requirements.txt
+
+    Otherwise
+
 pip install .
 
 or activate virtual then install
@@ -7,5 +16,6 @@ or ...\limekit_env\Scripts\python.exe -m pip install .
 
         Changes to be considered
 
+FIXED: uncommented
 - Commented out "set_eventloop" method to prevent eventloop
     * Interferred with the project-runner's QApplication

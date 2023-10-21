@@ -1,9 +1,9 @@
 from limekit.framework.handle.theming.modern.theme import ModernStyle
 from limekit.framework.handle.theming.material.theme import MaterialStyle
 from limekit.framework.handle.theming.misc.theme import MiscellaneousStyle
+from limekit.framework.handle.theming.darklight.theme import DarkLight
 
 from limekit.framework.core.engine.parts import EnginePart
-from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
 class Theme(EnginePart):
@@ -19,6 +19,8 @@ class Theme(EnginePart):
             return ModernStyle()
         elif provided_theme == "misc":
             return MiscellaneousStyle()
+        elif provided_theme == "darklight":
+            return DarkLight()
 
     # Depending on the theme selected, apply particular theme name
     def setTheme(self, theme=""):

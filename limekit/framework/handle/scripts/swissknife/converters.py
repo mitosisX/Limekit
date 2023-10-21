@@ -140,8 +140,8 @@ class Converter(EnginePart):
         return GlobalEngine.global_engine.table()
 
     @classmethod
-    def table_from(cls, list_):
-        return GlobalEngine.global_engine.table_from(list_)
+    def table_from(cls, *list_):
+        return GlobalEngine.global_engine.table_from(*list_)
 
     @classmethod
     def zip_(cls, arg1, arg2):

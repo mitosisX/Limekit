@@ -42,7 +42,6 @@ class Menubar(QMenuBar, EnginePart):
                 parent.addDropMenu(submenu)
                 self.fromTemplate(item["submenu"], submenu)
 
-                # self.addToObject(label, submenu)
             else:
                 # label = item["label"]
                 action = MenuItem(label, self)
@@ -50,8 +49,8 @@ class Menubar(QMenuBar, EnginePart):
                 if "-" in label:
                     self.addSeparator()
 
-                if "accelerator" in item:
-                    action.setShortcut(item["accelerator"])
+                if "accelerator" in item or "shortcut" in item:
+                    action.setShortcut(item["accelerator"] or item["shortcut"])
 
                 if "click" in item:
                     action.triggered.connect(item["click"])
@@ -59,12 +58,16 @@ class Menubar(QMenuBar, EnginePart):
                 if "icon" in item:
                     action.setImage(item["icon"])
 
-                # self.addToObject(label, action)
+                if "name" in item:
+                    self.addToObject(item["name"], action)
 
                 parent.addMenuItem(action)
 
     def addToObject(self, name, obj):
-        self.objects.update(name, obj)
+        self.objects.update({name: obj})
+
+    def findChild(self, child):
+        return self.objects[child] if self.objects.get(child) else None
 
     def buildFromTemplate__(self, items, parent):
         for item in items.values():

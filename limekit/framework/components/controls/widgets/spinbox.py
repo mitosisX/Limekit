@@ -44,5 +44,8 @@ class SpinBox(QSpinBox, EnginePart):
     def setValue(self, value):
         super().setValue(value)
 
+    def setRange(self, start, end):
+        super().setRange(start, end)
+
     def getValue(self):
         return self.value()

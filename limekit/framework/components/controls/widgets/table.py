@@ -199,7 +199,8 @@ class Table(QTableWidget, EnginePart):
         for item in selected_items:
             row, column = item
 
-            print(TableItem(self.getItemAt(row, column)).setBackgroundHex("#fff"))
+            print(row, " ", column)
+            # print(TableItem(self.getItemAt(row, column)))  # .setBackgroundHex("#fff"))
             # cells.append(TableItem(item))
 
         return cells
@@ -212,4 +213,4 @@ class Table(QTableWidget, EnginePart):
             return None
 
     def setSpan(self, f):
-        self.setSpan(1, 2, 2, 1)
+        super().setSpan(1, 2, 2, 1)

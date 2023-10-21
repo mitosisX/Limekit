@@ -30,6 +30,8 @@
     1. DB Browser
     2. Notepad
 
+8. app.json
+    - replace: "lua_require" - "requires
     
 
 2. Determine whether the app is being run in "iDE" or build mode (after freeze)

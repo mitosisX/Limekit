@@ -92,7 +92,7 @@ class Engine:
 
         self.execute_vital_lua()  # Execute limekit.lua to enable app access
         self.execute_main_lua()  # execute user entry point file
-        # self.set_eventloop()  # Set the PySide6 mainloop running. VITAL!!!!!!
+        self.set_eventloop()  # Set the PySide6 mainloop running. VITAL!!!!!!
 
     def init_routing_system(self):
         project_file = Path.project_file()

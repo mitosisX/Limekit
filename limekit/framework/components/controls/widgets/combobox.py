@@ -52,12 +52,19 @@ class ComboBox(QComboBox, EnginePart):
 
         self.addItem(icon, text)
 
+    def addImageItem(self, data):
+        values = data.values()
+        text = values[1]
+        icon = QIcon(values[2])
+
+        super().addItem(icon, text)
+
     def addImageItems(self, data):
         for values in data.values():
             text = values[1]
             icon = QIcon(values[2])
 
-            self.addItem(icon, text)
+            super().addItem(icon, text)
 
     # QComboBox.NoInsert	Performs no insert.
     # QComboBox.InsertAtTop	Inserts as first item.

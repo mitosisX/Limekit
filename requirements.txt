@@ -1,5 +1,6 @@
 PySide6
 pyqtdarktheme
+pyarmor
 PySide2
 qdarkstyle
 qt_material

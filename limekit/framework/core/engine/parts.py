@@ -10,5 +10,5 @@ class EnginePart:
     name = ""
     premium = False  # To be used for license restrictions
 
-    # def __str__(self):
-    #     return "Limekit Lua Framework"
+    def __str__(self):
+        return "Limekit Lua Framework"
