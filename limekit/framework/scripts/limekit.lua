@@ -85,6 +85,9 @@ app = {
     getFont = function()
         return __fontDialog().display()
     end,
+    saveFile = function(window, title, dir, filters)
+        return __saveFileDialog(window).display(window, title, dir, filters)
+    end,
     openFile = function(window, title, dir, filters)
         return __openFileDialog(window).display(window, title, dir, filters)
     end,

@@ -73,15 +73,6 @@ class Converter(EnginePart):
             return ex
 
     @classmethod
-    def test(cls, location, name="", age=None):
-        if location:
-            print(location)
-        if name:
-            print(name)
-        if age:
-            print(age)
-
-    @classmethod
     def hex_to_rgb(cls, hex):
         hex = hex.lstrip("#")
         hlen = len(hex)
@@ -99,8 +90,8 @@ class Converter(EnginePart):
             print(exception)
 
     @classmethod
-    def string_split(cls, string, delimeter):
-        return list(string.split(delimeter))
+    def str_split(cls, string, delimeter):
+        return cls.table_from(*string.split(delimeter))
 
     # redefining some of the in-built python methods
 
@@ -146,26 +137,3 @@ class Converter(EnginePart):
     @classmethod
     def zip_(cls, arg1, arg2):
         return list(zip(cls.list_(arg1), cls.list_(arg2)))
-
-    @classmethod
-    def next_dna_strand(cls, dna: str) -> str:
-        """
-        https://en.wikipedia.org/wiki/DNA
-        Returns the second side of a DNA strand
-
-        >>> dna("GCTA")
-        'CGAT'
-        >>> dna("ATGC")
-        'TACG'
-        >>> dna("CTGA")
-        'GACT'
-        >>> dna("GFGG")
-        Traceback (most recent call last):
-            ...
-        ValueError: Invalid Strand
-        """
-
-        if len(re.findall("[ATCG]", dna)) != len(dna):
-            raise ValueError("Invalid Strand")
-
-        return dna.translate(dna.maketrans("ATCG", "TAGC"))

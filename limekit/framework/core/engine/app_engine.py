@@ -75,9 +75,22 @@ class Engine:
 
         self.engine = None  # holds the lua engine
 
+    # These shall serve as property access constraints
+    def _getter_restric(self, obj, attr_name):
+        if attr_name != "name":
+            return getattr(obj, attr_name)
+
+    def _setter_restric(self, obj, attr_name, value):
+        if attr_name != "put":
+            setattr(obj, attr_name, value)
+            return
+
     # Init the JavaScript engine
     def init_lua_engine(self):
-        self.engine = LuaRuntime(unpack_returned_tuples=False)
+        self.engine = LuaRuntime(
+            unpack_returned_tuples=False,
+            # attribute_handlers=(self._getter_restric, self._setter_restric),
+        )
         GlobalEngine.global_engine = self.engine
 
     def start(self):
@@ -264,13 +277,9 @@ class Engine:
             "Bar": Bar,
             # "requests": requests,
             # "BeautifulSoup": BeautifulSoup,
-            "py_getatrr": self.py_getattr,
-            "py_getitem": self.py_getitem,
             # "pandas": pandas,
-            "py_params": Converter.py_kwargs,
-            "py_indexing": Converter.py_indexing,
             "len": len,
-            "dir": dir,
+            # "dir": dir,
             "print": print,
             # --------- Data types
             "str": str,
@@ -309,12 +318,6 @@ class Engine:
     
     PS. Haven't yet met anything requiring py_getitem yet
     """
-
-    def py_getattr(self, py_obj):
-        return lupa.as_attrgetter(py_obj)
-
-    def py_getitem(self, py_obj):
-        return lupa.as_itemgetter(py_obj)
 
     def load_classes(self, files):
         # all_instances = {}

@@ -74,7 +74,7 @@ class ComboBox(QComboBox, EnginePart):
     # QComboBox.InsertBeforeCurrent	Inserts before the current item.
     # QComboBox.InsertAlphabetically	Inserts in alphabetical order.
     def setInsertOrder(self, order):
-        self.setInsertPolicy()
+        self.setInsertPolicy(QComboBox.InsertAlphabetically)
 
     def setItems(self, items):
         items = items.values() if not isinstance(items, list) else items

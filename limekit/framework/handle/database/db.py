@@ -5,7 +5,7 @@ from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 class Sqlite3(EnginePart):
     def __init__(self, db=""):
-        if not db:
+        if db == ":memory:":
             self.connection = sqlite3.connect(":memory:")
         else:
             self.connection = sqlite3.connect(db)
@@ -37,11 +37,11 @@ class Sqlite3(EnginePart):
 
         # Iterate through the Python list of lists and add them to the Lua table
         for sublist in fetched_data:
-            lua_table.append(Converter.table_from(sublist))
+            lua_table.append(sublist)
 
         # print(lua_table)
 
-        return Converter.table_from(lua_table)
+        return Converter.table_from(*lua_table)
 
     # The result is always like (1,). What's the tuple for anyway?
     def fetchOne(self):

@@ -22,7 +22,7 @@
 
 6. Dir watcher
 
-*7. Dialogs
+*7. Dialogs                                             ********* DONE *********
     - Should return as such: res, text = app.questionPopup(...)
 
         Projects 
@@ -32,6 +32,8 @@
 
 8. app.json
     - replace: "lua_require" - "requires
+
+9. Temp dir and files
     
 
 2. Determine whether the app is being run in "iDE" or build mode (after freeze)

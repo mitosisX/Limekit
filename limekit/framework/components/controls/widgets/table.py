@@ -4,6 +4,7 @@ from limekit.framework.components.controls.widgets.tableitem import TableItem
 from PySide6.QtWidgets import QTableWidget, QTableWidgetItem, QAbstractItemView
 from PySide6.QtCore import Qt, QItemSelection
 from PySide6.QtGui import QPixmap, QIcon
+from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 """
 To set the number of columns of available
@@ -134,11 +135,25 @@ class Table(QTableWidget, EnginePart):
     def setCellChild(self, row, column, child):
         self.setCellWidget(row, column, child)
 
+    # Automatically resize all columns to fit content length
+    def setAutoColumnResize(self):
+        self.resizeColumnsToContents()
+
+    def setAutoRowResize(self):
+        self.resizeRowsToContents()
+
+    # Set a specified row to resize to content length
+    def setRowFitsContent(self, row):
+        self.resizeRowToContents(row)
+
+    def setColumnFitsContent(self, column):
+        self.resizeColumnToContents(column)
+
     def getRowsCount(self):
         return self.rowCount()
 
-    def deleteRows(self, rows):
-        self.removeRow(rows)
+    def deleteRow(self, row):
+        self.removeRow(row)
 
     def setCellsEditable(self, editable=True):
         self.setEditTriggers(
@@ -185,10 +200,7 @@ class Table(QTableWidget, EnginePart):
 
     def getItemAt(self, row, column):
         item = self.item(row, column)
-        if item:
-            return TableItem(item)
-        else:
-            return None
+        return TableItem(item) or None
 
     def getSelectedCells(self):
         cells = []
@@ -199,7 +211,7 @@ class Table(QTableWidget, EnginePart):
         for item in selected_items:
             row, column = item
 
-            print(row, " ", column)
+            return Converter.table_from([row, column])
             # print(TableItem(self.getItemAt(row, column)))  # .setBackgroundHex("#fff"))
             # cells.append(TableItem(item))
 
@@ -207,10 +219,8 @@ class Table(QTableWidget, EnginePart):
 
     def getSelectedCell(self):
         item = self.currentItem()
-        if item:
-            return TableItem(item)
-        else:
-            return None
+        return TableItem(item) or None
 
+    # research what it does
     def setSpan(self, f):
         super().setSpan(1, 2, 2, 1)

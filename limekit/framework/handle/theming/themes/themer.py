@@ -1,7 +1,7 @@
-from limekit.framework.handle.theming.modern.theme import ModernStyle
-from limekit.framework.handle.theming.material.theme import MaterialStyle
-from limekit.framework.handle.theming.misc.theme import MiscellaneousStyle
-from limekit.framework.handle.theming.darklight.theme import DarkLight
+from limekit.framework.handle.theming.themes.modern.theme import ModernStyle
+from limekit.framework.handle.theming.themes.material.theme import MaterialStyle
+from limekit.framework.handle.theming.themes.misc.theme import MiscellaneousStyle
+from limekit.framework.handle.theming.themes.darklight.theme import DarkLight
 
 from limekit.framework.core.engine.parts import EnginePart
 
