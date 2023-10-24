@@ -53,8 +53,7 @@ app.openFile()
     Features -------------------===========
 
 1. use lua table structure for creating most widgets
-2. Electron-js menu create from template
-    - Check "qute" library; menuFromDictionary
+2. Electron-js menu create from template                    ********* DONE *********
 3. MVC
 4. Threading
 5. Logging

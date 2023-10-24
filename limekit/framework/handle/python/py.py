@@ -18,7 +18,7 @@ class Python(EnginePart):
             return ex
 
     @classmethod
-    def str_split(cls, string, delimeter):
+    def str_split(cls, string, delimeter=","):
         return Converter.table_from(string.split(delimeter))
 
     @classmethod
@@ -26,9 +26,9 @@ class Python(EnginePart):
         return lupa.unpacks_lua_table(method, the_kwags)
 
     @classmethod
-    def py_getattr(cls, py_obj):
+    def getattr(cls, py_obj):
         return lupa.as_attrgetter(py_obj)
 
     @classmethod
-    def py_getitem(cls, py_obj):
+    def getitem(cls, py_obj):
         return lupa.as_itemgetter(py_obj)

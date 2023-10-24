@@ -53,6 +53,7 @@ class Label(QLabel, EnginePart):
 
     def setImage(self, path):
         pixmap = QPixmap(path)
+
         # self.setScaledContents(True)
         self.setPixmap(pixmap)
 

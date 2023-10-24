@@ -24,7 +24,7 @@ def value()
 
 
 class DoubleSpinBox(QDoubleSpinBox, EnginePart):
-    name = "DecimalSpinner"
+    name = "DoubleSpinner"
     onValueChangedFunc = None
 
     def __init__(self):

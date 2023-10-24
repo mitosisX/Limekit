@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QMainWindow
 from PySide6.QtWidgets import QWidget
-from PySide6.QtWidgets import QStyleFactory
 from PySide6.QtCore import Qt
 
 from limekit.framework.core.engine.parts import EnginePart
@@ -10,7 +9,6 @@ from limekit.framework.components.controls.dockers.dockerwidget.docking import D
 
 from limekit.framework.core.runner.app import App
 from PySide6.QtGui import QIcon, QCursor, QPixmap
-from limekit.framework.handle.scripts.swissknife.converters import Converter
 import lupa
 
 # from limekit.framework.handler.plugins.plugin_manager import PluginManager
@@ -36,6 +34,7 @@ class Window(QMainWindow, EnginePart):
             try:
                 width, height = kwargs["size"].values()
                 self.setSize(width, height)
+                print(width, " ", height)
             except ValueError as ex:
                 self.setSize(500, 500)
 
@@ -138,16 +137,6 @@ class Window(QMainWindow, EnginePart):
             return Qt.TopDockWidgetArea
         elif selected_area == "bottom":
             return Qt.BottomDockWidgetArea
-
-    def getStyles(self):
-        return Converter.to_lua_table(QStyleFactory.keys())
-
-    """
-    Platform-dependent Styles obtained from getStyles() method
-    """
-
-    def setStyle(self, style):
-        App.app.setStyle(style)
 
     def setIcon(self, icon):
         self.setWindowIcon(QIcon(icon))

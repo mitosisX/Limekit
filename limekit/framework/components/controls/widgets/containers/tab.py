@@ -3,6 +3,8 @@ from PySide6.QtGui import QPixmap
 
 from limekit.framework.core.engine.parts import EnginePart
 
+from PySide6.QtGui import QIcon
+
 """
 Functions available in PySide6 documentation
     - Only those I could understand weren't removed from below
@@ -46,8 +48,8 @@ class Tab(QTabWidget, EnginePart):
 
             self.addTab(tab, title)
 
-    def addTabItem(self, tab, title):
-        self.addTab(tab, title)
+    def addTab(self, tab, title, icon=""):
+        super().addTab(tab, QIcon(icon), title)
 
     def addTabitedm(self, tab, path, title):
         pixmap = QPixmap(path)

@@ -19,3 +19,13 @@ or ...\limekit_env\Scripts\python.exe -m pip install .
 FIXED: uncommented
 - Commented out "set_eventloop" method to prevent eventloop
     * Interferred with the project-runner's QApplication
+
+        working with the code
+
+use "py -m pip install -e ." for "hot reload"
+    - This prevents from running pip install upon every modification
+
+        method unpacking
+
+    for def method(arg1="this", arg2="that") use @lupa.unpacks_lua_table_method
+    to pass **kwargs, use @lupa.unpacks_lua_table

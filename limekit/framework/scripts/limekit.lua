@@ -1,4 +1,13 @@
 app = {
+    -- Global theming ##################
+    getStyles = function()
+        return __appMisc.getStyles()
+    end,
+    setStyle = function(style)
+        __appMisc.setStyle(style)
+    end,
+    -- ################## Global theming
+
     splitString = function(text, delimeter)
         return __converters.string_split(text, delimeter)
     end,

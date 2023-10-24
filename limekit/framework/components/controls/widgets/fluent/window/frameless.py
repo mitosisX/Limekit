@@ -4,7 +4,9 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QApplication, QLabel, QHBoxLayout
 import sys
 
-from limekit.framework.handle.theming.qss.fluent_window.theme import Theme as WindowQss
+from limekit.framework.handle.theming.themes.qss.fluent_window.theme import (
+    Theme as WindowQss,
+)
 
 from qfluentwidgets import (
     MSFluentTitleBar,

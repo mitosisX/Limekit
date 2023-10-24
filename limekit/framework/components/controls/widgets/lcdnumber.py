@@ -5,9 +5,7 @@ from limekit.framework.core.engine.parts import EnginePart
 class LCDNumber(QLCDNumber, EnginePart):
     def __init__(self):
         super().__init__()
-
-    def onClick(self, func):
-        self.clicked.connect(lambda: func(self))
+        self.setSegmentStyle(QLCDNumber.SegmentStyle.Filled)
 
     def setDate(self, date):
         self.dateTimeFromText(date)

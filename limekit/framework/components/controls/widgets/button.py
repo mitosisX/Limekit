@@ -72,3 +72,12 @@ class Button(QPushButton, EnginePart):
     # Makes the button loose all boarders and appear more like a Label until click
     def setFlat(self, flat):
         super().setFlat(flat)
+
+    def setCheckable(self, checkable):
+        super().setCheckable(checkable)
+
+    def isChecked(self):
+        return super().isChecked()
+
+    def setClickAnimation(self):
+        self.animateClick()

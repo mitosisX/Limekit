@@ -1,5 +1,7 @@
 from limekit.framework.core.engine.parts import EnginePart
-from limekit.framework.handle.theming.qss.fluent_window.theme import Theme as WindowQss
+from limekit.framework.handle.theming.themes.qss.fluent_window.theme import (
+    Theme as WindowQss,
+)
 import sys
 from PySide6.QtCore import Qt, QRect, QUrl
 from PySide6.QtGui import (
