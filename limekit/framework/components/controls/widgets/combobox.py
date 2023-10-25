@@ -46,11 +46,11 @@ class ComboBox(QComboBox, EnginePart):
     [images('image'), 'text']
     """
 
-    def addImageItem(self, data):
-        icon = QIcon(data[0])
-        text = data[1]
+    # def addImageItem(self, data):
+    #     icon = QIcon(data[0])
+    #     text = data[1]
 
-        self.addItem(icon, text)
+    #     self.addItem(icon, text)
 
     def addImageItem(self, data):
         values = data.values()

@@ -2,7 +2,7 @@
 # from project Abigail
 #   - Every code I write falls under "project Abigail"
 #
-# This is limekit framework, named after one of Neptune's moon, simply because
+# This is Miranda JS framework, named after one of Neptune's moon, simply because
 # of it's destinct features (uniqueness).
 #
 # 25 November, 2022 (11:25 am) (UTC+02:00) Malawi, Africa
@@ -72,7 +72,7 @@ from limekit.framework.components.controls.dialogs.popups.warning_popup import (
     WarningPopup,
 )
 
-from limekit.framework.handle.theming.themer import Theme
+from limekit.framework.handle.theming.themes.themer import Theme
 from limekit.framework.handle.system.clipboard import Clipboard
 from limekit.framework.handle.system.timer import Timer
 from limekit.framework.handle.system.cmdargs import CMD

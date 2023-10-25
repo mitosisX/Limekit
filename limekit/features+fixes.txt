@@ -35,6 +35,8 @@
 
 9. Temp dir and files
     
+10. Sharing projects
+    - Same as Droidscript; some zip file and extracted to some dir
 
 2. Determine whether the app is being run in "iDE" or build mode (after freeze)
 

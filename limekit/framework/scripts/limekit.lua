@@ -103,9 +103,35 @@ app = {
     colorPicker = function()
         return __colorPicker()
     end,
-    textInput = function(parent, title, message)
-        return __inputDialog(parent, title, message)
+    -- ## Input Dialogs
+    textInput = function(parent, title, label)
+        return __textInputDialog.show(parent, title, label)
     end,
+    multilineInput = function(parent, title, label, content)
+        if not content then
+            content = ""
+        end
+        return __multilineInputDialog.show(parent, title, label, content)
+    end,
+    comboBoxInput = function(parent, title, label, items, index)
+        if not index then
+            index = 0
+        end
+        return __itemInputDialog.show(parent, title, label, items, index)
+    end,
+    integerInput = function(parent, title, label, value, minValues, maxValue, step)
+        if not step then
+            step = 2
+        end
+        return __integerInputDialog.show(parent, title, label, value, minValues, maxValue, step)
+    end,
+    doubleInput = function(parent, title, label, value, minValues, maxValue, step)
+        if not step then
+            step = 2
+        end
+        return __doubleInputDialog.show(parent, title, label, value, minValues, maxValue, step)
+    end,
+    -- ## Input Dialogs
     alert = function(parent, title, message, icon, buttons)
         return __alert(parent, title, message, icon, buttons)
     end,

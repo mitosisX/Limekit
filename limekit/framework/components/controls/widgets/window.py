@@ -34,7 +34,6 @@ class Window(QMainWindow, EnginePart):
             try:
                 width, height = kwargs["size"].values()
                 self.setSize(width, height)
-                print(width, " ", height)
             except ValueError as ex:
                 self.setSize(500, 500)
 

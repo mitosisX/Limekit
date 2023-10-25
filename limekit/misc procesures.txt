@@ -29,3 +29,18 @@ use "py -m pip install -e ." for "hot reload"
 
     for def method(arg1="this", arg2="that") use @lupa.unpacks_lua_table_method
     to pass **kwargs, use @lupa.unpacks_lua_table
+
+            Freezing (building)
+
+        Embedding resources
+
+    - Append "('resource.txt', '.')" to data=[]
+
+    ** Remember to: console=False
+
+    - Create dir for hooks/hook-lupa.py and add to file
+
+            from PyInstaller.utils.hooks import collect_data_files,collect_submodules
+            datas = collect_data_files('lupa', True)
+
+    - Include hookspath=['hooks]

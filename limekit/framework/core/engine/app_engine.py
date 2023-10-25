@@ -1,4 +1,7 @@
 """
+from project Abigail
+    - Every code I write falls under "project Abigail"
+    
             20 March, 2023 8:23 AM (Monday) (UTC+02:00)
 
 The code is a mess, I know.... get over it... or simply fix it ;-)
@@ -11,9 +14,13 @@ The code is a mess, I know.... get over it... or simply fix it ;-)
 
             13 September, 2023 08:43 AM (Wednesday)
 
-The project is going pretty great. Haven't yet released it yet. nor developed
+The project is going pretty great. Haven't yet released it. nor developed
 a project creation script, nor how the virtual env shall work.
 
+            24 October, 2023 14:12 PM (Tuesday)
+            
+I now have the virtual env up and running and able to execute a project creation py file 
+through a batch script; the creation script is half-baked (only able to run a project, nothing else)
 """
 
 import os
