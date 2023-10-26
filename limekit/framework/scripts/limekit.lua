@@ -135,6 +135,9 @@ app = {
     alert = function(parent, title, message, icon, buttons)
         return __alert(parent, title, message, icon, buttons)
     end,
+    errorDialog = function(parent, title, message)
+        __errorDialog(parent, title, message)
+    end,
     aboutPopup = function(parent, title, message)
         return __aPopup(parent, title, message)
     end,
