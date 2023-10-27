@@ -25,10 +25,14 @@ class Window(QMainWindow, EnginePart):
     def __init__(self, kwargs={}):
         super().__init__()
 
-        if "title" in kwargs:
-            self.setTitle(kwargs["title"])
-        else:
-            self.setTitle("Limekit - lua framework")
+        self.setTitle(kwargs["title"]) if "title" in kwargs else self.setTitle(
+            "Limekit - lua framework"
+        )
+
+        # if "title" in kwargs:
+        #     self.setTitle(kwargs["title"])
+        # else:
+        #     self.setTitle("Limekit - lua framework")
 
         if "size" in kwargs:
             try:
@@ -47,16 +51,18 @@ class Window(QMainWindow, EnginePart):
 
             if pos == 2:
                 x, y = location.values()
-                print(x, y)
+
                 self.move(x, y)
         else:
             self.center()
 
-        if "icon" in kwargs:
-            self.setIcon(kwargs["icon"])
-        else:
-            # set default icon
-            pass
+        self.setIcon(kwargs["icon"]) if "icon" in kwargs else None
+
+        # if "icon" in kwargs:
+        #     self.setIcon(kwargs["icon"])
+        # else:
+        #     # set default icon
+        #     pass
 
         self.widget = QWidget()
 

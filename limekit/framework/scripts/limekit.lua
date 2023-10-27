@@ -44,7 +44,7 @@ app = {
     extractZip = function(file, dest)
         return __fileutils.extract_zip_file(file, dest)
     end,
-    checkIsDir = function(path)
+    checkIsFolder = function(path)
         return __fileutils.is_dir(path)
     end,
     checkIfExists = function(path)
@@ -166,7 +166,7 @@ app = {
     listFolder = function(path)
         return __Path.listDir(path)
     end,
-    createDir = function(path)
+    createFolder = function(path)
         __fileutils.make_dirs(path)
     end,
     -- ################## CPU or Sys related

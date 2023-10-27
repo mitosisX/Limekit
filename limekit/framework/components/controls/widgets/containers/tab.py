@@ -18,7 +18,6 @@ def iconSize(self) -> PySide6.QtCore.QSize: ...
 def insertTab(self, index: int, widget: PySide6.QtWidgets.QWidget, arg__3: str) -> int: ...
 def isTabEnabled(self, index: int) -> bool: ...
 def isTabVisible(self, index: int) -> bool: ...
-def removeTab(self, index: int) -> None: ...
 def setCurrentIndex(self, index: int) -> None: ...
 def setIconSize(self, size: PySide6.QtCore.QSize) -> None: ...
 def setMovable(self, movable: bool) -> None: ...
@@ -38,8 +37,18 @@ def tabsClosable(self) -> bool: ...
 
 
 class Tab(QTabWidget, EnginePart):
+    onTabClosingFunc = None
+
     def __init__(self):
         super().__init__()
+        self.tabCloseRequested.connect(self.__handleTabClosing)
+
+    def setOnTabClose(self, onTabClosingFunc):
+        self.onTabClosingFunc = onTabClosingFunc
+
+    def __handleTabClosing(self, index):
+        if self.onTabClosingFunc:
+            self.onTabClosingFunc(self, index)
 
     def addTabs(self, *tabs):
         for eachTab in tabs:
@@ -47,6 +56,30 @@ class Tab(QTabWidget, EnginePart):
             title = eachTab[1]
 
             self.addTab(tab, title)
+
+    def removeTab(self, index):
+        super().removeTab(index)
+
+    def setVisibility(self, index, visibility):
+        self.setTabVisible(index, visibility)
+
+    def setTabsCloseable(self, closeable):
+        super().setTabsClosable(closeable)
+
+    def setPosition(self, position):
+        positions = {
+            "left": QTabWidget.TabPosition.West,
+            "top": QTabWidget.TabPosition.North,
+            "right": QTabWidget.TabPosition.East,
+            "bottom": QTabWidget.TabPosition.South,
+        }
+
+        self.setTabPosition(
+            positions[position] if positions.get(position) else positions["top"]
+        )
+
+    def setTooltip(self, index, tooltip):
+        self.setTabToolTip(index, tooltip)
 
     def addTab(self, tab, title, icon=""):
         super().addTab(tab, QIcon(icon), title)

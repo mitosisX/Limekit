@@ -2,7 +2,7 @@ import os
 import fnmatch
 import limekit
 from limekit.framework.core.engine.parts import EnginePart
-import os
+from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
 class Path(EnginePart):
@@ -42,7 +42,7 @@ class Path(EnginePart):
 
     @classmethod
     def listDir(cls, path):
-        return os.listdir(path)
+        return Converter.table_from(os.listdir(path))
 
     @classmethod
     def walk_dir_get_files(cls, dir, ext=".py"):

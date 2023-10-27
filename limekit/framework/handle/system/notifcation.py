@@ -10,7 +10,7 @@ Remember to call show() for display
 """
 
 
-class Notification(QSystemTrayIcon, EnginePart):
+class SysNotification(QSystemTrayIcon, EnginePart):
     onShownFunc = None
     onClickedFunc = None
 
@@ -44,6 +44,7 @@ class Notification(QSystemTrayIcon, EnginePart):
         }
 
         icon_value = icon_map.get(icon.lower(), QSystemTrayIcon.Information)
+        self.setToolTip("Hello there")
 
         self.showMessage(
             title,

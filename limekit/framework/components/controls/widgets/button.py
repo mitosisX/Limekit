@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QPushButton
-from PySide6.QtWidgets import QApplication
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon
 from limekit.framework.core.engine.parts import EnginePart
 
