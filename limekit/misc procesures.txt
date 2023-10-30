@@ -44,3 +44,16 @@ use "py -m pip install -e ." for "hot reload"
             datas = collect_data_files('lupa', True)
 
     - Include hookspath=['hooks]
+
+            Check if IDE or in Freeze
+
+    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+        print('running in a PyInstaller bundle')
+    else:
+        print('running in a normal Python process')
+
+            Bundling resources
+
+        - Using --onefile works perfectly as the resources get extracted to some TEMP dir
+            * Use --add-data "file1;." flag
+            * Use "os.pathsep" to get OS-dependent separator for the above separation

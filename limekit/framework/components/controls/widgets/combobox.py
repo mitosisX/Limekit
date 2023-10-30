@@ -74,7 +74,7 @@ class ComboBox(QComboBox, EnginePart):
     # QComboBox.InsertBeforeCurrent	Inserts before the current item.
     # QComboBox.InsertAlphabetically	Inserts in alphabetical order.
     def setInsertOrder(self, order):
-        self.setInsertPolicy(QComboBox.InsertAlphabetically)
+        self.setInsertPolicy(QComboBox.InsertPolicy.InsertAlphabetically)
 
     def setItems(self, items):
         items = items.values() if not isinstance(items, list) else items
@@ -94,7 +94,7 @@ class ComboBox(QComboBox, EnginePart):
 
         super().addItems(data_)
 
-    def setResizeRule(self, horizontal: str, vertical: str):
+    def setResizeRule(self, horizontal, vertical):
         policies = {
             "fixed": QSizePolicy.Policy.Fixed,  # ignores all size changing
             "expanding": QSizePolicy.Policy.Expanding,  # makes sure to expand to all available spaces

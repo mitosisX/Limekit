@@ -38,6 +38,12 @@
 10. Sharing projects
     - Same as Droidscript; some zip file and extracted to some dir
 
+11. Context Menus
+
+12. Spacing to layouts
+
+                    -----------------------------
+
 2. Determine whether the app is being run in "iDE" or build mode (after freeze)
 
 Such emptiness!

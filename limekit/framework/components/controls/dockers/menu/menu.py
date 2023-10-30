@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QMenu
 from limekit.framework.core.engine.parts import EnginePart
-
-# from limekit.framework.components.controls.dockers.menubar.menubar_item import MenuItem
+from limekit.framework.components.controls.dockers.menu.menuitem import MenuItem
 
 
 # Contains an arrow on it's side to show that it contains submenus
@@ -37,37 +36,43 @@ class Menu(QMenu, EnginePart):
     Build menu from JSON template structure
     """
 
-    def fromTemplate(self, template):
-        menus = self.create_menu(template)
+    def buildFromTemplate(self, template):
+        self.fromTemplate(template, self)
 
-        for menu in menus:
-            self.addAction(menu)
-        # self.addItem(menus)
+    def fromTemplate(self, items, parent):
+        for item in items.values():
+            label = item["label"]
+            if "submenu" in item:
+                submenu = Menu(label)
+                parent.addDropMenu(submenu)
+                self.fromTemplate(item["submenu"], submenu)
 
-    # This method isn't working
-    def create_menu(self, menu_structure):
-        items = []
-        for item in menu_structure:
-            if "type" in item and item["type"] == "separator":
-                menu_item = MenuItem("Hey")
-                # menu_item.setSeparator(True)
-                items.append(menu_item)
+                if "click" in item:
+                    submenu.triggered.connect(item["click"])
+
+                if "icon" in item:
+                    submenu.setImage(item["icon"])
+
+                if "name" in item:
+                    self.addToObject(item["name"], action)
+
             else:
-                menu_item = MenuItem(item["label"])
-                if "submenu" in item:
-                    submenu_items = self.create_menu(item["submenu"])
-                    for submenu_item in submenu_items:
-                        # items.push(submenu_item)
-                        continue
-                else:
-                    continue
-                    if "click" in item:
-                        menu_item.click = item["click"]
-                    if "accelerator" in item:
-                        menu_item.accelerator = item["accelerator"]
-                    if "role" in item:
-                        menu_item.role = item["role"]
-                items.append(menu_item)
+                # label = item["label"]
+                action = MenuItem(label, self)
 
-        # print(items)
-        return items
+                if "-" in label:
+                    self.addSeparator()
+
+                if "accelerator" in item or "shortcut" in item:
+                    action.setShortcut(item["accelerator"] or item["shortcut"])
+
+                if "click" in item:
+                    action.triggered.connect(item["click"])
+
+                if "icon" in item:
+                    action.setImage(item["icon"])
+
+                if "name" in item:
+                    self.addToObject(item["name"], action)
+
+                parent.addMenuItem(action)

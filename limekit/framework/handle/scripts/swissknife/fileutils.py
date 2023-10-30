@@ -145,7 +145,7 @@ class FileUtils(EnginePart):
         Determine whether the specified path represents an empty directory.
         """
         if not cls.exists(path):
-            return -1
+            return None
         return len(os.listdir(path)) == 0
 
     @classmethod
@@ -154,7 +154,7 @@ class FileUtils(EnginePart):
         Determine whether the specified path represents an empty file.
         """
         if not cls.exists(path):
-            return -1
+            return None
         return cls.get_file_size(path) == 0
 
     @classmethod
@@ -163,7 +163,7 @@ class FileUtils(EnginePart):
         Get the directory size in bytes.
         """
         if not cls.exists(path):
-            return -1
+            return None
         size = os.path.getsize(path)
         return size
 
@@ -181,7 +181,7 @@ class FileUtils(EnginePart):
         If a file already exists at the given path an OSError is raised.
         """
         if cls.is_dir(path):
-            return -1
+            return None
 
         os.makedirs(path, exist_ok=True)
 
@@ -213,7 +213,7 @@ class FileUtils(EnginePart):
                 return True
 
         except FileNotFoundError:
-            return -1
+            return None
 
         # if autodelete:
         #     remove_file(path)
