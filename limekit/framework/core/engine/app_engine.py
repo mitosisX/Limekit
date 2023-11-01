@@ -95,7 +95,7 @@ class Engine:
     # Init the JavaScript engine
     def init_lua_engine(self):
         self.engine = LuaRuntime(
-            unpack_returned_tuples=False,
+            unpack_returned_tuples=True,
             # attribute_handlers=(self._getter_restric, self._setter_restric),
         )
         GlobalEngine.global_engine = self.engine

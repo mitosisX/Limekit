@@ -1,4 +1,7 @@
 app = {
+    weightedGraph = function(...)
+        return __utils.weighted_graph(...)
+    end,
     -- Global theming ##################
     getStyles = function()
         return __appMisc.getStyles()

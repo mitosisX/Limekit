@@ -1,6 +1,7 @@
 import sys
 
 from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import Qt
 
 
 class App:
@@ -14,6 +15,10 @@ class App:
     # Start the mainloop
     @classmethod
     def execute(cls):
+        # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+        # QApplication.setHighDpiScaleFactorRoundingPolicy(
+        #     Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
+        # )
         try:
             sys.exit(cls.app.exec())
         except Exception as ex:

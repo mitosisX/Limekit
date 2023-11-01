@@ -1,6 +1,4 @@
 import hashlib
-import re
-
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.core.engine.global_ import GlobalEngine
 
