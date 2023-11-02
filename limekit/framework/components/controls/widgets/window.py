@@ -186,7 +186,7 @@ class Window(QMainWindow, EnginePart):
         self.move(qr.topLeft())
 
     def getSize(self):
-        return (self.size().width(), self.size().height())
+        return self.size().width(), self.size().height()
 
     # Events ----------------------
     def setOnShown(self, func):

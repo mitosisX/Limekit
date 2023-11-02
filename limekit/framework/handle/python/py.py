@@ -7,8 +7,8 @@ from limekit.framework.handle.scripts.swissknife.converters import Converter
 class Python(EnginePart):
     name = "py"
 
-    @classmethod
-    def str_indexing(cls, input_data, index_spec):
+    @staticmethod
+    def str_indexing(input_data, index_spec):
         try:
             # Evaluate the index_spec to create a slice object
             result = eval(f"'{input_data}'{index_spec}")
@@ -17,18 +17,26 @@ class Python(EnginePart):
         except (TypeError, IndexError, SyntaxError) as ex:
             return ex
 
-    @classmethod
-    def str_split(cls, string, delimeter=","):
+    @staticmethod
+    def str_split(string, delimeter=","):
         return Converter.table_from(string.split(delimeter))
 
-    @classmethod
-    def kwargs(cls, method, *the_kwags):
+    @staticmethod
+    def kwargs(method, *the_kwags):
         return lupa.unpacks_lua_table(method, the_kwags)
 
-    @classmethod
-    def getattr(cls, py_obj):
+    @staticmethod
+    def getattr(py_obj):
         return lupa.as_attrgetter(py_obj)
 
-    @classmethod
-    def getitem(cls, py_obj):
+    @staticmethod
+    def getitem(py_obj):
         return lupa.as_itemgetter(py_obj)
+
+    @staticmethod
+    def table2list(table):
+        return list(table.values())
+
+    @staticmethod
+    def int_range(start, end):
+        return Converter.table_from(list(range(start, end)))

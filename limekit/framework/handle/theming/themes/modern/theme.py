@@ -1,6 +1,5 @@
 import qtmodern.styles
 import qtmodern.windows
-
 from limekit.framework.core.runner.app import App
 
 

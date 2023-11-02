@@ -1,4 +1,4 @@
-from PySide6.QtGui import QAction, QIcon
+from PySide6.QtGui import QAction, QIcon, QPixmap
 from PySide6.QtWidgets import QSystemTrayIcon
 from limekit.framework.core.engine.parts import EnginePart
 import lupa
@@ -17,6 +17,7 @@ class SysNotification(QSystemTrayIcon, EnginePart):
     def __init__(self, image=""):
         super().__init__(QIcon(image))
         self.setVisible(True)
+        self.MessageIcon(QIcon(image))
         # self.activated.connect(self.__handleOnShown) # not working - needs research
         self.messageClicked.connect(self.__handleOnClick)
 

@@ -26,7 +26,7 @@ class ComboBox(QComboBox, EnginePart):
 
         self.currentIndexChanged.connect(self.__handleCurrentIndexChange)
 
-    def onItemSelected(self, onCurrentIndexChangedFunc):
+    def setOnItemSelected(self, onCurrentIndexChangedFunc):
         self.onCurrentIndexChangedFunc = onCurrentIndexChangedFunc
 
     def __handleCurrentIndexChange(self):
