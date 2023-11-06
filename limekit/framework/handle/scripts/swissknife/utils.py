@@ -1,3 +1,4 @@
+import time
 import lupa
 import heapq
 from limekit.framework.core.engine.parts import EnginePart
@@ -20,6 +21,10 @@ class Utils(EnginePart):
         shortest_path, path_cost = graph.dijkstra_algorithm(start_node, end_node)
 
         return Converter.table_from(shortest_path), path_cost
+
+    @classmethod
+    def sleep(cls, seconds):
+        time.sleep(seconds)
 
 
 class WeightedGraph:

@@ -40,3 +40,7 @@ class Python(EnginePart):
     @staticmethod
     def int_range(start, end):
         return Converter.table_from(list(range(start, end)))
+
+    @staticmethod
+    def str_format(string: str, *args):
+        return string.format(*args)

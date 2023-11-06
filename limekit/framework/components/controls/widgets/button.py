@@ -2,15 +2,15 @@ from PySide6.QtWidgets import QPushButton
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.components.gui.supwidget import SupWidget
 
-from PySide6.QtWidgets import QSizePolicy
 
-
-class Button(QPushButton, EnginePart):
+class Button(QPushButton, SupWidget, EnginePart):
     onClickFunc = None
 
     def __init__(self, text="Button"):
         super().__init__()
+        SupWidget.__init__(self, child=self)
 
         self.setText(text)
 
@@ -38,20 +38,6 @@ class Button(QPushButton, EnginePart):
 
     def setText(self, text):
         super().setText(text)
-
-    def setResizeRule(self, horizontal: str, vertical: str):
-        policies = {
-            "fixed": QSizePolicy.Policy.Fixed,  # ignores all size changing
-            "expanding": QSizePolicy.Policy.Expanding,  # makes sure to expand to all available spaces
-            "ignore": QSizePolicy.Policy.Ignored,  # does nothing
-        }
-
-        horizontal = horizontal.lower()
-        vertical = vertical.lower()
-
-        if (horizontal in policies) and (vertical in policies):
-            size_policy = QSizePolicy(policies.get(horizontal), policies.get(vertical))
-            self.setSizePolicy(size_policy)
 
     # Material properties (classes)
     # danger, warning, success

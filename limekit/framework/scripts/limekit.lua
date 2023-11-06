@@ -1,4 +1,8 @@
 app = {
+    -- Time not to be in thousands, ie, 1000, but 1, 2...
+    sleep = function(seconds)
+        __utils.sleep(seconds)
+    end,
     weightedGraph = function(...)
         return __utils.weighted_graph(...)
     end,
@@ -10,7 +14,6 @@ app = {
         __appMisc.setStyle(style)
     end,
     -- ################## Global theming
-
     splitString = function(text, delimeter)
         return __converters.string_split(text, delimeter)
     end,

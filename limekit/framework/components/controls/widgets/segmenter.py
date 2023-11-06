@@ -16,3 +16,11 @@ class Segmenter(QSplitter, EnginePart):
         widget = QWidget()
         widget.setLayout(layout)
         self.addChild(widget)
+
+    def setHandleWidth(self, width):
+        super().setHandleWidth(width)
+
+    def setOrientation(self, orientation):
+        super().setOrientation(
+            Qt.Vertical if orientation.lower() == "vertical" else Qt.Horizontal
+        )
