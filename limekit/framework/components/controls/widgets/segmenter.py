@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QSplitter, QWidget
 from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QSplitter, QWidget
 from limekit.framework.core.engine.parts import EnginePart
 
 

@@ -14,10 +14,10 @@ class SysNotification(QSystemTrayIcon, EnginePart):
     onShownFunc = None
     onClickedFunc = None
 
-    def __init__(self, image=""):
-        super().__init__(QIcon(image))
+    def __init__(self, image="", parent=None):
+        super().__init__(QIcon(image), parent=parent)
         self.setVisible(True)
-        self.MessageIcon(QIcon(image))
+        # self.MessageIcon(QIcon(image))
         # self.activated.connect(self.__handleOnShown) # not working - needs research
         self.messageClicked.connect(self.__handleOnClick)
 
@@ -45,14 +45,18 @@ class SysNotification(QSystemTrayIcon, EnginePart):
         }
 
         icon_value = icon_map.get(icon.lower(), QSystemTrayIcon.Information)
-        self.setToolTip("Hello there")
 
-        self.showMessage(
-            title,
-            message,
-            icon_value,
-            duration,
-        )
+        if self.isSystemTrayAvailable():
+            self.setToolTip("Hello there")
+
+            self.showMessage(
+                title,
+                message,
+                icon_value,
+                duration,
+            )
+        else:
+            print("No System Tray available")
 
     # Not working at all, best set the visiblity in constructor
     # def show(self):

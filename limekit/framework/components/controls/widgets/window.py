@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QMainWindow
 from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QToolBar
 
 from limekit.framework.core.engine.parts import EnginePart
 
@@ -146,8 +147,17 @@ class Window(QMainWindow, EnginePart):
     def setIcon(self, icon):
         self.setWindowIcon(QIcon(icon))
 
-    def addToolbar(self, toolbar):
-        self.addToolBar(toolbar)
+    def addToolbar(self, toolbar, position="top"):
+        positions = {
+            "left": Qt.ToolBarArea.LeftToolBarArea,
+            "top": Qt.ToolBarArea.TopToolBarArea,
+            "right": Qt.ToolBarArea.RightToolBarArea,
+            "bottom": Qt.ToolBarArea.BottomToolBarArea,
+        }
+        super().addToolBar(
+            positions[position] if positions.get(position) else positions["top"],
+            toolbar,
+        )
 
     # Unnecessary, yeah! I know! I just disliked having to CamelCase to the end ;-).. I know it doesn't make sense
     def setMenubar(self, menu):

@@ -18,5 +18,5 @@ class Line(QLineSeries, EnginePart):
             # self.append()
             print(x, " ", y)
 
-    def addData(self, x, y):
-        self.append(x, y)
+    def append(self, x, y):
+        super().append(x, y)

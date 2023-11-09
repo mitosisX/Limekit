@@ -31,7 +31,6 @@ from xlsxwriter import Workbook
 from playsound import playsound
 
 import lupa
-from lupa import lua54
 from lupa import LuaRuntime
 from faker import Faker
 
@@ -53,8 +52,6 @@ from limekit.framework.core.runner.app import App
 from limekit.framework.handle.paths.path import Path
 from limekit.framework.handle.system.file import File
 from limekit.framework.handle.scripts.swissknife.fileutils import FileUtils
-
-from limekit.framework.core.exceptions.routes import RouteException
 
 from qfluentwidgets import FluentIcon
 from limekit.framework.handle.routing.routes import Routing
@@ -140,57 +137,9 @@ class Engine:
     """
 
     def execute(self, lua_content):
-        try:
-            return self.engine.execute(lua_content)
-        except TypeError as exception:
-            excep_msg = str(exception)
-
-            if "takes exactly one argument" in excep_msg:
-                end = excep_msg.index("()") + 2
-
-                exce_ = str(excep_msg)[:end]
-                print(
-                    f"NativeMethodError: Use of 'syntactic sugar' on {exce_.replace('.',':')}. Use {exce_} instead."
-                )
-            else:
-                print(exception)
-
-            self.destroy_engine()
-
-        except lua54.LuaSyntaxError as exception:
-            print(exception)
-            self.destroy_engine()
-
-        except lua54.LuaError as exception:
-            print(exception)
-
-            self.destroy_engine()
-
-        except RouteException as exception:
-            print(exception)
-
-            self.destroy_engine()
-
-        except AttributeError as exception:
-            print(exception)
-
-            self.destroy_engine()
-
-        except KeyError as exception:
-            print(
-                f"Access Error: Could not access {exception}. Possible way, try using: py_getattr(py_method)"
-            )
-
-            self.destroy_engine()
-
-        except RuntimeError as exception:
-            print(exception)
-
-            self.destroy_engine()
+        return self.engine.execute(lua_content)
 
     # Kill the engine if anything goes wrong
-    def destroy_engine(self):
-        sys.exit()
 
     def eval(self, script):
         return self.engine.eval(script)

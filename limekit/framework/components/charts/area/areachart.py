@@ -1,9 +1,9 @@
 import lupa
-from PySide6.QtCharts import QBarSet
+from PySide6.QtCharts import QAreaSeries
 from limekit.framework.core.engine.parts import EnginePart
 
 
-class BarSet(QBarSet, EnginePart):
+class AreaChart(QAreaSeries, EnginePart):
     def __init__(self, title):
         super().__init__(title)
 

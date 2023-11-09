@@ -1,3 +1,9 @@
+        Obfuscating code
+
+    https://github.com/nertigel/nObfuscator
+
+    - Best lua obfuscation tool
+
         Installation
 
 Firstly, install pyarmor for obfuscation
@@ -61,3 +67,11 @@ use "py -m pip install -e ." for "hot reload"
         - Using --onefile works perfectly as the resources get extracted to some TEMP dir
             * Use --add-data "file1;." flag
             * Use "os.pathsep" to get OS-dependent separator for the above separation
+
+
+            Requirement.txt file
+
+        * Filtering installation based on platform
+        
+        tensorflow>=2.2.0;sys_platform != 'darwin'
+        tensorflow_macos>=2.5.0;sys_platform == 'darwin'

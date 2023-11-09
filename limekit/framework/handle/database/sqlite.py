@@ -39,8 +39,6 @@ class Sqlite3(EnginePart):
         for sublist in fetched_data:
             lua_table.append(sublist)
 
-        # print(lua_table)
-
         return Converter.table_from(*lua_table)
 
     # The result is always like (1,). What's the tuple for anyway?

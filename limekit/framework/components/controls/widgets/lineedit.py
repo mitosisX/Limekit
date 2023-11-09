@@ -40,6 +40,9 @@ class LineEdit(QLineEdit, EnginePart):
 
     # --------------------------------- Events
 
+    def setAutoComplete(self, autocomplete):
+        self.setCompleter(autocomplete)
+
     def setInputMode(self, input_mode):
         mode = input_mode.lower()
 

@@ -13,10 +13,32 @@ class Chart(QChart, EnginePart):
     @lupa.unpacks_lua_table
     def __init__(self, kwargs):
         super().__init__()
-        self.setAnimationOptions(QChart.SeriesAnimations)
 
         if "title" in kwargs:
             self.setTitle(kwargs["title"])
+
+        if "animation" in kwargs:
+            self.setAnimation(kwargs["animation"])
+
+    def __decideAnimation(self, animation):
+        animation = animation.lower()
+
+        animation_type = Chart.AnimationOption.NoAnimation
+
+        match (animation):
+            case (None):
+                animation_type = Chart.AnimationOption.NoAnimation
+            case ("series"):
+                animation_type = Chart.AnimationOption.SeriesAnimations
+            case ("grid"):
+                animation_type = Chart.AnimationOption.GridAxisAnimations
+            case ("all"):
+                animation_type = Chart.AnimationOption.AllAnimations
+
+        self.setAnimationOptions(animation_type)
+
+    def setAnimation(self, animation):
+        self.__decideAnimation(animation)
 
     def setTitle(self, title):
         super().setTitle(title)

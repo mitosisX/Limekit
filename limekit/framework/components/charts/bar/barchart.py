@@ -9,5 +9,8 @@ class Bar(QBarSeries, EnginePart):
     def __init__(self):
         super().__init__()
 
-    def addData(self, data):
-        self.append(data)
+    def append(self, data):
+        super().append(data)
+
+    def attachAxis(self, axis):
+        super().attachAxis(axis)
