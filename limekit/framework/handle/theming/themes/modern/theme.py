@@ -1,5 +1,5 @@
-import qtmodern.styles
-import qtmodern.windows
+# import qtmodern.styles
+# import qtmodern.windows
 from limekit.framework.core.runner.app import App
 
 
@@ -8,9 +8,12 @@ class ModernStyle:
         self.app = App.app
 
     def setTheme(self, theme="light"):
-        theme_functions = {"light": qtmodern.styles.light, "dark": qtmodern.styles.dark}
+        theme_functions = {
+            "light": "qtmodern.styles.light",
+            "dark": "qtmodern.styles.dark",
+        }
 
-        theme_functions.get(theme, qtmodern.styles.light)(self.app)
+        # theme_functions.get(theme, qtmodern.styles.light)(self.app)
 
     def getThemes(self):
         return ["light", "dark"]

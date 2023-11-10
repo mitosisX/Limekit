@@ -1,3 +1,4 @@
+import lupa
 from PySide6.QtWidgets import QDockWidget, QWidget
 from PySide6.QtGui import QIcon
 from PySide6.QtCore import Qt
@@ -7,11 +8,27 @@ from limekit.framework.core.engine.parts import EnginePart
 class Docker(QDockWidget, EnginePart):
     name = "Dock"
 
-    def __init__(self, title="Dock", parent=None):
-        super().__init__(title)
+    def __init__(self, title="Dock"):
+        super().__init__(title, parent=None)
 
-        self.widget = QWidget()
-        self.setWidget(self.widget)
+        self.parent_widget = QWidget()
+        self.setWidget(self.parent_widget)
+
+    def setProperties(self, *props):
+        properties = QDockWidget.DockWidgetFeature.NoDockWidgetFeatures
+
+        for prop in props:
+            match (prop):
+                case ("floatable"):
+                    properties |= QDockWidget.DockWidgetFeature.DockWidgetFloatable
+                case ("movable"):
+                    properties |= QDockWidget.DockWidgetFeature.DockWidgetMovable
+                case ("closable"):
+                    properties |= QDockWidget.DockWidgetFeature.DockWidgetClosable
+                case (None):
+                    properties = QDockWidget.DockWidgetFeature.NoDockWidgetFeatures
+
+        self.setFeatures(properties)
 
     """
     we want PyQt to save and restore the dock widget’s
@@ -48,18 +65,21 @@ class Docker(QDockWidget, EnginePart):
                         Valid strings are "top", "bottom", "left", and "right".
     """
 
-    def setMagneticAreas(self, areas):
+    def setMagneticAreas(self, *areas):
         allowed_areas = Qt.NoDockWidgetArea
 
-        for area in list(areas.values()):
-            if area == "top":
-                allowed_areas |= Qt.TopDockWidgetArea
-            elif area == "bottom":
-                allowed_areas |= Qt.BottomDockWidgetArea
-            elif area == "left":
-                allowed_areas |= Qt.LeftDockWidgetArea
-            elif area == "right":
-                allowed_areas |= Qt.RightDockWidgetArea
+        for area in areas:
+            match (area):
+                case ("top"):
+                    allowed_areas |= Qt.DockWidgetArea.TopDockWidgetArea
+                case ("bottom"):
+                    allowed_areas |= Qt.DockWidgetArea.BottomDockWidgetArea
+                case ("left"):
+                    allowed_areas |= Qt.DockWidgetArea.LeftDockWidgetArea
+                case ("right"):
+                    allowed_areas |= Qt.DockWidgetArea.RightDockWidgetArea
+                case (None):
+                    allowed_areas = Qt.NoDockWidgetArea
 
         self.setAllowedAreas(allowed_areas)
 
@@ -72,5 +92,9 @@ class Docker(QDockWidget, EnginePart):
     def setSize(self, width, height):
         self.resize(width, height)
 
+    def setLayout(self, layout):
+        self.parent_widget.setLayout(layout)
+
+    # Don't use. Enforce layouts
     def setChild(self, child):
         self.setWidget(child)

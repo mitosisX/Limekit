@@ -1,4 +1,7 @@
 app = {
+    joinTables = function(...)
+        return __utils.join_tables(...)
+    end,
     -- Time not to be in thousands, ie, 1000, but 1, 2...
     sleep = function(seconds)
         __utils.sleep(seconds)

@@ -1,0 +1,24 @@
+            10 November, 2023 20:14PM (FRIDAY)
+    - WORKED: Running a manually copied main.py to build dir of pyinstaller project
+    - This doesn't go without saying that I had to comment out many files; modern_theme.py
+    * After long hours of debugging, it finally paid off
+
+
+        TODO
+
+Allow paths to be used as functions after using [path]
+
+    - scripts
+      |_ [path]
+         |_ file.lua
+
+    path('lua.js')
+
+
+    Errors
+
+error loading code: [string "<python>"]:23: 'do' expected near '='
+error loading code: [string "<python>"]:26: syntax error near 'appLog'
+[string "<python>"]:24: attempt to call a nil value (global 'P')
+
+    Fix Themes

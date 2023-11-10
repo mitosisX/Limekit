@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt
 
 
 class App:
-    app = QApplication([])
+    app = QApplication(sys.argv)
     # app = None
 
     # The commented method below prevents the program from closing once all windows
@@ -16,9 +16,6 @@ class App:
     @classmethod
     def execute(cls):
         QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
-        QApplication.setHighDpiScaleFactorRoundingPolicy(
-            Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
-        )
         QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 
         # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)

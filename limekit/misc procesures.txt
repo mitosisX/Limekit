@@ -53,6 +53,13 @@ use "py -m pip install -e ." for "hot reload"
             from PyInstaller.utils.hooks import collect_data_files,collect_submodules
             datas = collect_data_files('lupa', True)
 
+            * On this same note, include for limekit too
+                - datas = collect_data_files('limekit', True)
+                hiddenimports=['sqlite3','emoji','qt_material','qtmodern','qdarktheme'],
+
+
+
+
     - Include hookspath=['hooks]
 
             Check if IDE or in Freeze

@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QToolBar
 from limekit.framework.core.engine.parts import EnginePart
 
 from limekit.framework.components.controls.dockers.toolbar.toolbar import Toolbar
-from limekit.framework.components.controls.dockers.dockerwidget.docking import Docker
+from limekit.framework.components.controls.dockers.dockerwidget.docker import Docker
 
 from limekit.framework.core.runner.app import App
 from PySide6.QtGui import QIcon, QCursor, QPixmap

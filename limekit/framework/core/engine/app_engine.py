@@ -34,7 +34,7 @@ import lupa
 from lupa import LuaRuntime
 from faker import Faker
 
-from pyecharts.charts import Bar
+# from pyecharts.charts import Bar
 
 # import requests
 # from bs4 import BeautifulSoup
@@ -52,8 +52,6 @@ from limekit.framework.core.runner.app import App
 from limekit.framework.handle.paths.path import Path
 from limekit.framework.handle.system.file import File
 from limekit.framework.handle.scripts.swissknife.fileutils import FileUtils
-
-from qfluentwidgets import FluentIcon
 from limekit.framework.handle.routing.routes import Routing
 
 
@@ -206,6 +204,7 @@ class Engine:
         Walks through all dirs desribed in settings.py INSTALLED_PARTS
         """
         walked_classes = []
+
         for app in settings.INSTALLED_PARTS:
             app_path = Path.dot_path(app)
             limekit_dir = Path.remove_last_dir(settings.limekit_SITEPACKAGE_DIR)
@@ -230,7 +229,7 @@ class Engine:
             "Workbook": Workbook,
             "route": self.routing.fetch_resource,
             "Sound": playsound,
-            "Bar": Bar,
+            # "Bar": Bar,
             # "requests": requests,
             # "BeautifulSoup": BeautifulSoup,
             # "pandas": pandas,
@@ -247,7 +246,7 @@ class Engine:
             "zip": Converter.zip_,
             # Data types ---------
             "eval": eval,
-            "FluentIcon": FluentIcon,
+            # "FluentIcon": FluentIcon,
             "__quit": self.__quit,
         }
 

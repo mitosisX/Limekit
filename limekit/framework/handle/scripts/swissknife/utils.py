@@ -22,9 +22,18 @@ class Utils(EnginePart):
 
         return Converter.table_from(shortest_path), path_cost
 
-    @classmethod
-    def sleep(cls, seconds):
+    @staticmethod
+    def sleep(seconds):
         time.sleep(seconds)
+
+    @staticmethod
+    def join_tables(*tables):
+        first_table = dict(tables[0])
+
+        for x in range(1, len(tables)):
+            first_table.update(dict(tables[x]))
+
+        print(first_table)
 
 
 class WeightedGraph:

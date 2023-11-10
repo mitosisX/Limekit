@@ -3,7 +3,9 @@ from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
-class Sqlite3(EnginePart):
+class SqliteDB3(EnginePart):
+    name = "Sqlite3"
+
     def __init__(self, db=""):
         if db == ":memory:":
             self.connection = sqlite3.connect(":memory:")

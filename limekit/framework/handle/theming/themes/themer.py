@@ -1,4 +1,4 @@
-from limekit.framework.handle.theming.themes.modern.theme import ModernStyle
+# from limekit.framework.handle.theming.themes.modern.theme import ModernStyle
 from limekit.framework.handle.theming.themes.material.theme import MaterialStyle
 from limekit.framework.handle.theming.themes.misc.theme import MiscellaneousStyle
 from limekit.framework.handle.theming.themes.darklight.theme import DarkLight
@@ -15,8 +15,8 @@ class Theme(EnginePart):
 
         if provided_theme == "material":
             return MaterialStyle()
-        elif provided_theme == "modern":
-            return ModernStyle()
+        # elif provided_theme == "modern":
+        #     return ModernStyle()
         elif provided_theme == "misc":
             return MiscellaneousStyle()
         elif provided_theme == "darklight":

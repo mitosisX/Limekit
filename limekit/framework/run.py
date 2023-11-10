@@ -46,6 +46,9 @@ except lua54.LuaSyntaxError as ex:
         print(f"SyntaxError: Line {sub_str}")
         # print(final_str)
 
+    else:
+        print(ex)
+
     destroy_engine()
 
 except lua54.LuaError as exception:
@@ -73,4 +76,8 @@ except KeyError as exception:
 except RuntimeError as exception:
     print(exception)
 
+    destroy_engine()
+
+except NameError as exception:
+    print(exception)
     destroy_engine()

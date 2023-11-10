@@ -36,6 +36,21 @@ class TextField(QTextEdit, EnginePart):
     def setAutoComplete(self, autocomplete):
         self.setCompleter(autocomplete)
 
+    def setSize(self, width, height):
+        self.resize(width, height)
+
+    def setMinHeight(self, height):
+        self.setMinimumHeight(height)
+
+    def setMaxHeight(self, height):
+        self.setMaximumHeight(height)
+
+    def setMinWidth(self, width):
+        self.setMinimumWidth(width)
+
+    def setMaxWidth(self, width):
+        self.setMaximumWidth(width)
+
     def setInputMode(self, input_mode):
         mode = input_mode.lower()
 
