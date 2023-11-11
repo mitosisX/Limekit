@@ -51,14 +51,8 @@ class TextField(QTextEdit, EnginePart):
     def setMaxWidth(self, width):
         self.setMaximumWidth(width)
 
-    def setInputMode(self, input_mode):
-        mode = input_mode.lower()
-
-        if mode == "normal":
-            self.setEchoMode(QTextEdit.Normal)
-
-        elif mode == "password":
-            self.setEchoMode(QTextEdit.Password)
+    def setReadOnly(self, readonly):
+        super().setReadOnly(readonly)
 
     def setHint(self, hint):
         self.setPlaceholderText(hint)

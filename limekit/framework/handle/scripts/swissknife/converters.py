@@ -87,10 +87,6 @@ class Converter(EnginePart):
         except ValueError as exception:
             print(exception)
 
-    @classmethod
-    def str_split(cls, string, delimeter):
-        return cls.table_from(*string.split(delimeter))
-
     # redefining some of the in-built python methods
 
     """

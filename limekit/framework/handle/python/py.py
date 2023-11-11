@@ -44,3 +44,7 @@ class Python(EnginePart):
     @staticmethod
     def str_format(string: str, *args):
         return string.format(*args)
+
+    @staticmethod
+    def str_split(string, delimeter):
+        return Converter.table_from(*string.split(delimeter))

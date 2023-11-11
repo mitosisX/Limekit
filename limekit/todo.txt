@@ -20,5 +20,6 @@ Allow paths to be used as functions after using [path]
 error loading code: [string "<python>"]:23: 'do' expected near '='
 error loading code: [string "<python>"]:26: syntax error near 'appLog'
 [string "<python>"]:24: attempt to call a nil value (global 'P')
+error loading code: [string "<python>"]:62: '}' expected (to close '{' at line 61) near '='
 
     Fix Themes

@@ -42,9 +42,11 @@ class Menu(QMenu, EnginePart):
     def fromTemplate(self, items, parent):
         for item in items.values():
             label = item["label"]
+
             if "submenu" in item:
                 submenu = Menu(label)
                 parent.addDropMenu(submenu)
+
                 self.fromTemplate(item["submenu"], submenu)
 
                 if "click" in item:
@@ -52,9 +54,6 @@ class Menu(QMenu, EnginePart):
 
                 if "icon" in item:
                     submenu.setImage(item["icon"])
-
-                if "name" in item:
-                    self.addToObject(item["name"], action)
 
             else:
                 # label = item["label"]

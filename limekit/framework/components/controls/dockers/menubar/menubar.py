@@ -40,6 +40,9 @@ class Menubar(QMenuBar, EnginePart):
             if "submenu" in item:
                 submenu = Menu(label)
                 parent.addDropMenu(submenu)
+
+                if "name" in item:
+                    self.addToObject(item["name"], parent)
                 self.fromTemplate(item["submenu"], submenu)
 
             else:

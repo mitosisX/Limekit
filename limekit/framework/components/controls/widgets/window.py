@@ -71,6 +71,12 @@ class Window(QMainWindow, EnginePart):
 
         self.setAnimated(True)
 
+    def maximize(self):
+        self.showMaximized()
+
+    def minimize(self):
+        self.showMinimized()
+
     """
     This method only overrides the cursor for the MainWindow due to the fact that overriding the whole
     QApplication renders the control box uninteractive or unresponsive.

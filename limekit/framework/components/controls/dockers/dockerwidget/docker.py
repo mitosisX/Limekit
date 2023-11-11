@@ -92,6 +92,22 @@ class Docker(QDockWidget, EnginePart):
     def setSize(self, width, height):
         self.resize(width, height)
 
+    def setMinHeight(self, height):
+        self.setMinimumHeight(height)
+
+    def setMaxHeight(self, height):
+        self.setMaximumHeight(height)
+
+    def setMinWidth(self, width):
+        self.setMinimumWidth(width)
+
+    def setMaxWidth(self, width):
+        self.setMaximumWidth(width)
+
+    # All available dock widgets are returned and can be used in construction of MenuItems
+    def getDocksForMenus(self):
+        return self.toggleViewAction()
+
     def setLayout(self, layout):
         self.parent_widget.setLayout(layout)
 

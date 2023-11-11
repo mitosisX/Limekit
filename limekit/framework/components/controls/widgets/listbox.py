@@ -46,6 +46,10 @@ class ListBox(QListWidget, EnginePart):
         item.setIcon(QIcon(image))
         self.addItem(item)
 
+    def addImageItems(self, items):
+        for item, image in items.items():
+            self.addImageItem(item, image)
+
     def addItems(self, items):
         for item in items.values():
             super().addItem(QListWidgetItem(item))

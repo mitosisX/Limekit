@@ -17,10 +17,7 @@ app = {
         __appMisc.setStyle(style)
     end,
     -- ################## Global theming
-    splitString = function(text, delimeter)
-        return __converters.string_split(text, delimeter)
-    end,
-    doQuickSort = function(list)
+    quickSort = function(list)
         return __sorter.quick_sort(list)
     end,
     makeHash = function(type_, text)
@@ -53,10 +50,10 @@ app = {
     extractZip = function(file, dest)
         return __fileutils.extract_zip_file(file, dest)
     end,
-    checkIsFolder = function(path)
+    checkIfFolder = function(path)
         return __fileutils.is_dir(path)
     end,
-    checkIfExists = function(path)
+    checkExists = function(path)
         return __fileutils.exists(path)
     end,
     checkFileEmpty = function(file)
