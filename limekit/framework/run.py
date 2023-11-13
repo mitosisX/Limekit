@@ -35,7 +35,7 @@ except lua54.LuaSyntaxError as ex:
 
     exception = str(ex)
 
-    if "unexpected symbol near" in exception:
+    if '"<python>"]' in exception:
         init_index = exception.rfind('>"]')
         sub_str = exception[init_index + 4 :]
 
@@ -47,7 +47,7 @@ except lua54.LuaSyntaxError as ex:
         # print(final_str)
 
     else:
-        print(ex)
+        print("here")
 
     destroy_engine()
 

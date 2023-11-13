@@ -118,6 +118,7 @@ class Converter(EnginePart):
     # the only way is to make index of 1
     @classmethod
     def to_lua_table(cls, list_items):
+        # Workes better parsing dict to table
         return GlobalEngine.global_engine.table(list_items)[1]
 
     @classmethod
@@ -126,6 +127,7 @@ class Converter(EnginePart):
 
     @classmethod
     def table_from(cls, *list_):
+        # works best with a variety of args
         return GlobalEngine.global_engine.table_from(*list_)
 
     @classmethod

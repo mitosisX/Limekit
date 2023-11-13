@@ -1,11 +1,8 @@
-from PySide6.QtWidgets import QMainWindow
-from PySide6.QtWidgets import QWidget
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QToolBar
+from PySide6.QtWidgets import QMainWindow, QWidget
+from PySide6.QtCore import Qt, QEvent, QObject
 
 from limekit.framework.core.engine.parts import EnginePart
 
-from limekit.framework.components.controls.dockers.toolbar.toolbar import Toolbar
 from limekit.framework.components.controls.dockers.dockerwidget.docker import Docker
 
 from limekit.framework.core.runner.app import App
@@ -73,6 +70,15 @@ class Window(QMainWindow, EnginePart):
 
     def maximize(self):
         self.showMaximized()
+
+    def eventFilter(self, obj, e: QEvent):
+        if obj is self.parent():
+            if e.type() == QEvent.Resize:
+                self.resize(e.size())
+            elif e.type() == QEvent.ChildAdded:
+                self.raise_()
+
+        return super().eventFilter(obj, e)
 
     def minimize(self):
         self.showMinimized()

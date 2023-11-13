@@ -12,7 +12,7 @@ void setCheckable(bool checkable)
 
 
 class ButtonGroup(QButtonGroup, EnginePart):
-    # NOTE: Doesnt have to e added to any layout
+    # NOTE: Doesnt have to be added to any layout
     onClickFunc = None
 
     def __init__(self, parent=None):

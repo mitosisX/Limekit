@@ -18,11 +18,7 @@ class Python(EnginePart):
             return ex
 
     @staticmethod
-    def str_split(string, delimeter=","):
-        return Converter.table_from(string.split(delimeter))
-
-    @staticmethod
-    def kwargs(method, *the_kwags):
+    def method_kwargs(method, *the_kwags):
         return lupa.unpacks_lua_table(method, the_kwags)
 
     @staticmethod
@@ -34,17 +30,13 @@ class Python(EnginePart):
         return lupa.as_itemgetter(py_obj)
 
     @staticmethod
-    def table2list(table):
+    def table_to_list(table):
         return list(table.values())
 
     @staticmethod
-    def int_range(start, end):
-        return Converter.table_from(list(range(start, end)))
+    def table_to_dict(table):
+        return dict(table.items())
 
     @staticmethod
     def str_format(string: str, *args):
         return string.format(*args)
-
-    @staticmethod
-    def str_split(string, delimeter):
-        return Converter.table_from(*string.split(delimeter))

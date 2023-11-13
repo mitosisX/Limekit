@@ -3,7 +3,7 @@ from PySide6.QtGui import QShortcut, QKeySequence
 
 
 # Responsible for creating those Ctrl+M king of shortcuts
-class ShortcutKeys(EnginePart):
+class KeyboardShortcut(EnginePart):
     shortcutKeyFunc = None
 
     def __init__(self, window, shortcut) -> None:

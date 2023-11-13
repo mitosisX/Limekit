@@ -5,8 +5,19 @@ from limekit.framework.components.controls.dockers.menu.menuitem import MenuItem
 
 # Contains an arrow on it's side to show that it contains submenus
 class Menu(QMenu, EnginePart):
+    onClickFunction = None
+
     def __init__(self, title=None, parent=None):
         super().__init__(title=title, parent=parent)
+        self.triggered.connect(self.__handleOnClick)
+
+    def __handleOnClick(self):
+        print("Menu here")
+        if self.onClickFunction:
+            self.onClickFunction(self)
+
+    def setOnClick(self, onClickFunction):
+        self.onClickFunction = onClickFunction
 
     # menuitems
     # type: Menu
@@ -50,7 +61,7 @@ class Menu(QMenu, EnginePart):
                 self.fromTemplate(item["submenu"], submenu)
 
                 if "click" in item:
-                    submenu.triggered.connect(item["click"])
+                    submenu.setOnClick(item["click"])
 
                 if "icon" in item:
                     submenu.setImage(item["icon"])
@@ -66,7 +77,7 @@ class Menu(QMenu, EnginePart):
                     action.setShortcut(item["accelerator"] or item["shortcut"])
 
                 if "click" in item:
-                    action.triggered.connect(item["click"])
+                    action.setOnClick(item["click"])
 
                 if "icon" in item:
                     action.setImage(item["icon"])

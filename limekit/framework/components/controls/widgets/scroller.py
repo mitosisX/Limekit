@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QScrollArea, QWidget
 from limekit.framework.core.engine.parts import EnginePart
 
 
-class Scrollable(QScrollArea, EnginePart):
+class Scroller(QScrollArea, EnginePart):
     onValueChangeFunc = None
 
     def __init__(self):

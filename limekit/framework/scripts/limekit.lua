@@ -1,4 +1,13 @@
 app = {
+    splitString = function(string, delimeter)
+        return __utils.str_split(string, delimeter)
+    end,
+    range = function(start, end_)
+        return __utils.int_range(start, end_)
+    end,
+    sortTable = function(tbl)
+        return __utils.sort_table(tbl)
+    end,
     joinTables = function(...)
         return __utils.join_tables(...)
     end,
@@ -40,6 +49,9 @@ app = {
         return __encoding.base64_decode(text)
     end,
     -- Encoding #######################
+    setFontFile = function(file, size)
+        __font.from_file(file, size)
+    end,
     setFont = function(font, size)
         __font.set_font(font, size)
     end,
@@ -144,19 +156,19 @@ app = {
     errorDialog = function(parent, title, message)
         __errorDialog(parent, title, message)
     end,
-    aboutPopup = function(parent, title, message)
+    aboutAlert = function(parent, title, message)
         return __aPopup(parent, title, message)
     end,
-    criticalPopup = function(parent, title, message)
+    criticalAlert = function(parent, title, message)
         return __cPopup(parent, title, message)
     end,
-    infoPopup = function(parent, title, message)
+    infoAlert = function(parent, title, message)
         return __iPopup(parent, title, message)
     end,
-    questionPopup = function(parent, title, message)
+    questionAlert = function(parent, title, message)
         return __qPopup(parent, title, message)
     end,
-    warningPopup = function(parent, title, message)
+    warningAlert = function(parent, title, message)
         return __wPopup(parent, title, message)
     end,
     ---- ################## Popups

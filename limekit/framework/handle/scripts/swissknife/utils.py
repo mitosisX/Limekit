@@ -35,6 +35,22 @@ class Utils(EnginePart):
 
         print(first_table)
 
+    @staticmethod
+    def sort_table(table):
+        my_keys = list(table.keys())
+        my_keys.sort()
+        sorted_table = {i: table[i] for i in my_keys}
+
+        return Converter.to_lua_table(sorted_table)
+
+    @staticmethod
+    def int_range(start, end):
+        return Converter.table_from(range(start, end))
+
+    @staticmethod
+    def str_split(string, delimeter=","):
+        return Converter.table_from(string.split(delimeter))
+
 
 class WeightedGraph:
     infinity_number = float("inf")

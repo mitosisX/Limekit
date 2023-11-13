@@ -3,7 +3,7 @@ from PySide6.QtGui import QIcon
 from limekit.framework.core.engine.parts import EnginePart
 
 
-class Collapsible(QToolBox, EnginePart):
+class Accordion(QToolBox, EnginePart):
     onValueChangedFunc = None
 
     def __init__(self):
@@ -11,6 +11,9 @@ class Collapsible(QToolBox, EnginePart):
 
     def addChild(self, child, label, icon=""):
         self._addItem(child, label, icon)
+
+    def setTooltip(self, tooltip):
+        self.setToolTip(tooltip)
 
     def addLayout(self, layout, label, icon=""):
         widget = QWidget()

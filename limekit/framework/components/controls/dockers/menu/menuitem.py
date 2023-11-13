@@ -22,8 +22,14 @@ class MenuItem(QAction, EnginePart):
     def setText(self, text):
         super().setText(text)
 
+    def getText(self):
+        return self.text()
+
     def __handleOnClick(self):
+        print("MenuItem here")
+
         if self.onClickFunction:
+            print("here")
             self.onClickFunction(self)
 
     def setOnClick(self, onClickFunction):

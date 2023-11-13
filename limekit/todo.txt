@@ -21,5 +21,7 @@ error loading code: [string "<python>"]:23: 'do' expected near '='
 error loading code: [string "<python>"]:26: syntax error near 'appLog'
 [string "<python>"]:24: attempt to call a nil value (global 'P')
 error loading code: [string "<python>"]:62: '}' expected (to close '{' at line 61) near '='
+[string "<python>"]:64: attempt to call a nil value (field 'keys')
+[string "<python>"]:2: attempt to concatenate a table value (local 'content')
 
     Fix Themes
