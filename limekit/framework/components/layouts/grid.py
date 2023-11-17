@@ -1,15 +1,10 @@
 from PySide6.QtWidgets import QGridLayout
 from limekit.framework.core.engine.parts import EnginePart
 
-"""
-OLayout is simply an Orientational Layout (OLayout)
-Either Horizontal or Vertical
-"""
-
 
 class GridLayout(QGridLayout, EnginePart):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__(parent=None)
 
     # This is a Grid layout; every child widget is positioned
     # x and y
@@ -40,5 +35,5 @@ class GridLayout(QGridLayout, EnginePart):
     # factor for a specific column in a QGridLayout or QFormLayout. This method allows
     # you to control how the columns of the layout expand or contract when the parent widget is resized.
 
-    def setColumnElastic(self, column, stretch):
-        self.setColumnStretch(column, stretch)
+    def setColumnStretch(self, column, stretch):
+        super().setColumnStretch(column, stretch)

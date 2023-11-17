@@ -2,15 +2,10 @@ from PySide6.QtWidgets import QFormLayout
 from limekit.framework.core.engine.parts import EnginePart
 from PySide6.QtCore import Qt
 
-"""
-OLayout is simply an Orientational Layout (OLayout)
-Either Horizontal or Vertical
-"""
-
 
 class FormLayout(QFormLayout, EnginePart):
     def __init__(self):
-        super().__init__()
+        super().__init__(parent=None)
         # self.setFieldGrowthPolicy(self.FieldGrowthPolicy.AllNonFixedFieldsGrow)
         # self.setFormAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         # self.setLabelAlignment(Qt.AlignmentFlag.AlignJustify)

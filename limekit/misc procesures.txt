@@ -1,8 +1,29 @@
+        Bash files
+
+    macOS and linux
+
+    run.sh
+
+        #!/bin/bash
+
+        python3 -c "import signal" "/path/to/dir"
+
+    run.bat
+
+        @echo off
+
+        python -c "import signal" "C:\dir"
+
+
+
         Obfuscating code
 
     https://github.com/nertigel/nObfuscator
 
-    - Best lua obfuscation tool
+    - Best lua obfuscation tool:   NOT CONDIDERING
+
+    Bash obfuscation
+        https://www.batch-obfuscator.tk/
 
         Installation
 
@@ -57,6 +78,14 @@ use "py -m pip install -e ." for "hot reload"
                 - datas = collect_data_files('limekit', True)
                 hiddenimports=['sqlite3','emoji','qt_material','qtmodern','qdarktheme'],
 
+    ****** Try appending all resources a python list
+           - Generate a py file with a list variable and manually append user lua files
+             to it. This way the py file can be built using pyinstaller without requiring obfuscation.
+        
+            resource = {
+                'path/path/main.lua' : 'longggg content goes here',
+                ...
+            }
 
 
 

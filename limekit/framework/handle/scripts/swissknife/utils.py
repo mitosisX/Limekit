@@ -1,6 +1,9 @@
 import time
 import lupa
 import heapq
+import random
+import subprocess
+
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.handle.scripts.swissknife.converters import Converter
 
@@ -28,12 +31,30 @@ class Utils(EnginePart):
 
     @staticmethod
     def join_tables(*tables):
-        first_table = dict(tables[0])
+        table = {}
 
-        for x in range(1, len(tables)):
-            first_table.update(dict(tables[x]))
+        for each_table in tables:
+            the_table = dict(each_table.items())
+            table |= the_table
 
-        print(first_table)
+        return Converter.table_from(table)
+
+    # @staticmethod
+    # def join_tables_(*tables):
+    #     first_table = dict(tables[0])
+
+    #     for x in range(1, len(tables)):
+    #         first_table.update(dict(tables[x]))
+
+    #     print(first_table)
+
+    @staticmethod
+    def sort_array(table):
+        my_keys = list(table.values())
+        my_keys.sort()
+        sorted_table = {i for i in my_keys}
+
+        return Converter.table_from(sorted_table)
 
     @staticmethod
     def sort_table(table):
@@ -41,7 +62,7 @@ class Utils(EnginePart):
         my_keys.sort()
         sorted_table = {i: table[i] for i in my_keys}
 
-        return Converter.to_lua_table(sorted_table)
+        return Converter.table_from(sorted_table)
 
     @staticmethod
     def int_range(start, end):
@@ -50,6 +71,20 @@ class Utils(EnginePart):
     @staticmethod
     def str_split(string, delimeter=","):
         return Converter.table_from(string.split(delimeter))
+
+    @staticmethod
+    def invoke_process():
+        return subprocess.check_output(
+            [
+                "python",
+                "main.py",
+                r"C:\Users\OMEGA\Documents\limekit demos\inputs",
+            ]
+        )
+
+    @staticmethod
+    def random_string(table_):
+        return random.choice(list(table_.values()))
 
 
 class WeightedGraph:

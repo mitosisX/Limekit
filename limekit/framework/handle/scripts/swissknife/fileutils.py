@@ -1,9 +1,11 @@
-from limekit.framework.core.engine.parts import EnginePart
-from limekit.framework.handle.system.file import File
 import json
 import os
 import zipfile
 from typing import Iterable
+
+from limekit.framework.handle.system.file import File
+from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 __all__ = [
     "clean_dir",
@@ -113,7 +115,7 @@ class FileUtils(EnginePart):
         """
         content = cls.read_file(path)
         data = json.loads(content)
-        return data
+        return Converter.table_from(data)
 
     @classmethod
     def write_file_json(cls, path, data):

@@ -49,10 +49,13 @@ from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.core.engine.global_ import GlobalEngine
 from limekit.framework.handle.scripts.swissknife.converters import Converter
 from limekit.framework.core.runner.app import App
+
 from limekit.framework.handle.paths.path import Path
 from limekit.framework.handle.system.file import File
 from limekit.framework.handle.scripts.swissknife.fileutils import FileUtils
+
 from limekit.framework.handle.routing.routes import Routing
+from limekit.framework.core.runner.app_events import AppEvents
 
 
 class Engine:
@@ -70,6 +73,7 @@ class Engine:
         self.projects_dir = Path.projects_dir()
 
         self.app = App()  # holds the PySide6 application
+        self.app_events = AppEvents()
         self.routing = Routing()
         # self.plugin_manager = PluginManager()  # The code that init all user plugins
 

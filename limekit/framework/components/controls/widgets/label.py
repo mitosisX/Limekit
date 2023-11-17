@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QLabel
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QPixmap, QFont
 from limekit.framework.core.engine.parts import EnginePart
 from PySide6.QtWidgets import QSizePolicy
@@ -28,6 +28,8 @@ class Label(QLabel, EnginePart):
     def __init__(self, text="Label"):
         super().__init__()
 
+        self.pixmap = None
+
         self.setText(text)
 
     def onClick(self, func):
@@ -37,25 +39,32 @@ class Label(QLabel, EnginePart):
         align = alignment.lower()
 
         if align == "left":
-            self.setAlignment(Qt.AlignLeft)
+            self.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
         elif align == "right":
-            self.setAlignment(Qt.AlignRight)
+            self.setAlignment(Qt.AlignmentFlag.AlignRight)
 
         elif align == "bottom":
-            self.setAlignment(Qt.AlignBottom)
+            self.setAlignment(Qt.AlignmentFlag.AlignBottom)
 
         elif align == "top":
-            self.setAlignment(Qt.AlignTop)
+            self.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         elif align == "center":
-            self.setAlignment(Qt.AlignCenter)
+            self.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
     def setImage(self, path):
-        pixmap = QPixmap(path)
+        self.pixmap = QPixmap(path)
 
         # self.setScaledContents(True)
-        self.setPixmap(pixmap)
+        self.setPixmap(self.pixmap)
+
+    def resizeImage(self, width, height):
+        self.pixmap.scaled(
+            width, height, mode=Qt.TransformationMode.SmoothTransformation
+        )
+
+        self.setPixmap(self.pixmap)
 
     def getText(self):
         return self.text()

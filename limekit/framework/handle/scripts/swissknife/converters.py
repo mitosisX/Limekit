@@ -128,6 +128,7 @@ class Converter(EnginePart):
     @classmethod
     def table_from(cls, *list_):
         # works best with a variety of args
+        # ************ working better with dictionaries too
         return GlobalEngine.global_engine.table_from(*list_)
 
     @classmethod

@@ -98,58 +98,58 @@ class MessageBox(EnginePart):
                 button = str(_button).lower()
 
                 if button == "ok":
-                    buttons |= QMessageBox.Ok
+                    buttons |= QMessageBox.StandardButton.Ok
 
                 elif button == "open":
-                    buttons |= QMessageBox.Open
+                    buttons |= QMessageBox.StandardButton.Open
 
                 elif button == "save":
-                    buttons |= QMessageBox.Save
+                    buttons |= QMessageBox.StandardButton.Save
 
                 elif button == "cancel":
-                    buttons |= QMessageBox.Cancel
+                    buttons |= QMessageBox.StandardButton.Cancel
 
                 elif button == "close":
-                    buttons |= QMessageBox.Close
+                    buttons |= QMessageBox.StandardButton.Close
 
                 elif button == "apply":
-                    buttons |= QMessageBox.Appy
+                    buttons |= QMessageBox.StandardButton.Apply
 
                 elif button == "restoredefaults":
-                    buttons |= QMessageBox.RestoreDefaults
+                    buttons |= QMessageBox.StandardButton.RestoreDefaults
 
                 elif button == "help":
-                    buttons |= QMessageBox.Help
+                    buttons |= QMessageBox.StandardButton.Help
 
                 elif button == "saveall":
-                    buttons |= QMessageBox.SaveAll
+                    buttons |= QMessageBox.StandardButton.SaveAll
 
                 elif button == "yes":
-                    buttons |= QMessageBox.Yes
+                    buttons |= QMessageBox.StandardButton.Yes
 
                 elif button == "saveall":
-                    buttons |= QMessageBox.Close
+                    buttons |= QMessageBox.StandardButton.Close
 
-                elif button == "yes":
-                    buttons |= QMessageBox.Discard
+                elif button == "discard":
+                    buttons |= QMessageBox.StandardButton.Discard
 
                 elif button == "yestoall":
-                    buttons |= QMessageBox.YesToAll
+                    buttons |= QMessageBox.StandardButton.YesToAll
 
                 elif button == "no":
-                    buttons |= QMessageBox.Discard
+                    buttons |= QMessageBox.StandardButton.No
 
                 elif button == "notoall":
-                    buttons |= QMessageBox.NoToAll
+                    buttons |= QMessageBox.StandardButton.NoToAll
 
                 elif button == "abort":
-                    buttons |= QMessageBox.Abort
+                    buttons |= QMessageBox.StandardButton.Abort
 
                 elif button == "retry":
-                    buttons |= QMessageBox.Retry
+                    buttons |= QMessageBox.StandardButton.Retry
 
                 elif button == "ignore":
-                    buttons |= QMessageBox.Ignore
+                    buttons |= QMessageBox.StandardButton.Ignore
 
             return buttons
 

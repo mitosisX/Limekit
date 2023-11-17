@@ -57,6 +57,9 @@ class TextField(QTextEdit, EnginePart):
     def setHint(self, hint):
         self.setPlaceholderText(hint)
 
+    def appendText(self, text):
+        self.append(text)
+
     def setText(self, text):
         self.setPlainText(text)
 

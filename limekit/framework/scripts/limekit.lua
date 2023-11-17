@@ -1,9 +1,18 @@
 app = {
+    runProject = function(path, c)
+        __appCore.run_project(path, c)
+    end,
+    randomChoice = function(table_)
+        return __utils.random_string(table_)
+    end,
     splitString = function(string, delimeter)
         return __utils.str_split(string, delimeter)
     end,
     range = function(start, end_)
         return __utils.int_range(start, end_)
+    end,
+    sortArray = function(array)
+        return __utils.sort_array(array)
     end,
     sortTable = function(tbl)
         return __utils.sort_table(tbl)
@@ -150,8 +159,8 @@ app = {
         return __doubleInputDialog.show(parent, title, label, value, minValues, maxValue, step)
     end,
     -- ## Input Dialogs
-    alert = function(parent, title, message, icon, buttons)
-        return __alert(parent, title, message, icon, buttons)
+    alert = function(parent, title, message)
+        return Alert.show(parent, title, message)
     end,
     errorDialog = function(parent, title, message)
         __errorDialog(parent, title, message)

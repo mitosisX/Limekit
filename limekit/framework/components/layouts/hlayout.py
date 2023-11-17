@@ -6,8 +6,8 @@ from PySide6.QtCore import Qt
 class HorizontalLayout(QHBoxLayout, EnginePart):
     name = "HLayout"
 
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__(parent=None)
 
     def addChild(self, child, stretch=0):
         self.addWidget(child, stretch)

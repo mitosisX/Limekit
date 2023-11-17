@@ -3,6 +3,7 @@ import sys
 from lupa import lua54
 from limekit.framework.core.engine.app_engine import Engine
 from limekit.framework.core.exceptions.routes import RouteException
+from limekit.framework.handle.paths.path import Path
 
 # print(os.getcwd())
 
@@ -12,6 +13,10 @@ def destroy_engine():
 
 
 try:
+    if len(sys.argv) > 1:
+        location_arg = sys.argv[1]
+        Path.project_path = location_arg
+
     engine = Engine()
     engine.start()
 except TypeError as exception:
