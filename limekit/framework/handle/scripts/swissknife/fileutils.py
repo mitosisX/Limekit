@@ -122,8 +122,9 @@ class FileUtils(EnginePart):
         """
         Write a json file at the given path with the specified data encoded in json format.
         """
-        content = json.dumps(dict(data))
-        File.write_file(path, content)
+        print(Converter.table_to_dict(data))
+        # content = json.dumps(dict(Converter.table_from(data)), indent=4)
+        # File.write_file(path, content)
 
     @classmethod
     def is_dir(cls, path) -> bool:
@@ -169,8 +170,8 @@ class FileUtils(EnginePart):
         size = os.path.getsize(path)
         return size
 
-    @classmethod
-    def exists(cls, path) -> bool:
+    @staticmethod
+    def exists(path):
         """
         Check if a directory of a file exists at the given path.
         """

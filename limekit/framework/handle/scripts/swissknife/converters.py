@@ -1,3 +1,4 @@
+import lupa
 import hashlib
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.core.engine.global_ import GlobalEngine
@@ -130,6 +131,18 @@ class Converter(EnginePart):
         # works best with a variety of args
         # ************ working better with dictionaries too
         return GlobalEngine.global_engine.table_from(*list_)
+
+    @classmethod
+    def table_to_dict(cls, table):
+        py_dict = {}
+        for k, v in table.items():
+            print(k)
+            if lupa.lua_type(v) == "table":
+                py_dict[k] = cls.table_to_dict(v.values())
+            else:
+                py_dict[k] = v
+
+        return py_dict
 
     @classmethod
     def zip_(cls, arg1, arg2):

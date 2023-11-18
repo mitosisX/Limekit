@@ -7,13 +7,14 @@
         #!/bin/bash
 
         python3 -c "import signal" "/path/to/dir"
+        read -n 1 -s -r -p "Press any key to exit..."
 
     run.bat
 
         @echo off
 
         python -c "import signal" "C:\dir"
-
+        pause
 
 
         Obfuscating code

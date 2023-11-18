@@ -7,7 +7,7 @@ This is a Dumb Dialog. Oftenly used for "Ok", "Cancel" operations
 """
 
 
-class DialogBox(QDialog, EnginePart):
+class Dialog(QDialog, EnginePart):
     name = "Modal"
 
     def __init__(self, parent, title):
@@ -16,8 +16,15 @@ class DialogBox(QDialog, EnginePart):
         self.setWindowTitle(title)
 
         self.buttons = QDialogButtonBox.StandardButton.Ok
+        self.dialog_buttons = QDialogButtonBox(self.buttons)
+
+        # self.dialog_buttons.clicked.connect(self.accept)
+        # self.dialog_buttons.rejected.connect(self.reject)
 
         # self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setDefault(True)
+
+    def setSize(self, width, height):
+        self.resize(width, height)
 
     def setLayout(self, layout):
         super().setLayout(layout)
@@ -26,7 +33,8 @@ class DialogBox(QDialog, EnginePart):
         self.setWindowIcon(QIcon(icon))
 
     def getButtons(self, buttons):
-        return QDialogButtonBox(self.__decideButtons(buttons))
+        self.dialog_buttons = QDialogButtonBox(self.__decideButtons(buttons))
+        return self.dialog_buttons
 
     def __decideButtons(self, _buttons):
         if _buttons:
@@ -95,4 +103,4 @@ class DialogBox(QDialog, EnginePart):
             return self.buttons
 
     def show(self):
-        self.exec()
+        return self.exec()

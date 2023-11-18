@@ -35,6 +35,7 @@ class Label(QLabel, EnginePart):
     def onClick(self, func):
         self.clicked.connect(lambda: func(self))
 
+    # Can also be used to align an image
     def setTextAlign(self, alignment):
         align = alignment.lower()
 
@@ -52,6 +53,36 @@ class Label(QLabel, EnginePart):
 
         elif align == "center":
             self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+    def setCursor(self, cursor_type):
+        cursors = {
+            "wait": Qt.CursorShape.ArrowCursor,
+            "uparrow": Qt.CursorShape.UpArrowCursor,
+            "cross": Qt.CursorShape.CrossCursor,
+            "ibeam": Qt.CursorShape.IBeamCursor,
+            "sizever": Qt.CursorShape.SizeVerCursor,
+            "sizehor": Qt.CursorShape.SizeHorCursor,
+            "sizebdiag": Qt.CursorShape.SizeBDiagCursor,
+            "sizefdiag": Qt.CursorShape.SizeFDiagCursor,
+            "sizeall": Qt.CursorShape.SizeAllCursor,
+            "blank": Qt.CursorShape.BlankCursor,
+            "splitv": Qt.CursorShape.SplitVCursor,
+            "splith": Qt.CursorShape.SplitHCursor,
+            "pointinghand": Qt.CursorShape.PointingHandCursor,
+            "forbidden": Qt.CursorShape.ForbiddenCursor,
+            "whatsthis": Qt.CursorShape.WhatsThisCursor,
+            "busy": Qt.CursorShape.BusyCursor,
+            "openhand": Qt.CursorShape.OpenHandCursor,
+            "closedhand": Qt.CursorShape.ClosedHandCursor,
+            "dragcopy": Qt.CursorShape.DragCopyCursor,
+            "dragmove": Qt.CursorShape.DragMoveCursor,
+            "draglink": Qt.CursorShape.DragLinkCursor,
+            "last": Qt.CursorShape.LastCursor,
+            "bitmap": Qt.CursorShape.BitmapCursor,
+            "openhand": Qt.CursorShape.CustomCursor,
+        }
+
+        super().setCursor(cursors.get(cursor_type) or cursors["ibeam"])
 
     def setImage(self, path):
         self.pixmap = QPixmap(path)

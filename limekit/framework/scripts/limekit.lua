@@ -1,4 +1,10 @@
 app = {
+    joinPaths = function(...)
+        return __paths.join_paths(...)
+    end,
+    getStandardPath = function(path)
+        return __paths.get_path(path)
+    end,
     runProject = function(path, c)
         __appCore.run_project(path, c)
     end,
@@ -59,7 +65,7 @@ app = {
     end,
     -- Encoding #######################
     setFontFile = function(file, size)
-        __font.from_file(file, size)
+        __font.set_font(file, size)
     end,
     setFont = function(font, size)
         __font.set_font(font, size)
@@ -181,6 +187,9 @@ app = {
         return __wPopup(parent, title, message)
     end,
     ---- ################## Popups
+    evaluate = function(script)
+        __lua_evaluate(script)
+    end,
     execute = function(script)
         __lua_execute(script)
     end,

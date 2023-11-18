@@ -72,7 +72,7 @@ class Engine:
     def __init__(self):
         self.projects_dir = Path.projects_dir()
 
-        self.app = App()  # holds the PySide6 application
+        self.app = App()  # holds the PySide6 QApplication
         self.app_events = AppEvents()
         self.routing = Routing()
         # self.plugin_manager = PluginManager()  # The code that init all user plugins
@@ -139,7 +139,10 @@ class Engine:
     """
 
     def execute(self, lua_content):
-        return self.engine.execute(lua_content)
+        self.engine.execute(lua_content)
+
+    def evaluate(self, content):
+        return self.engine.eval(content)
 
     # Kill the engine if anything goes wrong
 
@@ -165,7 +168,7 @@ class Engine:
         Structure: C:/dir1/dir2;D:/dir1; or sep by \n D:/lua;D:/Misc;
         """
 
-        req_file_path = os.path.join(self.projects_dir, ".require")
+        req_file_path = os.path.join(Path.project_path, ".require")
 
         if Path.check_path(req_file_path):
             require_file = File.read_file(req_file_path)
@@ -229,6 +232,7 @@ class Engine:
             "images": Path.images,
             "misc": Path.misc,
             "__lua_execute": self.execute_from_file,
+            "__lua_evaluate": self.evaluate,
             "fake": Faker(),
             "Workbook": Workbook,
             "route": self.routing.fetch_resource,

@@ -15,8 +15,8 @@ class App:
     # Start the mainloop
     @classmethod
     def execute(cls):
-        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
-        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+        QApplication.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
+        QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
 
         # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
         QApplication.setHighDpiScaleFactorRoundingPolicy(

@@ -1,6 +1,10 @@
 import psutil
 import platform
+
+from limekit.framework.core.runner.app import App
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.handle.scripts.swissknife.converters import Converter
+
 
 """
 Cross-platform system information retrieval
@@ -131,6 +135,14 @@ class SystemUtils(EnginePart):
     def get_os_release(cls):
         return platform.release()
 
-    @classmethod
+    @staticmethod
     def get_os_version(cls):
         return platform.version()
+
+    @staticmethod
+    def get_screen_dimensions():
+        screen = App.app.primaryScreen()
+
+        rect = screen.availableGeometry()
+
+        return Converter.table_from({"width": rect.width(), "height": rect.height()})

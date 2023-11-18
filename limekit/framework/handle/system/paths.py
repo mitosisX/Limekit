@@ -1,24 +1,42 @@
+import os
 from PySide6.QtCore import QStandardPaths
+from limekit.framework.core.engine.parts import EnginePart
 
-class Paths:
-    DesktopLocation          = QStandardPaths.StandardLocation.DesktopLocation
-    DocumentsLocation        = QStandardPaths.StandardLocation.DocumentsLocation
-    FontsLocation            = QStandardPaths.StandardLocation.FontsLocation
-    ApplicationsLocation     = QStandardPaths.StandardLocation.ApplicationsLocation
-    MusicLocation            = QStandardPaths.StandardLocation.MusicLocation
-    MoviesLocation           = QStandardPaths.StandardLocation.MoviesLocation
-    PicturesLocation         = QStandardPaths.StandardLocation.PicturesLocation
-    TempLocation             = QStandardPaths.StandardLocation.TempLocation
-    HomeLocation             = QStandardPaths.StandardLocation.HomeLocation
-    AppLocalDataLocation     = QStandardPaths.StandardLocation.AppLocalDataLocation
-    CacheLocation            = QStandardPaths.StandardLocation.CacheLocation
-    GenericDataLocation      = QStandardPaths.StandardLocation.GenericDataLocation
-    RuntimeLocation          = QStandardPaths.StandardLocation.RuntimeLocation
-    ConfigLocation           = QStandardPaths.StandardLocation.ConfigLocation
-    DownloadLocation         = QStandardPaths.StandardLocation.DownloadLocation
-    GenericCacheLocation     = QStandardPaths.StandardLocation.GenericCacheLocation
-    GenericConfigLocation    = QStandardPaths.StandardLocation.AppDataLocation
-    AppDataLocation          = QStandardPaths.StandardLocation.AppDataLocation
-    AppConfigLocation        = QStandardPaths.StandardLocation.AppConfigLocation
-    PublicShareLocation      = QStandardPaths.StandardLocation.PublicShareLocation
-    TemplatesLocation        = QStandardPaths.StandardLocation.TempLocation
+
+class Paths(EnginePart):
+    name = "__paths"
+    paths = {
+        "desktop": QStandardPaths.StandardLocation.DesktopLocation,
+        "documents": QStandardPaths.StandardLocation.DocumentsLocation,
+        "fonts": QStandardPaths.StandardLocation.FontsLocation,
+        "applications": QStandardPaths.StandardLocation.ApplicationsLocation,
+        "music": QStandardPaths.StandardLocation.MusicLocation,
+        "movies": QStandardPaths.StandardLocation.MoviesLocation,
+        "pictures": QStandardPaths.StandardLocation.PicturesLocation,
+        "temp": QStandardPaths.StandardLocation.TempLocation,
+        "home": QStandardPaths.StandardLocation.HomeLocation,
+        "applocaldata": QStandardPaths.StandardLocation.AppLocalDataLocation,
+        "cache": QStandardPaths.StandardLocation.CacheLocation,
+        "genericdata": QStandardPaths.StandardLocation.GenericDataLocation,
+        "runtime": QStandardPaths.StandardLocation.RuntimeLocation,
+        "config": QStandardPaths.StandardLocation.ConfigLocation,
+        "download": QStandardPaths.StandardLocation.DownloadLocation,
+        "genericcache": QStandardPaths.StandardLocation.GenericCacheLocation,
+        "genericconfig": QStandardPaths.StandardLocation.GenericConfigLocation,
+        "appdata": QStandardPaths.StandardLocation.AppDataLocation,
+        "appconfig": QStandardPaths.StandardLocation.AppConfigLocation,
+        "publicshare": QStandardPaths.StandardLocation.PublicShareLocation,
+        "templates": QStandardPaths.StandardLocation.TemplatesLocation,
+    }
+
+    @classmethod
+    def get_path(cls, path):
+        check_path = cls.paths.get(path)
+        if check_path:
+            the_path = QStandardPaths.writableLocation(check_path)
+            return the_path
+        return "Blank"
+
+    @staticmethod
+    def join_paths(*paths):
+        return os.path.join(*paths)
