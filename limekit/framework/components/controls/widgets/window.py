@@ -77,6 +77,21 @@ class Window(QMainWindow, EnginePart):
 
         return super().eventFilter(obj, e)
 
+    def setMaxHeight(self, height):
+        self.setMaximumHeight(height)
+
+    def setMinHeight(self, height):
+        self.setMinimumHeight(height)
+
+    def setMaxWidth(self, width):
+        self.setMaximumWidth(width)
+
+    def setMinWidth(self, width):
+        self.setMinimumWidth(width)
+
+    def setMaxSize(self, width, height):
+        self.setMaximumSize(width, height)
+
     def minimize(self):
         self.showMinimized()
 

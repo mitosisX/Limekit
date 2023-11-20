@@ -1,6 +1,5 @@
-PySide6
+PySide6 == 6.4.2
 pyqtdarktheme
-PySide2
 qdarkstyle
 qt_material
 qtmodern

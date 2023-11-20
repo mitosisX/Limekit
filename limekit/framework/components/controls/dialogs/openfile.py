@@ -22,7 +22,7 @@ class OpenFile(QFileDialog, EnginePart):
             # "Image Files (*.png *.jpg *.bmp);;Text Files (*.txt *.lua)",
             # options=QFileDialog.Option.DontUseNativeDialog,
         )
-        return name_ if name_ else None
+        return name_ if name_ else ""
 
     def process_filters(self, filters):
         final_filters = ""
@@ -40,12 +40,8 @@ class OpenFile(QFileDialog, EnginePart):
             required_final = (
                 f"{title} ({filtered_exts}){';;' if c != len(to_py_dict) else ''}"
             )
-            # print(required_final)
+
             final_filters += required_final
-            # if c != len(to_py_dict):
-            #     pass
-            # else:
-            #     print("DOne")
 
         return final_filters
 

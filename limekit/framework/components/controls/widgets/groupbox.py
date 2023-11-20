@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QGroupBox
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.components.base.base_widget import BaseWidget
 
 """
 Only a layout can be used to add widgets using setLayout method
@@ -11,9 +12,13 @@ void setCheckable(bool checkable)
 """
 
 
-class GroupBox(QGroupBox, EnginePart):
-    def __init__(self, title="GroupBox"):
+class GroupBox(QGroupBox, BaseWidget, EnginePart):
+    def __init__(self, title=""):
         super().__init__(title)
+        BaseWidget.__init__(self, widget=self)
 
     def setLayout(self, layout):
         super().setLayout(layout)
+
+    def setBackgroundColor(self, color):
+        super().setStyleSheet(f"background-color: {color};")

@@ -41,6 +41,9 @@ class SpinBox(QSpinBox, EnginePart):
     def setPrefix(self, prefix):
         super().setPrefix(prefix)
 
+    def setSuffix(self, suffix):
+        super().setSuffix(suffix)
+
     def setValue(self, value):
         super().setValue(value)
 

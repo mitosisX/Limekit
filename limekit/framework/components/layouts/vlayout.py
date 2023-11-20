@@ -12,18 +12,51 @@ class VerticalLayout(QVBoxLayout, EnginePart):
     def addChild(self, child, stretch=0):
         self.addWidget(child, stretch)
 
-    def setContentAlignment(self, alignment):
-        align = None
-        selected_area = alignment.lower()
+    def setContentAlignment(self, *alignments):
+        qt_alignments = {
+            "leading": Qt.AlignmentFlag.AlignLeading,
+            "alignLeft": Qt.AlignmentFlag.AlignLeft,
+            "tight": Qt.AlignmentFlag.AlignRight,
+            "trailing": Qt.AlignmentFlag.AlignTrailing,
+            "hcenter": Qt.AlignmentFlag.AlignHCenter,
+            "justify": Qt.AlignmentFlag.AlignJustify,
+            "absolute": Qt.AlignmentFlag.AlignAbsolute,
+            "horizontal_mask": Qt.AlignmentFlag.AlignHorizontal_Mask,
+            "top": Qt.AlignmentFlag.AlignTop,
+            "bottom": Qt.AlignmentFlag.AlignBottom,
+            "vcenter": Qt.AlignmentFlag.AlignVCenter,
+            "center": Qt.AlignmentFlag.AlignCenter,
+            "baseline": Qt.AlignmentFlag.AlignBaseline,
+            "vertical_mask": Qt.AlignmentFlag.AlignVertical_Mask,
+        }
 
-        if selected_area == "top":
-            align = Qt.AlignLeft
-        elif selected_area == "hcenter":
-            align = Qt.AlignHCenter
-        elif selected_area == "justify":
-            align = Qt.AlignJustify
+        sel_alignments = 0
 
-        self.setAlignment(align)
+        for align in alignments:
+            if qt_alignments.get(align):
+                sel_alignments |= qt_alignments[align]
+
+        self.setAlignment(sel_alignments)
+
+        # align = None
+        # selected_area = alignment.lower()
+
+        # if selected_area == "top":
+        #     align = Qt.AlignmentFlag.AlignTop
+
+        # elif selected_area == "hcenter":
+        #     align = Qt.AlignmentFlag.AlignHCenter
+
+        # elif selected_area == "justify":
+        #     align = Qt.AlignmentFlag.AlignJustify
+
+        # elif selected_area == "center":
+        #     align = Qt.AlignmentFlag.AlignCenter
+
+        # elif selected_area == "vcenter":
+        #     align = Qt.AlignmentFlag.AlignVCenter
+
+        # self.setAlignment(align)
 
     # def addLayouts(self, *layouts):
     #     for layout in layouts:

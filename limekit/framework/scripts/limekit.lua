@@ -92,6 +92,13 @@ app = {
     getFileSize = function(file)
         return __fileutils.get_file_size(file)
     end,
+    -- Gets the file name and extension from given path
+    getFileExt = function(path)
+        return __fileutils.get_filename_ext(path)
+    end,
+    copyFile = function(source, destination)
+        __fileutils.copy_file(source, destination)
+    end,
     readFile = function(file, encoding)
         if not encoding then
             encoding = "UTF-8"

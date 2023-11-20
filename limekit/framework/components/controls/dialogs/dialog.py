@@ -29,6 +29,9 @@ class Dialog(QDialog, EnginePart):
     def setLayout(self, layout):
         super().setLayout(layout)
 
+    def dismiss(self):
+        self.close()
+
     def setIcon(self, icon):
         self.setWindowIcon(QIcon(icon))
 

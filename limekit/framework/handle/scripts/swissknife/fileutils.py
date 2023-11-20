@@ -1,11 +1,14 @@
-import json
 import os
+import json
+import shutil
 import zipfile
 from typing import Iterable
 
 from limekit.framework.handle.system.file import File
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.handle.scripts.swissknife.converters import Converter
+
+# python-fsutil
 
 __all__ = [
     "clean_dir",
@@ -230,4 +233,19 @@ class FileUtils(EnginePart):
         with open(path, "rb") as file:
             file.seek(0)
             lines_count = sum(1 for line in file)
+
         return lines_count
+
+    @staticmethod
+    def copy_file(source, destination):
+        try:
+            shutil.copyfile(source, destination)
+        except FileExistsError as ex:
+            print(ex)
+
+    @staticmethod
+    def get_filename_ext(path):
+        file_name = os.path.basename(path)
+        name, ext = os.path.splitext(file_name)
+
+        return Converter.table_from([name, ext])

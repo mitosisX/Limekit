@@ -100,7 +100,7 @@ class Engine:
         GlobalEngine.global_engine = self.engine
 
     def start(self):
-        self.fix_vital_dirs()
+        # self.fix_vital_dirs() #unnecessary, handled by the runner
         # self.init_plugins()  # Has to load first coz we don't walk the engine to run with only our py objects
 
         self.init_lua_engine()  # Set the py objects to the engine

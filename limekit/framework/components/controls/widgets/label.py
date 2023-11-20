@@ -1,6 +1,8 @@
+import lupa
+
 from PySide6.QtWidgets import QLabel
 from PySide6.QtCore import Qt, QSize
-from PySide6.QtGui import QPixmap, QFont
+from PySide6.QtGui import QMouseEvent, QPixmap, QFont
 from limekit.framework.core.engine.parts import EnginePart
 from PySide6.QtWidgets import QSizePolicy
 
@@ -25,15 +27,27 @@ label.setWordWrap(bool) makes the label multiline
 
 
 class Label(QLabel, EnginePart):
+    onClickFunc = None
+
+    # @lupa.unpacks_lua_table
     def __init__(self, text="Label"):
         super().__init__()
 
         self.pixmap = None
 
         self.setText(text)
+        # self.clicked.connect(self.__handleOnClick)
 
-    def onClick(self, func):
-        self.clicked.connect(lambda: func(self))
+    def mousePressEvent(self, ev: QMouseEvent):
+        if self.onClickFunc:
+            self.onClickFunc(self)
+        return super().mousePressEvent(ev)
+
+    def setOnClick(self, onClickFunc):
+        self.onClickFunc = onClickFunc
+
+    def setTextColor(self, color):
+        super().setStyleSheet(f"color: {color};")
 
     # Can also be used to align an image
     def setTextAlign(self, alignment):
@@ -53,6 +67,12 @@ class Label(QLabel, EnginePart):
 
         elif align == "center":
             self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        elif align == "hcenter":
+            self.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+
+        elif align == "vcenter":
+            self.setAlignment(Qt.AlignmentFlag.AlignVCenter)
 
     def setCursor(self, cursor_type):
         cursors = {
@@ -91,11 +111,11 @@ class Label(QLabel, EnginePart):
         self.setPixmap(self.pixmap)
 
     def resizeImage(self, width, height):
-        self.pixmap.scaled(
+        scaled = self.pixmap.scaled(
             width, height, mode=Qt.TransformationMode.SmoothTransformation
         )
 
-        self.setPixmap(self.pixmap)
+        self.setPixmap(scaled)
 
     def getText(self):
         return self.text()

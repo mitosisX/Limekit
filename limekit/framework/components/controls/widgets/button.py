@@ -2,15 +2,15 @@ from PySide6.QtWidgets import QPushButton
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon
 from limekit.framework.core.engine.parts import EnginePart
-from limekit.framework.components.gui.supwidget import SupWidget
+from limekit.framework.components.base.base_widget import BaseWidget
 
 
-class Button(QPushButton, SupWidget, EnginePart):
+class Button(QPushButton, BaseWidget, EnginePart):
     onClickFunc = None
 
     def __init__(self, text="Button"):
         super().__init__()
-        SupWidget.__init__(self, child=self)
+        BaseWidget.__init__(self, widget=self)
 
         self.setText(text)
 
