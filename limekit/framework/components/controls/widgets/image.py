@@ -5,7 +5,6 @@ from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QMouseEvent, QPixmap, QFont
 from limekit.framework.core.engine.parts import EnginePart
 from PySide6.QtWidgets import QSizePolicy
-from limekit.framework.components.base.base_widget import BaseWidget
 
 #   Alignments
 # 1. Qt.AlignLeft
@@ -27,18 +26,19 @@ label.setWordWrap(bool) makes the label multiline
 """
 
 
-class Label(QLabel, BaseWidget, EnginePart):
+class Image(QLabel, EnginePart):
     onClickFunc = None
 
-    # @lupa.unpacks_lua_table
-    def __init__(self, text="Label"):
+    @lupa.unpacks_lua_table
+    def __init__(self, kwargs):
         super().__init__()
-        BaseWidget.__init__(self, widget=self)
 
         self.pixmap = None
+        self.setImage(kwargs["path"] or "")
 
-        self.setText(text)
-        # self.clicked.connect(self.__handleOnClick)
+        if "size" in kwargs:
+            width, height = kwargs["size"]
+            self.resizeImage(width, height)
 
     def mousePressEvent(self, ev: QMouseEvent):
         if self.onClickFunc:
@@ -47,21 +47,6 @@ class Label(QLabel, BaseWidget, EnginePart):
 
     def setOnClick(self, onClickFunc):
         self.onClickFunc = onClickFunc
-
-    def setText(self, text):
-        super().setText(text)
-
-    def setBackgroundColor(self, color):
-        super().setStyleSheet(f"background-color: {color};")
-
-    def setTextColor(self, color):
-        super().setStyleSheet(f"color: {color};")
-
-    def setWhatsThis(self, desc):
-        super().setWhatsThis(desc)
-
-    # Can also be used to align an image
-    def setTextAlign(self, alignment):
         align = alignment.lower()
 
         if align == "left":
@@ -128,37 +113,16 @@ class Label(QLabel, BaseWidget, EnginePart):
 
         self.setPixmap(scaled)
 
-    def getText(self):
-        return self.text()
+    def setResizeRule(self, horizontal: str, vertical: str):
+        policies = {
+            "fixed": QSizePolicy.Policy.Fixed,  # ignores all size changing
+            "expanding": QSizePolicy.Policy.Expanding,  # makes sure to expand to all available spaces
+            "ignore": QSizePolicy.Policy.Ignored,  # does nothing
+        }
 
-    def setFontFile(self, font):
-        pass
+        horizontal = horizontal.lower()
+        vertical = vertical.lower()
 
-    def setFont(self, font, size=0):
-        if isinstance(font, QFont):
-            super().setFont(font)
-        else:
-            super().setFont(QFont(font, size))
-
-    def f(self, f):
-        super().setFont(f)
-
-    def setWordWrap(self, enable):
-        super().setWordWrap(enable)
-
-    def setCompanion(self, companion):
-        self.setBuddy(companion)
-
-    # def setResizeRule(self, horizontal: str, vertical: str):
-    #     policies = {
-    #         "fixed": QSizePolicy.Policy.Fixed,  # ignores all size changing
-    #         "expanding": QSizePolicy.Policy.Expanding,  # makes sure to expand to all available spaces
-    #         "ignore": QSizePolicy.Policy.Ignored,  # does nothing
-    #     }
-
-    #     horizontal = horizontal.lower()
-    #     vertical = vertical.lower()
-
-    #     if (horizontal in policies) and (vertical in policies):
-    #         size_policy = QSizePolicy(policies.get(horizontal), policies.get(vertical))
-    #         self.setSizePolicy(size_policy)
+        if (horizontal in policies) and (vertical in policies):
+            size_policy = QSizePolicy(policies.get(horizontal), policies.get(vertical))
+            self.setSizePolicy(size_policy)

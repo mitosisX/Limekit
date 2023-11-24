@@ -1,5 +1,10 @@
             To-Do list
 
+**** use pywinstyles for windows inbuilt themes *****
+
+### starter.py: start()
+ - Read and fix
+
 1. ComboBox setInsertMode
 
     QComboBox.NoInsert	Performs no insert.

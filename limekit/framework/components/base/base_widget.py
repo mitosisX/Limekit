@@ -5,6 +5,18 @@ class BaseWidget:
     def __init__(self, widget: QWidget):
         self.widget = widget
 
+    def enable(self):
+        self.widget.setEnabled(True)
+
+    def disable(self):
+        self.widget.setEnabled(False)
+
+    def setBackgroundColor(self, color):
+        self.widget.setStyleSheet(f"background-color: {color};")
+
+    def setTextColor(self, color):
+        self.widget.setStyleSheet(f"color: {color};")
+
     # Also acts as the padding
     def setMargins(self, left, top, right, bottom):
         self.widget.setContentsMargins(left, top, right, bottom)
@@ -24,11 +36,17 @@ class BaseWidget:
     def setMaxWidth(self, width):
         self.widget.setMaximumWidth(width)
 
+    def setVisibility(self, visibility):
+        self.widget.setVisible(visibility)
+
     def setResizeRule(self, horizontal: str, vertical: str):
         policies = {
             "fixed": QSizePolicy.Policy.Fixed,  # ignores all size changing
             "expanding": QSizePolicy.Policy.Expanding,  # makes sure to expand to all available spaces
             "ignore": QSizePolicy.Policy.Ignored,  # does nothing
+            "maximum": QSizePolicy.Policy.Maximum,
+            "minimum": QSizePolicy.Policy.Minimum,
+            "minimumexpanding": QSizePolicy.Policy.MinimumExpanding,
         }
 
         horizontal = horizontal.lower()

@@ -14,8 +14,8 @@ Cross-platform system information retrieval
 class SystemUtils(EnginePart):
     name = "__sysutils"
 
-    @classmethod
-    def get_processes(cls):
+    @staticmethod
+    def get_processes():
         process_dict = {}
         process_list = psutil.process_iter(attrs=["pid", "name"])
 
@@ -27,8 +27,8 @@ class SystemUtils(EnginePart):
 
         return process_dict
 
-    @classmethod
-    def kill_process(cls, pid):
+    @staticmethod
+    def kill_process(pid):
         # Check if the process with the specified PID exists
         if psutil.pid_exists(pid):
             try:
@@ -44,12 +44,12 @@ class SystemUtils(EnginePart):
         else:
             return False
 
-    @classmethod
-    def get_all_cpus(cls):
+    @staticmethod
+    def get_all_cpus():
         return psutil.cpu_count()
 
-    @classmethod
-    def get_users(cls):
+    @staticmethod
+    def get_users():
         user_details = []
 
         for user in psutil.users():
@@ -57,8 +57,8 @@ class SystemUtils(EnginePart):
 
         return user_details
 
-    @classmethod
-    def get_battery_percent(cls):
+    @staticmethod
+    def get_battery_percent():
         battery = psutil.sensors_battery()
 
         return {
@@ -67,8 +67,8 @@ class SystemUtils(EnginePart):
             "isPlugged": battery.power_plugged,
         }
 
-    @classmethod
-    def get_driver_letters(cls):
+    @staticmethod
+    def get_driver_letters():
         disk_info = []
         disks = psutil.disk_partitions()
 
@@ -87,8 +87,8 @@ class SystemUtils(EnginePart):
         return disk_info
 
     # var: device, from the above method
-    @classmethod
-    def get_drive_info(cls, device_name):
+    @staticmethod
+    def get_drive_info(device_name):
         disk = psutil.disk_usage(device_name)
         return {
             "total": disk.total,
@@ -97,46 +97,46 @@ class SystemUtils(EnginePart):
             "percent": disk.percent,
         }
 
-    @classmethod
-    def get_boot_time(cls):
+    @staticmethod
+    def get_boot_time():
         return psutil.boot_time()
 
-    @classmethod
-    def get_machine_type(cls):
-        # Susch as AMD64
+    @staticmethod
+    def get_machine_type():
+        # Such as AMD64
         return platform.machine()
 
-    @classmethod
-    def get_network_node_name(cls):
+    @staticmethod
+    def get_network_node_name():
         # Gets network node name
         return platform.node()
 
-    @classmethod
-    def get_processor(cls):
+    @staticmethod
+    def get_processor():
         # Intel Family 6 Model 142
         return platform.processor()
 
-    @classmethod
-    def get_platform_name(cls):
+    @staticmethod
+    def get_platform_name():
         # Windo1-10-10.0.22621-SP0
         return platform.platform()
 
-    @classmethod
-    def get_system_release(cls):
+    @staticmethod
+    def get_system_release():
         # returns: 10 when using windows 11
         return platform.release()
 
-    @classmethod
-    def get_os_name(cls):
+    @staticmethod
+    def get_os_name():
         # Window, Darwin, Linux
         return platform.system()
 
-    @classmethod
-    def get_os_release(cls):
+    @staticmethod
+    def get_os_release():
         return platform.release()
 
     @staticmethod
-    def get_os_version(cls):
+    def get_os_version():
         return platform.version()
 
     @staticmethod

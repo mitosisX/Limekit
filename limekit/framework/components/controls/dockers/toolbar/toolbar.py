@@ -23,9 +23,9 @@ class Toolbar(QToolBar, EnginePart):
     Determines how buttons are displayed on the toolbar
     """
 
-    def setImageStyle(self, _status):
+    def setIconStyle(self, status):
         button_style = Qt.ToolButtonStyle.ToolButtonFollowStyle
-        status = _status.lower()
+        status = status.lower()
 
         if status == "icononly":
             button_style = Qt.ToolButtonStyle.ToolButtonIconOnly

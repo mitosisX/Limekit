@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QHBoxLayout
+from PySide6.QtWidgets import QHBoxLayout, QLayout
 from limekit.framework.core.engine.parts import EnginePart
 from PySide6.QtCore import Qt
 
@@ -15,25 +15,37 @@ class HorizontalLayout(QHBoxLayout, EnginePart):
     def addLayout(self, lay):
         super().addLayout(lay)
 
-    def setContentAlignment(self, alignment):
-        align = None
-        selected_area = alignment.lower()
+    def setContentAlignment(self, *alignments):
+        qt_alignments = {
+            "leading": Qt.AlignmentFlag.AlignLeading,
+            "left": Qt.AlignmentFlag.AlignLeft,
+            "right": Qt.AlignmentFlag.AlignRight,
+            "trailing": Qt.AlignmentFlag.AlignTrailing,
+            "hcenter": Qt.AlignmentFlag.AlignHCenter,
+            "justify": Qt.AlignmentFlag.AlignJustify,
+            "absolute": Qt.AlignmentFlag.AlignAbsolute,
+            "horizontal_mask": Qt.AlignmentFlag.AlignHorizontal_Mask,
+            "top": Qt.AlignmentFlag.AlignTop,
+            "bottom": Qt.AlignmentFlag.AlignBottom,
+            "vcenter": Qt.AlignmentFlag.AlignVCenter,
+            "center": Qt.AlignmentFlag.AlignCenter,
+            "baseline": Qt.AlignmentFlag.AlignBaseline,
+            "vertical_mask": Qt.AlignmentFlag.AlignVertical_Mask,
+        }
 
-        if selected_area == "top":
-            align = Qt.AlignLeft
-        elif selected_area == "hcenter":
-            align = Qt.AlignHCenter
-        elif selected_area == "justify":
-            align = Qt.AlignJustify
+        sel_alignments = 0
 
-        self.setAlignment(align)
+        for align in alignments:
+            if qt_alignments.get(align):
+                sel_alignments |= qt_alignments[align]
 
-    # def addLayouts(self, *layouts):
-    #     for layout in layouts:
-    #         self.addLayout(layout)
+        self.setAlignment(sel_alignments)
 
-    def addExpansion(self, stretch=0):
-        self.addStretch(stretch)
+    def setSizeConstraint(self):
+        return super().setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
+
+    def addStretch(self, stretch=0):
+        super().addStretch(stretch)
 
     # Also acts as the padding
     def setMargins(self, left, top, right, bottom):

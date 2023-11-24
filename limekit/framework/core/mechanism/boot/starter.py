@@ -1,49 +1,105 @@
 import os
 import subprocess
-from PySide6.QtCore import QProcess, Signal
+from PySide6.QtCore import QProcess
 from limekit.framework.core.engine.parts import EnginePart
 
 
-class Starter(EnginePart):
+# class Starter:
+#     name = "__appCore"
+
+#     @classmethod
+#     def run_project(cls, callback):
+#         process = QProcess(cls)
+#         process.readyRead.connect(cls.readOutput)
+#         process.started.connect(cls.processStarted)
+#         process.finished.connect(cls.processFinished)
+#         process.start("python", ["-u", "main.py"])
+
+#     @staticmethod
+#     def run_project_(path, callback):
+#         # process = subprocess.run(
+#         #     f"python main.py {path}",
+#         #     capture_output=True
+#         #     # encoding="utf-8",
+#         # )
+
+#         # return process.stdout
+
+#         # callback(
+#         #     subprocess.check_output(
+#         #         [
+#         #             "python",
+#         #             "main.py",
+#         #             os.path.join(path, ""),
+#         #         ]
+#         #     ).decode("utf-8")
+#         # )
+#         return subprocess.check_output(
+#             [
+#                 "python",
+#                 "-c",
+#                 "from limekit.framework.run import *",
+#                 os.path.join(path, ""),
+#             ]
+#         ).decode("utf-8")
+
+
+# Implemented on 24 November, 2023 12:21 PM (Friday)
+class ProjectRunner(QProcess, EnginePart):
     name = "__appCore"
 
-    @staticmethod
-    def run_project(path, callback):
-        # process = subprocess.run(
-        #     f"python main.py {path}",
-        #     capture_output=True
-        #     # encoding="utf-8",
-        # )
+    onProcessReadyRead = None
+    onProcessStarted = None
+    onProcessFinished = None
 
-        # return process.stdout
-
-        # callback(
-        #     subprocess.check_output(
-        #         [
-        #             "python",
-        #             "main.py",
-        #             os.path.join(path, ""),
-        #         ]
-        #     ).decode("utf-8")
-        # )
-        return subprocess.check_output(
-            [
-                "python",
-                "-c",
-                "from limekit.framework.run import *",
-                os.path.join(path, ""),
-            ]
-        ).decode("utf-8")
-
-
-class ProcessOutputReader(QProcess):
-    def __init__(self):
+    def __init__(self, projectPath):
         super().__init__(parent=None)
 
-        # merge stderr channel into stdout channel
-        self.setProcessChannelMode(QProcess.ProcessChannelMode.MergedChannels)
+        self.projcetPath = projectPath  # The path to the user's project
 
-        raw_bytes = self.readAllStandardOutput()
-        text = raw_bytes.data().decode("utf-8")  # Assuming utf-8 encoding
+        self.readyRead.connect(self._handleReadOutput)
+        self.started.connect(self._handleProcessStarted)
+        self.finished.connect(self._handleProcessFinished)
 
-        print(text)
+    # Windows uses python, while macOS uses python3 to execute python
+    # Take this into consideration
+    def run(self):
+        # Initially, the approach failed for lack of -u flag; this flashes stdout stream out
+        # immediately
+
+        self.start(
+            "python",
+            [
+                "-u",
+                "-c",
+                "from limekit.framework.run import *",
+                self.projcetPath,
+            ],
+        )
+
+    def setOnProcessReadyRead(self, onProcessReadyRead):
+        self.onProcessReadyRead = onProcessReadyRead
+
+    def setOnProcessStarted(self, onProcessStarted):
+        self.onProcessStarted = onProcessStarted
+
+    def setOnProcessFinished(self, onProcessFinished):
+        self.onProcessFinished = onProcessFinished
+
+    def _handleReadOutput(self):
+        progressText = str(self.readAll().data().decode("utf-8")).rstrip()
+
+        if self.onProcessReadyRead:
+            self.onProcessReadyRead(progressText)
+
+    def _handleProcessFinished(self):
+        if self.onProcessFinished:
+            self.onProcessFinished()
+
+        # endText = "Finished"
+
+    def _handleProcessStarted(self):
+        if self.onProcessStarted:
+            self.onProcessStarted()
+
+        # startText = "Started"

@@ -27,11 +27,20 @@ class ToolbarButton(QAction, EnginePart):
         super().setText(text)
 
     # Using setIcon complains about QIcon()
-    def setImage(self, image):
-        self.setIcon(QIcon(image))
+    def setIcon(self, image):
+        super().setIcon(QIcon(image))
 
     def setOnClick(self, onClickFunction):
         self.onClickFunction = onClickFunction
 
     def setTooltip(self, text):
         self.setText(text)
+
+    def isCheckable(self, checkable):
+        super().isCheckable(checkable)
+
+    def setChecked(self, checked):
+        super().setChecked(checked)
+
+    def setVisibility(self, visibility):
+        self.setVisible(visibility)

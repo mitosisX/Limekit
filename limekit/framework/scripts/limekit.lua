@@ -5,8 +5,8 @@ app = {
     getStandardPath = function(path)
         return __paths.get_path(path)
     end,
-    runProject = function(path, c)
-        __appCore.run_project(path, c)
+    runProject = function(path)
+        return __appCore(path)
     end,
     randomChoice = function(table_)
         return __utils.random_string(table_)
@@ -140,8 +140,8 @@ app = {
     openFile = function(window, title, dir, filters)
         return __openFileDialog(window).display(window, title, dir, filters)
     end,
-    colorPicker = function()
-        return __colorPicker()
+    colorPicker = function(window, type_)
+        return __colorPicker(window).display(type_)
     end,
     -- ## Input Dialogs
     textInput = function(parent, title, label)
@@ -188,7 +188,7 @@ app = {
         return __iPopup(parent, title, message)
     end,
     questionAlert = function(parent, title, message)
-        return __qPopup(parent, title, message)
+        return __qPopup(parent, title, message).display()
     end,
     warningAlert = function(parent, title, message)
         return __wPopup(parent, title, message)

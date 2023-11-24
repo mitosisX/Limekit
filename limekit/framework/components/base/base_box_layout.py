@@ -2,12 +2,12 @@ from PySide6.QtWidgets import QBoxLayout
 from PySide6.QtCore import Qt
 
 
-class BaseLayout:
-    def __init__(self, layout: QBoxLayout):
+class BaseBoxLayout:
+    def __init__(self, layout):
         self.layout = layout
 
-    def addChild(self, child, stretch=0):
-        self.layout.addWidget(child, stretch)
+    def addChild(self, child):
+        self.layout.addWidget(child)
 
     def setMargins(self, left, top, right, bottom):
         self.layout.setContentsMargins(left, top, right, bottom)
@@ -42,5 +42,5 @@ class BaseLayout:
         self.layout.addLayout(lay)
 
     # This adds a QSpacerItem to the bottom of a VLayout and to the left of a HLayout
-    def addExpansion(self, stretch=1):
+    def addStretch(self, stretch=1):
         self.layout.addStretch(stretch)

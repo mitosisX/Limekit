@@ -113,7 +113,7 @@ class Window(QMainWindow, EnginePart):
         self.setWindowTitle(title)
 
     def setMainWidget(self, child: QWidget):
-        self.setCentralWidget(None)
+        self.setCentralWidget(None)  # remove everything and readd
         self.setCentralWidget(child)
 
     def setSize(self, width, height):
@@ -218,6 +218,9 @@ class Window(QMainWindow, EnginePart):
         cp = App.app.primaryScreen().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
+
+    def setFixedSize(self, width, height):
+        super().setFixedSize(width, height)
 
     def getSize(self):
         return self.size().width(), self.size().height()

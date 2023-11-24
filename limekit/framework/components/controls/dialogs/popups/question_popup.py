@@ -11,7 +11,7 @@ class QuestionPopup(QMessageBox, EnginePart):
 
     # The title can contain HTML elements too
     def __init__(self, parent, title, message):
-        self.msg_box = QMessageBox.question(parent, title, message)
+        self.msg_box = self.question(parent, title, message)
         # self.msg_box.setWindowTitle(title)
         # self.msg_box.setText(message)
 
@@ -43,8 +43,8 @@ class QuestionPopup(QMessageBox, EnginePart):
         # Display the message box and return the clicked button
         # self.result = self.msg_box.sho()
 
-    def getButton(self):
+    def display(self):
         if self.msg_box == QMessageBox.Yes:
-            return "yes"
+            return True
         elif self.msg_box == QMessageBox.No:
-            return "no"
+            return False

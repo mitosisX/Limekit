@@ -1,15 +1,26 @@
 from PySide6.QtWidgets import QColorDialog
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
-class ColorPicker(EnginePart):
+class ColorPicker(QColorDialog, EnginePart):
     name = "__colorPicker"
 
-    def __init__(self):
-        self.color = QColorDialog.getColor()
+    def __init__(self, parent):
+        super().__init__(parent=parent)
+        self.dialog = self.exec()
+        # self.color = self.getColor()
 
-    def getHex(self):
-        return self.color.name()
+    def display(self, type_="rgb"):
+        if self.dialog:
+            if type_ == "hex":
+                return self.currentColor().name()
 
-    def getRGB(self):
-        return self.color.getRgb()
+            elif type_ == "rgb":
+                r, g, b = (
+                    self.currentColor().red(),
+                    self.currentColor().green(),
+                    self.currentColor().blue(),
+                )
+
+                return Converter.table_from({"r": r, "g": g, "b": b})
