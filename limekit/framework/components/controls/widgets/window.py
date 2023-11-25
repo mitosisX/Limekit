@@ -24,11 +24,6 @@ class Window(QMainWindow, EnginePart):
             "Limekit - lua framework"
         )
 
-        # if "title" in kwargs:
-        #     self.setTitle(kwargs["title"])
-        # else:
-        #     self.setTitle("Limekit - lua framework")
-
         if "size" in kwargs:
             try:
                 width, height = kwargs["size"].values()
@@ -131,11 +126,6 @@ class Window(QMainWindow, EnginePart):
     def setLocation(self, x, y):
         self.move(x, y)
 
-    # def addChild(self, *children):
-    #     for child in children:
-    #         self.layout.addWidget(child)
-    #         self.layout.addStretch()
-
     def setLayout(self, layout):
         self.widget.setLayout(layout)
         # self.layout.addLayout(layout)
@@ -160,13 +150,22 @@ class Window(QMainWindow, EnginePart):
         selected_area = area.lower()
 
         if selected_area == "left":
-            return Qt.LeftDockWidgetArea
+            return Qt.DockWidgetArea.LeftDockWidgetArea
+
         elif selected_area == "right":
-            return Qt.RightDockWidgetArea
+            return Qt.DockWidgetArea.RightDockWidgetArea
+
         elif selected_area == "top":
-            return Qt.TopDockWidgetArea
+            return Qt.DockWidgetArea.TopDockWidgetArea
+
         elif selected_area == "bottom":
-            return Qt.BottomDockWidgetArea
+            return Qt.DockWidgetArea.BottomDockWidgetArea
+
+        elif selected_area == "allareas":
+            return Qt.DockWidgetArea.AllDockWidgetAreas
+
+        elif selected_area == "nodock":
+            return Qt.DockWidgetArea.NoDockWidgetArea
 
     def setIcon(self, icon):
         self.setWindowIcon(QIcon(icon))
@@ -178,6 +177,7 @@ class Window(QMainWindow, EnginePart):
             "right": Qt.ToolBarArea.RightToolBarArea,
             "bottom": Qt.ToolBarArea.BottomToolBarArea,
         }
+
         super().addToolBar(
             positions[position] if positions.get(position) else positions["top"],
             toolbar,
@@ -188,8 +188,6 @@ class Window(QMainWindow, EnginePart):
         self.setMenuBar(menu)
 
     """
-    Dock: namespace - components.controls.dockers.dockerwidget.docking
-    
     The Dock can accept parent in it's constructor, and using this makes the dock
     take up the whole are as this essentially makes the "central widget" of its parent
     
@@ -197,19 +195,21 @@ class Window(QMainWindow, EnginePart):
     """
 
     def addDock(self, dock: Docker, area="left"):
-        dock_area = Qt.LeftDockWidgetArea
+        dock_area = Qt.DockWidgetArea.LeftDockWidgetArea
+
+        area = area.lower()
 
         if area == "left":
-            dock_area = Qt.LeftDockWidgetArea
+            dock_area = Qt.DockWidgetArea.LeftDockWidgetArea
 
         elif area == "right":
-            dock_area = Qt.RightDockWidgetArea
+            dock_area = Qt.DockWidgetArea.RightDockWidgetArea
 
         elif area == "top":
-            dock_area = Qt.TopDockWidgetArea
+            dock_area = Qt.DockWidgetArea.TopDockWidgetArea
 
         elif area == "bottom":
-            dock_area = Qt.BottomDockWidgetArea
+            dock_area = Qt.DockWidgetArea.BottomDockWidgetArea
 
         self.addDockWidget(dock_area, dock)
 
@@ -231,6 +231,7 @@ class Window(QMainWindow, EnginePart):
 
     def showEvent(self, event):
         self.center()
+
         super().showEvent(event)
         if self.onShownEvent:
             self.onShownEvent(self)
@@ -254,6 +255,9 @@ class Window(QMainWindow, EnginePart):
 
     def show(self):
         super().show()
+
+    def hide(self):
+        super().hide()
 
     # Type: Any QtWidget
     # Text: visible text on that QtWidget

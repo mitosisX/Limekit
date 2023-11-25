@@ -77,6 +77,9 @@ class ProjectRunner(QProcess, EnginePart):
             ],
         )
 
+    def stop(self):
+        self.kill()
+
     def setOnProcessReadyRead(self, onProcessReadyRead):
         self.onProcessReadyRead = onProcessReadyRead
 

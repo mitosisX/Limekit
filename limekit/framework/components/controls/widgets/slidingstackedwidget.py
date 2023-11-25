@@ -7,7 +7,7 @@ from PySide6.QtCore import (
     QParallelAnimationGroup,
     QTimer,
 )
-from PySide6.QtWidgets import QStackedWidget
+from PySide6.QtWidgets import QWidget, QStackedWidget
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.handle.scripts.swissknife.converters import Converter
 
@@ -26,6 +26,11 @@ class SlidingStackedWidget(QStackedWidget, EnginePart):
         self._orientation = Qt.Horizontal
         self._easing = QEasingCurve.Linear
         self._initAnimation()
+
+    def addLayout(self, layout):
+        widget = QWidget()
+        widget.setLayout(layout)
+        self.addChild(widget)
 
     def addChild(self, child):
         self.addWidget(child)

@@ -32,6 +32,16 @@ class Menubar(QMenuBar, EnginePart):
             self.addMenu(menu)
 
     def buildFromTemplate(self, template):
+        for key, item in template.items():
+            label = item.label
+
+            menu = Menu(label)
+            self.addMenu(menu)
+
+            if "submenu" in item:
+                self.fromTemplate(item.submenu, menu)
+
+    def buildFromTemplate_(self, template):
         self.fromTemplate(template, self)
 
     def fromTemplate(self, items, parent):
@@ -43,6 +53,7 @@ class Menubar(QMenuBar, EnginePart):
 
                 if "name" in item:
                     self.addToObject(item["name"], parent)
+
                 self.fromTemplate(item["submenu"], submenu)
 
             else:
@@ -56,21 +67,24 @@ class Menubar(QMenuBar, EnginePart):
                     action.setShortcut(item["accelerator"] or item["shortcut"])
 
                 if "click" in item:
-                    action.triggered.connect(item["click"])
+                    action.setOnClick(item["click"])
 
                 if "icon" in item:
-                    action.setImage(item["icon"])
+                    action.setIcon(item["icon"])
 
                 if "name" in item:
                     self.addToObject(item["name"], action)
 
                 parent.addMenuItem(action)
 
+    def gi(self):
+        print(self.objects)
+
     def addToObject(self, name, obj):
         self.objects.update({name: obj})
 
-    def findChild(self, child):
-        return self.objects[child] if self.objects.get(child) else None
+    def getChild(self, child):
+        return self.objects[child] or None
 
     def buildFromTemplate__(self, items, parent):
         for item in items.values():

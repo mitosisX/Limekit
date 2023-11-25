@@ -1,5 +1,5 @@
 from PySide6.QtGui import QAction
-from PySide6.QtGui import QPixmap, QFont
+from PySide6.QtGui import QIcon, QFont
 from limekit.framework.core.engine.parts import EnginePart
 
 
@@ -26,18 +26,14 @@ class MenuItem(QAction, EnginePart):
         return self.text()
 
     def __handleOnClick(self):
-        print("MenuItem here")
-
         if self.onClickFunction:
-            print("here")
             self.onClickFunction(self)
 
     def setOnClick(self, onClickFunction):
         self.onClickFunction = onClickFunction
 
-    def setImage(self, path):
-        pixmap = QPixmap(path)
-        self.setIcon(pixmap)
+    def setIcon(self, path):
+        super().setIcon(QIcon(path))
 
     def addMenuItem(self, menuitem):
         self.addAction(menuitem)

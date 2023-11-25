@@ -12,7 +12,6 @@ class Menu(QMenu, EnginePart):
         self.triggered.connect(self.__handleOnClick)
 
     def __handleOnClick(self):
-        print("Menu here")
         if self.onClickFunction:
             self.onClickFunction(self)
 
