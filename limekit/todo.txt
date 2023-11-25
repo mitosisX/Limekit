@@ -25,3 +25,7 @@ error loading code: [string "<python>"]:62: '}' expected (to close '{' at line 6
 [string "<python>"]:2: attempt to concatenate a table value (local 'content')
 
     Fix Themes
+
+            requirements.txt
+
+        Removed: xlsxwriter, PySide6-Fluent-Widgets[full], pyecharts, Faker

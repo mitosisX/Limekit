@@ -1,3 +1,5 @@
+Using python 3.10.6
+
         Bash files
 
     macOS and linux

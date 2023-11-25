@@ -26,13 +26,15 @@ through a batch script; the creation script is half-baked (only able to run a pr
 import os
 import sys
 import importlib
-from xlsxwriter import Workbook
+
+# from xlsxwriter import Workbook
 
 from playsound import playsound
 
 import lupa
 from lupa import LuaRuntime
-from faker import Faker
+
+# from faker import Faker
 
 # from pyecharts.charts import Bar
 
@@ -100,7 +102,7 @@ class Engine:
         GlobalEngine.global_engine = self.engine
 
     def start(self):
-        # self.fix_vital_dirs() #unnecessary, handled by the runner
+        # self.fix_vital_dirs() # Unnecessary, handled by the runner and the future build engine
         # self.init_plugins()  # Has to load first coz we don't walk the engine to run with only our py objects
 
         self.init_lua_engine()  # Set the py objects to the engine
@@ -233,8 +235,8 @@ class Engine:
             "misc": Path.misc,
             "__lua_execute": self.execute_from_file,
             "__lua_evaluate": self.evaluate,
-            "fake": Faker(),
-            "Workbook": Workbook,
+            # "fake": Faker(),
+            # "Workbook": Workbook,
             "route": self.routing.fetch_resource,
             "Sound": playsound,
             # "Bar": Bar,
