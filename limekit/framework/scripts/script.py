@@ -1,4 +1,8 @@
-app = {
+class Script:
+    @classmethod
+    def read_app_lua(cls):
+        return """
+    app = {
     isIDE = function()
         return __engineState()
     end,
@@ -276,3 +280,4 @@ app = {
     -- validators ##################
 
 }
+    """

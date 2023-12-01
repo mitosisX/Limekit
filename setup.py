@@ -6,7 +6,7 @@ setuptools.setup(
     keywords="gui lua",
     author="Omega Msiska",
     author_email="omegamsiskah@gmail.com",
-    description="Limekit is the first-ever lua GUI framework",
+    description="Limekit is the first-ever modern lua GUI framework",
     license="GNU",
     packages=setuptools.find_packages(),
     package_data={
@@ -16,17 +16,13 @@ setuptools.setup(
     install_requires=[
         "PySide6==6.4.2",
         "qt_material",
-        "Faker",
         "qdarkstyle",
         "qtmodern",
         "psutil",
-        "emoji",
-        "xlsxwriter",
-        "PySide6-Fluent-Widgets[full]",
+        "emoji",,
         "playsound",
         "lupa",
-        "pyecharts",
-        "PyTaskbarProgress",
+        "PyInstaller"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

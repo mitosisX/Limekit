@@ -68,7 +68,7 @@ class ProjectRunner(QProcess, EnginePart):
         # immediately
 
         self.start(
-            "python",
+            "python" if os.name == "nt" else "python3",
             [
                 "-u",
                 "-c",

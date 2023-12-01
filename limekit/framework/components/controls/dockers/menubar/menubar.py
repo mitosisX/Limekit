@@ -41,9 +41,6 @@ class Menubar(QMenuBar, EnginePart):
             if "submenu" in item:
                 self.fromTemplate(item.submenu, menu)
 
-    def buildFromTemplate_(self, template):
-        self.fromTemplate(template, self)
-
     def fromTemplate(self, items, parent):
         for item in items.values():
             label = item["label"]
@@ -77,8 +74,9 @@ class Menubar(QMenuBar, EnginePart):
 
                 parent.addMenuItem(action)
 
-    def gi(self):
-        print(self.objects)
+    # Old implementation
+    # def buildFromTemplate_(self, template):
+    #     self.fromTemplate(template, self)
 
     def addToObject(self, name, obj):
         self.objects.update({name: obj})

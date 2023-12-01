@@ -38,7 +38,7 @@ class Path(EnginePart):
     @classmethod
     def projects_dir(cls):
         the_path = cls.current_project_dir()
-        return the_path[: the_path.rfind("\\")]
+        return the_path[: the_path.rfind(os.path.sep)]
 
     @classmethod
     def listDir(cls, path):
@@ -63,13 +63,15 @@ class Path(EnginePart):
     @classmethod
     def remove_last_dir(cls, path):
         # Step 1: Split the path into individual directories
-        directories = path.split("\\")
+        directories = path.split(
+            os.path.sep
+        )  # This is platform dependent path separator
 
         # Step 2: Remove the last directory
         directories = directories[:-1]
 
         # Step 3: Join the directories back together to form the new path
-        new_path = "\\".join(directories)
+        new_path = os.path.sep.join(directories)
 
         return new_path
 
@@ -113,7 +115,7 @@ class Path(EnginePart):
         Converts a path string with dot notation into a proper path.
         For example, converts "my.folder.name" to "my/folder/name".
         """
-        return dot_path.replace(".", "/")
+        return dot_path.replace(".", os.path.sep)
 
     @classmethod
     def check_path(cls, path):

@@ -59,6 +59,8 @@ from limekit.framework.handle.scripts.swissknife.fileutils import FileUtils
 from limekit.framework.handle.routing.routes import Routing
 from limekit.framework.core.runner.app_events import AppEvents
 
+from limekit.framework.scripts.script import Script
+
 
 class Engine:
     _instance = None
@@ -127,12 +129,13 @@ class Engine:
             "limekit.framework.scripts.limekit",
         ]
 
-        for vital_file in vital_files:
-            clean_path_file = Path.join_paths(
-                Path.remove_last_dir(settings.limekit_SITEPACKAGE_DIR),
-                f"{Path.dot_path(vital_file)}.lua",
-            )
-            self.execute(File.read_file(clean_path_file))
+        # for vital_file in vital_files:
+        #     clean_path_file = Path.join_paths(
+        #         Path.remove_last_dir(settings.limekit_SITEPACKAGE_DIR),
+        #         f"{Path.dot_path(vital_file)}.lua",
+        #     )
+
+        self.execute(Script.read_app_lua())
 
     """
     For executing any incoming JavaScript code
@@ -172,23 +175,33 @@ class Engine:
 
         req_file_path = os.path.join(Path.project_path, ".require")
 
+        dirs_for_require = []  # Where
+
         if Path.check_path(req_file_path):
             require_file = File.read_file(req_file_path)
             dirs_for_require = (
-                require_file.split(";")
+                require_file.split(";")[:-1]
                 if ";" in require_file
-                else require_file.split("\n")
+                else require_file.split("\n")[:-1]
             )
+
+            misc_path_append = Path.misc_dir().replace("\\", "/") + "/?.lua"
+            dirs_for_require.append(misc_path_append)
 
             paths = ""
 
             for dir in dirs_for_require:
                 if dir != "":
-                    proper_path = f"{os.path.join(dir,'')}?.lua;"
+                    proper_path = f"{dir}/?.lua;"
                     paths += proper_path
 
             fix_slash = paths.replace("\\", "/")
-            self.execute(f"package.path = '{fix_slash}' .. package.path")
+
+            self.execute(f"package.path = '{fix_slash};' .. package.path")
+        else:
+            misc_path_append = Path.misc_dir().replace("\\", "/") + "/?.lua"
+
+            self.execute(f"package.path = '{misc_path_append};' .. package.path")
 
     """
     Load and intialize all plugins from the user
@@ -203,6 +216,14 @@ class Engine:
     # In case of any missing dirs, this method rereates them
     def fix_app_folders(self):
         pass
+
+    def isIDE(self):
+        if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+            # print("running in a PyInstaller bundle")
+            return False
+        else:
+            return True
+            # print("running in a normal Python process")
 
     def gather_lua_engine_objects(self):
         self.gather_from_dirs()
@@ -242,7 +263,7 @@ class Engine:
             # "Bar": Bar,
             # "requests": requests,
             # "BeautifulSoup": BeautifulSoup,
-            # "pandas": pandas,
+            "__engineState": self.isIDE,
             "len": len,
             # "dir": dir,
             "print": print,

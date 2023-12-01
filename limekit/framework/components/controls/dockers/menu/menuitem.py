@@ -7,7 +7,7 @@ class MenuItem(QAction, EnginePart):
     onClickFunction = None
 
     def __init__(self, title=None, parent=None):
-        super().__init__(text=title, parent=parent)
+        super().__init__(text=title if title != "-" else "", parent=parent)
 
         if title == "-":
             self.setSeparator(True)

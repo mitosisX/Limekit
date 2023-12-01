@@ -14,7 +14,7 @@ class File(EnginePart):
     @classmethod
     def script_file_reader(cls, file, encoding):
         if "::" in file:  # and (not "\\" in file and not "//" in file):
-            print("here")
+            # print("here")
             file_path = Path.process_route_makers(file)
             return cls.read_file(file_path)
 
