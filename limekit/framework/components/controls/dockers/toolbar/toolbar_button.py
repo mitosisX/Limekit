@@ -36,8 +36,18 @@ class ToolbarButton(QAction, EnginePart):
     def setTooltip(self, text):
         self.setText(text)
 
-    def isCheckable(self, checkable):
-        super().isCheckable(checkable)
+    def setMenu(self, menu):
+        super().setMenu(menu)
+
+    def setCheckable(self, checkable):
+        super().setCheckable(checkable)
+
+    # Automatically checks it when setCheckable is true
+    def toggleCheck(self):
+        self.toggle()
+
+    def isChecked(self) -> bool:
+        return super().isChecked()()
 
     def setChecked(self, checked):
         super().setChecked(checked)

@@ -10,7 +10,8 @@ class ListBox(QListWidget, EnginePart):
 
     def __init__(self, items=None):
         # By defaulf, the ViewMode is on ListMode
-        super().__init__()
+        super().__init__(parent=None)
+
         if items:
             self.setItems(items)
 
@@ -39,7 +40,7 @@ class ListBox(QListWidget, EnginePart):
 
     def setItems(self, items):
         for item in items.values():
-            self.addItem(item)
+            self.addItem(str(item))
 
     def addImageItem(self, label, image):
         item = QListWidgetItem(label)

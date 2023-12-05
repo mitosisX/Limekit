@@ -12,8 +12,8 @@ class Alert(EnginePart):
         result = dialog.exec()
 
         if result == QMessageBox.StandardButton.Ok:
-            print("OK")
-            # return True
+            # print("OK")
+            return True
         else:
-            print("Cancel")
-            # return False
+            # print("Cancel")
+            return False

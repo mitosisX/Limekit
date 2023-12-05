@@ -83,7 +83,7 @@ app = {
     checkIfFolder = function(path)
         return __fileutils.is_dir(path)
     end,
-    checkExists = function(path)
+    exists = function(path)
         return __fileutils.exists(path)
     end,
     checkFileEmpty = function(file)
@@ -134,41 +134,44 @@ app = {
         __quit()
     end,
     ---- ################## Popups
-    getFont = function()
+    fontPickerDialog = function()
         return __fontDialog().display()
     end,
-    saveFile = function(window, title, dir, filters)
+    saveFileDialog = function(window, title, dir, filters)
         return __saveFileDialog(window).display(window, title, dir, filters)
     end,
-    openFile = function(window, title, dir, filters)
+    folderPickerDialog = function(window, title)
+        return __folderPickerDialog().display(window, title)
+    end,
+    openFileDialog = function(window, title, dir, filters)
         return __openFileDialog(window).display(window, title, dir, filters)
     end,
-    colorPicker = function(window, type_)
+    colorPickerDialog = function(window, type_)
         return __colorPicker(window).display(type_)
     end,
     -- ## Input Dialogs
     textInput = function(parent, title, label)
         return __textInputDialog.show(parent, title, label)
     end,
-    multilineInput = function(parent, title, label, content)
+    multilineInputDialog = function(parent, title, label, content)
         if not content then
             content = ""
         end
         return __multilineInputDialog.show(parent, title, label, content)
     end,
-    comboBoxInput = function(parent, title, label, items, index)
+    comboBoxInputDialog = function(parent, title, label, items, index)
         if not index then
             index = 0
         end
         return __itemInputDialog.show(parent, title, label, items, index)
     end,
-    integerInput = function(parent, title, label, value, minValues, maxValue, step)
+    integerInputDialog = function(parent, title, label, value, minValues, maxValue, step)
         if not step then
             step = 2
         end
         return __integerInputDialog.show(parent, title, label, value, minValues, maxValue, step)
     end,
-    doubleInput = function(parent, title, label, value, minValues, maxValue, step)
+    doubleInputDialog = function(parent, title, label, value, minValues, maxValue, step)
         if not step then
             step = 2
         end
@@ -178,22 +181,23 @@ app = {
     alert = function(parent, title, message)
         return Alert.show(parent, title, message)
     end,
-    errorDialog = function(parent, title, message)
+    -- Contains the 'do not show this message again' button
+    infoMessageDialog = function(parent, title, message)
         __errorDialog(parent, title, message)
     end,
-    aboutAlert = function(parent, title, message)
+    aboutAlertDialog = function(parent, title, message)
         return __aPopup(parent, title, message)
     end,
-    criticalAlert = function(parent, title, message)
+    criticalAlertDialog = function(parent, title, message)
         return __cPopup(parent, title, message)
     end,
-    infoAlert = function(parent, title, message)
+    infoAlertDialog = function(parent, title, message)
         return __iPopup(parent, title, message)
     end,
-    questionAlert = function(parent, title, message)
+    questionAlertDialog = function(parent, title, message)
         return __qPopup(parent, title, message).display()
     end,
-    warningAlert = function(parent, title, message)
+    warningAlertDialog = function(parent, title, message)
         return __wPopup(parent, title, message)
     end,
     ---- ################## Popups
@@ -211,6 +215,12 @@ app = {
     end,
     listFolder = function(path)
         return __Path.listDir(path)
+    end,
+    renameFile = function(file, file_new)
+        return __fileutils.rename_file(file, file_new)
+    end,
+    renameFolder = function(dir, dir_new)
+        return __fileutils.rename_dir(dir, dir_new)
     end,
     createFolder = function(path)
         __fileutils.make_dirs(path)

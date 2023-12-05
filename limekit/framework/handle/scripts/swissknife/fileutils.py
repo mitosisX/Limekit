@@ -249,3 +249,24 @@ class FileUtils(EnginePart):
         name, ext = os.path.splitext(file_name)
 
         return Converter.table_from([name, ext])
+
+    @classmethod
+    def rename_dir(cls, dir, dir_new):
+        cls.renamer(dir, dir_new)
+
+    @classmethod
+    def rename_file(cls, file, file_new):
+        cls.renamer(file, file_new)
+
+    @classmethod
+    def renamer(cls, new, old):
+        """
+        Rename a directory with the given name.
+        If a directory or a file with the given name already exists, an OSError is raised.
+        """
+        try:
+            os.rename(new, old)
+            return True
+        except OSError as ex:
+            print(ex)
+            return False

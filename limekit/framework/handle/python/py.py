@@ -1,5 +1,7 @@
 import lupa
+import importlib
 from functools import cache
+
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.handle.scripts.swissknife.converters import Converter
 
@@ -40,3 +42,10 @@ class Python(EnginePart):
     @staticmethod
     def str_format(string: str, *args):
         return string.format(*args)
+
+    @staticmethod
+    def import_module(module):
+        try:
+            return importlib.import_module(module)
+        except ModuleNotFoundError as ex:
+            print(f"PythonImportError: {ex}")

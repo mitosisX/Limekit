@@ -25,6 +25,7 @@ through a batch script; the creation script is half-baked (only able to run a pr
 
 import os
 import sys
+import inspect
 import importlib
 
 # from xlsxwriter import Workbook
@@ -185,19 +186,22 @@ class Engine:
                 else require_file.split("\n")[:-1]
             )
 
-            misc_path_append = Path.misc_dir().replace("\\", "/") + "/?.lua"
+            misc_path_append = Path.misc_dir().replace(
+                "\\", "/"
+            )  # make sure all scripts in the misc can be "require"-d
+
             dirs_for_require.append(misc_path_append)
 
             paths = ""
 
             for dir in dirs_for_require:
                 if dir != "":
-                    proper_path = f"{dir}/?.lua;"
+                    proper_path = f"{dir}{'/' if not dir.endswith('/') else ''}?.lua;"
                     paths += proper_path
 
-            fix_slash = paths.replace("\\", "/")
+            # fix_slash = paths.replace("\\", "/")
 
-            self.execute(f"package.path = '{fix_slash};' .. package.path")
+            self.execute(f"package.path = '{paths}' .. package.path")
         else:
             misc_path_append = Path.misc_dir().replace("\\", "/") + "/?.lua"
 
@@ -304,6 +308,43 @@ class Engine:
     
     PS. Haven't yet met anything requiring py_getitem yet
     """
+
+    # def load_classes_(self, files):
+    #     for file in files:
+    #         module_name = file[:-3]
+
+    #         module_spec = importlib.util.spec_from_file_location(module_name, file)
+
+    #         # Load the module
+    #         module = importlib.util.module_from_spec(module_spec)
+    #         module_spec.loader.exec_module(module)
+
+    #         # Get all classes from the module
+    #         classes = inspect.getmembers(module, inspect.isclass)
+
+    #         non_inherited_classes = [
+    #             class_obj
+    #             for class_name, class_obj in classes
+    #             if module.__name__ in [cls.__module__ for cls in class_obj.mro()]
+    #         ]
+
+    #         # Instantiate each non-inherited class
+    #         for class_ in non_inherited_classes:
+    #             if (
+    #                 isinstance(class_, type)
+    #                 and issubclass(class_, EnginePart)
+    #                 and class_ is not EnginePart
+    #             ):
+    #                 class_for_lua = class_
+
+    #                 object_name = (
+    #                     class_for_lua.name
+    #                     if class_for_lua.name
+    #                     else class_for_lua.__name__
+    #                 )
+
+    #                 # Create the lua objects
+    #                 self.engine.globals()[object_name] = class_for_lua
 
     def load_classes(self, files):
         # all_instances = {}
