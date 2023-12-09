@@ -3,36 +3,23 @@ from limekit.framework.handle.paths.path import Path
 from limekit.framework.core.exceptions.routes import RouteException
 
 """
-dir = "D:/sandbox/"
-
-route_structure = {
-        "project": {
-            "name": "Simple",
-            "author": "Limekit",
-            "description": "Brief project description",
-            "copyright": "© 2023 limekit. All Rights Reserved",
-            "version": "2.0.1",
-            "email": "limekit@lua.gui",
-            "url": "",
-            "routes": {
-                "single": {"book": "book.txt", "names": "names.txt"},
-                "group": {
-                    "books": {
-                        "group_label": "",
-                        "Harry Potter": "Harry Potter.txt",
-                        "Rings": "Lord of the rings.txt",
-                        "Tom Clancy": "Tom Clancy.txt",
-                    },
-                    "cities": {
-                        "Zomba": "zomba.txt",
-                        "Blantyre": "Blantyre.txt",
-                        "Mzuzu": "Mzuzu.txt",
-                        "Lilongwe": "Lilongwe.txt",
-                    },
-                },
-            },
-        }
-    }
+"routes": {
+    "single": {"book": "book.txt", "names": "names.txt"},
+    "group": {
+        "books": {
+            "group_label": "",
+            "Harry Potter": "Harry Potter.txt",
+            "Rings": "Lord of the rings.txt",
+            "Tom Clancy": "Tom Clancy.txt",
+        },
+        "cities": {
+            "Zomba": "zomba.txt",
+            "Blantyre": "Blantyre.txt",
+            "Mzuzu": "Mzuzu.txt",
+            "Lilongwe": "Lilongwe.txt",
+        },
+    },
+}
 """
 
 

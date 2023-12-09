@@ -28,9 +28,9 @@ class Menu(QMenu, EnginePart):
             self.addAction(menu)
 
     def addMenuItem(self, menu):
-        # print(menu.name)
         self.addAction(menu)
 
+    # Another menu item
     def addDropMenu(self, menu):
         self.addMenu(menu)
 
@@ -62,7 +62,7 @@ class Menu(QMenu, EnginePart):
                 if "icon" in item:
                     menu.setIcon(item["icon"])
 
-                self.addMenu(menu)
+                self.addDropMenu(menu)
 
                 self.fromTemplate(item.submenu, menu)
             else:
@@ -113,17 +113,21 @@ class Menu(QMenu, EnginePart):
         if "-" in label:
             self.addSeparator()
 
-        if "accelerator" in item or "shortcut" in item:
-            action.setShortcut(item["accelerator"] or item["shortcut"])
-
         if "click" in item:
             action.setOnClick(item["click"])
+
+        if "accelerator" in item or "shortcut" in item:
+            action.setShortcut(item["accelerator"] or item["shortcut"])
 
         if "icon" in item:
             action.setIcon(item["icon"])
 
-        # if "name" in item:
-        #     self.addToObject(item["name"], action)
+        if "extra" in item:
+            # action.addMenuItem(item["extra"])
+            print(item["extra"])
+
+        if "name" in item:
+            self.addToObject(item["name"], action)
 
         parent.addMenuItem(action)
 
@@ -165,3 +169,6 @@ class Menu(QMenu, EnginePart):
         #             self.addToObject(item["name"], action)
 
         #         parent.addMenuItem(action)
+
+    def addToObject(self, name, obj):
+        self.objects.update({name: obj})

@@ -150,7 +150,7 @@ app = {
         return __colorPicker(window).display(type_)
     end,
     -- ## Input Dialogs
-    textInput = function(parent, title, label)
+    textInputDialog = function(parent, title, label)
         return __textInputDialog.show(parent, title, label)
     end,
     multilineInputDialog = function(parent, title, label, content)

@@ -3,14 +3,16 @@ from PySide6.QtGui import QIcon
 from PySide6.QtCore import QSize
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.handle.scripts.swissknife.converters import Converter
+from limekit.framework.components.base.base_widget import BaseWidget
 
 
-class ListBox(QListWidget, EnginePart):
+class ListBox(QListWidget, BaseWidget, EnginePart):
     onCurrentItemChangeFunc = None
 
     def __init__(self, items=None):
         # By defaulf, the ViewMode is on ListMode
         super().__init__(parent=None)
+        BaseWidget.__init__(self, widget=self)
 
         if items:
             self.setItems(items)
@@ -76,8 +78,8 @@ class ListBox(QListWidget, EnginePart):
         item = self.item(at)
         return item.text() if item else None
 
-    def clearItems(self):
-        self.clear()
+    def clear(self):
+        super().clear()
 
     # Whether dragging items onto this is allowed
     def setAllowDragDrop(self, enable: bool):

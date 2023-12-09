@@ -6,8 +6,8 @@ class File(EnginePart):
     name = "__file"
 
     # Removing self to allow direct access to the methods
-    @classmethod
-    def read_file(cls, file, encoding="utf-8"):
+    @staticmethod
+    def read_file(file, encoding="utf-8"):
         with open(file, "r", encoding=encoding) as file:
             return file.read()
 
@@ -21,16 +21,20 @@ class File(EnginePart):
         return cls.read_file(file, encoding)
 
     @classmethod
-    def write_file(cls, file, content, encoding="utf-8"):
+    def create_file(cls, file):
+        cls.write_file(file, "")
+
+    @staticmethod
+    def write_file(file, content, encoding="utf-8"):
         with open(file, "w", encoding=encoding) as file:
             file.write(content)
 
-    @classmethod
-    def append_file(cls, file, content, encoding="utf-8"):
-        with open(file, "a", content=content) as file:
+    @staticmethod
+    def append_file(file, content, encoding="utf-8"):
+        with open(file, "a", encoding=encoding) as file:
             file.write(content)
 
-    @classmethod
-    def write_bytes(cls, file, bytes):
+    @staticmethod
+    def write_bytes(file, bytes):
         with open(file, "wb") as file:
             file.write(bytes)

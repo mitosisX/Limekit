@@ -1,3 +1,5 @@
+import lupa
+
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QComboBox
 from limekit.framework.core.engine.parts import EnginePart
@@ -77,7 +79,7 @@ class ComboBox(QComboBox, EnginePart):
         self.setInsertPolicy(QComboBox.InsertPolicy.InsertAlphabetically)
 
     def setItems(self, items):
-        items = items.values() if not isinstance(items, list) else items
+        items = items.values() if lupa.lua_type(items) == "table" else items
         for item in items:
             self.addItem(item)
 

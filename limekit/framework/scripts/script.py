@@ -154,7 +154,7 @@ class Script:
         return __colorPicker(window).display(type_)
     end,
     -- ## Input Dialogs
-    textInput = function(parent, title, label)
+    textInputDialog = function(parent, title, label)
         return __textInputDialog.show(parent, title, label)
     end,
     multilineInputDialog = function(parent, title, label, content)
@@ -185,7 +185,8 @@ class Script:
     alert = function(parent, title, message)
         return Alert.show(parent, title, message)
     end,
-    errorAlertDialog = function(parent, title, message)
+    -- Contains the 'do not show this message again' button
+    infoMessageDialog = function(parent, title, message)
         __errorDialog(parent, title, message)
     end,
     aboutAlertDialog = function(parent, title, message)

@@ -12,7 +12,7 @@ class ToolbarButton(QAction, EnginePart):
     onClickFunction = None
 
     def __init__(self, title=""):
-        super().__init__(title)
+        super().__init__(text=title if title != "-" else "", parent=None)
 
         if title == "-":
             self.setSeparator(True)

@@ -13,8 +13,7 @@ class MenuItem(QAction, EnginePart):
             self.setSeparator(True)
 
         font = QFont()
-        font.setPointSize(8)  # Set the font size to 16 points
-
+        font.setPointSize(8)
         self.setFont(font)
 
         self.triggered.connect(self.__handleOnClick)

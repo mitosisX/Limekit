@@ -46,6 +46,7 @@ class Menubar(QMenuBar, EnginePart):
             label = item["label"]
             if "submenu" in item:
                 submenu = Menu(label)
+
                 parent.addDropMenu(submenu)
 
                 if "name" in item:
@@ -60,11 +61,11 @@ class Menubar(QMenuBar, EnginePart):
                 if "-" in label:
                     self.addSeparator()
 
-                if "accelerator" in item or "shortcut" in item:
-                    action.setShortcut(item["accelerator"] or item["shortcut"])
-
                 if "click" in item:
                     action.setOnClick(item["click"])
+
+                if "accelerator" in item or "shortcut" in item:
+                    action.setShortcut(item["accelerator"] or item["shortcut"])
 
                 if "icon" in item:
                     action.setIcon(item["icon"])
