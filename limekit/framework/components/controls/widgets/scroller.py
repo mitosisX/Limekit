@@ -24,13 +24,12 @@ class Scroller(QScrollArea, EnginePart):
     def __decideScrollProperty(self, prop):
         policy = Qt.ScrollBarPolicy.ScrollBarAsNeeded
 
-        match (prop.lower()):
-            case ("required"):
-                policy = Qt.ScrollBarPolicy.ScrollBarAsNeeded
-            case ("hidden"):
-                policy = Qt.ScrollBarPolicy.ScrollBarAlwaysOff
-            case ("always"):
-                policy = Qt.ScrollBarPolicy.ScrollBarAlwaysOn
+        if prop == "required":
+            policy = Qt.ScrollBarPolicy.ScrollBarAsNeeded
+        elif prop == ("hidden"):
+            policy = Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        elif prop == ("always"):
+            policy = Qt.ScrollBarPolicy.ScrollBarAlwaysOn
 
         return policy
 

@@ -21,19 +21,21 @@ class Chart(QChart, EnginePart):
             self.setAnimation(kwargs["animation"])
 
     def __decideAnimation(self, animation):
-        animation = animation.lower()
+        # animation = animation.lower()
 
         animation_type = Chart.AnimationOption.NoAnimation
 
-        match (animation):
-            case (None):
-                animation_type = Chart.AnimationOption.NoAnimation
-            case ("series"):
-                animation_type = Chart.AnimationOption.SeriesAnimations
-            case ("grid"):
-                animation_type = Chart.AnimationOption.GridAxisAnimations
-            case ("all"):
-                animation_type = Chart.AnimationOption.AllAnimations
+        if animation == None:
+            animation_type = Chart.AnimationOption.NoAnimation
+
+        elif animation == "series":
+            animation_type = Chart.AnimationOption.SeriesAnimations
+
+        elif animation == "grid":
+            animation_type = Chart.AnimationOption.GridAxisAnimations
+
+        elif animation == "all":
+            animation_type = Chart.AnimationOption.AllAnimations
 
         self.setAnimationOptions(animation_type)
 

@@ -26,6 +26,30 @@ class Dialog(QDialog, EnginePart):
     def setSize(self, width, height):
         self.resize(width, height)
 
+    def setMinSize(self, width, height):
+        self.setMinimumSize(width, height)
+
+    def setMinHeight(self, height):
+        self.setMinimumHeight(height)
+
+    def setMinWidth(self, width):
+        self.setMinimumWidth(width)
+
+    def setMaxHeight(self, height):
+        self.setMaximumHeight(height)
+
+    def setMaxWidth(self, width):
+        self.setMaximumWidth(width)
+
+    def setMaxSize(self, width, height):
+        self.setMaximumSize(width, height)
+
+    def minimize(self):
+        self.showMinimized()
+
+    def setLocation(self, x, y):
+        self.move(x, y)
+
     def setLayout(self, layout):
         super().setLayout(layout)
 

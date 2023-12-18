@@ -55,3 +55,6 @@ class BaseWidget:
         if (horizontal in policies) and (vertical in policies):
             size_policy = QSizePolicy(policies.get(horizontal), policies.get(vertical))
             self.widget.setSizePolicy(size_policy)
+
+    def setLocation(self, x, y):
+        self.widget.move(x, y)

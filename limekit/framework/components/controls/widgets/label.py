@@ -140,8 +140,10 @@ class Label(QLabel, BaseWidget, EnginePart):
         else:
             super().setFont(QFont(font, size))
 
-    def f(self, f):
-        super().setFont(f)
+    def setTextSize(self, size):
+        font = QFont()
+        font.setPointSize(size)
+        super().setFont(font)
 
     def setWordWrap(self, enable):
         super().setWordWrap(enable)

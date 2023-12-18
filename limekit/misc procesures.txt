@@ -1,3 +1,11 @@
+            1st Step
+
+        compile to C with cython
+
+    - Rename all files to .pyx using renamer.py
+
+    - execute "py setup.py build_ext"
+
 Using python 3.10.6
 
         Bash files

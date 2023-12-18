@@ -31,18 +31,27 @@ class Toolbar(QToolBar, EnginePart):
         status = status.lower()
 
         if status == "icononly":
+            # Icon only, no text
             button_style = Qt.ToolButtonStyle.ToolButtonIconOnly
 
         elif status == "textonly":
+            # Text only, no icon
             button_style = Qt.ToolButtonStyle.ToolButtonTextOnly
 
         elif status == "textbesideicon":
+            # Icon and text, with text beside the icon
             button_style = Qt.ToolButtonStyle.ToolButtonTextBesideIcon
 
         elif status == "textundericon":
+            # Icon and text, with text under the icon
             button_style = Qt.ToolButtonStyle.ToolButtonTextUnderIcon
 
         elif status == "followstyle":
+            # Follow the host desktop style, with text under the icon, meaning that
+            # your application will default to following the standard/global setting
+            # for the desktop on which the application runs. This is generally
+            # recommended to make your application feel as native as possible.
+
             button_style = Qt.ToolButtonStyle.ToolButtonFollowStyle
 
         self.setToolButtonStyle(button_style)

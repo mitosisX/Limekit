@@ -34,7 +34,7 @@ class ToolbarButton(QAction, EnginePart):
         self.onClickFunction = onClickFunction
 
     def setTooltip(self, text):
-        self.setText(text)
+        self.setToolTip(text)
 
     def setMenu(self, menu):
         super().setMenu(menu)

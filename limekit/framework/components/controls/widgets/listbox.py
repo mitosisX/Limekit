@@ -28,11 +28,10 @@ class ListBox(QListWidget, BaseWidget, EnginePart):
             self.onCurrentItemChangeFunc(self, self.currentItem().text())
 
     def setItemViewMode(self, view_type):
-        match (view_type):
-            case ("icons"):
-                self.setViewMode(QListWidget.ViewMode.IconMode)
-            case ("list"):
-                self.setViewMode(QListWidget.ViewMode.ListMode)
+        if view_type == "icons":
+            self.setViewMode(QListWidget.ViewMode.IconMode)
+        elif view_type == "list":
+            self.setViewMode(QListWidget.ViewMode.ListMode)
 
     def getSelectedItem(self):
         return self.currentText()

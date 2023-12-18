@@ -19,7 +19,7 @@ setuptools.setup(
         "qdarkstyle",
         "qtmodern",
         "psutil",
-        "emoji",,
+        "emoji",
         "playsound",
         "lupa",
         "PyInstaller"

@@ -19,15 +19,17 @@ class Docker(QDockWidget, EnginePart):
 
         if props:
             for prop in props.values():
-                match (prop):
-                    case ("floatable"):
-                        properties |= QDockWidget.DockWidgetFeature.DockWidgetFloatable
-                    case ("movable"):
-                        properties |= QDockWidget.DockWidgetFeature.DockWidgetMovable
-                    case ("closable"):
-                        properties |= QDockWidget.DockWidgetFeature.DockWidgetClosable
-                    case (None):
-                        properties = QDockWidget.DockWidgetFeature.NoDockWidgetFeatures
+                if prop == "floatable":
+                    properties |= QDockWidget.DockWidgetFeature.DockWidgetFloatable
+
+                elif prop == "movable":
+                    properties |= QDockWidget.DockWidgetFeature.DockWidgetMovable
+
+                elif prop == "closable":
+                    properties |= QDockWidget.DockWidgetFeature.DockWidgetClosable
+
+                elif prop == None:
+                    properties = QDockWidget.DockWidgetFeature.NoDockWidgetFeatures
 
         self.setFeatures(properties)
 
@@ -71,19 +73,23 @@ class Docker(QDockWidget, EnginePart):
 
         if areas:
             for area in areas.values():
-                match (area):
-                    case ("top"):
-                        allowed_areas |= Qt.DockWidgetArea.TopDockWidgetArea
-                    case ("bottom"):
-                        allowed_areas |= Qt.DockWidgetArea.BottomDockWidgetArea
-                    case ("left"):
-                        allowed_areas |= Qt.DockWidgetArea.LeftDockWidgetArea
-                    case ("right"):
-                        allowed_areas |= Qt.DockWidgetArea.RightDockWidgetArea
-                    case ("all"):
-                        allowed_areas |= Qt.DockWidgetArea.AllDockWidgetAreas
-                    case (None):
-                        allowed_areas = Qt.NoDockWidgetArea
+                if area == "top":
+                    allowed_areas |= Qt.DockWidgetArea.TopDockWidgetArea
+
+                if area == "bottom":
+                    allowed_areas |= Qt.DockWidgetArea.BottomDockWidgetArea
+
+                if area == "left":
+                    allowed_areas |= Qt.DockWidgetArea.LeftDockWidgetArea
+
+                if area == "right":
+                    allowed_areas |= Qt.DockWidgetArea.RightDockWidgetArea
+
+                if area == "all":
+                    allowed_areas |= Qt.DockWidgetArea.AllDockWidgetAreas
+
+                if area == None:
+                    allowed_areas = Qt.NoDockWidgetArea
 
         self.setAllowedAreas(allowed_areas)
 

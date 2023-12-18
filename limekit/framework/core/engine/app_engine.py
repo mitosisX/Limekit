@@ -1,16 +1,6 @@
 """
 from project Abigail
     - Every code I write falls under "project Abigail"
-    
-            20 March, 2023 8:23 AM (Monday) (UTC+02:00)
-
-The code is a mess, I know.... get over it... or simply fix it ;-)
-
-            27 July, 2023 16:04 (or 4:04 PM) (Thursday) (UTC+02:00)
-
-- Hihi! Had to fix my own mess. No more thousand imports.
-
-                - ABOVE ARE FROM MirandaJS -
 
             13 September, 2023 08:43 AM (Wednesday)
 
@@ -21,6 +11,10 @@ a project creation script, nor how the virtual env shall work.
             
 I now have the virtual env up and running and able to execute a project creation py file 
 through a batch script; the creation script is half-baked (only able to run a project, nothing else)
+
+            18 December, 2023 6:32 AM (Monday)
+            
+The virt env idea was a total disaster, I had to reinvent my code to make it work
 """
 
 import os
@@ -56,15 +50,15 @@ from limekit.framework.scripts.script import Script
 
 
 class Engine:
-    _instance = None
+    # _instance = None
 
     # For whatever or whoever's reason, dare not have two engine instances running
     # Here's your singleton design pattern
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-            cls._instance.engine = None
-        return cls._instance
+    # def __new__(cls):
+    #     if cls._instance is None:
+    #         cls._instance = super().__new__(cls)
+    #         cls._instance.engine = None
+    #     return cls._instance
 
     def __init__(self):
         self.projects_dir = Path.projects_dir()
@@ -335,11 +329,8 @@ class Engine:
                     # Create the lua objects
                     self.engine.globals()[object_name] = class_for_lua
 
+    """
     def fix_vital_dirs(self):
-        """
-        repairs and non existing dirs in user dir; plugins, images
-        """
-
         if not Path.check_path(Path.scripts_dir()):
             os.mkdir(Path.scripts_dir())
 
@@ -347,4 +338,5 @@ class Engine:
             os.mkdir(Path.misc_dir())
 
         if not Path.check_path(Path.images_dir()):
-            os.mkdir(Path.images_dir())
+            os.mkdir(Path.images_dir())     
+    """

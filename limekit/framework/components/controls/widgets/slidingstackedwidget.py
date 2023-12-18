@@ -66,11 +66,11 @@ class SlidingStackedWidget(QStackedWidget, EnginePart):
             pass
 
     def setOrientation(self, orientation):
-        match (orientation.lower()):
-            case ("horizontal"):
-                self._orientation = Qt.Horizontal
-            case ("vertical"):
-                self._orientation = Qt.Vertical
+        if orientation == "horizontal":
+            self._orientation = Qt.Orientation.Horizontal
+
+        elif orientation == "vertical":
+            self._orientation = Qt.Orientation.Vertical
 
     def setOrientation_(self, orientation=Qt.Horizontal):
         self._orientation = orientation
