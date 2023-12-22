@@ -50,12 +50,11 @@ class Path(EnginePart):
 
         # Recursively iterate through the folder and its subdirectories
         for root, dirs, files in os.walk(dir):
-            for filename in fnmatch.filter(
-                files, f"*{ext}"
-            ):  # ext should always start with a .
-                if filename == "__init__.py":
-                    continue
-                python_files.append(os.path.join(root, filename))
+            for filename in files:  # ext should always start with a .
+                if filename.endswith(".pyd") or filename.endswith(".py"):
+                    if filename == "__init__.py":
+                        continue
+                    python_files.append(os.path.join(root, filename))
 
         return python_files
 

@@ -47,28 +47,6 @@ class Image(QLabel, EnginePart):
 
     def setOnClick(self, onClickFunc):
         self.onClickFunc = onClickFunc
-        align = alignment.lower()
-
-        if align == "left":
-            self.setAlignment(Qt.AlignmentFlag.AlignLeft)
-
-        elif align == "right":
-            self.setAlignment(Qt.AlignmentFlag.AlignRight)
-
-        elif align == "bottom":
-            self.setAlignment(Qt.AlignmentFlag.AlignBottom)
-
-        elif align == "top":
-            self.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        elif align == "center":
-            self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        elif align == "hcenter":
-            self.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-
-        elif align == "vcenter":
-            self.setAlignment(Qt.AlignmentFlag.AlignVCenter)
 
     def setCursor(self, cursor_type):
         cursors = {

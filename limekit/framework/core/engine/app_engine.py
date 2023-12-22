@@ -302,6 +302,40 @@ class Engine:
     """
 
     def load_classes(self, files):
+        for file in files:
+            if True:
+                the_path = os.sep.join(file.split(os.sep)[:-1])
+                the_file = file.split(os.sep)[-1].split(".")[0]
+
+                file_path = os.path.join(the_path, file.split(os.sep)[-1])
+
+                # Create a spec for the module
+                spec = importlib.util.spec_from_file_location(the_file, file_path)
+                module = importlib.util.module_from_spec(spec)
+
+                # Finalize the loading process
+                spec.loader.exec_module(module)
+
+                for name in dir(module):
+                    class_ = getattr(module, name)
+
+                    if (
+                        isinstance(class_, type)
+                        and issubclass(class_, EnginePart)
+                        and class_ is not EnginePart
+                    ):
+                        class_for_lua = class_
+
+                        object_name = (
+                            class_for_lua.name
+                            if class_for_lua.name
+                            else class_for_lua.__name__
+                        )
+
+                        # Create the lua objects
+                        self.engine.globals()[object_name] = class_for_lua
+
+    def load_classes_(self, files):
         # all_instances = {}
         for file in files:
             module_name = file[:-3]
