@@ -289,7 +289,7 @@ class Engine:
     """
     # Lupa sometimes wraps python object or return them as is.
     
-    - IndexError may sometimes be raises when trying to access some attributes.
+    - IndexError may sometimes be raised when trying to access some attributes.
     - The way around this is to pass the object to 
     
     site = requests.get('https://webscraper.io/test-sites/e-commerce/allinone')
