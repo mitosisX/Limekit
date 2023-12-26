@@ -1,7 +1,5 @@
 import os
-import subprocess
 from PySide6.QtCore import QProcess
-from limekit.framework.core.engine.parts import EnginePart
 
 
 # class Starter:
@@ -45,17 +43,15 @@ from limekit.framework.core.engine.parts import EnginePart
 
 
 # Implemented on 24 November, 2023 12:21 PM (Friday)
-class ProjectRunner(QProcess, EnginePart):
-    name = "__appCore"
-
+class ProjectRunner(QProcess):
     onProcessReadyRead = None
     onProcessStarted = None
     onProcessFinished = None
 
-    def __init__(self, projectPath):
+    def __init__(self, project_path):
         super().__init__(parent=None)
 
-        self.projcetPath = projectPath  # The path to the user's project
+        self.project_path = project_path  # The path to the user's project
 
         self.readyRead.connect(self._handleReadOutput)
         self.started.connect(self._handleProcessStarted)
@@ -68,12 +64,13 @@ class ProjectRunner(QProcess, EnginePart):
         # immediately
 
         self.start(
+            # nt refers to Windows
             "python" if os.name == "nt" else "python3",
             [
                 "-u",
                 "-c",
                 "from limekit.framework.run import *",
-                self.projcetPath,
+                self.project_path,
             ],
         )
 

@@ -72,7 +72,23 @@ use "py -m pip install -e ." for "hot reload"
     for def method(arg1="this", arg2="that") use @lupa.unpacks_lua_table_method
     to pass **kwargs, use @lupa.unpacks_lua_table
 
-            Freezing (building)
+                Freezing (building)
+
+                Not using spec file
+
+        --add-data='source;dest' allows including paths to the build process
+        to append multiple paths repeat the flag as many times; one dir per flag
+
+        --add-data='path1;path1' --add-path='path2;path2' ...
+
+        ** For some reason, the QtCharts was not being imported, the way around this is
+            --hidden-import PySide6.QtCharts --hidden-import qtmodern 
+            --hidden-import qt_material --hidden-import qdarktheme --hidden-import emoji 
+            --hidden-import sqlite3 --hidden-import psutil --hidden-import qdarkstyle
+
+        - Use --windowed flag
+
+    --------------------------------------------------------------------------
 
         Embedding resources
 

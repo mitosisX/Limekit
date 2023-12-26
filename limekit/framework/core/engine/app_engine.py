@@ -374,3 +374,16 @@ class Engine:
         if not Path.check_path(Path.images_dir()):
             os.mkdir(Path.images_dir())     
     """
+
+
+# 24 December, 2023 17:02 PM (Sunday)
+class Build:
+    # data refers to the limey props: name, version...
+    def __init__(self, data=None):
+        pass
+
+    def copy_vital_dirs(self):
+        pass
+
+    def create_build_files_and_folders(self):
+        pass
