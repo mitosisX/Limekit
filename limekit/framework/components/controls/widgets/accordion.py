@@ -26,3 +26,9 @@ class Accordion(QToolBox, EnginePart):
             return
 
         super().addItem(child, label)
+
+    def getCurrentIndex(self):
+        return self.currentIndex()
+
+    def setCurrentIndex(self, index):
+        super().setCurrentIndex(index)

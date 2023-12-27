@@ -19,9 +19,8 @@ class ButtonGroup(QButtonGroup, EnginePart):
         super().__init__(parent=parent)
         self.buttonClicked.connect(self.__handleOnClick)
 
-    def addChild(self, *buttons):
-        for button in buttons:
-            self.addButton(button)
+    def addButton(self, button):
+        super().addButton(button)
 
     def setOnClick(self, onClickFunc):
         self.onClickFunc = onClickFunc

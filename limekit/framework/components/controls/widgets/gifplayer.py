@@ -2,11 +2,13 @@ from PySide6.QtWidgets import QWidget, QLabel, QSizePolicy, QVBoxLayout
 from PySide6.QtGui import QMovie
 from PySide6.QtCore import QByteArray, Qt
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.components.base.base_widget import BaseWidget
 
 
-class GifPlayer(QWidget, EnginePart):
+class GifPlayer(QWidget, BaseWidget, EnginePart):
     def __init__(self, filename):
         QWidget.__init__(self)
+        BaseWidget.__init__(self, widget=self)
 
         # Load the file into a QMovie
         self.movie = QMovie(filename, QByteArray(), self)
