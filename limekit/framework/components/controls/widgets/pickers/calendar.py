@@ -17,6 +17,9 @@ class Calendar(QCalendarWidget, EnginePart):
         if self.datePickedFunc:
             self.datePickedFunc(self, self.getDate())
 
+    def setGridVisible(self, visible):
+        super().setGridVisible(visible)
+
     def setDate(self, year, month, day):
         self.setSelectedDate(QDate(year, month, day))
 

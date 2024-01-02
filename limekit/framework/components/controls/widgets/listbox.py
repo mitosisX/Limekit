@@ -17,7 +17,7 @@ class ListBox(QListWidget, BaseWidget, EnginePart):
         if items:
             self.setItems(items)
 
-        self.setAlternatingRowColors(True)
+        self.setAltRowColors(True)
         self.currentItemChanged.connect(self.__handleItemSelect)
 
     def setOnItemSelect(self, onCurrentItemChangeFunc):
@@ -25,7 +25,9 @@ class ListBox(QListWidget, BaseWidget, EnginePart):
 
     def __handleItemSelect(self):
         if self.onCurrentItemChangeFunc:
-            self.onCurrentItemChangeFunc(self, self.currentItem().text())
+            self.onCurrentItemChangeFunc(
+                self, self.currentItem().text(), self.getCurrentRow()
+            )
 
     def setItemViewMode(self, view_type):
         if view_type == "icons":
@@ -33,15 +35,19 @@ class ListBox(QListWidget, BaseWidget, EnginePart):
         elif view_type == "list":
             self.setViewMode(QListWidget.ViewMode.ListMode)
 
-    def getSelectedItem(self):
+    def setItems(self, items):
+        for item in items.values():
+            self.addItem(str(item))
+
+    def getText(self):
         return self.currentText()
 
     def addItem(self, item):
         super().addItem(QListWidgetItem(item))
 
-    def setItems(self, items):
+    def addItems(self, items):
         for item in items.values():
-            self.addItem(str(item))
+            super().addItem(QListWidgetItem(item))
 
     def addImageItem(self, label, image):
         item = QListWidgetItem(label)
@@ -52,16 +58,15 @@ class ListBox(QListWidget, BaseWidget, EnginePart):
         for item, image in items.items():
             self.addImageItem(item, image)
 
-    def addItems(self, items):
-        for item in items.values():
-            super().addItem(QListWidgetItem(item))
-
     def removeItem(self, row):
         item = self.takeItem(row)
         del item
 
     def getCurrentRow(self):
         return self.currentRow()
+
+    def getItemsCount(self):
+        return self.count()
 
     def insertItemAt(self, row, item):
         self.insertItem(row, QListWidgetItem(item))
@@ -72,6 +77,10 @@ class ListBox(QListWidget, BaseWidget, EnginePart):
 
     def setIconSizes(self, width, height):
         self.setIconSize(QSize(width, height))
+
+    def getTextAt(self, at):
+        item = self.item(at)
+        return item.text() if item else None
 
     def getItemAt(self, at):
         item = self.item(at)
@@ -84,5 +93,5 @@ class ListBox(QListWidget, BaseWidget, EnginePart):
     def setAllowDragDrop(self, enable: bool):
         self.setAcceptDrops(enable)
 
-    def setEnableDrag(self, enable: bool):
+    def setDragEnabled(self, enable: bool):
         self.setDragEnabled(enable)

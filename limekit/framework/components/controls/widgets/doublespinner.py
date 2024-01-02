@@ -31,12 +31,24 @@ class DoubleSpinBox(QDoubleSpinBox, EnginePart):
         super().__init__()
         self.valueChanged.connect(self.__handleValueChange)
 
-    def setOnValueChange(self, onValueChangedFunc):
-        self.onValueChangedFunc = onValueChangedFunc
-
     def __handleValueChange(self):
         if self.onValueChangedFunc:
             self.onValueChangedFunc(self, self.getValue())
+
+    def setOnValueChange(self, onValueChangedFunc):
+        self.onValueChangedFunc = onValueChangedFunc
+
+    def setPrefix(self, prefix):
+        super().setPrefix(prefix)
+
+    def setSuffix(self, suffix):
+        super().setSuffix(suffix)
+
+    def setValue(self, value):
+        super().setValue(value)
+
+    def setRange(self, start, end):
+        super().setRange(start, end)
 
     def getValue(self):
         return self.value()

@@ -10,14 +10,14 @@ class DatePicker(QDateEdit, EnginePart):
         super().__init__(calendarPopup=True)
         self.userDateChanged.connect(self.__handleDatePicked)
 
-    def setOnDatePicked(self, datePickedFunc):
-        self.datePickedFunc = datePickedFunc
-
     def __handleDatePicked(self):
         if self.datePickedFunc:
             self.datePickedFunc(self, self.getDate())
 
-    def setDate(self, year, month, day, hour, minutes):
+    def setOnDatePick(self, datePickedFunc):
+        self.datePickedFunc = datePickedFunc
+
+    def setDate(self, year, month, day, hour=0, minutes=0):
         self.setDateTime(QDateTime(year, month, day, hour, minutes))
 
     def getDate(self):

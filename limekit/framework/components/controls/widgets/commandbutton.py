@@ -18,16 +18,6 @@ class CommandButton(QCommandLinkButton, BaseWidget, EnginePart):
 
     def setOnClick(self, onClickFunc):
         self.onClickFunc = onClickFunc
-        # mouse_event = QApplication.mouseButtons()
-
-        # if mouse_event == Qt.LeftButton:
-        #     print("Left button clicked")
-        # elif mouse_event == Qt.RightButton:
-        #     print("Right button clicked")
-
-        # double_click = QApplication.mouseDoubleClickInterval()
-        # if self.button.underMouse() and self.button.clickCount() == 2:
-        #     print("Double click")
 
     def __handleOnClick(self):
         if self.onClickFunc:
@@ -39,30 +29,14 @@ class CommandButton(QCommandLinkButton, BaseWidget, EnginePart):
     def setText(self, text):
         super().setText(text)
 
-    # Material properties (classes)
-    # danger, warning, success
-    def setMatProperty(self, class_):
-        self.setProperty("class", class_)
-
-    # Also acts as the padding
-    def setMargins(self, left, top, right, bottom):
-        self.setContentsMargins(left, top, right, bottom)
-
     def setIcon(self, icon):
         super().setIcon(QIcon(icon))
 
     def setIconSize(self, width, height):
         super().setIconSize(QSize(width, height))
 
-    # Makes the button loose all boarders and appear more like a Label until click
-    def setFlat(self, flat):
-        super().setFlat(flat)
+    def setDescription(self, description):
+        super().setDescription(description)
 
-    def setCheckable(self, checkable):
-        super().setCheckable(checkable)
-
-    def isChecked(self):
-        return super().isChecked()
-
-    def setClickAnimation(self):
-        self.animateClick()
+    def getDescription(self):
+        return self.description()

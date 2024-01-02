@@ -64,5 +64,8 @@ class Button(QPushButton, BaseWidget, EnginePart):
     def isChecked(self):
         return super().isChecked()
 
+    def setMenu(self, menu):
+        super().setMenu(menu)
+
     def setClickAnimation(self):
         self.animateClick()

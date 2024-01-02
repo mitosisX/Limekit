@@ -1,6 +1,5 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QVBoxLayout
-
 from limekit.framework.core.engine.parts import EnginePart
 
 
@@ -16,8 +15,8 @@ class VerticalLayout(QVBoxLayout, EnginePart):
     def setContentAlignment(self, *alignments):
         qt_alignments = {
             "leading": Qt.AlignmentFlag.AlignLeading,
-            "alignLeft": Qt.AlignmentFlag.AlignLeft,
-            "tight": Qt.AlignmentFlag.AlignRight,
+            "left": Qt.AlignmentFlag.AlignLeft,
+            "right": Qt.AlignmentFlag.AlignRight,
             "trailing": Qt.AlignmentFlag.AlignTrailing,
             "hcenter": Qt.AlignmentFlag.AlignHCenter,
             "justify": Qt.AlignmentFlag.AlignJustify,

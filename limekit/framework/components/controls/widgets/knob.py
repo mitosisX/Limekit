@@ -9,12 +9,15 @@ class Knob(QDial, EnginePart):
         super().__init__()
         self.valueChanged.connect(self.__handleValueChanged)
 
-    def setOnValueChanged(self, onValueChangedFunc):
-        self.onValueChangedFunc = onValueChangedFunc
-
     def __handleValueChanged(self):
         if self.onValueChangedFunc:
             self.onValueChangedFunc(self, self.getValue())
+
+    def setOnValueChanged(self, onValueChangedFunc):
+        self.onValueChangedFunc = onValueChangedFunc
+
+    def setRange(self, minimum, maximum):
+        super().setRange(minimum, maximum)
 
     def setValue(self, value):
         super().setValue(value)
@@ -31,5 +34,5 @@ class Knob(QDial, EnginePart):
     def setIndicators(self, visible):
         self.setNotchesVisible(visible)
 
-    def hasIndicators(self):
+    def isIndicatorVisible(self):
         return self.notchesVisible()

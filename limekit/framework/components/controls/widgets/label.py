@@ -1,10 +1,9 @@
 import lupa
 
 from PySide6.QtWidgets import QLabel
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QMouseEvent, QPixmap, QFont
 from limekit.framework.core.engine.parts import EnginePart
-from PySide6.QtWidgets import QSizePolicy
 from limekit.framework.components.base.base_widget import BaseWidget
 
 #   Alignments

@@ -22,6 +22,9 @@ class FormLayout(QFormLayout, EnginePart):
         else:
             self.addRow(title, child)
 
+    def addLayout(self, title, layout):
+        self.addRow(title, layout)
+
     def addChildren(self, *children):
         for eachChild in children:
             child = eachChild[0]

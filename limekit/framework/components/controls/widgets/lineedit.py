@@ -31,7 +31,7 @@ class LineEdit(QLineEdit, EnginePart):
         if self.onReturnPressedFunc:
             self.onReturnPressedFunc(self)
 
-    def setOnSelection(self, onTextSelectionChangedFunc):
+    def setOnTextSelection(self, onTextSelectionChangedFunc):
         self.onTextSelectionChangedFunc = onTextSelectionChangedFunc
 
     def __handleTextSelection(self):
@@ -47,10 +47,16 @@ class LineEdit(QLineEdit, EnginePart):
         mode = input_mode.lower()
 
         if mode == "normal":
-            self.setEchoMode(QLineEdit.Normal)
+            self.setEchoMode(QLineEdit.EchoMode.Normal)
 
         elif mode == "password":
-            self.setEchoMode(QLineEdit.Password)
+            self.setEchoMode(QLineEdit.EchoMode.Password)
+
+        elif mode == "hideinput":
+            self.setEchoMode(QLineEdit.EchoMode.NoEcho)
+
+        elif mode == "passwordonedit":
+            self.setEchoMode(QLineEdit.EchoMode.PasswordEchoOnEdit)
 
     def setText(self, text):
         super().setText(text)
@@ -62,9 +68,9 @@ class LineEdit(QLineEdit, EnginePart):
         return self.text()
 
     def getSelectedText(self):
-        super().selectedText()
+        return self.selectedText()
 
-    def checkSelectedText(self):
+    def checkTextSelected(self):
         return self.hasSelectedText()
 
     def redo(self):
@@ -72,10 +78,6 @@ class LineEdit(QLineEdit, EnginePart):
 
     def undo(self):
         super().undo()
-
-    @lupa.unpacks_lua_table
-    def setTextMargins(self, left=0, top=0, right=0, bottom=0):
-        super().setTextMargins(left, top, right, bottom)
 
     def setReadOnly(self, readonly):
         super().setReadOnly(readonly)

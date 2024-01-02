@@ -22,3 +22,30 @@ class GroupBox(QGroupBox, BaseWidget, EnginePart):
 
     def setBackgroundColor(self, color):
         super().setStyleSheet(f"background-color: {color};")
+
+    def setTitle(self, title):
+        super().setTitle(title)
+
+    def getTitle(self):
+        return self.title()
+
+    def setTooltip(self, tooltip):
+        self.setToolTip(tooltip)
+
+    def setCheckable(self, checkable):
+        super().setCheckable(checkable)
+
+    def getCheck(self):
+        return self.isChecked()
+
+    def setChecked(self, checked):
+        super().setChecked(checked)
+
+    def setFlat(self, flat):
+        super().setFlat(flat)
+
+    def getTooltip(self):
+        return self.toolTip()
+
+    def setTooltipDuration(self, duration):
+        self.toolTipDuration(duration)

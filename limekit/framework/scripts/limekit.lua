@@ -17,7 +17,7 @@ app = {
     splitString = function(string, delimeter)
         return __utils.str_split(string, delimeter)
     end,
-    range = function(start, end_)
+    intRange = function(start, end_)
         return __utils.int_range(start, end_)
     end,
     sortArray = function(array)
@@ -89,7 +89,7 @@ app = {
     checkFileEmpty = function(file)
         return __fileutils.is_empty_file(file)
     end,
-    checkDirEmpty = function(dir)
+    checkFolderEmpty = function(dir)
         return __fileutils.is_empty_dir(dir)
     end,
     getFileSize = function(file)
