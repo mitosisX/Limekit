@@ -34,13 +34,13 @@ class CheckBox(QCheckBox, BaseWidget, EnginePart):
     def setIconSize(self, width, height):
         super().setIconSize(QSize(width, height))
 
-    def setTooltip(self, tooltip):
-        self.setToolTip(tooltip)
+    def setToolTip(self, tooltip):
+        super().setToolTip(tooltip)
 
-    def getTooltip(self):
+    def getToolTip(self):
         return self.toolTip()
 
-    def setTooltipDuration(self, duration):
+    def setToolTipDuration(self, duration):
         self.toolTipDuration(duration)
 
     def setText(self, text):

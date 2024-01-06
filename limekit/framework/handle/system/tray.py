@@ -1,4 +1,4 @@
-from PySide6.QtGui import QPixmap, QIcon
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QSystemTrayIcon
 from limekit.framework.core.engine.parts import EnginePart
 
@@ -9,13 +9,15 @@ class Tray(QSystemTrayIcon, EnginePart):
     def __init__(self, icon):
         super().__init__()
         if icon:
-            self.setImage(icon)
+            self.setIcon(icon)
 
         self.setVisibility(True)
 
-    def setImage(self, path):
-        pixmap = QPixmap(path)
-        self.setIcon(QIcon(path))
+    def setIcon(self, path):
+        super().setIcon(QIcon(path))
+
+    def setToolTip(self, tooltip):
+        super().setToolTip(tooltip)
 
     def setMenu(self, menu):
         self.setContextMenu(menu)

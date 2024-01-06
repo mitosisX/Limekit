@@ -8,8 +8,9 @@ class FolderPicker(QFileDialog, EnginePart):
     def __init__(self):
         super().__init__()
 
-    def display(self, parent, title):
+    def display(self, parent, title, dir):
         folder = self.getExistingDirectory(
-            parent, title, options=QFileDialog.Option.ShowDirsOnly
+            parent, title, dir, options=QFileDialog.Option.ShowDirsOnly
         )
+
         return folder if folder else ""

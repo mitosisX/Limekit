@@ -3,6 +3,9 @@ class Script:
     def read_app_lua(cls):
         return """
     app = {
+    Theme = function(theme)
+        return __themer(theme)
+    end,
     isIDE = function()
         return __engineState()
     end,
@@ -144,8 +147,8 @@ class Script:
     saveFileDialog = function(window, title, dir, filters)
         return __saveFileDialog(window).display(window, title, dir, filters)
     end,
-    folderPickerDialog = function(window, title)
-        return __folderPickerDialog().display(window, title)
+    folderPickerDialog = function(window, title, dir)
+        return __folderPickerDialog().display(window, title, dir)
     end,
     openFileDialog = function(window, title, dir, filters)
         return __openFileDialog(window).display(window, title, dir, filters)
@@ -169,17 +172,17 @@ class Script:
         end
         return __itemInputDialog.show(parent, title, label, items, index)
     end,
-    integerInputDialog = function(parent, title, label, value, minValues, maxValue, step)
+    integerInputDialog = function(parent, title, label, value, minValue, maxValue, step)
         if not step then
             step = 2
         end
-        return __integerInputDialog.show(parent, title, label, value, minValues, maxValue, step)
+        return __integerInputDialog.show(parent, title, label, value, minValue, maxValue, step)
     end,
-    doubleInputDialog = function(parent, title, label, value, minValues, maxValue, step)
+    doubleInputDialog = function(parent, title, label, value, minValue, maxValue, step)
         if not step then
             step = 2
         end
-        return __doubleInputDialog.show(parent, title, label, value, minValues, maxValue, step)
+        return __doubleInputDialog.show(parent, title, label, value, minValue, maxValue, step)
     end,
     -- ## Input Dialogs
     alert = function(parent, title, message)

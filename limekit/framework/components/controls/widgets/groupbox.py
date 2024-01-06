@@ -29,8 +29,8 @@ class GroupBox(QGroupBox, BaseWidget, EnginePart):
     def getTitle(self):
         return self.title()
 
-    def setTooltip(self, tooltip):
-        self.setToolTip(tooltip)
+    def setToolTip(self, tooltip):
+        super().setToolTip(tooltip)
 
     def setCheckable(self, checkable):
         super().setCheckable(checkable)
@@ -44,8 +44,8 @@ class GroupBox(QGroupBox, BaseWidget, EnginePart):
     def setFlat(self, flat):
         super().setFlat(flat)
 
-    def getTooltip(self):
+    def getToolTip(self):
         return self.toolTip()
 
-    def setTooltipDuration(self, duration):
-        self.toolTipDuration(duration)
+    def setToolTipDuration(self, duration):
+        super().toolTipDuration(duration)

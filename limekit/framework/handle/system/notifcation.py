@@ -1,4 +1,4 @@
-from PySide6.QtGui import QAction, QIcon, QPixmap
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QSystemTrayIcon
 from limekit.framework.core.engine.parts import EnginePart
 import lupa
@@ -14,8 +14,8 @@ class SysNotification(QSystemTrayIcon, EnginePart):
     onShownFunc = None
     onClickedFunc = None
 
-    def __init__(self, image="", parent=None):
-        super().__init__(QIcon(image), parent=parent)
+    def __init__(self, image=""):
+        super().__init__(QIcon(image), parent=None)
         self.setVisible(True)
         # self.MessageIcon(QIcon(image))
         # self.activated.connect(self.__handleOnShown) # not working - needs research
@@ -38,17 +38,15 @@ class SysNotification(QSystemTrayIcon, EnginePart):
     @lupa.unpacks_lua_table_method
     def setMessage(self, title="Limekit", message="", icon="", duration=10000):
         icon_map = {
-            "noicon": QSystemTrayIcon.NoIcon,
-            "information": QSystemTrayIcon.Information,
-            "warning": QSystemTrayIcon.Warning,
-            "critical": QSystemTrayIcon.Critical,
+            "noicon": QSystemTrayIcon.MessageIcon.NoIcon,
+            "information": QSystemTrayIcon.MessageIcon.Information,
+            "warning": QSystemTrayIcon.MessageIcon.Warning,
+            "critical": QSystemTrayIcon.MessageIcon.Critical,
         }
 
-        icon_value = icon_map.get(icon.lower(), QSystemTrayIcon.Information)
+        icon_value = icon_map.get(icon.lower(), QSystemTrayIcon.MessageIcon.Information)
 
         if self.isSystemTrayAvailable():
-            self.setToolTip("Hello there")
-
             self.showMessage(
                 title,
                 message,

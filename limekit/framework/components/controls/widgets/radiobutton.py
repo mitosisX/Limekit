@@ -21,13 +21,13 @@ class RadioButton(QRadioButton, EnginePart):
         if self.onClickFunc:
             self.onClickFunc(self, state)
 
-    def setTooltip(self, tooltip):
-        self.setToolTip(tooltip)
+    def setToolTip(self, tooltip):
+        super().setToolTip(tooltip)
 
-    def getTooltip(self):
+    def getToolTip(self):
         return self.toolTip()
 
-    def setTooltipDuration(self, duration):
+    def setToolTipDuration(self, duration):
         self.toolTipDuration(duration)
 
     def setText(self, text):

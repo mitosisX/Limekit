@@ -26,7 +26,10 @@ class MenuItem(QAction, EnginePart):
 
     def __handleOnClick(self):
         if self.onClickFunction:
-            self.onClickFunction(self)
+            try:
+                self.onClickFunction(self)
+            except Exception as ex:
+                print(ex)
 
     def setOnClick(self, onClickFunction):
         self.onClickFunction = onClickFunction

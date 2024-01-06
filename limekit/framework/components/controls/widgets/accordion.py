@@ -12,8 +12,8 @@ class Accordion(QToolBox, EnginePart):
     def addChild(self, child, label, icon=""):
         self._addItem(child, label, icon)
 
-    def setTooltip(self, tooltip):
-        self.setToolTip(tooltip)
+    def setToolTip(self, tooltip):
+        super().setToolTip(tooltip)
 
     def addLayout(self, layout, label, icon=""):
         widget = QWidget()

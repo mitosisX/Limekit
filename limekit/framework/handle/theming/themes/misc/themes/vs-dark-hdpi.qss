@@ -7,11 +7,35 @@ QMainWindow{
     color: #BBBBBB;
 }
 
-QStackedWidget, QLabel, QPushButton, QRadioButton, QCheckBox, 
-QGroupBox, QStatusBar, QToolButton, QComboBox, QDialog, QListView,
-QTabBar, QMenu, QMenuBar, QWidget::window  {
+QStackedWidget, QLabel, QPushButton, QRadioButton, QCheckBox, QLineEdit,
+QGroupBox, QStatusBar, QToolButton, QComboBox, QDialog, QListView, QSpinBox,
+QTabBar, QMenu, QProgressBar, QMenuBar, QWidget::window  {
     background-color: #252526;
     color: #BBBBBB;
+}
+
+/* === QProgressBar === */
+QProgressBar {
+    background-color: #333337;
+    border: 1px solid #434346;
+    color: #BBBBBB;
+    padding:0.8ex 3ex;
+}
+
+QProgressBar::chunk {
+    background-color: #3F3F46
+}
+
+/* === QLineEdit === */
+QLineEdit {
+    background-color: #333337;
+    border: 1px solid #434346;
+  color: #BBBBBB;
+    padding:0.8ex 3ex;
+}
+
+QLineEdit:hover {
+    background-color: #3F3F46;
 }
 
 /* === QWidget === */
@@ -79,6 +103,19 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled, QTreeView::indi
 
 QCheckBox::indicator::checked:disabled, QRadioButton::indicator::checked:disabled, QTreeView::indicator::checked:disabled {
     background-color: qradialgradient(cx:0.5, cy:0.5, fx:0.25, fy:0.15, radius:0.3, stop:0 #BBBBBB, stop:1 #444444);
+}
+
+
+/* === QSpinBox === */
+QSpinBox {
+    background-color: #333337;
+    border: 1px solid #434346;
+  color: #BBBBBB;
+    padding:0.8ex 3ex;
+}
+
+QSpinBox:hover {
+    background-color: #3F3F46;
 }
 
 /* === QComboBox === */
@@ -477,4 +514,41 @@ QTreeView::branch:open:has-children:!has-siblings {
 /* === Customizations === */
 QFrame#infoLabel {
     border: 1px inset #333333;
+}
+
+
+QTabBar::tab {
+  color: [color];
+  padding: 7px 16px;
+  background-color: [background];
+  border-right: 6px solid [background];
+  border-left:  6px solid [background];
+}
+
+
+QTabBar::tab:hover {
+  background-color: [hover];
+  border-right: [hover];
+  border-left: [hover];
+  color: [color];
+}
+
+QTabBar::tab:disabled {
+  background-color: #bbbbbb;
+  border-right: #bbbbbb;
+  border-left: #bbbbbb;
+  color: [color];
+}
+
+QTabBar::tab:selected {
+  color: [color];
+  border-bottom: 6px solid [bottom];
+  background-color: [background];
+  border-right: 6px solid [background];
+  border-left:  6px solid [background];
+}
+
+QTabBar:close-button {
+    /*workaround to avoid close button. Do !not! add this image!*/
+    image: url(:/closebutton.png);
 }

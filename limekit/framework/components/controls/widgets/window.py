@@ -1,12 +1,12 @@
 import lupa
 
-from PySide6.QtWidgets import QMainWindow, QWidget
 from PySide6.QtCore import Qt, QEvent
+from PySide6.QtWidgets import QMainWindow, QWidget
 from PySide6.QtGui import QIcon, QCursor, QPixmap
 
+from limekit.framework.core.runner.app import App
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.components.controls.dockers.dockerwidget.docker import Docker
-from limekit.framework.core.runner.app import App
 
 
 class Window(QMainWindow, EnginePart):

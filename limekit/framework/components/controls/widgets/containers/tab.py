@@ -78,7 +78,7 @@ class Tab(QTabWidget, EnginePart):
             positions[position] if positions.get(position) else positions["top"]
         )
 
-    def setTooltip(self, index, tooltip):
+    def setToolTip(self, index, tooltip):
         self.setTabToolTip(index, tooltip)
 
     def addTab(self, tab, title, icon=""):

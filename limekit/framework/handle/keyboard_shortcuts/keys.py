@@ -2,7 +2,7 @@ from limekit.framework.core.engine.parts import EnginePart
 from PySide6.QtGui import QShortcut, QKeySequence
 
 
-# Responsible for creating those Ctrl+M king of shortcuts
+# Responsible for creating those Ctrl+M kind of shortcuts
 class KeyboardShortcut(EnginePart):
     shortcutKeyFunc = None
 
