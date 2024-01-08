@@ -2,7 +2,6 @@ from PySide6.QtWidgets import QTextEdit
 from limekit.framework.core.engine.parts import EnginePart
 
 
-# setInputMask("AAAA.AAA.000.000;_"); - limits text to st then ints
 class TextField(QTextEdit, EnginePart):
     onTextChangedFunc = None
     onTextSelectionChangedFunc = None
@@ -21,9 +20,6 @@ class TextField(QTextEdit, EnginePart):
         if self.onTextChangedFunc:
             self.onTextChangedFunc(self, self.getText())
 
-    def setOnReturnPress(self, onReturnPressedFunc):
-        self.onReturnPressedFunc = onReturnPressedFunc
-
     def setOnSelection(self, onTextSelectionChangedFunc):
         self.onTextSelectionChangedFunc = onTextSelectionChangedFunc
 
@@ -32,9 +28,6 @@ class TextField(QTextEdit, EnginePart):
             self.onTextSelectionChangedFunc(self, self.selectedText())
 
     # --------------------------------- Events
-
-    def setAutoComplete(self, autocomplete):
-        self.setCompleter(autocomplete)
 
     def setSize(self, width, height):
         self.resize(width, height)

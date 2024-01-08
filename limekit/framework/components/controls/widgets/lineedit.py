@@ -1,7 +1,6 @@
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLineEdit
 from limekit.framework.core.engine.parts import EnginePart
-from PySide6.QtCore import Qt
-import lupa
 
 
 # setInputMask("AAAA.AAA.000.000;_"); - limits text to st then ints

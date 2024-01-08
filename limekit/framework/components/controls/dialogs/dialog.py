@@ -9,6 +9,10 @@ This is a Dumb Dialog. Oftenly used for "Ok", "Cancel" operations
 
 class Dialog(QDialog, EnginePart):
     name = "Modal"
+    onShownEvent = None
+    onResizeEvent = None
+    onCloseEvent = None
+    onResizeEvent = None
 
     def __init__(self, parent, title):
         super().__init__(parent)
@@ -22,6 +26,34 @@ class Dialog(QDialog, EnginePart):
         # self.dialog_buttons.rejected.connect(self.reject)
 
         # self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setDefault(True)
+
+    # Events ----------------------
+    def setOnShown(self, func):
+        self.onShownEvent = func
+
+    def showEvent(self, event):
+        self.center()
+
+        super().showEvent(event)
+        if self.onShownEvent:
+            self.onShownEvent(self)
+
+    def setOnClose(self, func):
+        self.onCloseEvent = func
+
+    # event has: ignore and accept
+    def closeEvent(self, event):
+        if self.onCloseEvent:
+            self.onCloseEvent(self, event)
+
+    def setOnResize(self, func):
+        self.onResizeEvent = func
+
+    def resizeEvent(self, event):
+        if self.onResizeEvent:
+            self.onResizeEvent(self)
+
+    # ---------------------- Events
 
     def setSize(self, width, height):
         self.resize(width, height)
@@ -58,6 +90,9 @@ class Dialog(QDialog, EnginePart):
 
     def setIcon(self, icon):
         self.setWindowIcon(QIcon(icon))
+
+    def setTitle(self, title):
+        self.setWindowTitle(title)
 
     def getButtons(self, buttons):
         self.dialog_buttons = QDialogButtonBox(self.__decideButtons(buttons))

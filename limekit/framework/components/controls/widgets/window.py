@@ -42,7 +42,7 @@ class Window(QMainWindow, EnginePart):
             if pos == 2:
                 x, y = location.values()
 
-                self.move(x, y)
+                self.setLocation(x, y)
         else:
             self.center()
 
@@ -117,12 +117,6 @@ class Window(QMainWindow, EnginePart):
     def setMinSize(self, width, height):
         self.setMinimumSize(width, height)
 
-    def setMinHeight(self, height):
-        self.setMinimumHeight(height)
-
-    def setMinWidth(self, width):
-        self.setMinimumWidth(width)
-
     def setLocation(self, x, y):
         self.move(x, y)
 
@@ -130,7 +124,7 @@ class Window(QMainWindow, EnginePart):
         self.widget.setLayout(layout)
         # self.layout.addLayout(layout)
 
-    def addDock(self, area, dock):
+    def addDock(self, dock, area):
         self.addDockWidget(dock, self.__setDockArea(area))
 
     def __setDockArea(self, area):
@@ -193,25 +187,6 @@ class Window(QMainWindow, EnginePart):
     
     While in this case, this method allows individual Docks to be added to the Window
     """
-
-    def addDock(self, dock: Docker, area="left"):
-        dock_area = Qt.DockWidgetArea.LeftDockWidgetArea
-
-        area = area.lower()
-
-        if area == "left":
-            dock_area = Qt.DockWidgetArea.LeftDockWidgetArea
-
-        elif area == "right":
-            dock_area = Qt.DockWidgetArea.RightDockWidgetArea
-
-        elif area == "top":
-            dock_area = Qt.DockWidgetArea.TopDockWidgetArea
-
-        elif area == "bottom":
-            dock_area = Qt.DockWidgetArea.BottomDockWidgetArea
-
-        self.addDockWidget(dock_area, dock)
 
     def center(self):
         qr = self.frameGeometry()
