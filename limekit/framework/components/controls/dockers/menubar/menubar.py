@@ -24,8 +24,8 @@ class Menubar(QMenuBar, EnginePart):
     def addMenuItem(self, menu):
         self.addAction(menu)
 
-    def addDropMenu(self, menu):
-        self.addMenu(menu)
+    def addMenu(self, menu):
+        super().addMenu(menu)
 
     def addMenuItems(self, *menus):
         for menu in menus:

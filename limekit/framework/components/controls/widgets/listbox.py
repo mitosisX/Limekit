@@ -94,4 +94,4 @@ class ListBox(QListWidget, BaseWidget, EnginePart):
         self.setAcceptDrops(enable)
 
     def setDragEnabled(self, enable: bool):
-        self.setDragEnabled(enable)
+        super().setDragEnabled(enable)

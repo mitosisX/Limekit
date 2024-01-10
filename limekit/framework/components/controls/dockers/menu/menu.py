@@ -36,8 +36,8 @@ class Menu(QMenu, EnginePart):
         self.addAction(menu)
 
     # Another menu item
-    def addDropMenu(self, menu):
-        self.addMenu(menu)
+    def addMenu(self, menu):
+        super().addMenu(menu)
 
     def setIcon(self, path):
         super().setIcon(QIcon(path))
