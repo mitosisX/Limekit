@@ -1,6 +1,7 @@
-from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QMenu
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.core.engine.destroyer import destroy_engine
 from limekit.framework.components.controls.dockers.menu.menuitem import MenuItem
 
 
@@ -16,7 +17,11 @@ class Menu(QMenu, EnginePart):
 
     def __handleOnClick(self):
         if self.onClickFunction:
-            self.onClickFunction(self)
+            try:
+                self.onClickFunction(self)
+            except Exception as ex:
+                print(ex)
+                destroy_engine()
 
     def setOnClick(self, onClickFunction):
         self.onClickFunction = onClickFunction
@@ -124,7 +129,8 @@ class Menu(QMenu, EnginePart):
 
         if "extra" in item:
             # action.addMenuItem(item["extra"])
-            print(item["extra"])
+            # print(item["extra"])
+            pass
 
         if "name" in item:
             self.addToObject(item["name"], action)

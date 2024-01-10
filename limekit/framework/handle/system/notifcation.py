@@ -36,7 +36,7 @@ class SysNotification(QSystemTrayIcon, EnginePart):
             self.onClickedFunc(self)
 
     @lupa.unpacks_lua_table_method
-    def setMessage(self, title="Limekit", message="", icon="", duration=10000):
+    def setMessage(self, title, message, icon="", duration=3000):
         icon_map = {
             "noicon": QSystemTrayIcon.MessageIcon.NoIcon,
             "information": QSystemTrayIcon.MessageIcon.Information,

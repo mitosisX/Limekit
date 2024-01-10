@@ -83,16 +83,16 @@ app = {
     extractZip = function(file, dest)
         return __fileutils.extract_zip_file(file, dest)
     end,
-    checkIfFolder = function(path)
+    isFolder = function(path)
         return __fileutils.is_dir(path)
     end,
     exists = function(path)
         return __fileutils.exists(path)
     end,
-    checkFileEmpty = function(file)
+    isFileEmpty = function(file)
         return __fileutils.is_empty_file(file)
     end,
-    checkFolderEmpty = function(dir)
+    isFolderEmpty = function(dir)
         return __fileutils.is_empty_dir(dir)
     end,
     getFileSize = function(file)

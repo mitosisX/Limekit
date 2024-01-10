@@ -1,7 +1,8 @@
-from PySide6.QtCore import QResource
-
-from limekit.framework.core.runner.app import App
 import os
+
+from PySide6.QtCore import QResource
+from limekit.framework.core.runner.app import App
+from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
 class MiscellaneousStyle:
@@ -27,22 +28,11 @@ class MiscellaneousStyle:
             theme_content = theme_read.read()
             self.app.setStyleSheet(theme_content)
 
-    """
-    list_themes() returns themes without an .qss extention coz 
-    that's too long to remember and type.
-    
-    Example:
-        'dark_teal.xml' -> 'dark_teal'
-        - Not much of a big difference, I know, but the latter
-          looks much friendlier than former.
-    """
-
     def getThemes(self):
-        return [
-            theme.rsplit(".qss")[0].lower()
-            for theme in os.listdir(self.themes_path)
-            if theme.endswith(".qss")
-        ]
-
-    def __join_path(self, *paths):
-        return os.path.join(paths)
+        return Converter.to_lua_table(
+            [
+                theme.rsplit(".qss")[0].lower()
+                for theme in os.listdir(self.themes_path)
+                if theme.endswith(".qss")
+            ]
+        )

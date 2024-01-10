@@ -24,7 +24,7 @@ class Script:
     splitString = function(string, delimeter)
         return __utils.str_split(string, delimeter)
     end,
-    range = function(start, end_)
+    intRange = function(start, end_)
         return __utils.int_range(start, end_)
     end,
     sortArray = function(array)
@@ -87,16 +87,16 @@ class Script:
     extractZip = function(file, dest)
         return __fileutils.extract_zip_file(file, dest)
     end,
-    checkIfFolder = function(path)
+    isFolder = function(path)
         return __fileutils.is_dir(path)
     end,
     exists = function(path)
         return __fileutils.exists(path)
     end,
-    checkFileEmpty = function(file)
+    isFileEmpty = function(file)
         return __fileutils.is_empty_file(file)
     end,
-    checkDirEmpty = function(dir)
+    isFolderEmpty = function(dir)
         return __fileutils.is_empty_dir(dir)
     end,
     getFileSize = function(file)
@@ -293,5 +293,4 @@ class Script:
     -- validators ##################
 
 }
-
     """

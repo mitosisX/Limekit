@@ -61,7 +61,7 @@ class Table(QTableWidget, EnginePart):
 
     def __handleCellSelectionDone(self, selected, deselected):
         if self.cellSelctionDoneFunc:
-            self.cellSelctionDoneFunc(self, selected, deselected)
+            self.cellSelctionDoneFunc(self, self.currentRow(), self.currentColumn())
 
     # def onCellEditFinish(self, func):
     #     self.cellChanged.connect(
@@ -116,12 +116,18 @@ class Table(QTableWidget, EnginePart):
     def getColumnHeaderText(self, num):
         return self.horizontalHeaderItem(num).text()
 
+    def getCurrentColumn(self):
+        return self.currentColumn()
+
+    def getCurrentRow(self):
+        return self.currentRow()
+
     # Get all column available
-    def getColumnCount(self):
+    def getColumnsCount(self):
         self.columnCount()
 
     # Get all rows available
-    def getRowCount(self):
+    def getRowsCount(self):
         self.rowCount()
 
     def setGridVisible(self, visibility):
@@ -149,17 +155,14 @@ class Table(QTableWidget, EnginePart):
     def setColumnFitsContent(self, column):
         self.resizeColumnToContents(column)
 
-    def getRowsCount(self):
-        return self.rowCount()
-
     def deleteRow(self, row):
         self.removeRow(row)
 
-    def setCellsEditable(self, editable=True):
+    def setCellsEditable(self, editable):
         self.setEditTriggers(
-            QAbstractItemView.AllEditTriggers
+            QAbstractItemView.EditTrigger.AllEditTriggers
             if editable
-            else QAbstractItemView.NoEditTriggers
+            else QAbstractItemView.EditTrigger.NoEditTriggers
         )
 
     def setAltRowColors(self, setAlt):
@@ -170,9 +173,9 @@ class Table(QTableWidget, EnginePart):
         self.setSortingEnabled(sorting)
 
     # Clearing --------------
-    def clearData(self):
+    def clear(self):
         # Resets the whole table
-        self.clear()
+        super().clear()
 
     def clearContent(self):
         # Only removes data inside the table cells and rows
@@ -196,8 +199,6 @@ class Table(QTableWidget, EnginePart):
     def removeRowAt(self, position):
         self.removeRow(position)
 
-    # Clearing --------------
-
     def getItemAt(self, row, column):
         item = self.item(row, column)
         return TableItem(item) or None
@@ -215,12 +216,12 @@ class Table(QTableWidget, EnginePart):
             # print(TableItem(self.getItemAt(row, column)))  # .setBackgroundHex("#fff"))
             # cells.append(TableItem(item))
 
-        return cells
+        return Converter.table_from(cells)
 
     def getSelectedCell(self):
         item = self.currentItem()
         return TableItem(item) or None
 
     # research what it does
-    def setSpan(self, f):
-        super().setSpan(1, 2, 2, 1)
+    def setSpan(self, row, column, rowSpan, columnSpan):
+        super().setSpan(row, column, rowSpan, columnSpan)

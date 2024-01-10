@@ -1,7 +1,8 @@
-from PySide6.QtWidgets import QPushButton
-from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon
+from PySide6.QtCore import QSize
+from PySide6.QtWidgets import QPushButton
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.core.engine.destroyer import destroy_engine
 from limekit.framework.components.base.base_widget import BaseWidget
 
 
@@ -31,13 +32,17 @@ class Button(QPushButton, BaseWidget, EnginePart):
 
     def __handleOnClick(self):
         if self.onClickFunc:
-            self.onClickFunc(self)
+            try:
+                self.onClickFunc(self)
+            except Exception as ex:
+                print(ex)
+                destroy_engine()
 
     def getText(self):
         return self.text()
 
     def setText(self, text):
-        super().setText(text)
+        super().setText(str(text))
 
     # Material properties (classes)
     # danger, warning, success

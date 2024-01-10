@@ -1,5 +1,6 @@
 from PySide6.QtGui import QAction, QIcon
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.core.engine.destroyer import destroy_engine
 
 """
 Icon Size: 64x64
@@ -21,7 +22,11 @@ class ToolbarButton(QAction, EnginePart):
 
     def __handleOnClick(self):
         if self.onClickFunction:
-            self.onClickFunction(self)
+            try:
+                self.onClickFunction(self)
+            except Exception as ex:
+                print(ex)
+                destroy_engine()
 
     def setText(slelf, text):
         super().setText(text)
@@ -46,7 +51,7 @@ class ToolbarButton(QAction, EnginePart):
     def toggleCheck(self):
         self.toggle()
 
-    def isChecked(self) -> bool:
+    def isChecked(self):
         return super().isChecked()()
 
     def setChecked(self, checked):

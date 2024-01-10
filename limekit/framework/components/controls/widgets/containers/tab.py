@@ -66,7 +66,7 @@ class Tab(QTabWidget, EnginePart):
     def setTabsCloseable(self, closeable):
         super().setTabsClosable(closeable)
 
-    def setPosition(self, position):
+    def setTabsPosition(self, position):
         positions = {
             "left": QTabWidget.TabPosition.West,
             "top": QTabWidget.TabPosition.North,
@@ -84,12 +84,5 @@ class Tab(QTabWidget, EnginePart):
     def addTab(self, tab, title, icon=""):
         super().addTab(tab, QIcon(icon), title)
 
-    def addTabitedm(self, tab, path, title):
-        pixmap = QPixmap(path)
-        # self.setScaledContents(True)
-        self.setPixmap(pixmap)
-
-        self.addTab(tab, pixmap, title)
-
-    def getTabIndex(self):
+    def getCurrentIndex(self):
         return self.currentIndex

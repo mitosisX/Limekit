@@ -6,7 +6,9 @@ from limekit.framework.core.engine.parts import EnginePart
 class Splitter(QSplitter, EnginePart):
     def __init__(self, orientation="vertical"):
         super().__init__(
-            Qt.Vertical if orientation.lower() == "vertical" else Qt.Horizontal
+            Qt.Orientation.Vertical
+            if orientation.lower() == "vertical"
+            else Qt.Orientation.Horizontal
         )
 
     def addChild(self, child):
@@ -21,8 +23,12 @@ class Splitter(QSplitter, EnginePart):
         super().setHandleWidth(width)
 
     def setOrientation(self, orientation):
-        super().setOrientation(
-            Qt.Orientation.Vertical
-            if orientation.lower() == "vertical"
-            else Qt.Orientation.Horizontal
-        )
+        orientation = orientation.lower()
+
+        if orientation == "horizontal":
+            orient = Qt.Orientation.Horizontal
+
+        elif orientation == "vertical":
+            orient = Qt.Orientation.Vertical
+
+        super().setOrientation(orient)

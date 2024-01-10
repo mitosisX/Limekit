@@ -10,7 +10,7 @@ class TextField(QTextEdit, EnginePart):
         super().__init__(text)
 
         self.textChanged.connect(self.__handleTextChange)
-        self.selectionChanged.connect(self.__handleTextSelection)
+        # self.selectionChanged.connect(self.__handleTextSelection)
 
     # Events ---------------------------------
     def setOnTextChange(self, onTextChangedFunc):
@@ -20,8 +20,8 @@ class TextField(QTextEdit, EnginePart):
         if self.onTextChangedFunc:
             self.onTextChangedFunc(self, self.getText())
 
-    def setOnSelection(self, onTextSelectionChangedFunc):
-        self.onTextSelectionChangedFunc = onTextSelectionChangedFunc
+    # def setOnSelection(self, onTextSelectionChangedFunc):
+    #     self.onTextSelectionChangedFunc = onTextSelectionChangedFunc
 
     def __handleTextSelection(self):
         if self.onTextSelectionChangedFunc:
@@ -49,6 +49,9 @@ class TextField(QTextEdit, EnginePart):
 
     def setHint(self, hint):
         self.setPlaceholderText(hint)
+
+    def selectAll(self):
+        super().selectAll()
 
     def cut(self):
         super().cut()

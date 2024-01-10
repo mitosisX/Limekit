@@ -7,8 +7,8 @@ class LCDNumber(QLCDNumber, EnginePart):
         super().__init__()
         self.setSegmentStyle(QLCDNumber.SegmentStyle.Filled)
 
-    def setDate(self, date):
-        self.dateTimeFromText(date)
+    def setValuee(self, date):
+        self.set
 
     def getDate(self):
         return self.text()

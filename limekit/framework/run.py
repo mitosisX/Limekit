@@ -1,15 +1,12 @@
 # Yeah, I know... This looks half done. But hey, it's working right?
 import sys
 from lupa import lua54
-from limekit.framework.core.engine.app_engine import Engine
-from limekit.framework.core.exceptions.routes import RouteException
 from limekit.framework.handle.paths.path import Path
+from limekit.framework.core.engine.app_engine import Engine
+from limekit.framework.core.engine.destroyer import destroy_engine
+from limekit.framework.core.exceptions.routes import RouteException
 
 # print(os.getcwd())
-
-
-def destroy_engine():
-    sys.exit()
 
 
 try:

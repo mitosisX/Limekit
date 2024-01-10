@@ -1,6 +1,7 @@
-from PySide6.QtWidgets import QDialog, QDialogButtonBox
 from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QDialog, QDialogButtonBox
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.core.engine.destroyer import destroy_engine
 
 """
 This is a Dumb Dialog. Oftenly used for "Ok", "Cancel" operations
@@ -32,11 +33,13 @@ class Dialog(QDialog, EnginePart):
         self.onShownEvent = func
 
     def showEvent(self, event):
-        self.center()
-
         super().showEvent(event)
         if self.onShownEvent:
-            self.onShownEvent(self)
+            try:
+                self.onShownEvent(self)
+            except Exception as ex:
+                print(ex)
+                destroy_engine()
 
     def setOnClose(self, func):
         self.onCloseEvent = func
@@ -44,14 +47,22 @@ class Dialog(QDialog, EnginePart):
     # event has: ignore and accept
     def closeEvent(self, event):
         if self.onCloseEvent:
-            self.onCloseEvent(self, event)
+            try:
+                self.onCloseEvent(self, event)
+            except Exception as ex:
+                print(ex)
+                destroy_engine()
 
     def setOnResize(self, func):
         self.onResizeEvent = func
 
     def resizeEvent(self, event):
         if self.onResizeEvent:
-            self.onResizeEvent(self)
+            try:
+                self.onResizeEvent(self)
+            except Exception as ex:
+                print(ex)
+                destroy_engine()
 
     # ---------------------- Events
 

@@ -29,6 +29,9 @@ class Switch(EnginePart):
 
 # Usage
 # variable = 2
-# Switch(variable).case(1, lambda: print("Case 1")).case(2, lambda: print("Case 2")).case(
-#     3, lambda: print("Case 3")
-# ).check()
+# switch(variable)
+#   .case(1, function() print("Case 1") end)
+#   .case(2, function() print("Case 2") end)
+#   .case(3, function() print("Case 3") end)
+#   .default(function() print("Case 3") end)
+# )

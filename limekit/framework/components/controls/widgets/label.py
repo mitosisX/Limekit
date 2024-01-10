@@ -48,7 +48,7 @@ class Label(QLabel, BaseWidget, EnginePart):
         self.onClickFunc = onClickFunc
 
     def setText(self, text):
-        super().setText(text)
+        super().setText(str(text))
 
     def setBackgroundColor(self, color):
         super().setStyleSheet(f"background-color: {color};")

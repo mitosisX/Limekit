@@ -25,7 +25,7 @@ class SystemUtils(EnginePart):
             pid = process.info["pid"]
             process_dict.update({name: pid})
 
-        return process_dict
+        return Converter.table_from(process_dict)
 
     @staticmethod
     def kill_process(pid):
@@ -55,17 +55,19 @@ class SystemUtils(EnginePart):
         for user in psutil.users():
             user_details.append(user.name)
 
-        return user_details
+        return Converter.to_lua_table(user_details)
 
     @staticmethod
     def get_battery_percent():
         battery = psutil.sensors_battery()
 
-        return {
-            "percent": battery.percent,
-            "remaining_time": battery.secsleft,
-            "isPlugged": battery.power_plugged,
-        }
+        return Converter.table_from(
+            {
+                "percent": battery.percent,
+                "remaining_time": battery.secsleft,
+                "isPlugged": battery.power_plugged,
+            }
+        )
 
     @staticmethod
     def get_driver_letters():
@@ -74,17 +76,19 @@ class SystemUtils(EnginePart):
 
         for drive in disks:
             disk_info.append(
-                {
-                    "device": drive.device,
-                    "mountpoint": drive.mountpoint,
-                    "fstype": drive.fstype,
-                    "opts": drive.opts,
-                    "maxfile": drive.maxfile,
-                    "maxpath": drive.maxpath,
-                }
+                Converter.table_from(
+                    {
+                        "device": drive.device,
+                        "mountpoint": drive.mountpoint,
+                        "fstype": drive.fstype,
+                        "opts": drive.opts,
+                        "maxfile": drive.maxfile,
+                        "maxpath": drive.maxpath,
+                    }
+                )
             )
         # print(disk_info)
-        return disk_info
+        return Converter.to_lua_table(disk_info)
 
     # var: device, from the above method
     @staticmethod

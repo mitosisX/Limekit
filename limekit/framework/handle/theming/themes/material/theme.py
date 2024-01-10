@@ -2,6 +2,7 @@ from qt_material import apply_stylesheet
 from qt_material import list_themes
 
 from limekit.framework.core.runner.app import App
+from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
 class MaterialStyle:
@@ -22,4 +23,4 @@ class MaterialStyle:
     """
 
     def getThemes(self):
-        return [theme.rsplit(".")[0] for theme in list_themes()]
+        return Converter.to_lua_table([theme.rsplit(".")[0] for theme in list_themes()])
