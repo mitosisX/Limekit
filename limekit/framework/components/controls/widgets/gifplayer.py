@@ -5,10 +5,10 @@ from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.components.base.base_widget import BaseWidget
 
 
-class GifPlayer(QLabel, EnginePart):
+class GifPlayer(QLabel, BaseWidget, EnginePart):
     def __init__(self, filename):
         super().__init__()
-        # BaseWidget.__init__(self, widget=self)
+        BaseWidget.__init__(self, widget=self)
 
         # Load the file into a QMovie
         self.movie = QMovie(filename)

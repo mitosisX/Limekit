@@ -7,7 +7,7 @@ from limekit.framework.core.engine.parts import EnginePart
 class RadioButton(QRadioButton, EnginePart):
     onClickFunc = None
 
-    def __init__(self, text):
+    def __init__(self, text=""):
         super().__init__(text, parent=None)
 
         self.clicked.connect(self.__handleOnClick)

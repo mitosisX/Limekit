@@ -7,7 +7,7 @@ class Slider(QSlider, EnginePart):
     onValueChangeFunc = None
 
     def __init__(self):
-        super().__init__(orientation=Qt.Orientation.Horizontal)
+        super().__init__(Qt.Horizontal)
 
         self.valueChanged.connect(self.__handleValueChanged)
 

@@ -1,6 +1,5 @@
 PySide6 == 6.4.2
 pyqtdarktheme
-pyarmor
 qdarkstyle
 qt_material
 qtmodern

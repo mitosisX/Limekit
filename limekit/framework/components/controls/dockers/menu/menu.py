@@ -67,7 +67,7 @@ class Menu(QMenu, EnginePart):
                 if "icon" in item:
                     menu.setIcon(item["icon"])
 
-                self.addDropMenu(menu)
+                self.addMenu(menu)
 
                 self.fromTemplate(item.submenu, menu)
             else:
@@ -79,7 +79,7 @@ class Menu(QMenu, EnginePart):
 
             if "submenu" in item:
                 submenu = Menu(label)
-                parent.addDropMenu(submenu)
+                parent.addMenu(submenu)
 
                 # if "name" in item:
                 #     self.addToObject(item["name"], parent)

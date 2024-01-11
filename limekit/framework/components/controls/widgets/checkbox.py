@@ -9,7 +9,7 @@ from limekit.framework.components.base.base_widget import BaseWidget
 class CheckBox(QCheckBox, BaseWidget, EnginePart):
     onStateChangedFunc = None
 
-    def __init__(self, text):
+    def __init__(self, text=""):
         super().__init__()
         BaseWidget.__init__(self, widget=self)
 

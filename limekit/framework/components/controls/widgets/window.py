@@ -125,7 +125,7 @@ class Window(QMainWindow, EnginePart):
         # self.layout.addLayout(layout)
 
     def addDock(self, dock, area):
-        self.addDockWidget(dock, self.__setDockArea(area))
+        self.addDockWidget(self.__setDockArea(area), dock)
 
     def __setDockArea(self, area):
         """Sets the Qt.DockWidgetArea value corresponding to a string representation of a dock area.

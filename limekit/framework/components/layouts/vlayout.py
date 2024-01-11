@@ -42,7 +42,7 @@ class VerticalLayout(QVBoxLayout, EnginePart):
         super().addLayout(lay)
 
     # This adds a QSpacerItem to the bottom of a VLayout and to the left of a HLayout
-    def addStretch(self, stretch=1):
+    def addStretchi(self, stretch=1):
         super().addStretch(stretch)
 
     # Also acts as the padding
