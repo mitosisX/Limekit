@@ -6,6 +6,9 @@
 
     - execute "py setup.py build_ext"
 
+    - then python setup.py sdist bdist_wheel --plat-name win_amd64 --python-tag cp310
+    to build wheel
+
 Using python 3.10.6
 
         Bash files
