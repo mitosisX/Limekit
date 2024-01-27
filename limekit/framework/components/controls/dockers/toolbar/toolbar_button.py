@@ -59,3 +59,9 @@ class ToolbarButton(QAction, EnginePart):
 
     def setVisibility(self, visibility):
         self.setVisible(visibility)
+
+    def setShortcut(self, shortcut):
+        super().setShortcut(shortcut)
+
+    def setStatusTip(self, text):
+        super().setStatusTip(text)

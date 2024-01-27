@@ -15,7 +15,7 @@ class Dialog(QDialog, EnginePart):
     onCloseEvent = None
     onResizeEvent = None
 
-    def __init__(self, parent, title):
+    def __init__(self, parent, title="Modal - Limkit"):
         super().__init__(parent)
 
         self.setWindowTitle(title)

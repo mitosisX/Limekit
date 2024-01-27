@@ -19,6 +19,7 @@ from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 class ComboBox(QComboBox, EnginePart):
     onCurrentIndexChangedFunc = None
+    onWidgetActivatedFunc = None
 
     def __init__(self, items=None):
         super().__init__()
@@ -27,15 +28,23 @@ class ComboBox(QComboBox, EnginePart):
             self.setItems(items)
 
         self.currentIndexChanged.connect(self.__handleCurrentIndexChange)
+        # self.activated.connect(self.__handleWidgetActivated)
 
-    def setOnItemSelected(self, onCurrentIndexChangedFunc):
+    def setOnItemSelect(self, onCurrentIndexChangedFunc):
         self.onCurrentIndexChangedFunc = onCurrentIndexChangedFunc
+
+    def setOnActive(self, onWidgetActivatedFunc):
+        self.onWidgetActivatedFunc = onWidgetActivatedFunc
 
     def __handleCurrentIndexChange(self):
         if self.onCurrentIndexChangedFunc:
             self.onCurrentIndexChangedFunc(
                 self, self.currentText(), self.getCurrentIndex()
             )
+
+    def __handleWidgetActivated(self):
+        if self.onWidgetActivatedFunc:
+            self.onWidgetActivatedFunc(self)
 
     def getCurrentIndex(self):
         return self.currentIndex()
@@ -96,6 +105,9 @@ class ComboBox(QComboBox, EnginePart):
 
         super().addItems(data_)
 
+    def setEditable(self, editable):
+        super().setEditable(editable)
+
     def setResizeRule(self, horizontal, vertical):
         policies = {
             "fixed": QSizePolicy.Policy.Fixed,  # ignores all size changing
@@ -109,3 +121,6 @@ class ComboBox(QComboBox, EnginePart):
         if (horizontal in policies) and (vertical in policies):
             size_policy = QSizePolicy(policies.get(horizontal), policies.get(vertical))
             self.setSizePolicy(size_policy)
+
+    def setMinContentLength(self, length):
+        self.setMinimumContentsLength(length)

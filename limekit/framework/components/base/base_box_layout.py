@@ -16,7 +16,7 @@ class BaseBoxLayout:
         qt_alignments = {
             "leading": Qt.AlignmentFlag.AlignLeading,
             "alignLeft": Qt.AlignmentFlag.AlignLeft,
-            "tight": Qt.AlignmentFlag.AlignRight,
+            "right": Qt.AlignmentFlag.AlignRight,
             "trailing": Qt.AlignmentFlag.AlignTrailing,
             "hcenter": Qt.AlignmentFlag.AlignHCenter,
             "justify": Qt.AlignmentFlag.AlignJustify,

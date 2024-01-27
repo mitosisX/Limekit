@@ -1,4 +1,4 @@
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QFont
 from PySide6.QtWidgets import QFontComboBox
 from limekit.framework.core.engine.parts import EnginePart
 
@@ -22,7 +22,7 @@ class FontComboBox(QFontComboBox, EnginePart):
 
         self.currentIndexChanged.connect(self.__handleCurrentIndexChange)
 
-    def onItemSelected(self, onCurrentIndexChangedFunc):
+    def setOnItemSelect(self, onCurrentIndexChangedFunc):
         self.onCurrentIndexChangedFunc = onCurrentIndexChangedFunc
 
     def __handleCurrentIndexChange(self):
@@ -81,3 +81,8 @@ class FontComboBox(QFontComboBox, EnginePart):
             data_ = data
 
         super().addItems(data_)
+
+    def setFont(self, font_):
+        font = QFont()
+        font.fromString(font_)
+        super().setFont(font)

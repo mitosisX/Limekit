@@ -11,8 +11,8 @@ def addSeparator()
 
 
 class Toolbar(QToolBar, EnginePart):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, title=""):
+        super().__init__(title)
         # self.setIconSize(30, 30)
         font = QFont()
         font.setPointSize(8)  # Set the font size to 16 points
@@ -58,3 +58,9 @@ class Toolbar(QToolBar, EnginePart):
 
     def addButton(self, button):
         self.addAction(button)
+
+    def addSeparator(self):
+        super().addSeparator()
+
+    def addChild(self, child):
+        self.addWidget(child)

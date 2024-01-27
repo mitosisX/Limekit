@@ -1,0 +1,10 @@
+Window
+  - added addToolbarBreak
+
+TextField
+  - added setPlainText()
+  - changed setText() to setText instead of setPlainText
+  - added paste(), redo(), undo()
+
+ComboBox
+  - added setMinContentLength

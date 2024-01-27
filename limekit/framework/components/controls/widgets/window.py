@@ -240,3 +240,6 @@ class Window(QMainWindow, EnginePart):
         new_action = super().findChild(type_, text)
         if new_action:
             new_action.setText("Clicked New")
+
+    def addToolbarBreak(self):
+        self.addToolBarBreak()

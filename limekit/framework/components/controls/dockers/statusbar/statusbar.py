@@ -4,4 +4,7 @@ from PySide6.QtWidgets import QStatusBar
 
 class StatusBar(QStatusBar, EnginePart):
     def __init__(self):
-        super().__init__(self, parent=None)
+        super().__init__()
+
+    def setText(self, text):
+        self.showMessage(text)
