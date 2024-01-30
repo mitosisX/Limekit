@@ -1,6 +1,6 @@
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QTextEdit
-from PySide6.QtGui import QTextListFormat, QFont, QTextTableFormat
+from PySide6.QtCore import Qt, QSizeF
+from PySide6.QtWidgets import QTextEdit, QFrame
+from PySide6.QtGui import QTextListFormat, QFont, QTextTableFormat, QTextCharFormat
 from limekit.framework.core.engine.parts import EnginePart
 
 
@@ -186,3 +186,65 @@ class TextField(QTextEdit, EnginePart):
 
         elif align == "justify":
             self.setAlignment(Qt.AlignmentFlag.AlignJustify)
+
+    def setVerticalTextAlignment(self, format):
+        fmt = self.currentCharFormat()
+
+        if format == "normal":
+            fmt.setVerticalAlignment(QTextCharFormat.VerticalAlignment.AlignNormal)
+
+        elif format == "superscript":
+            fmt.setVerticalAlignment(QTextCharFormat.VerticalAlignment.AlignSuperScript)
+
+        elif format == "subscript":
+            fmt.setVerticalAlignment(QTextCharFormat.VerticalAlignment.AlignSubScript)
+
+        elif format == "middle":
+            fmt.setVerticalAlignment(QTextCharFormat.VerticalAlignment.AlignMiddle)
+
+        elif format == "top":
+            fmt.setVerticalAlignment(QTextCharFormat.VerticalAlignment.AlignTop)
+
+        elif format == "bottom":
+            fmt.setVerticalAlignment(QTextCharFormat.VerticalAlignment.AlignBottom)
+
+        elif format == "baseline":
+            fmt.setVerticalAlignment(QTextCharFormat.VerticalAlignment.AlignBaseline)
+
+        self.setCurrentCharFormat(fmt)
+
+    def getVerticalTextAlignment(self):
+        fmt = self.currentCharFormat()
+
+        # And get the vertical alignment property
+        align = fmt.verticalAlignment()
+
+        # Toggle the state
+        if align == QTextCharFormat.VerticalAlignment.AlignNormal:
+            return "normal"
+
+        elif align == QTextCharFormat.VerticalAlignment.AlignSuperScript:
+            return "superscript"
+
+        elif align == QTextCharFormat.VerticalAlignment.AlignSubScript:
+            return "subscript"
+
+        elif align == QTextCharFormat.VerticalAlignment.AlignMiddle:
+            return "middle"
+
+        elif align == QTextCharFormat.VerticalAlignment.AlignTop:
+            return "top"
+
+        elif align == QTextCharFormat.VerticalAlignment.AlignBottom:
+            return "bottom"
+
+        elif align == QTextCharFormat.VerticalAlignment.AlignBaseline:
+            return "baseline"
+
+    def removeBorder(self):
+        super().setFrameShape(QFrame.Shape.NoFrame)
+
+    def setPageSize(self, width, height):
+        doc = self.document()
+
+        doc.setPageSize(QSizeF(width, height))
