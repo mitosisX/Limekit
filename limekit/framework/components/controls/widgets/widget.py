@@ -8,3 +8,6 @@ from limekit.framework.core.engine.parts import EnginePart
 class Widget(QWidget, EnginePart):
     def __init__(self):
         super().__init__()
+        
+    def setLayout(self, layout):
+        super().setLayout(layout)

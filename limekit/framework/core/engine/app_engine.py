@@ -273,7 +273,7 @@ class Engine:
             "zip": Converter.zip_,
             # Data types ---------
             "eval": eval,
-            # "FluentIcon": FluentIcon,
+            # "FluentIcon": FIF,
             "__quit": self.__quit,
         }
 
