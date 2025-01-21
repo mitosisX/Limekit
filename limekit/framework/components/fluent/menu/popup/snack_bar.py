@@ -31,7 +31,7 @@ class SnackBar(EnginePart):
     title = ""
     content = ""
     icon = ""
-    duration = ""
+    duration = 0
     position = ""
     parent = None
 

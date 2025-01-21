@@ -1,22 +1,24 @@
 from limekit.framework.core.engine.parts import EnginePart
-from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
+from PySide6.QtCore import QPoint, Qt
+from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout
 from qfluentwidgets import (
-    IconWidget,
-    BodyLabel,
-    PushButton,
-    TransparentToolButton,
-    CaptionLabel,
-    FluentIcon,
-    CardWidget,
-    RoundMenu,
     Action,
+    BodyLabel,
+    CaptionLabel,
+    CardWidget,
+    FluentIcon,
+    IconWidget,
+    PushButton,
+    RoundMenu,
+    TransparentToolButton,
 )
-from PySide6.QtCore import Qt, QPoint
 
 
 class Card(CardWidget, EnginePart):
+    name = "FCard"
+
     def __init__(self, icon, title, content, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.iconWidget = IconWidget(icon)
         self.titleLabel = BodyLabel(title, self)
         self.contentLabel = CaptionLabel(content, self)

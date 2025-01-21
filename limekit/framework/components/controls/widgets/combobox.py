@@ -108,6 +108,7 @@ class ComboBox(QComboBox, EnginePart):
     def setEditable(self, editable):
         super().setEditable(editable)
 
+    # controls the widget's size
     def setResizeRule(self, horizontal, vertical):
         policies = {
             "fixed": QSizePolicy.Policy.Fixed,  # ignores all size changing

@@ -1,20 +1,11 @@
 import lupa
-
-from PySide6.QtGui import QIcon
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.handle.scripts.swissknife.converters import Converter
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QSizePolicy
+from qfluentwidgets import ComboBox
 
 # setMaxCount - sets maximum ComboBox items limit
-
-# QComboBox.NoInsert	No insert
-# QComboBox.InsertAtTop	Insert as first item
-# QComboBox.InsertAtCurrent	Replace currently selected item
-# QComboBox.InsertAtBottom	Insert after last item
-# QComboBox.InsertAfterCurrent	Insert after current item
-# QComboBox.InsertBeforeCurrent	Insert before current item
-# QComboBox.InsertAlphabetically	Insert in alphabetical order
-from limekit.framework.handle.scripts.swissknife.converters import Converter
-from qfluentwidgets import ComboBox, EditableComboBox
 
 
 class FComboBox(ComboBox, EnginePart):

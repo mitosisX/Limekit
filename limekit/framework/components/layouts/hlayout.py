@@ -50,3 +50,6 @@ class HorizontalLayout(QHBoxLayout, EnginePart):
     # Also acts as the padding
     def setMargins(self, left, top, right, bottom):
         self.setContentsMargins(left, top, right, bottom)
+
+    def setSpacing(self, spacing):
+        super().setSpacing(spacing)

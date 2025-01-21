@@ -18,8 +18,8 @@ The virt env idea was a total disaster, I had to reinvent my code to make it wor
 
             20 January, 2025 13:11 PM (Monday)
 
-After a long time of not working on the project, I am back to it. Currently working on fluent UI. Winow creation
-is working pretty fine, but lacks all necesary logic.
+After a long time of not working on the project, I am back to it. Currently working on fluent UI. Window creation
+is working pretty fine, but lacks the necesary logic.
 """
 
 import os
@@ -53,6 +53,7 @@ from limekit.framework.core.runner.app_events import AppEvents
 
 from limekit.framework.scripts.script import Script
 from qfluentwidgets import FluentIcon
+
 
 class Engine:
     # _instance = None
@@ -235,7 +236,7 @@ class Engine:
         Walks through all dirs desribed in settings.py INSTALLED_PARTS
         """
         walked_classes = []
-        
+
         for app in settings.INSTALLED_PARTS:
             app_path = Path.dot_path(app)
             limekit_dir = Path.remove_last_dir(settings.limekit_SITEPACKAGE_DIR)

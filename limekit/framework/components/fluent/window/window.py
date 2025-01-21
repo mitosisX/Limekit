@@ -1,15 +1,11 @@
-from limekit.framework.core.engine.parts import EnginePart
-from PySide6.QtGui import QIcon
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QFrame
 import sys
 import uuid
-from qfluentwidgets import (
-    FluentWindow,
-    SubtitleLabel,
-    isDarkTheme,
-    FluentIcon as FIF,
-)
+
+from limekit.framework.core.engine.parts import EnginePart
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication, QFrame
+from qfluentwidgets import FluentWindow, isDarkTheme
 
 
 def isWin11():
