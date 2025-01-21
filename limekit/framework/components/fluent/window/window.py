@@ -1,26 +1,26 @@
 from limekit.framework.core.engine.parts import EnginePart
-from PySide6.QtWidgets import QWidget
 from PySide6.QtGui import QIcon
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QStackedWidget, QFrame, QHBoxLayout, QLabel
+from PySide6.QtWidgets import QApplication, QFrame
 import sys
-
-import qfluentwidgets
-
+import uuid
 from qfluentwidgets import (
+    FluentWindow,
+    SubtitleLabel,
     isDarkTheme,
     FluentIcon as FIF,
 )
+
 
 def isWin11():
     return sys.platform == "win32" and sys.getwindowsversion().build >= 22000
 
 
-# if isWin11():
-#     from qframelesswindow import AcrylicWindow as Window
-# else:
-#     from qframelesswindow import FramelessWindow as Window
-from qfluentwidgets import FluentWindow
+class Widget(QFrame):
+    def __init__(self, parent=None, layout=None):
+        super().__init__(parent=parent)
+        self.setLayout(layout)
+        self.setObjectName(str(uuid.uuid4()))
 
 
 class QFluentWindow(FluentWindow, EnginePart):
@@ -39,15 +39,12 @@ class QFluentWindow(FluentWindow, EnginePart):
         if self.__isWin11():
             self.windowEffect.setMicaEffect(self.winId(), isDarkTheme())
 
-        # self.setSize(500, 300)
-        # self.__initLayout()
-        
         if "icon" in kwargs:
             self.setIcon(kwargs["icon"]) if "icon" in kwargs else None
-            
-        if "title" in kwargs:      
-            self.setTitle(kwargs['title'])
-            
+
+        if "title" in kwargs:
+            self.setTitle(kwargs["title"])
+
         if "size" in kwargs:
             try:
                 width, height = kwargs["size"].values()
@@ -55,20 +52,22 @@ class QFluentWindow(FluentWindow, EnginePart):
             except ValueError as ex:
                 self.setSize(500, 500)
 
+    # add items to the side menu (drawer)
+    def addNavInterface(self, layout, icon, title):
+        self.homeInterface = Widget(parent=self, layout=layout)
+        self.addSubInterface(self.homeInterface, icon, title)
+
+    def addNavInterfaceSeparator(self):
+        self.navigationInterface.addSeparator()
+
     def __isWin11(self):
         return sys.platform == "win32" and sys.getwindowsversion().build >= 22000
 
     def center(self):
-        # Old center() algo
         qr = self.frameGeometry()
         cp = QApplication.primaryScreen().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
-
-        # desktop = QApplication.screens()[0].availableGeometry()
-        # w, h = desktop.width(), desktop.height()
-        # self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
-
 
     def setIcon(self, icon):
         self.setWindowIcon(QIcon(icon))

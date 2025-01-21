@@ -10,30 +10,10 @@ class GifPlayer(QLabel, BaseWidget, EnginePart):
         super().__init__()
         BaseWidget.__init__(self, widget=self)
 
-        # Load the file into a QMovie
         self.movie = QMovie(filename)
 
-        # size = self.movie.scaledSize()
-        # self.setGeometry(200, 200, size.width(), size.height())
-        # self.setSize(20, 20)
-
         self.movie_screen = QLabel()
-
-        # Make label fit the gif
-        # self.movie_screen.setSizePolicy(
-        #     QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed
-        # )
-        # self.movie_screen.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        # Create the layout
-        # main_layout = QVBoxLayout()
-        # main_layout.addWidget(self.movie_screen)
-
-        # self.setLayout(main_layout)
-
-        # Add the QMovie object to the label
         self.movie.setCacheMode(QMovie.CacheMode.CacheAll)
-        # self.movie.setSpeed(100)
         self.setMovie(self.movie)
         self.movie.start()
 

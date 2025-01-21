@@ -18,6 +18,9 @@ class App:
         QApplication.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
         QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
 
+        App.app.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling, True)
+        App.app.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps, True)
+
         # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
         QApplication.setHighDpiScaleFactorRoundingPolicy(
             Qt.HighDpiScaleFactorRoundingPolicy.PassThrough

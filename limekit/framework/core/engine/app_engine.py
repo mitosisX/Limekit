@@ -15,6 +15,11 @@ through a batch script; the creation script is half-baked (only able to run a pr
             18 December, 2023 6:32 AM (Monday)
             
 The virt env idea was a total disaster, I had to reinvent my code to make it work
+
+            20 January, 2025 13:11 PM (Monday)
+
+After a long time of not working on the project, I am back to it. Currently working on fluent UI. Winow creation
+is working pretty fine, but lacks all necesary logic.
 """
 
 import os
@@ -47,7 +52,7 @@ from limekit.framework.handle.routing.routes import Routing
 from limekit.framework.core.runner.app_events import AppEvents
 
 from limekit.framework.scripts.script import Script
-
+from qfluentwidgets import FluentIcon
 
 class Engine:
     # _instance = None
@@ -230,7 +235,7 @@ class Engine:
         Walks through all dirs desribed in settings.py INSTALLED_PARTS
         """
         walked_classes = []
-
+        
         for app in settings.INSTALLED_PARTS:
             app_path = Path.dot_path(app)
             limekit_dir = Path.remove_last_dir(settings.limekit_SITEPACKAGE_DIR)
@@ -273,7 +278,7 @@ class Engine:
             "zip": Converter.zip_,
             # Data types ---------
             "eval": eval,
-            # "FluentIcon": FIF,
+            "FluentIcon": FluentIcon,
             "__quit": self.__quit,
         }
 
@@ -303,37 +308,36 @@ class Engine:
 
     def load_classes(self, files):
         for file in files:
-            if True:
-                the_path = os.sep.join(file.split(os.sep)[:-1])
-                the_file = file.split(os.sep)[-1].split(".")[0]
+            the_path = os.sep.join(file.split(os.sep)[:-1])
+            the_file = file.split(os.sep)[-1].split(".")[0]
 
-                file_path = os.path.join(the_path, file.split(os.sep)[-1])
+            file_path = os.path.join(the_path, file.split(os.sep)[-1])
 
-                # Create a spec for the module
-                spec = importlib.util.spec_from_file_location(the_file, file_path)
-                module = importlib.util.module_from_spec(spec)
+            # Create a spec for the module
+            spec = importlib.util.spec_from_file_location(the_file, file_path)
+            module = importlib.util.module_from_spec(spec)
 
-                # Finalize the loading process
-                spec.loader.exec_module(module)
+            # Finalize the loading process
+            spec.loader.exec_module(module)
 
-                for name in dir(module):
-                    class_ = getattr(module, name)
+            for name in dir(module):
+                class_ = getattr(module, name)
 
-                    if (
-                        isinstance(class_, type)
-                        and issubclass(class_, EnginePart)
-                        and class_ is not EnginePart
-                    ):
-                        class_for_lua = class_
+                if (
+                    isinstance(class_, type)
+                    and issubclass(class_, EnginePart)
+                    and class_ is not EnginePart
+                ):
+                    class_for_lua = class_
 
-                        object_name = (
-                            class_for_lua.name
-                            if class_for_lua.name
-                            else class_for_lua.__name__
-                        )
+                    object_name = (
+                        class_for_lua.name
+                        if class_for_lua.name
+                        else class_for_lua.__name__
+                    )
 
-                        # Create the lua objects
-                        self.engine.globals()[object_name] = class_for_lua
+                    # Create the lua objects
+                    self.engine.globals()[object_name] = class_for_lua
 
     def load_classes_(self, files):
         # all_instances = {}
