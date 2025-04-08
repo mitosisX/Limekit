@@ -30,17 +30,23 @@ class App:
         QApplication.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
         QApplication.setHighDpiScaleFactorRoundingPolicy(
             Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
         )
 =======
+=======
+>>>>>>> Stashed changes
         # App.app.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
         # App.app.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
         # App.app.setHighDpiScaleFactorRoundingPolicy(
         #     Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
         # )
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         try:
             sys.exit(cls.app.exec())

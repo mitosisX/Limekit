@@ -84,7 +84,10 @@ limekit/framework/components/controls/widgets/table.py
 limekit/framework/components/controls/widgets/tableitem.py
 limekit/framework/components/controls/widgets/textfield.py
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 limekit/framework/components/controls/widgets/treeview_item.py
 limekit/framework/components/controls/widgets/treewidget.py
 >>>>>>> Stashed changes

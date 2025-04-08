@@ -48,6 +48,11 @@ from limekit.framework.core.runner.app_events import AppEvents
 
 from limekit.framework.scripts.script import Script
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+# from qfluentwidgets import FluentIcon
+>>>>>>> Stashed changes
 =======
 
 # from qfluentwidgets import FluentIcon

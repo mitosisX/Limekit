@@ -18,4 +18,7 @@ class Widget(QWidget, EnginePart):
 
     def setSize(self, width, height):
         super().resize(width, height)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
