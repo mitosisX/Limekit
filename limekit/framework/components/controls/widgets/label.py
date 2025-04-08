@@ -140,16 +140,26 @@ class Label(QLabel, BaseWidget, EnginePart):
             super().setFont(QFont(font, size))
 
     def setTextSize(self, size):
-        font = QFont()
+        font = self.font()
         font.setPointSize(size)
-        super().setFont(font)
+        self.setFont(font)
 
-    def setBold(self, set_bold):
-        font = QFont()
+    def setBold(self, set_bold: bool):
+        font = self.font()
         font.setBold(set_bold)
-        super().setFont(font)
+        self.setFont(font)
 
-    def setWordWrap(self, enable):
+    # def setTextSize(self, size):
+    #     font = QFont()
+    #     font.setPointSize(size)
+    #     super().setFont(font)
+
+    # def setBold(self, set_bold: bool):
+    #     font = QFont()
+    #     font.setBold(set_bold)
+    #     super().setFont(font)
+
+    def setWordWrap(self, enable: bool):
         super().setWordWrap(enable)
 
     def setCompanion(self, companion):

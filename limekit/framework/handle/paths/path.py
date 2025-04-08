@@ -1,6 +1,7 @@
 import os
 import fnmatch
 import limekit
+from pathlib import Path as PATH
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.handle.scripts.swissknife.converters import Converter
 
@@ -8,6 +9,11 @@ from limekit.framework.handle.scripts.swissknife.converters import Converter
 class Path(EnginePart):
     project_path = os.getcwd()
     name = "__Path"
+
+    # ____________________________________________________________
+    # __________________
+    # The methods used in lua (images(), misc(), scripts())
+    # __________________
 
     @classmethod
     def scripts_dir(cls):
@@ -24,6 +30,8 @@ class Path(EnginePart):
     @classmethod
     def images_dir(cls):
         return cls.join_paths(cls.current_project_dir(), "images")
+
+    # ____________________________________________________________
 
     @classmethod
     def project_file(cls):
@@ -42,7 +50,44 @@ class Path(EnginePart):
 
     @classmethod
     def listDir(cls, path):
-        return Converter.table_from(os.listdir(path))
+        print("###################")
+        return Converter.table_from(sorted(os.listdir(path), key=str.lower))
+
+    @classmethod
+    def walk_dir(cls, path, show_hidden=False):
+        """Python implementation of scandir callable from Lua"""
+        path = PATH(path)
+        if not path.is_dir():
+            return None  # Return nil to Lua
+
+        dirs = []
+        files = []
+
+        try:
+            with os.scandir(path) as it:
+                for entry in it:
+                    if not show_hidden and entry.name.startswith("."):
+                        continue
+
+                    entry_data = {
+                        "name": entry.name,
+                        "path": entry.path,
+                        "is_dir": entry.is_dir(),
+                    }
+
+                    if entry.is_dir():
+                        dirs.append(entry_data)
+                    else:
+                        files.append(entry_data)
+
+            # Sort both lists case-insensitively
+            dirs.sort(key=lambda x: x["name"].lower())
+            files.sort(key=lambda x: x["name"].lower())
+
+            return dirs + files  # Combined list with dirs first
+
+        except (PermissionError, OSError):
+            return None  # Return nil to Lua on error
 
     @classmethod
     def walk_dir_get_files(cls, dir, ext=".py"):
@@ -51,8 +96,11 @@ class Path(EnginePart):
         # Recursively iterate through the folder and its subdirectories
         for root, dirs, files in os.walk(dir):
             for filename in files:  # ext should always start with a .
-                if filename.endswith(".pyd") or filename.endswith(".py")\
-                or filename.endswith(".so"):
+                if (
+                    filename.endswith(".pyd")
+                    or filename.endswith(".py")
+                    or filename.endswith(".so")
+                ):
                     if filename == "__init__.py":
                         continue
                     python_files.append(os.path.join(root, filename))

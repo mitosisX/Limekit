@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 Metadata-Version: 2.1
+=======
+Metadata-Version: 2.4
+>>>>>>> Stashed changes
 Name: limekit
 Version: 1.0.0
 Summary: Limekit is the first-ever lua GUI framework

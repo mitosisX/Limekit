@@ -1,4 +1,16 @@
 app = {
+    -- allows one to invoke a function with args
+    -- partial(func, arg1, arg2, ...) and returns the function
+    partial = function(func, ...)
+        local args = {...}
+        return function(...)
+            local newArgs = {...}
+            for i, arg in ipairs(args) do
+                table.insert(newArgs, 1, arg)
+            end
+            return func(table.unpack(newArgs))
+        end
+    end,
     Theme = function(theme)
         return __themer(theme)
     end,
@@ -70,8 +82,8 @@ app = {
         return __encoding.base64_decode(text)
     end,
     -- Encoding #######################
-    setFontFile = function(file, size)
-        __font.set_font(file, size)
+    setFontFile = function(file)
+        __font.set_font(file)
     end,
     setFont = function(font, size)
         __font.set_font(font, size)
@@ -217,7 +229,10 @@ app = {
         return __clipboard.getText()
     end,
     listFolder = function(path)
-        return __Path.listDir(path)
+        return __Path.list_dir(path)
+    end,
+    walkDir = function(path)
+        return __Path.walk_dir(path)
     end,
     renameFile = function(file, file_new)
         return __fileutils.rename_file(file, file_new)

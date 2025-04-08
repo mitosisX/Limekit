@@ -8,12 +8,12 @@ The project is going pretty great. Haven't yet released it. nor developed
 a project creation script, nor how the virtual env shall work.
 
             24 October, 2023 14:12 PM (Tuesday)
-            
-I now have the virtual env up and running and able to execute a project creation py file 
+
+I now have the virtual env up and running and able to execute a project creation py file
 through a batch script; the creation script is half-baked (only able to run a project, nothing else)
 
             18 December, 2023 6:32 AM (Monday)
-            
+
 The virt env idea was a total disaster, I had to reinvent my code to make it work
 """
 
@@ -47,6 +47,11 @@ from limekit.framework.handle.routing.routes import Routing
 from limekit.framework.core.runner.app_events import AppEvents
 
 from limekit.framework.scripts.script import Script
+<<<<<<< Updated upstream
+=======
+
+# from qfluentwidgets import FluentIcon
+>>>>>>> Stashed changes
 
 
 class Engine:

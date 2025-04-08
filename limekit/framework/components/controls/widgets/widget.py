@@ -6,5 +6,16 @@ from limekit.framework.core.engine.parts import EnginePart
 
 # Might be needed somewhere
 class Widget(QWidget, EnginePart):
+<<<<<<< Updated upstream
     def __init__(self):
         super().__init__()
+=======
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+    def setLayout(self, layout):
+        super().setLayout(layout)
+
+    def setSize(self, width, height):
+        super().resize(width, height)
+>>>>>>> Stashed changes

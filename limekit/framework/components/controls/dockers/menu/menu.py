@@ -178,3 +178,6 @@ class Menu(QMenu, EnginePart):
 
     def addToObject(self, name, obj):
         self.objects.update({name: obj})
+
+    def show(self, event):
+        self.exec(event.globalPos())

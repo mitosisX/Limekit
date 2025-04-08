@@ -16,6 +16,9 @@ class GridLayout(QGridLayout, EnginePart):
     def addLayout(self, child, xPos, yPos, rows=1, columns=1):
         super().addLayout(child, xPos, yPos, rows, columns)
 
+    def setSpacing(self, spacing):
+        super().setSpacing(spacing)
+
     # Also acts as the padding
     def setMargins(self, left, top, right, bottom):
         self.setContentsMargins(left, top, right, bottom)

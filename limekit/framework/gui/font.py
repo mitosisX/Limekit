@@ -3,6 +3,7 @@ from PySide6.QtGui import QFont, QFontDatabase
 from limekit.framework.core.engine.parts import EnginePart
 
 
+# Used in app table
 class Font(EnginePart):
     name = "__font"
 
@@ -15,7 +16,8 @@ class Font(EnginePart):
             custom_font = QFont(font_family, size)
             App.app.setFont(custom_font)
 
+    # app.setFontFile(file)
     @staticmethod
-    def from_file(file, size):
-        font = QFont(file, size)
+    def from_file(file):
+        font = QFont(file)
         App.app.setFont(font)

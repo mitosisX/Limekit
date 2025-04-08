@@ -5,6 +5,7 @@ from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.components.base.base_widget import BaseWidget
 
 
+
 class GifPlayer(QLabel, BaseWidget, EnginePart):
     def __init__(self, filename):
         super().__init__()

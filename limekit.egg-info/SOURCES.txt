@@ -12,7 +12,26 @@ limekit/framework/run.py
 limekit/framework/test_run.py
 limekit/framework/components/__init__.py
 limekit/framework/components/base/__init__.py
+<<<<<<< Updated upstream
 limekit/framework/components/base/base_layout.py
+=======
+limekit/framework/components/base/base_box_layout.py
+limekit/framework/components/base/base_layout.py
+limekit/framework/components/base/base_widget.py
+limekit/framework/components/charts/__init__.py
+limekit/framework/components/charts/categoryaxis.py
+limekit/framework/components/charts/chart.py
+limekit/framework/components/charts/chartview.py
+limekit/framework/components/charts/area/__init__.py
+limekit/framework/components/charts/area/areachart.py
+limekit/framework/components/charts/axis/__init__.py
+limekit/framework/components/charts/axis/valueaxis.py
+limekit/framework/components/charts/bar/__init__.py
+limekit/framework/components/charts/bar/barchart.py
+limekit/framework/components/charts/bar/barset.py
+limekit/framework/components/charts/linegraph/__init__.py
+limekit/framework/components/charts/linegraph/linechart.py
+>>>>>>> Stashed changes
 limekit/framework/components/controls/__init__.py
 limekit/framework/components/controls/dialogs/__init__.py
 limekit/framework/components/controls/dialogs/color_picker.py
@@ -64,12 +83,31 @@ limekit/framework/components/controls/widgets/spinbox.py
 limekit/framework/components/controls/widgets/table.py
 limekit/framework/components/controls/widgets/tableitem.py
 limekit/framework/components/controls/widgets/textfield.py
+<<<<<<< Updated upstream
+=======
+limekit/framework/components/controls/widgets/treeview_item.py
+limekit/framework/components/controls/widgets/treewidget.py
+>>>>>>> Stashed changes
 limekit/framework/components/controls/widgets/vertical_line.py
 limekit/framework/components/controls/widgets/widget.py
 limekit/framework/components/controls/widgets/window.py
 limekit/framework/components/controls/widgets/containers/__init__.py
 limekit/framework/components/controls/widgets/containers/tab.py
 limekit/framework/components/controls/widgets/containers/tabitem.py
+<<<<<<< Updated upstream
+=======
+limekit/framework/components/controls/widgets/pickers/__init__.py
+limekit/framework/components/controls/widgets/pickers/calendar.py
+limekit/framework/components/controls/widgets/pickers/datepicker.py
+limekit/framework/components/controls/widgets/pickers/timepicker.py
+limekit/framework/components/gui/__init__.py
+limekit/framework/components/gui/dropshadow.py
+limekit/framework/components/gui/mouse_position.py
+limekit/framework/components/gui/mousebutton.py
+limekit/framework/components/gui/printpreview.py
+limekit/framework/components/gui/splash_screen.py
+limekit/framework/components/gui/thread.py
+>>>>>>> Stashed changes
 limekit/framework/components/layouts/__init__.py
 limekit/framework/components/layouts/formlayout.py
 limekit/framework/components/layouts/grid.py

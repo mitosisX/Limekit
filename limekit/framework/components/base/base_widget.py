@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QWidget, QSizePolicy
+from PySide6.QtCore import QSize
 
 
 class BaseWidget:
@@ -13,6 +14,9 @@ class BaseWidget:
 
     def setBackgroundColor(self, color):
         self.widget.setStyleSheet(f"background-color: {color};")
+
+    def setFixedSizes(self, width, height):
+        self.widget.setFixedSize(QSize(width, height))
 
     def setTextColor(self, color):
         self.widget.setStyleSheet(f"color: {color};")

@@ -49,6 +49,9 @@ class Button(QPushButton, BaseWidget, EnginePart):
     def setMatProperty(self, class_):
         self.setProperty("class", class_)
 
+    def setEnabled(self, enabled: bool):
+        super().setEnabled(enabled)
+
     # Also acts as the padding
     def setMargins(self, left, top, right, bottom):
         self.setContentsMargins(left, top, right, bottom)
@@ -58,6 +61,12 @@ class Button(QPushButton, BaseWidget, EnginePart):
 
     def setIconSize(self, width, height):
         super().setIconSize(QSize(width, height))
+
+    def setStyle(self, styleSheet):
+        self.widget.setStyleSheet(styleSheet)
+
+    def setName(self, name):
+        self.widget.setObjectName(name)
 
     # Makes the button loose all boarders and appear more like a Label until click
     def setFlat(self, flat):

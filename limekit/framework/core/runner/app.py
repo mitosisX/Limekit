@@ -15,13 +15,33 @@ class App:
     # Start the mainloop
     @classmethod
     def execute(cls):
-        QApplication.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
-        QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
+        # QApplication.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
+        # QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
 
+        # App.app.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling, True)
+        # App.app.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps, True)
+
+        # # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+        # QApplication.setHighDpiScaleFactorRoundingPolicy(
+        #     Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
+        # )
+
+        QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
+        QApplication.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
+
+<<<<<<< Updated upstream
         # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
         QApplication.setHighDpiScaleFactorRoundingPolicy(
             Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
         )
+=======
+        # App.app.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
+        # App.app.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
+        # App.app.setHighDpiScaleFactorRoundingPolicy(
+        #     Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
+        # )
+
+>>>>>>> Stashed changes
         try:
             sys.exit(cls.app.exec())
         except Exception as ex:

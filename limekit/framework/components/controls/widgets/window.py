@@ -1,12 +1,15 @@
 import lupa
 
 from PySide6.QtCore import Qt, QEvent
-from PySide6.QtWidgets import QMainWindow, QWidget
+from PySide6.QtWidgets import QMainWindow, QWidget, QStyle
 from PySide6.QtGui import QIcon, QCursor, QPixmap
 
 from limekit.framework.core.runner.app import App
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.components.gui.mousebutton import MouseButton
+from limekit.framework.components.gui.mouse_position import MousePosition
 from limekit.framework.components.controls.dockers.dockerwidget.docker import Docker
+from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
 class Window(QMainWindow, EnginePart):
@@ -15,19 +18,32 @@ class Window(QMainWindow, EnginePart):
     onResizeEvent = None
     onCloseEvent = None
     onResizeEvent = None
+    onMouseMoveEvent = None
+    onMousePressEvent = None
+    onMouseReleaseEvent = None
+    onMouseDoubleClickEvent = None
 
     @lupa.unpacks_lua_table
     def __init__(self, kwargs={}):
         super().__init__()
 
-        self.setTitle(kwargs["title"]) if "title" in kwargs else self.setTitle(
-            "Limekit - lua framework"
+        (
+            self.setTitle(kwargs["title"])
+            if "title" in kwargs
+            else self.setTitle("Limekit - lua framework")
         )
 
         if "size" in kwargs:
             try:
                 width, height = kwargs["size"].values()
                 self.setSize(width, height)
+            except ValueError as ex:
+                self.setSize(500, 500)
+
+        if "fixedSize" in kwargs:
+            try:
+                width, height = kwargs["fixedSize"].values()
+                self.setFixedSize(width, height)
             except ValueError as ex:
                 self.setSize(500, 500)
 
@@ -108,7 +124,7 @@ class Window(QMainWindow, EnginePart):
         self.setWindowTitle(title)
 
     def setMainWidget(self, child: QWidget):
-        self.setCentralWidget(None)  # remove everything and readd
+        self.setCentralWidget(None)  # remove everything and read
         self.setCentralWidget(child)
 
     def setSize(self, width, height):
@@ -226,6 +242,49 @@ class Window(QMainWindow, EnginePart):
         if self.onResizeEvent:
             self.onResizeEvent(self)
 
+    def setOnMouseMove(self, func):
+        self.onMouseMoveEvent = func
+
+    def mouseMoveEvent(self, event):
+        if self.onMouseMoveEvent:
+            mp = MousePosition(event.pos())  # mp: mouse position
+
+            self.onMouseMoveEvent(self, mp)
+
+    def setOnMousePress(self, func):
+        self.onMousePressEvent = func
+
+    def mousePressEvent(self, event):
+        if self.onMousePressEvent:
+            mb = MouseButton(event.button())  # mb: mouse button
+
+            self.onMousePressEvent(self, mb)
+
+    def setOnMouseRelease(self, func):
+        self.onMouseReleaseEvent = func
+
+    def mouseReleaseEvent(self, event):
+        if self.onMouseReleaseEvent:
+            mb = MouseButton(event.button())  # mb: mouse button
+
+            self.onMouseReleaseEvent(self, mb)
+
+    def setOnMouseDoubleClick(self, func):
+        self.onMouseDoubleClickEvent = func
+
+    def mouseDoubleClickEvent(self, event):
+        if self.onMouseDoubleClickEvent:
+            mb = MouseButton(event.button())  # mb: mouse button
+
+            self.onMouseDoubleClickEvent(self, mb)
+
+    def setOnContextMenu(self, func):
+        self.onContextMenuEvent = func
+
+    def contextMenuEvent(self, event):
+        if self.onContextMenuEvent:
+            self.onContextMenuEvent(self, event)
+
     # ---------------------- Events
 
     def show(self):
@@ -243,3 +302,24 @@ class Window(QMainWindow, EnginePart):
 
     def addToolbarBreak(self):
         self.addToolBarBreak()
+
+    def getStandardIcons(self):
+        """Returns sorted list of all valid QStyle.StandardPixmap enum names.
+
+        Guaranteed to return names starting with 'SP_' prefix.
+        """
+        return Converter.to_lua_table(
+            sorted(
+                name
+                for name in dir(QStyle.StandardPixmap)
+                if name.startswith("SP_")
+                and isinstance(getattr(QStyle.StandardPixmap, name), int)
+            )
+        )
+
+    def getStandardIcon(self, icon_name) -> QIcon:
+        # Get icon from style
+        style = self.style()
+        enum_value = getattr(QStyle.StandardPixmap, icon_name)
+        icon = style.standardIcon(enum_value)
+        return icon
