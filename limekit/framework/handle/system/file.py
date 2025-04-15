@@ -1,9 +1,15 @@
+import os
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.handle.paths.path import Path
 
 
 class File(EnginePart):
     name = "__file"
+
+    @classmethod
+    def remove_file(cls, file):
+        if Path.check_path(file):
+            os.remove(file)
 
     # Removing self to allow direct access to the methods
     @staticmethod

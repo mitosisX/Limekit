@@ -8,6 +8,7 @@ from limekit.framework.components.base.base_widget import BaseWidget
 
 class ListBox(QListWidget, BaseWidget, EnginePart):
     onCurrentItemChangeFunc = None
+    onDoubleClickCurrentItemChangeFunc = None
 
     def __init__(self, items=None):
         # By defaulf, the ViewMode is on ListMode
@@ -19,6 +20,7 @@ class ListBox(QListWidget, BaseWidget, EnginePart):
 
         self.setAltRowColors(True)
         self.currentItemChanged.connect(self.__handleItemSelect)
+        self.itemDoubleClicked.connect(self.__handleItemDoubleClick)
 
     def setOnItemSelect(self, onCurrentItemChangeFunc):
         self.onCurrentItemChangeFunc = onCurrentItemChangeFunc
@@ -27,6 +29,15 @@ class ListBox(QListWidget, BaseWidget, EnginePart):
         if self.onCurrentItemChangeFunc:
             self.onCurrentItemChangeFunc(
                 self, self.currentItem().text(), self.getCurrentRow()
+            )
+
+    def setOnItemDoubleClick(self, onDoubleClickCurrentItemChangeFunc):
+        self.onDoubleClickCurrentItemChangeFunc = onDoubleClickCurrentItemChangeFunc
+
+    def __handleItemDoubleClick(self, item):
+        if self.onDoubleClickCurrentItemChangeFunc:
+            self.onDoubleClickCurrentItemChangeFunc(
+                self, item.text(), self.getCurrentRow()
             )
 
     def setItemViewMode(self, view_type):
@@ -38,6 +49,9 @@ class ListBox(QListWidget, BaseWidget, EnginePart):
     def setItems(self, items):
         for item in items.values():
             self.addItem(str(item))
+
+    def setStyle(self, styleSheet):
+        self.widget.setStyleSheet(styleSheet)
 
     def getText(self):
         return self.currentText()

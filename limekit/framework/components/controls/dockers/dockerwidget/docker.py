@@ -15,23 +15,38 @@ class Docker(QDockWidget, EnginePart):
         self.setWidget(self.parent_widget)
 
     def setProperties(self, props):
-        properties = QDockWidget.DockWidgetFeature.NoDockWidgetFeatures
+        """Set dock widget features based on provided properties.
 
-        if props:
-            for prop in props.values():
-                if prop == "floatable":
-                    properties |= QDockWidget.DockWidgetFeature.DockWidgetFloatable
+        Args:
+            props: Dictionary of properties to enable/disable features.
+                Supported keys: "floatable", "movable", "closable"
+                None value resets all features.
+        """
+        # Initialize with no features
+        features = QDockWidget.DockWidgetFeature.NoDockWidgetFeatures
 
-                elif prop == "movable":
-                    properties |= QDockWidget.DockWidgetFeature.DockWidgetMovable
+        if not props:
+            self.setFeatures(features)
+            return
 
-                elif prop == "closable":
-                    properties |= QDockWidget.DockWidgetFeature.DockWidgetClosable
+        # Map property names to their corresponding feature flags
+        feature_mapping = {
+            "floatable": QDockWidget.DockWidgetFeature.DockWidgetFloatable,
+            "movable": QDockWidget.DockWidgetFeature.DockWidgetMovable,
+            "closable": QDockWidget.DockWidgetFeature.DockWidgetClosable,
+        }
 
-                elif prop == None:
-                    properties = QDockWidget.DockWidgetFeature.NoDockWidgetFeatures
+        # Handle None case (reset all features)
+        if None in props.values():
+            self.setFeatures(features)
+            return
 
-        self.setFeatures(properties)
+        # Apply requested features
+        for prop, value in props.items():
+            if value and prop in feature_mapping:
+                features |= feature_mapping[prop]
+
+        self.setFeatures(features)
 
     """
     we want PyQt to save and restore the dock widget’s
@@ -41,6 +56,12 @@ class Docker(QDockWidget, EnginePart):
 
     def setName(self, name):
         self.setObjectName(name)
+
+    def setVisible(self, visible):
+        super().setVisible(visible)
+
+    def setTitleBarChild(self, child):
+        self.setTitleBarWidget(child)
 
     """
     Represents areas permitted areas for docking; more like magnetic areas
@@ -121,6 +142,20 @@ class Docker(QDockWidget, EnginePart):
     def setLayout(self, layout):
         self.parent_widget.setLayout(layout)
 
-    # Don't use. Enforce layouts
     def setChild(self, child):
         self.setWidget(child)
+
+    def setMinWidth(self, width):
+        self.setMinimumWidth(width)
+
+    def setMaxWidth(self, width):
+        self.setMaximumWidth(width)
+
+    def setMinHeight(self, height):
+        self.setMinimumHeight(height)
+
+    def setMaxHeight(self, height):
+        self.setMaximumHeight(height)
+
+    def show(self):
+        super().show()

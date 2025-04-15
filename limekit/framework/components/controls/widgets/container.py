@@ -5,11 +5,12 @@ from limekit.framework.core.engine.parts import EnginePart
 
 
 # Might be needed somewhere
-class Widget(QWidget, EnginePart):
-<<<<<<< Updated upstream
+class Container(QWidget, EnginePart):
+    # name = "Container"
+
     def __init__(self):
         super().__init__()
-=======
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -18,7 +19,3 @@ class Widget(QWidget, EnginePart):
 
     def setSize(self, width, height):
         super().resize(width, height)
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes

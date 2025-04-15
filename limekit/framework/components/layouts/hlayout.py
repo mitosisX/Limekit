@@ -15,6 +15,15 @@ class HorizontalLayout(QHBoxLayout, EnginePart):
     def addLayout(self, lay):
         super().addLayout(lay)
 
+    def getCount(self):
+        return self.count()
+
+    def getAt(self, index):
+        return self.takeAt(index - 1)
+
+    def getLayout(self):
+        return self.layout()
+
     def setContentAlignment(self, *alignments):
         qt_alignments = {
             "leading": Qt.AlignmentFlag.AlignLeading,

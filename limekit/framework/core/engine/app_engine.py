@@ -28,6 +28,7 @@ from playsound import playsound
 
 import lupa
 from lupa import LuaRuntime
+from PySide6.QtCore import QFileSystemWatcher
 
 # from faker import Faker
 
@@ -47,16 +48,6 @@ from limekit.framework.handle.routing.routes import Routing
 from limekit.framework.core.runner.app_events import AppEvents
 
 from limekit.framework.scripts.script import Script
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-
-# from qfluentwidgets import FluentIcon
->>>>>>> Stashed changes
-=======
-
-# from qfluentwidgets import FluentIcon
->>>>>>> Stashed changes
 
 
 class Engine:
@@ -71,16 +62,18 @@ class Engine:
     #     return cls._instance
 
     def __init__(self):
-        self.projects_dir = Path.projects_dir()
+        self.projects_dir = ""
 
         self.app = App()  # holds the PySide6 QApplication
         self.app_events = AppEvents()
         self.routing = Routing()
-        # self.plugin_manager = PluginManager()  # The code that init all user plugins
 
         self.limekit_root_dir = settings.limekit_SITEPACKAGE_DIR
 
+        # self.plugin_manager = PluginManager()  # The code that init all user plugins
+
         self.engine = None  # holds the lua engine
+        self.file_watcher = None  # The file watcher responsible for code injection
 
     # These shall serve as property access constraints
     def _getter_restric(self, obj, attr_name):
@@ -100,6 +93,7 @@ class Engine:
         )
         GlobalEngine.global_engine = self.engine
 
+    # Called after instantiating the Engine
     def start(self):
         # self.fix_vital_dirs() # Unnecessary, handled by the runner and the future build engine
         # self.init_plugins()  # Has to load first coz we don't walk the engine to run with only our py objects
@@ -109,10 +103,65 @@ class Engine:
         self.set_custom_lua_require_path()
 
         self.init_routing_system()
+        self.init_ide_only_features()  # everything that is IDE specific, invokes from inside here
 
         self.execute_vital_lua()  # Execute limekit.lua to enable app access
         self.execute_main_lua()  # execute user entry point file
         self.set_eventloop()  # Set the PySide6 mainloop running. VITAL!!!!!!
+
+    def init_code_injection_vars(self):
+        self.code_injection_dir = Path.join_paths(
+            self.projects_dir, ".limekit"
+        )  # The dir where the code injection file is created
+        self.code_injection_file = Path.join_paths(
+            self.code_injection_dir, "_code.lua"
+        )  # The file for the code to be injected
+
+    # Any features needed in IDE modeshould be
+    def init_ide_only_features(self):
+        if not self.isIDE():  # if not in IDE mode, do nothing
+            return
+
+        # The project_path is always blank when the IDE is not executing an app
+        # REFER: limekit.framework.core.mechanism.boot.starter.ProjectRunner
+        if Path.project_path:
+            # The path that we received from ProcessRunner, this is the path to the project to be executed,
+            # but all we want is the root dir, and not the dir itself
+            self.projects_dir = Path.get_parent_dir(Path.project_path)
+
+            self.init_code_injection_vars()  # set the code injection vars
+            self.init_code_injection()
+
+    #
+    #   Code injection feature implemented on 14 April, 2025 (4:57 PM, UTC+2)
+    #
+    #   The current philosophy is simple: create a file when user intends to inject code, read from file,
+    #   store in memory, delete file and execute it. The file is created in the root projects dir.
+    #
+    # FileSystemWatcher watches some dir a file
+    def init_code_injection(self):
+        self.create_injection_dir()  # create the dir first
+
+        self.file_watcher = QFileSystemWatcher()
+        self.file_watcher.addPath(self.code_injection_dir)
+        self.file_watcher.directoryChanged.connect(
+            self.handle_code_injection_file_present
+        )
+
+    # Why watch a dir that doesn't exist? Create it beforehand
+    def create_injection_dir(self):
+        if not Path.check_path(self.code_injection_dir):
+            Path.make_dir(self.code_injection_dir)
+
+    # This method is called when a file is created in the scripts dir
+    def handle_code_injection_file_present(self, path):
+        if Path.check_path(self.code_injection_file):
+            code = File.read_file(self.code_injection_file)
+            self.execute_raw_script(code)
+
+            File.remove_file(
+                self.code_injection_file
+            )  # delete the file after executing
 
     def init_routing_system(self):
         project_file = Path.project_file()
@@ -122,9 +171,9 @@ class Engine:
 
     # All core lua code for the limekit framework
     def execute_vital_lua(self):
-        vital_files = [
-            "limekit.framework.scripts.limekit",
-        ]
+        # vital_files = [
+        #     "limekit.framework.scripts.limekit",
+        # ]
 
         # for vital_file in vital_files:
         #     clean_path_file = Path.join_paths(
@@ -132,7 +181,18 @@ class Engine:
         #         f"{Path.dot_path(vital_file)}.lua",
         #     )
 
-        self.execute(Script.read_app_lua())
+        # -----------------------------------------------------------------------
+        # -----------------------------------------------------------------------
+        # -----------------------------------------------------------------------
+        # -----------------------------------------------------------------------
+
+        #
+        # the file with the "app" table
+        # for some reason, reading from a file caused alot of errors, and the workaround it
+        # was to duplicate the limekit.lua file content into some variable
+
+        limekit_file_content = Script.read_app_lua()
+        self.execute(limekit_file_content)
 
     """
     For executing any incoming JavaScript code
@@ -154,7 +214,8 @@ class Engine:
     # The user's main.lua entry point code
     def execute_main_lua(self):
         path_to_main = Path.scripts("main.lua")
-        self.execute(File.read_file(path_to_main))
+        main_lua_content = File.read_file(path_to_main)
+        self.execute(main_lua_content)
 
     # The PySide6 engine that handles the mainloop of the program
     def set_eventloop(self):
@@ -223,6 +284,7 @@ class Engine:
     def fix_app_folders(self):
         pass
 
+    # Check if app is running in IDE mode
     def isIDE(self):
         if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
             # print("running in a PyInstaller bundle")
@@ -235,15 +297,13 @@ class Engine:
         self.gather_from_dirs()
         self.gather_additional_parts()
 
+    # This method walks through all dir specified in in the settings.py INSTALLED_PARTS
     def gather_from_dirs(self):
-        """
-        Walks through all dirs desribed in settings.py INSTALLED_PARTS
-        """
-        walked_classes = []
+        walked_classes = []  # holds all the classes found in the dir to be executed
 
         for app in settings.INSTALLED_PARTS:
             app_path = Path.dot_path(app)
-            limekit_dir = Path.remove_last_dir(settings.limekit_SITEPACKAGE_DIR)
+            limekit_dir = Path.get_parent_dir(settings.limekit_SITEPACKAGE_DIR)
             full_path = os.path.join(limekit_dir, app_path)
 
             files_obtained = Path.walk_dir_get_files(full_path)
@@ -260,7 +320,8 @@ class Engine:
             "scripts": Path.scripts,
             "images": Path.images,
             "misc": Path.misc,
-            "__lua_execute": self.execute_from_file,
+            "__lua_execute_file": self.execute_from_file,
+            "__lua_execute_raw_script": self.execute_raw_script,
             "__lua_evaluate": self.evaluate,
             # "fake": Faker(),
             # "Workbook": Workbook,
@@ -290,8 +351,13 @@ class Engine:
         for obj_name, object_ in other_parts.items():
             self.engine.globals()[obj_name] = object_
 
+    # Executes a lua file
     def execute_from_file(self, file):
         self.execute(File.read_file(file))
+
+    # Executes raw lua code
+    def execute_raw_script(self, lua_script):
+        self.execute(lua_script)
 
     def __quit(self):
         self.app.app.instance().quit()
@@ -345,6 +411,7 @@ class Engine:
                         # Create the lua objects
                         self.engine.globals()[object_name] = class_for_lua
 
+    # !deprecated
     def load_classes_(self, files):
         # all_instances = {}
         for file in files:
@@ -372,18 +439,6 @@ class Engine:
 
                     # Create the lua objects
                     self.engine.globals()[object_name] = class_for_lua
-
-    """
-    def fix_vital_dirs(self):
-        if not Path.check_path(Path.scripts_dir()):
-            os.mkdir(Path.scripts_dir())
-
-        if not Path.check_path(Path.misc_dir()):
-            os.mkdir(Path.misc_dir())
-
-        if not Path.check_path(Path.images_dir()):
-            os.mkdir(Path.images_dir())     
-    """
 
 
 # 24 December, 2023 17:02 PM (Sunday)

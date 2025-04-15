@@ -4,6 +4,7 @@ from PySide6.QtGui import QPixmap
 from limekit.framework.core.engine.parts import EnginePart
 
 from PySide6.QtGui import QIcon
+from limekit.framework.components.controls.widgets.containers.tabitem import TabItem
 
 """
 Functions available in PySide6 documentation
@@ -81,7 +82,7 @@ class Tab(QTabWidget, EnginePart):
     def setToolTip(self, index, tooltip):
         self.setTabToolTip(index, tooltip)
 
-    def addTab(self, tab, title, icon=""):
+    def addTab(self, tab: TabItem, title, icon=""):
         super().addTab(tab, QIcon(icon), title)
 
     def getCurrentIndex(self):

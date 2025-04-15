@@ -44,6 +44,9 @@ class Button(QPushButton, BaseWidget, EnginePart):
     def setText(self, text):
         super().setText(str(text))
 
+    def setToolTip(self, tooltip):
+        super().setToolTip(tooltip)
+
     # Material properties (classes)
     # danger, warning, success
     def setMatProperty(self, class_):
@@ -63,10 +66,13 @@ class Button(QPushButton, BaseWidget, EnginePart):
         super().setIconSize(QSize(width, height))
 
     def setStyle(self, styleSheet):
-        self.widget.setStyleSheet(styleSheet)
+        self.setStyleSheet(styleSheet)
 
     def setName(self, name):
-        self.widget.setObjectName(name)
+        self.setObjectName(name)
+
+    def setFixedSize(self, width, height):
+        super().setFixedSize(width, height)
 
     # Makes the button loose all boarders and appear more like a Label until click
     def setFlat(self, flat):

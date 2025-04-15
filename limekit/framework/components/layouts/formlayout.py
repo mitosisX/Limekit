@@ -10,17 +10,24 @@ class FormLayout(QFormLayout, EnginePart):
         # self.setFormAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         # self.setLabelAlignment(Qt.AlignmentFlag.AlignJustify)
 
+    def getLayout(self):
+        return self.layout()
+
+    def getAt(self, index):
+        return self.takeAt(index - 1)
+
     # This is a Grid layout; every child widget is positioned
     # x and y
     # xPos, yPos -> x position and y position respecitively
-    def addChild(self, title, child):
+    def addChild(self, title, child=None):
         # Use "" to avoid unwanted spacing
         # :addChild("", widget)
         # :addChild("Title", widget) NORMAL METHOD
-        if not title:
-            self.addRow(child)
-        else:
+
+        if isinstance(title, str):
             self.addRow(title, child)
+        else:
+            self.addRow(title)  # well, in this case, title is a widget ;-)
 
     def addLayout(self, title, layout):
         self.addRow(title, layout)

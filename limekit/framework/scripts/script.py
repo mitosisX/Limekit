@@ -3,6 +3,18 @@ class Script:
     def read_app_lua(cls):
         return """
     app = {
+    -- allows one to invoke a function with args
+    -- partial(func, arg1, arg2, ...) and returns the function
+    partial = function(func, ...)
+        local args = {...}
+        return function(...)
+            local newArgs = {...}
+            for i, arg in ipairs(args) do
+                table.insert(newArgs, 1, arg)
+            end
+            return func(table.unpack(newArgs))
+        end
+    end,
     Theme = function(theme)
         return __themer(theme)
     end,
@@ -211,8 +223,11 @@ class Script:
     evaluate = function(script)
         __lua_evaluate(script)
     end,
-    execute = function(script)
-        __lua_execute(script)
+    executeFile = function(script)
+        __lua_execute_file(script)
+    end,
+    executeCode = function(script)
+        __lua_execute_raw_script(script)
     end,
     setClipboardText = function(text)
         __clipboard.setText(text)
@@ -221,7 +236,10 @@ class Script:
         return __clipboard.getText()
     end,
     listFolder = function(path)
-        return __Path.listDir(path)
+        return __Path.list_dir(path)
+    end,
+    walkDir = function(path)
+        return __Path.walk_dir(path)
     end,
     renameFile = function(file, file_new)
         return __fileutils.rename_file(file, file_new)
@@ -291,6 +309,5 @@ class Script:
         return __validators.is_contains_unique_chars(text)
     end
     -- validators ##################
-
 }
     """

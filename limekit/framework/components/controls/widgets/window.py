@@ -38,18 +38,22 @@ class Window(QMainWindow, EnginePart):
                 width, height = kwargs["size"].values()
                 self.setSize(width, height)
             except ValueError as ex:
-                self.setSize(500, 500)
+                print(ex)
+                self.setSize(400, 400)
 
-        if "fixedSize" in kwargs:
-            try:
-                width, height = kwargs["fixedSize"].values()
-                self.setFixedSize(width, height)
-            except ValueError as ex:
-                self.setSize(500, 500)
-
-                # print("Error: Not all sizes provided. Using {500, 500}")
+                # print("Error: Not all sizes provided. Using {400, 400}")
         else:
-            self.setSize(500, 500)
+            self.setSize(400, 400)
+
+        # if "fixedSize" in kwargs:
+        #     try:
+        #         width, height = kwargs["fixedSize"].values()
+        #         self.setFixedSize(width, height)
+        #     except ValueError as ex:
+        #         self.setFixedSize(400, 400)
+
+        # else:
+        #     self.setFixedSize(400, 400)
 
         if "location" in kwargs:
             location = kwargs["location"]
@@ -123,8 +127,8 @@ class Window(QMainWindow, EnginePart):
     def setTitle(self, title):
         self.setWindowTitle(title)
 
-    def setMainWidget(self, child: QWidget):
-        self.setCentralWidget(None)  # remove everything and read
+    def setMainChild(self, child: QWidget):
+        self.setCentralWidget(None)  # remove everything first
         self.setCentralWidget(child)
 
     def setSize(self, width, height):
@@ -174,7 +178,7 @@ class Window(QMainWindow, EnginePart):
         elif selected_area == "allareas":
             return Qt.DockWidgetArea.AllDockWidgetAreas
 
-        elif selected_area == "nodock":
+        else:
             return Qt.DockWidgetArea.NoDockWidgetArea
 
     def setIcon(self, icon):
@@ -292,6 +296,9 @@ class Window(QMainWindow, EnginePart):
 
     def hide(self):
         super().hide()
+
+    def tabifyDock(self, parent, child):
+        return super().tabifyDockWidget(parent, child)
 
     # Type: Any QtWidget
     # Text: visible text on that QtWidget

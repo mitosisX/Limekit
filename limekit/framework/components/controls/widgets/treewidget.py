@@ -35,6 +35,13 @@ class TreeView(QTreeView, BaseWidget, EnginePart):
     def setTreeItemExpanded(self, x, y):
         self.expand(self.model(x, y))
 
+    def expandAll(self):
+        super().expandAll()
+
+    # This clears the entire tree view, including the headers
+    def clear(self):
+        self.model.clear()
+
     # Half baked
     def getRecommendedIconSizes(self):
         # Get system-recommended sizes

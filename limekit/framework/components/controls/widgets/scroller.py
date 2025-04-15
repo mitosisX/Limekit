@@ -30,6 +30,10 @@ class Scroller(QScrollArea, BaseWidget, EnginePart):
         if self.onScrollFunc:
             self.onScrollFunc(self, value)
 
+    # Determine whether the widget can be resized to accomodate the content
+    def setResizable(self, resizable):
+        self.setWidgetResizable(resizable)
+
     def maxVerticalScroll(self):
         max_scroll_value = self.vertical_scrollbar.maximum()
 

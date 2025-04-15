@@ -19,6 +19,9 @@ class Splitter(QSplitter, EnginePart):
         widget.setLayout(layout)
         self.addChild(widget)
 
+    def setSizes(self, sizes):
+        super().setSizes(list(sizes.values()))
+
     def setHandleWidth(self, width):
         super().setHandleWidth(width)
 

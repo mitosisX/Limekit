@@ -7,7 +7,11 @@ from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
 class Path(EnginePart):
-    project_path = os.getcwd()
+    # project_path = os.getcwd()
+
+    # This holds the path of the project to be executed or being executed
+    project_path = ""
+
     name = "__Path"
 
     # ____________________________________________________________
@@ -49,8 +53,7 @@ class Path(EnginePart):
         return the_path[: the_path.rfind(os.path.sep)]
 
     @classmethod
-    def listDir(cls, path):
-        print("###################")
+    def list_dir(cls, path):
         return Converter.table_from(sorted(os.listdir(path), key=str.lower))
 
     @classmethod
@@ -123,10 +126,38 @@ class Path(EnginePart):
 
         return new_path
 
+    @classmethod
+    # removes the last dir in any given path
+    def get_parent_dir(self, path):
+        # Normalize the path (handles trailing slashes, different slashes, etc.)
+        normalized_path = os.path.normpath(path)
+
+        # Split into components
+        path_parts = normalized_path.split(os.sep)
+
+        # Remove last directory if it exists
+        if len(path_parts) > 1:
+            path_parts = path_parts[:-1]
+
+        # Rejoin the path
+        new_path = os.sep.join(path_parts)
+
+        # Special handling for Windows drive letters
+        if os.name == "nt" and path_parts and ":" in path_parts[0]:
+            new_path = new_path.replace(":", ":\\", 1)
+
+        return new_path
+
     # Create an OS dependent path from any given string
     @classmethod
-    def join_paths(cls, *path):
-        return os.path.join(*path)
+    def join_paths(cls, *paths):
+        joined_path = os.path.join(*paths)
+
+        # Then normalize the path (converts all slashes to system default)
+        normalized_path = os.path.normpath(joined_path)
+
+        return normalized_path
+        # return os.path.join(*path)
 
     # The path to the user's project scripts dir
     @classmethod
@@ -168,6 +199,11 @@ class Path(EnginePart):
     @classmethod
     def check_path(cls, path):
         return True if os.path.exists(path) else False
+
+    @classmethod
+    def make_dir(cls, path):
+        if not cls.check_path(path):
+            os.mkdir(path)
 
     @classmethod
     def resource_path_resolver(cls, marker, resource):

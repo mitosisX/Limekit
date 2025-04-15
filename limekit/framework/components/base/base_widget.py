@@ -43,9 +43,6 @@ class BaseWidget:
     def setVisibility(self, visibility):
         self.widget.setVisible(visibility)
 
-    def setToolTip(self, tooltip):
-        self.widget.setToolTip(tooltip)
-
     def setResizeRule(self, horizontal: str, vertical: str):
         policies = {
             "fixed": QSizePolicy.Policy.Fixed,  # ignores all size changing

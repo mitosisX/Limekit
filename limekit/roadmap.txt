@@ -1,6 +1,6 @@
 TODO
 
-Fluent Widgets
+1. Fluent Widgets
 - CheckBox
 - RadioButton
 - Tabs
@@ -8,5 +8,14 @@ Fluent Widgets
  * Pivoted
  
 - BreadCrumbs
+
+2. Custom title bar windows plugin
+
+https://github.com/Zingzy/hPyT/tree/main
+
+3. 
+4. 
+5. 
+6. 
 
 COMPLETED

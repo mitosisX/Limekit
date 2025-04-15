@@ -20,6 +20,9 @@ class GroupBox(QGroupBox, BaseWidget, EnginePart):
     def setLayout(self, layout):
         super().setLayout(layout)
 
+    def setStyle(self, styleSheet):
+        self.setStyleSheet(styleSheet)
+
     def setBackgroundColor(self, color):
         super().setStyleSheet(f"background-color: {color};")
 

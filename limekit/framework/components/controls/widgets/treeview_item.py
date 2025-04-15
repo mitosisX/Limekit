@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QTreeWidget
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.core.engine.destroyer import destroy_engine
 from limekit.framework.components.base.base_widget import BaseWidget
+import lupa
 
 
 class TreeViewItem(QStandardItem, EnginePart):
@@ -24,7 +25,12 @@ class TreeViewItem(QStandardItem, EnginePart):
         super().setEditable(editable)
 
     def addRow(self, rows):
-        self.appendRow([row for row in rows.values()])
+        # If the arg are passed as a lua table {TreeViewItem(), TreeViewItem(), ...}
+        if lupa.lua_type(rows) == "table":
+            # self.appendRows([row for row in rows.values()])
+            self.appendRows(list(rows.values()))
+        else:
+            self.appendRow(rows)
 
     def setExpanded(self, expanded):
         super().setExpanded(expanded)

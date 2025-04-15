@@ -32,14 +32,23 @@ class SlidingStackedWidget(QStackedWidget, EnginePart):
         widget.setLayout(layout)
         self.addChild(widget)
 
+    def getCount(self):
+        return self.count()
+
     def addChild(self, child):
         self.addWidget(child)
 
-    def slidePrev(self):
-        self.slideInPrev()
-
     def slideNext(self):
-        self.slideInNext()
+        now = self.currentIndex()
+        if now < self.count() - 1:
+            self._current = now + 1  # Update immediately
+            self.slideInIdx(now + 1)
+
+    def slidePrev(self):
+        now = self.currentIndex()
+        if now > 0:
+            self._current = now - 1  # Update immediately
+            self.slideInIdx(now - 1)
 
     def setSpeed(self, speed=500):
         self._speed = speed
@@ -86,17 +95,17 @@ class SlidingStackedWidget(QStackedWidget, EnginePart):
     def easing(self):
         return self._easing
 
-    def slideInNext(self):
-        now = self.currentIndex()
-        if now < self.count() - 1:
-            self.slideInIdx(now + 1)
-            self._current = now + 1
+    # def slideInNext(self):
+    #     now = self.currentIndex()
+    #     if now < self.count() - 1:
+    #         self.slideInIdx(now + 1)
+    #         self._current = now + 1
 
-    def slideInPrev(self):
-        now = self.currentIndex()
-        if now > 0:
-            self.slideInIdx(now - 1)
-            self._current = now - 1
+    # def slideInPrev(self):
+    #     now = self.currentIndex()
+    #     if now > 0:
+    #         self.slideInIdx(now - 1)
+    #         self._current = now - 1
 
     def slideInIdx(self, idx, direction=4):
         if idx > self.count() - 1:
@@ -188,7 +197,12 @@ class SlidingStackedWidget(QStackedWidget, EnginePart):
         self._animgroup.addAnimation(self._animnext)
 
     def setCurrentIndex(self, index):
-        self.slideInIdx(index)
+        self.slideInIdx(index - 1)  # Why subtract 1 here?
+
+    def getCurrentIndex(self):
+        if self._active:
+            return self._next + 1  # Return the target index during animation
+        return self.currentIndex() + 1
 
     def setCurrentWidget(self, widget):
         super(SlidingStackedWidget, self).setCurrentWidget(widget)

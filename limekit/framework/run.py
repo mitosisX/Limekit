@@ -6,8 +6,7 @@ from limekit.framework.core.engine.app_engine import Engine
 from limekit.framework.core.engine.destroyer import destroy_engine
 from limekit.framework.core.exceptions.routes import RouteException
 
-# print(os.getcwd())
-
+# This is where the exception handling happens
 
 try:
     if len(sys.argv) > 1:
@@ -27,6 +26,10 @@ except TypeError as exception:
             f"NativeMethodError: Use of 'syntactic sugar' on {exce_.replace('.',':')}. Use {exce_} instead."
         )
     else:
+        #
+        #                   !!!!!!!!!!!!!!!!!!!!!!!!!!
+        #   This is where most of the python related errors are handled
+        #
         print(exception)
 
     destroy_engine()

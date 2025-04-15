@@ -2,15 +2,17 @@ from PySide6.QtCore import Qt, QSizeF
 from PySide6.QtWidgets import QTextEdit, QFrame
 from PySide6.QtGui import QTextListFormat, QFont, QTextTableFormat, QTextCharFormat
 from limekit.framework.core.engine.parts import EnginePart
+from limekit.framework.components.base.base_widget import BaseWidget
 
 
-class TextField(QTextEdit, EnginePart):
+class TextField(QTextEdit, BaseWidget, EnginePart):
     onTextChangedFunc = None
     onTextSelectionChangedFunc = None
     onCursorPositionChangedFunc = None
 
     def __init__(self, text=""):
         super().__init__(text)
+        BaseWidget.__init__(self, widget=self)
 
         self.textChanged.connect(self.__handleTextChange)
         self.cursorPositionChanged.connect(self.__handleCursorChange)
@@ -90,6 +92,9 @@ class TextField(QTextEdit, EnginePart):
 
     def getText(self):
         return self.toPlainText()
+
+    def setToolTip(self, tooltip):
+        super().setToolTip(tooltip)
 
     # All new
     def getHtmlText(self):

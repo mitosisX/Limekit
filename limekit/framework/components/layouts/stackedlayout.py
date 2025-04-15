@@ -6,6 +6,14 @@ class StackedLayout(QStackedLayout, EnginePart):
     def __init__(self):
         super().__init__(parent=None)
 
+    def getLayout(self):
+        return self.layout()
+
+    
+
+    def getAt(self, index):
+        return self.takeAt(index - 1)
+
     # This is a Grid layout; every child widget is positioned
     # x and y
     # xPos, yPos -> x position and y position respecitively

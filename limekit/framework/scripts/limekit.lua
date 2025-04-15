@@ -82,8 +82,8 @@ app = {
         return __encoding.base64_decode(text)
     end,
     -- Encoding #######################
-    setFontFile = function(file)
-        __font.set_font(file)
+    setFontFile = function(file, size)
+        __font.set_font(file, size)
     end,
     setFont = function(font, size)
         __font.set_font(font, size)
@@ -219,8 +219,11 @@ app = {
     evaluate = function(script)
         __lua_evaluate(script)
     end,
-    execute = function(script)
-        __lua_execute(script)
+    executeFile = function(script)
+        __lua_execute_file(script)
+    end,
+    executeCode = function(script)
+        __lua_execute_raw_script(script)
     end,
     setClipboardText = function(text)
         __clipboard.setText(text)
@@ -302,5 +305,4 @@ app = {
         return __validators.is_contains_unique_chars(text)
     end
     -- validators ##################
-
 }

@@ -1,13 +1,9 @@
 PySide6==6.4.2
 qt_material
-Faker
 qdarkstyle
 qtmodern
 psutil
 emoji
-xlsxwriter
-PySide6-Fluent-Widgets[full]
 playsound
 lupa
-pyecharts
-PyTaskbarProgress
+PyInstaller

@@ -10,8 +10,8 @@ setuptools.setup(
     license="GNU",
     packages=setuptools.find_packages(),
     package_data={
-        "limekit.framework.handle.theming.misc": ["themes/**"],
-        "limekit.framework": ["scripts/**"],
+        "limekit.framework": ["scripts/*.lua"],  # Explicitly include .lua files
+        "limekit.framework.handle.theming.misc": ["themes/*"],  # Non-recursive
     },
     install_requires=[
         "PySide6==6.4.2",
