@@ -18,11 +18,11 @@ class OpenFile(QFileDialog, EnginePart):
             parent,
             title,
             start_dir,
-            self.process_filters(filters)
+            self.process_filters(filters),
             # "Image Files (*.png *.jpg *.bmp);;Text Files (*.txt *.lua)",
             # options=QFileDialog.Option.DontUseNativeDialog,
         )
-        return name_ if name_ else ""
+        return name_ if name_ else None
 
     def process_filters(self, filters):
         final_filters = ""

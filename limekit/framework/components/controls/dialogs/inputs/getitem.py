@@ -17,4 +17,4 @@ class ItemInputDialog(EnginePart):
             False,
         )
 
-        return item if dialog else ""
+        return item if dialog else None

@@ -25,4 +25,4 @@ class ColorPicker(QColorDialog, EnginePart):
 
                 return Converter.table_from({"r": r, "g": g, "b": b})
         else:
-            return ""
+            return None

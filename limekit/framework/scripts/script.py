@@ -2,7 +2,7 @@ class Script:
     @classmethod
     def read_app_lua(cls):
         return """
-    app = {
+      app = {
     -- allows one to invoke a function with args
     -- partial(func, arg1, arg2, ...) and returns the function
     partial = function(func, ...)
@@ -92,6 +92,9 @@ class Script:
     setFont = function(font, size)
         __font.set_font(font, size)
     end,
+    setFontSize = function(size)
+        __font.set_font_size(size)
+    end,
     emoji = function(emoji)
         return __emoji.get(emoji)
     end,
@@ -110,6 +113,9 @@ class Script:
     end,
     isFolderEmpty = function(dir)
         return __fileutils.is_empty_dir(dir)
+    end,
+    getFileName = function(file)
+        return __fileutils.get_file_name(file)
     end,
     getFileSize = function(file)
         return __fileutils.get_file_size(file)
@@ -157,6 +163,8 @@ class Script:
         return __fontDialog().display()
     end,
     saveFileDialog = function(window, title, dir, filters)
+        dir = dir or ""
+        filters = filters or ''
         return __saveFileDialog(window).display(window, title, dir, filters)
     end,
     folderPickerDialog = function(window, title, dir)

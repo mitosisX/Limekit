@@ -1,10 +1,10 @@
-from PySide6.QtWidgets import QTabWidget
+from PySide6.QtGui import QIcon
 from PySide6.QtGui import QPixmap
+from PySide6.QtWidgets import QTabWidget
 
 from limekit.framework.core.engine.parts import EnginePart
-
-from PySide6.QtGui import QIcon
 from limekit.framework.components.controls.widgets.containers.tabitem import TabItem
+
 
 """
 Functions available in PySide6 documentation
@@ -39,10 +39,12 @@ def tabsClosable(self) -> bool: ...
 
 class Tab(QTabWidget, EnginePart):
     onTabClosingFunc = None
+    onTabChangeFunc = None
 
     def __init__(self):
         super().__init__()
         self.tabCloseRequested.connect(self.__handleTabClosing)
+        self.currentChanged.connect(self.__handleTabChange)
 
     def setOnTabClose(self, onTabClosingFunc):
         self.onTabClosingFunc = onTabClosingFunc
@@ -51,12 +53,38 @@ class Tab(QTabWidget, EnginePart):
         if self.onTabClosingFunc:
             self.onTabClosingFunc(self, index)
 
+    def setOnTabChange(self, onTabChangeFunc):
+        self.onTabChangeFunc = onTabChangeFunc
+
+    def __handleTabChange(self, index):
+        if self.onTabChangeFunc:
+            self.onTabChangeFunc(self, index + 1)
+
     def addTabs(self, *tabs):
         for eachTab in tabs:
             tab = eachTab[0]
             title = eachTab[1]
 
             self.addTab(tab, title)
+
+    def setTabIcon(self, index, icon: str | QIcon):
+        if isinstance(icon, str):
+            super().setTabIcon(index - 1, QIcon(icon))
+
+        elif isinstance(icon, QIcon):
+            super().setTabIcon(index - 1, icon)
+
+    def setTabText(self, index, title):
+        super().setTabText(
+            index - 1,
+            title,
+        )
+
+    def getTabText(self, index):
+        return super().tabText(index - 1)
+
+    def setStyle(self, style):
+        self.setStyleSheet(style)
 
     def removeTab(self, index):
         super().removeTab(index)
@@ -83,7 +111,10 @@ class Tab(QTabWidget, EnginePart):
         self.setTabToolTip(index, tooltip)
 
     def addTab(self, tab: TabItem, title, icon=""):
-        super().addTab(tab, QIcon(icon), title)
+        return super().addTab(tab, QIcon(icon), title) + 1
+
+    def setCurrentIndex(self, index):
+        super().setCurrentIndex(index - 1)
 
     def getCurrentIndex(self):
-        return self.currentIndex
+        return self.currentIndex + 1

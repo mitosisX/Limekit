@@ -20,4 +20,4 @@ class DoubleInputDialog(EnginePart):
             parent, title, label, value, minValue, maxValue, step
         )
 
-        return value if dialog else 0
+        return value if dialog else None

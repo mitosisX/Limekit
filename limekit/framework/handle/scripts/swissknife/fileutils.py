@@ -164,6 +164,10 @@ class FileUtils(EnginePart):
         return cls.get_file_size(path) == 0
 
     @classmethod
+    def get_file_name(cls, path) -> str:
+        return os.path.basename(path)
+
+    @classmethod
     def get_file_size(cls, path) -> int:
         """
         Get the directory size in bytes.

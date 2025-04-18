@@ -1,6 +1,12 @@
 from PySide6.QtCore import Qt, QSizeF
 from PySide6.QtWidgets import QTextEdit, QFrame
-from PySide6.QtGui import QTextListFormat, QFont, QTextTableFormat, QTextCharFormat
+from PySide6.QtGui import (
+    QTextListFormat,
+    QFont,
+    QTextTableFormat,
+    QTextCharFormat,
+    QKeyEvent,
+)
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.components.base.base_widget import BaseWidget
 
@@ -9,6 +15,7 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
     onTextChangedFunc = None
     onTextSelectionChangedFunc = None
     onCursorPositionChangedFunc = None
+    onKeyPressChangeFunc = None
 
     def __init__(self, text=""):
         super().__init__(text)
@@ -18,9 +25,14 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
         self.cursorPositionChanged.connect(self.__handleCursorChange)
         # self.selectionChanged.connect(self.__handleTextSelection)
 
+        self.installEventFilter(self)
+
     # Events ---------------------------------
     def setOnCursorPositionChange(self, onCursorPositionChangedFunc):
         self.onCursorPositionChangedFunc = onCursorPositionChangedFunc
+
+    def setOnKeyPress(self, onKeyPressChangeFunc):
+        self.onKeyPressChangeFunc = onKeyPressChangeFunc
 
     def setOnTextChange(self, onTextChangedFunc):
         self.onTextChangedFunc = onTextChangedFunc
@@ -40,7 +52,32 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
         if self.onTextSelectionChangedFunc:
             self.onTextSelectionChangedFunc(self, self.selectedText())
 
+    def keyPressEvent(self, event: QKeyEvent):
+        if self.onKeyPressChangeFunc:
+            self.onKeyPressChangeFunc(self, event)
+
+        super().keyPressEvent(event)
+
     # --------------------------------- Events
+
+    def setWrapMode(self, mode):
+        mode_map = {
+            "none": QTextEdit.LineWrapMode.NoWrap,
+            "nowrap": QTextEdit.LineWrapMode.NoWrap,
+            "widget": QTextEdit.LineWrapMode.WidgetWidth,
+            "fixed": QTextEdit.LineWrapMode.FixedPixelWidth,
+            "fixed_width": QTextEdit.LineWrapMode.FixedPixelWidth,
+            "margin": QTextEdit.LineWrapMode.FixedColumnWidth,
+            "column": QTextEdit.LineWrapMode.FixedColumnWidth,
+        }
+
+        try:
+            self.setLineWrapMode(mode_map[mode.lower()])
+        except KeyError:
+            print(
+                f"Invalid wrap mode '{mode}'. "
+                f"Valid options: {', '.join(mode_map.keys())}"
+            )
 
     def setSize(self, width, height):
         self.resize(width, height)
@@ -121,6 +158,9 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
         }
 
         return formats.get(format) if format in formats else format.get("undefined")
+
+    def clear(self):
+        super().clear()
 
     def addCursorTable(self, rows, columns, padding, spacing):
         fmt = QTextTableFormat()
@@ -253,3 +293,9 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
         doc = self.document()
 
         doc.setPageSize(QSizeF(width, height))
+
+    def setFocus(self):
+        super().setFocus()
+
+    def isModified(self):
+        return self.document().isModified()

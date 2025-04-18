@@ -9,7 +9,7 @@ class TextInputDialog(EnginePart):
     def show(cls, parent=None, title="Title", text="Dialog content"):
         text, dialog = QInputDialog.getText(parent, title, text)
 
-        return text if dialog else ""
+        return text if dialog else None
 
     def isDone(self):
         return self.dialog and self.text != ""

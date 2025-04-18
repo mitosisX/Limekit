@@ -53,6 +53,7 @@ except lua54.LuaSyntaxError as ex:
 
     else:
         # print("here")
+        print(ex)
         pass
 
     destroy_engine()

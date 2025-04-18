@@ -220,6 +220,9 @@ class Window(QMainWindow, EnginePart):
     def getSize(self):
         return self.size().width(), self.size().height()
 
+    def setAlwaysOnTop(self, ontop: bool):
+        self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)
+
     # Events ----------------------
     def setOnShown(self, func):
         self.onShownEvent = func
@@ -306,6 +309,9 @@ class Window(QMainWindow, EnginePart):
         new_action = super().findChild(type_, text)
         if new_action:
             new_action.setText("Clicked New")
+
+    def setStyle(self, style):
+        self.setStyleSheet(style)
 
     def addToolbarBreak(self):
         self.addToolBarBreak()

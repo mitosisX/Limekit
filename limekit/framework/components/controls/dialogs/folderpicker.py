@@ -13,4 +13,4 @@ class FolderPicker(QFileDialog, EnginePart):
             parent, title, dir, options=QFileDialog.Option.ShowDirsOnly
         )
 
-        return folder if folder else ""
+        return folder if folder else None

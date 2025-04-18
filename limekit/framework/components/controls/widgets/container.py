@@ -19,3 +19,6 @@ class Container(QWidget, EnginePart):
 
     def setSize(self, width, height):
         super().resize(width, height)
+
+    def setImage(self, image):
+        pass

@@ -21,3 +21,9 @@ class Font(EnginePart):
     def from_file(file):
         font = QFont(file)
         App.app.setFont(font)
+
+    @classmethod
+    def set_font_size(cls, size):
+        font = QFont()
+        font.setPointSize(size)
+        App.app.setFont(font)
