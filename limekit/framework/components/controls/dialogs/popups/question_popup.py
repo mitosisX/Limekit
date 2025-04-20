@@ -44,7 +44,8 @@ class QuestionPopup(QMessageBox, EnginePart):
         # self.result = self.msg_box.sho()
 
     def display(self):
-        if self.msg_box == QMessageBox.Yes:
+        if self.msg_box == QMessageBox.StandardButton.Yes:
             return True
-        elif self.msg_box == QMessageBox.No:
+
+        elif self.msg_box == QMessageBox.StandardButton.No:
             return False

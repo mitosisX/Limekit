@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QTabWidget
 
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.components.controls.widgets.containers.tabitem import TabItem
-
+from limekit.framework.components.controls.widgets.containers.tabbar import TabBar
 
 """
 Functions available in PySide6 documentation
@@ -33,7 +33,6 @@ def setTabVisible(self, index: int, visible: bool) -> None: ...
 def setTabsClosable(self, closeable: bool) -> None: ...
 def showEvent(self, arg__1: PySide6.QtGui.QShowEvent) -> None: ...
 def tabsClosable(self) -> bool: ...
-
 """
 
 
@@ -45,6 +44,7 @@ class Tab(QTabWidget, EnginePart):
         super().__init__()
         self.tabCloseRequested.connect(self.__handleTabClosing)
         self.currentChanged.connect(self.__handleTabChange)
+        # self.setTabBar(TabBar())
 
     def setOnTabClose(self, onTabClosingFunc):
         self.onTabClosingFunc = onTabClosingFunc
@@ -67,6 +67,13 @@ class Tab(QTabWidget, EnginePart):
 
             self.addTab(tab, title)
 
+    # Adds a widgets to the corner to a tab
+    def setCornerChild(self, child):
+        self.setCornerWidget(child)
+
+    def setMovable(self, movable):
+        return super().setMovable(movable)
+
     def setTabIcon(self, index, icon: str | QIcon):
         if isinstance(icon, str):
             super().setTabIcon(index - 1, QIcon(icon))
@@ -87,7 +94,10 @@ class Tab(QTabWidget, EnginePart):
         self.setStyleSheet(style)
 
     def removeTab(self, index):
-        super().removeTab(index)
+        super().removeTab(index - 1)
+
+    def getIndexOf(self, widget):
+        return self.indexOf(widget) + 1
 
     def setVisibility(self, index, visibility):
         self.setTabVisible(index, visibility)
@@ -118,3 +128,6 @@ class Tab(QTabWidget, EnginePart):
 
     def getCurrentIndex(self):
         return self.currentIndex + 1
+
+    def setCurrentTab(self, tab):
+        self.setCurrentWidget(tab)

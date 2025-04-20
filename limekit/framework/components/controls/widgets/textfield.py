@@ -16,6 +16,8 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
     onTextSelectionChangedFunc = None
     onCursorPositionChangedFunc = None
     onKeyPressChangeFunc = None
+    onContentChangeFunc = None
+    onModificationChangeFunc = None
 
     def __init__(self, text=""):
         super().__init__(text)
@@ -24,10 +26,27 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
         self.textChanged.connect(self.__handleTextChange)
         self.cursorPositionChanged.connect(self.__handleCursorChange)
         # self.selectionChanged.connect(self.__handleTextSelection)
+        self.document().modificationChanged.connect(self.__handleModificationChange)
+        self.document().contentsChange.connect(self.__handeContentChange)
 
         self.installEventFilter(self)
 
     # Events ---------------------------------
+    def setOnModificationChanged(self, onModificationChangeFunc):
+        self.onModificationChangeFunc = onModificationChangeFunc
+
+    def __handleModificationChange(self, changed):
+        if self.onModificationChangeFunc:
+            self.onModificationChangeFunc(self, changed)
+
+    # Precisely check if content really changed
+    def setOnContentChange(self, onContentChangeFunc):
+        self.onContentChangeFunc = onContentChangeFunc
+
+    def __handeContentChange(self, position, chars_removed, chars_added):
+        if self.onContentChangeFunc:
+            self.onContentChangeFunc(self, position, chars_removed, chars_added)
+
     def setOnCursorPositionChange(self, onCursorPositionChangedFunc):
         self.onCursorPositionChangedFunc = onCursorPositionChangedFunc
 
@@ -205,32 +224,22 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
     def setTextItalic(self, italic):
         self.setFontItalic(italic)
 
-    def setTextAlign(self, alignment):
-        align = alignment.lower()
+    def setTextAlignment(self, alignment):
+        alignment_map = {
+            "left": Qt.AlignmentFlag.AlignLeft,
+            "right": Qt.AlignmentFlag.AlignRight,
+            "bottom": Qt.AlignmentFlag.AlignBottom,
+            "top": Qt.AlignmentFlag.AlignTop,
+            "center": Qt.AlignmentFlag.AlignCenter,
+            "hcenter": Qt.AlignmentFlag.AlignHCenter,
+            "vcenter": Qt.AlignmentFlag.AlignVCenter,
+            "justify": Qt.AlignmentFlag.AlignJustify,
+        }
 
-        if align == "left":
-            self.setAlignment(Qt.AlignmentFlag.AlignLeft)
-
-        elif align == "right":
-            self.setAlignment(Qt.AlignmentFlag.AlignRight)
-
-        elif align == "bottom":
-            self.setAlignment(Qt.AlignmentFlag.AlignBottom)
-
-        elif align == "top":
-            self.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        elif align == "center":
-            self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        elif align == "hcenter":
-            self.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-
-        elif align == "vcenter":
-            self.setAlignment(Qt.AlignmentFlag.AlignVCenter)
-
-        elif align == "justify":
-            self.setAlignment(Qt.AlignmentFlag.AlignJustify)
+        try:
+            self.setAlignment(alignment_map[alignment.lower()])
+        except KeyError as e:
+            raise ValueError(f"Invalid alignment: {alignment}") from e
 
     def setVerticalTextAlignment(self, format):
         fmt = self.currentCharFormat()
@@ -299,3 +308,6 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
 
     def isModified(self):
         return self.document().isModified()
+
+    def setModified(self, modified: bool):
+        self.document().setModified(modified)

@@ -31,6 +31,9 @@ class ToolbarButton(QAction, EnginePart):
     def setText(slelf, text):
         super().setText(text)
 
+    def setEnabled(self, enabled):
+        super().setEnabled(enabled)
+
     # Using setIcon complains about QIcon()
     def setIcon(self, image):
         super().setIcon(QIcon(image))

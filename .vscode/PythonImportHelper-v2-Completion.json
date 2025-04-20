@@ -10910,7 +10910,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.textfield",
         "description": "limekit.framework.components.controls.widgets.textfield",
-        "peekOfCode": "class TextField(QTextEdit, BaseWidget, EnginePart):\n    onTextChangedFunc = None\n    onTextSelectionChangedFunc = None\n    onCursorPositionChangedFunc = None\n    onKeyPressChangeFunc = None\n    def __init__(self, text=\"\"):\n        super().__init__(text)\n        BaseWidget.__init__(self, widget=self)\n        self.textChanged.connect(self.__handleTextChange)\n        self.cursorPositionChanged.connect(self.__handleCursorChange)",
+        "peekOfCode": "class TextField(QTextEdit, BaseWidget, EnginePart):\n    onTextChangedFunc = None\n    onTextSelectionChangedFunc = None\n    onCursorPositionChangedFunc = None\n    onKeyPressChangeFunc = None\n    onContentChangeFunc = None\n    onModificationChangeFunc = None\n    def __init__(self, text=\"\"):\n        super().__init__(text)\n        BaseWidget.__init__(self, widget=self)",
         "detail": "limekit.framework.components.controls.widgets.textfield",
         "documentation": {}
     },
