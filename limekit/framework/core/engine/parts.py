@@ -1,4 +1,4 @@
-# Any class to be intantiated in the engine needs to inherit this
+# Any class to be used in lua needs to inherit from this
 
 
 class EnginePart:

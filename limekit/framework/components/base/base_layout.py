@@ -36,6 +36,9 @@ class BaseLayout(QBoxLayout):
     def getLayout(self):
         return self.layout()
 
+    def addSpacer(self, spacer):
+        self.addSpacerItem(spacer)
+
     def addStretch(self, stretch=1):
         super().addStretch(stretch)
 

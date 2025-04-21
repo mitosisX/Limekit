@@ -120,6 +120,13 @@ class Label(QLabel, BaseWidget, EnginePart):
         # self.setScaledContents(True)
         self.setPixmap(self.pixmap)
 
+    def setImageSize(self, width, height):
+        scaled = self.pixmap.scaled(
+            width, height, mode=Qt.TransformationMode.SmoothTransformation
+        )
+
+        self.setPixmap(scaled)
+
     def resizeImage(self, width, height):
         scaled = self.pixmap.scaled(
             width, height, mode=Qt.TransformationMode.SmoothTransformation

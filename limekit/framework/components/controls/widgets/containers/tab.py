@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QTabWidget
 from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.components.controls.widgets.containers.tabitem import TabItem
 from limekit.framework.components.controls.widgets.containers.tabbar import TabBar
+from limekit.framework.components.base.base_widget import BaseWidget
 
 """
 Functions available in PySide6 documentation
@@ -39,12 +40,23 @@ def tabsClosable(self) -> bool: ...
 class Tab(QTabWidget, EnginePart):
     onTabClosingFunc = None
     onTabChangeFunc = None
+    onTabMovedFunc = None
 
     def __init__(self):
         super().__init__()
+        # BaseWidget.__init__(self, widget=self)
+
         self.tabCloseRequested.connect(self.__handleTabClosing)
         self.currentChanged.connect(self.__handleTabChange)
+        self.tabBar().tabMoved.connect(self.__handleTabMoved)
         # self.setTabBar(TabBar())
+
+    def setOnTabMoved(self, onTabMovedFunc):
+        self.onTabMovedFunc = onTabMovedFunc
+
+    def __handleTabMoved(self, from_index, to_index):
+        if self.onTabMovedFunc:
+            self.onTabMovedFunc(self, from_index, to_index)
 
     def setOnTabClose(self, onTabClosingFunc):
         self.onTabClosingFunc = onTabClosingFunc
@@ -70,6 +82,9 @@ class Tab(QTabWidget, EnginePart):
     # Adds a widgets to the corner to a tab
     def setCornerChild(self, child):
         self.setCornerWidget(child)
+
+    def getChildAt(self, index):
+        return self.widget(index - 1)
 
     def setMovable(self, movable):
         return super().setMovable(movable)
@@ -127,7 +142,10 @@ class Tab(QTabWidget, EnginePart):
         super().setCurrentIndex(index - 1)
 
     def getCurrentIndex(self):
-        return self.currentIndex + 1
+        return self.currentIndex() + 1
 
     def setCurrentTab(self, tab):
         self.setCurrentWidget(tab)
+
+    def getCount(self):
+        return self.count()
