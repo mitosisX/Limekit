@@ -60,29 +60,28 @@ class Label(QLabel, BaseWidget, EnginePart):
         super().setWhatsThis(desc)
 
     # Can also be used to align an image
-    def setTextAlign(self, alignment):
-        align = alignment.lower()
+    def setTextAlignment(self, *alignments):
+        alignment_flags = Qt.AlignmentFlag(0)  # Start with no flags
 
-        if align == "left":
-            self.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        for align in alignments:
+            align = align.lower()
 
-        elif align == "right":
-            self.setAlignment(Qt.AlignmentFlag.AlignRight)
+            if align == "left":
+                alignment_flags |= Qt.AlignmentFlag.AlignLeft
+            elif align == "right":
+                alignment_flags |= Qt.AlignmentFlag.AlignRight
+            elif align == "bottom":
+                alignment_flags |= Qt.AlignmentFlag.AlignBottom
+            elif align == "top":
+                alignment_flags |= Qt.AlignmentFlag.AlignTop
+            elif align == "center":
+                alignment_flags |= Qt.AlignmentFlag.AlignCenter
+            elif align == "hcenter":
+                alignment_flags |= Qt.AlignmentFlag.AlignHCenter
+            elif align == "vcenter":
+                alignment_flags |= Qt.AlignmentFlag.AlignVCenter
 
-        elif align == "bottom":
-            self.setAlignment(Qt.AlignmentFlag.AlignBottom)
-
-        elif align == "top":
-            self.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        elif align == "center":
-            self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        elif align == "hcenter":
-            self.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-
-        elif align == "vcenter":
-            self.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        self.setAlignment(alignment_flags)
 
     def setCursor(self, cursor_type):
         cursors = {

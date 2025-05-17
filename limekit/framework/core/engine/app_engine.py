@@ -17,6 +17,7 @@ through a batch script; the creation script is half-baked (only able to run a pr
 The virt env idea was a total disaster, I had to reinvent my code to make it work
 """
 
+import re
 import os
 import sys
 import inspect
@@ -48,19 +49,22 @@ from limekit.framework.handle.routing.routes import Routing
 from limekit.framework.core.runner.app_events import AppEvents
 
 from limekit.framework.scripts.script import Script
+from limekit.framework.core.engine.lua_parser import LuaParser
+
+"""
+  _     _                _    _ _     _____             _            
+ | |   (_)_ __ ___   ___| | _(_) |_  | ____|_ __   __ _(_)_ __   ___ 
+ | |   | | '_ ` _ \ / _ \ |/ / | __| |  _| | '_ \ / _` | | '_ \ / _ \
+ | |___| | | | | | |  __/   <| | |_  | |___| | | | (_| | | | | |  __/
+ |_____|_|_| |_| |_|\___|_|\_\_|\__| |_____|_| |_|\__, |_|_| |_|\___|
+                                                  |___/              
+
+This is where all the magic happens. The Engine is the core of the framework, 
+as it is responsible for executing the lua code, and pretty much everything else.
+"""
 
 
 class Engine:
-    # _instance = None
-
-    # For whatever or whoever's reason, dare not have two engine instances running
-    # Here's your singleton design pattern
-    # def __new__(cls):
-    #     if cls._instance is None:
-    #         cls._instance = super().__new__(cls)
-    #         cls._instance.engine = None
-    #     return cls._instance
-
     def __init__(self):
         self.projects_dir = ""
 
@@ -69,6 +73,9 @@ class Engine:
         self.routing = Routing()
 
         self.limekit_root_dir = settings.limekit_SITEPACKAGE_DIR
+
+        # only the widgets or corresponding widget items to be loaded will be stored here
+        self.loaded_user_classes = set()
 
         # self.plugin_manager = PluginManager()  # The code that init all user plugins
 
@@ -85,7 +92,7 @@ class Engine:
             setattr(obj, attr_name, value)
             return
 
-    # Init the JavaScript engine
+    # Init the lua engine
     def init_lua_engine(self):
         self.engine = LuaRuntime(
             unpack_returned_tuples=True,
@@ -99,15 +106,47 @@ class Engine:
         # self.init_plugins()  # Has to load first coz we don't walk the engine to run with only our py objects
 
         self.init_lua_engine()  # Set the py objects to the engine
-        self.gather_lua_engine_objects()  # loads all required classes from INSTALLED_APPS and additional method
+        self.scan_user_project_classes()
+        # loads all required classes from INSTALLED_APPS and additional method
+        self.gather_lua_engine_objects()
         self.set_custom_lua_require_path()
 
         self.init_routing_system()
-        self.init_ide_only_features()  # everything that is IDE specific, invokes from inside here
+
+        # everything that is IDE specific, invokes from inside here
+        self.init_ide_only_features()
 
         self.execute_vital_lua()  # Execute limekit.lua to enable app access
         self.execute_main_lua()  # execute user entry point file
         self.set_eventloop()  # Set the PySide6 mainloop running. VITAL!!!!!!
+
+    # Tailwind-like architecture: only load the classes available in the user's code for better perfomance
+    def scan_user_project_classes(self):
+        lua_parser = LuaParser()
+
+        for root, dirs, files in os.walk(Path.scripts_dir()):
+            for file in files:
+                if file.endswith(".lua"):
+                    file_path = os.path.join(root, file)
+                    try:
+                        with open(file_path, "r", encoding="utf-8") as file:
+                            content = file.read()
+
+                        all_classes = lua_parser.get_all_classes(content)
+
+                        for class_name in all_classes:
+                            self.loaded_user_classes.add(class_name)
+
+                    except FileNotFoundError:
+                        print(f"Error: File '{file_path}' not found.")
+                        return
+                    except Exception as e:
+                        print(f"Error reading file: {e}")
+                        return
+
+        self.loaded_user_classes.add("Window")
+        self.loaded_user_classes.add("Spacer")
+        self.loaded_user_classes.add("Separator")
 
     def init_code_injection_vars(self):
         self.code_injection_dir = Path.join_paths(
@@ -132,13 +171,12 @@ class Engine:
             self.init_code_injection_vars()  # set the code injection vars
             self.init_code_injection()
 
+    #   Code injection feature: Implemented on 14 April, 2025 (4:57 PM, UTC+2)
     #
-    #   Code injection feature implemented on 14 April, 2025 (4:57 PM, UTC+2)
+    #   The current "logic" is simple: create a file when user intends to inject code, read from file,
+    #   store in memory, delete file and execute it -- .limekit/_code.lua
     #
-    #   The current philosophy is simple: create a file when user intends to inject code, read from file,
-    #   store in memory, delete file and execute it. The file is created in the root projects dir.
-    #
-    # FileSystemWatcher watches some dir a file
+    # FileSystemWatcher watches .limekit dir for _code.lua
     def init_code_injection(self):
         self.create_injection_dir()  # create the dir first
 
@@ -148,7 +186,7 @@ class Engine:
             self.handle_code_injection_file_present
         )
 
-    # Why watch a dir that doesn't exist? Create it beforehand
+    # Create the .limekit dir before watching it
     def create_injection_dir(self):
         if not Path.check_path(self.code_injection_dir):
             Path.make_dir(self.code_injection_dir)
@@ -195,7 +233,7 @@ class Engine:
         self.execute(limekit_file_content)
 
     """
-    For executing any incoming JavaScript code
+    For executing any incoming lua code
     
     Has to redesigned to determine whether or not the framework is being run after freeze or in "IDE"
     """
@@ -206,14 +244,14 @@ class Engine:
     def evaluate(self, content):
         return self.engine.eval(content)
 
-    # Kill the engine if anything goes wrong
-
+    # Evaluates a lua script and returns the result
     def eval(self, script):
         return self.engine.eval(script)
 
     # The user's main.lua entry point code
     def execute_main_lua(self):
         path_to_main = Path.scripts("main.lua")
+        # print("### ", Path.project_path)
         main_lua_content = File.read_file(path_to_main)
         self.execute(main_lua_content)
 
@@ -223,7 +261,81 @@ class Engine:
 
     def set_custom_lua_require_path(self):
         """
-        This method looks for a ".require" file in user projects dir and sets the paths in lua's
+        Sets custom Lua require paths by reading from a '.require' file in the project directory.
+        Adds all specified directories plus the misc directory to Lua's package.path.
+
+        Features:
+        - Works across all operating systems (Windows, macOS, Linux)
+        - Handles both forward and backward slashes in input paths
+        - Properly formats paths for Lua's package.path
+        - Supports both semicolon and newline separated paths in .require file
+        - Adds paths in a cross-platform way that Lua will understand
+
+        The .require file format can be:
+        C:/dir1/dir2;D:/dir1
+        or
+        C:\dir1\dir2
+        D:\dir1
+        or any mix of separators
+        """
+
+        # Define the path to the .require file
+        req_file_path = os.path.join(Path.project_path, ".require")
+
+        # Initialize list to store all paths we'll add to package.path
+        lua_path_entries = []
+
+        # Process .require file if it exists
+        if Path.check_path(req_file_path):
+            try:
+                # Read the file content
+                require_content = File.read_file(req_file_path)
+
+                # Split paths by either semicolon or newline, and filter out empty entries
+                raw_paths = []
+                if ";" in require_content:
+                    raw_paths = [
+                        p.strip() for p in require_content.split(";") if p.strip()
+                    ]
+                else:
+                    raw_paths = [
+                        p.strip() for p in require_content.split("\n") if p.strip()
+                    ]
+
+                # Process each path to ensure proper formatting
+                for path in raw_paths:
+                    # Normalize the path to use forward slashes (works on all platforms in Lua)
+                    normalized_path = path.replace("\\", "/")
+                    # Remove any trailing slash to standardize
+                    normalized_path = normalized_path.rstrip("/")
+                    # Add the ?.lua suffix (Lua's require pattern)
+                    lua_path_entries.append(f"{normalized_path}/?.lua")
+
+            except Exception as e:
+                print(f"Warning: Failed to process .require file: {e}")
+
+        # Always add the misc directory
+        misc_path = os.path.normpath(Path.misc_dir()).replace("\\", "/").rstrip("/")
+        scripts_path = (
+            os.path.normpath(Path.scripts_dir()).replace("\\", "/").rstrip("/")
+        )
+        lua_path_entries.append(f"{misc_path}/?.lua")
+        lua_path_entries.append(f"{scripts_path}/?.lua")
+
+        # Combine all paths into a single string for Lua
+        if lua_path_entries:
+            # Join all paths with semicolons (Lua's path separator)
+            paths_string = ";".join(lua_path_entries) + ";"
+
+            # Prepend these paths to Lua's existing package.path
+            # Using format() instead of f-string for broader Python version compatibility
+            lua_command = "package.path = '{}' .. package.path".format(paths_string)
+            self.execute(lua_command)
+
+    # !depracated
+    def set_custom_lua_require_pathh(self):
+        """
+        This method checks for a ".require" file in user projects dir and sets the paths in lua's
         global package.path
 
         Add a trailing ?.lua to each path during iteration
@@ -265,7 +377,7 @@ class Engine:
             # self.execute(f"package.path = '{paths}' .. package.path")
             self.execute("package.path = '" + paths + "' .. package.path")
         else:
-            misc_path_append = Path.misc_dir().replace("\\", "/") + "/?.lua"
+            misc_path_append = Path.misc_dir().replace("\\", os.path.sep) + "/?.lua"
 
             # self.execute(f"package.path = '{misc_path_append};' .. package.path")
             self.execute("package.path = '" + misc_path_append + ";' .. package.path")
@@ -362,65 +474,30 @@ class Engine:
     def __quit(self):
         self.app.app.instance().quit()
 
-    """
-    # Lupa sometimes wraps python object or return them as is.
-    
-    - IndexError may sometimes be raised when trying to access some attributes.
-    - The way around this is to pass the object to 
-    
-    site = requests.get('https://webscraper.io/test-sites/e-commerce/allinone')
-    soup = BeautifulSoup(site.text, "html.parser")
-    local divs = py_getatrr(soup).findAll('div','col-sm-4 col-lg-4 col-md-4')
-    
-    - This method works wonders.
-    
-    PS. Haven't yet met anything requiring py_getitem yet
-    """
+    # Hard way for filtering out classes to load
+    def filter_out_load_classes_based_on_dir(self, full_path, search_path):
+        normalized_full = os.path.normpath(full_path)
+        normalized_sub = os.path.normpath(search_path)
 
+        return normalized_sub in normalized_full
+
+    # This is where all the magic of loading python classes to be used inside lua happens
     def load_classes(self, files):
+        # print(self.loaded_user_classes)
+
         for file in files:
-            if True:
-                the_path = os.sep.join(file.split(os.sep)[:-1])
-                the_file = file.split(os.sep)[-1].split(".")[0]
+            the_path = os.sep.join(file.split(os.sep)[:-1])
+            the_file = file.split(os.sep)[-1].split(".")[0]
 
-                file_path = os.path.join(the_path, file.split(os.sep)[-1])
+            file_path = os.path.join(the_path, file.split(os.sep)[-1])
 
-                # Create a spec for the module
-                spec = importlib.util.spec_from_file_location(the_file, file_path)
-                module = importlib.util.module_from_spec(spec)
-
-                # Finalize the loading process
-                spec.loader.exec_module(module)
-
-                for name in dir(module):
-                    class_ = getattr(module, name)
-
-                    if (
-                        isinstance(class_, type)
-                        and issubclass(class_, EnginePart)
-                        and class_ is not EnginePart
-                    ):
-                        class_for_lua = class_
-
-                        object_name = (
-                            class_for_lua.name
-                            if class_for_lua.name
-                            else class_for_lua.__name__
-                        )
-
-                        # Create the lua objects
-                        self.engine.globals()[object_name] = class_for_lua
-
-    # !deprecated
-    def load_classes_(self, files):
-        # all_instances = {}
-        for file in files:
-            module_name = file[:-3]
-
-            spec = importlib.util.spec_from_file_location(module_name, file)
+            # Create a spec for the module
+            spec = importlib.util.spec_from_file_location(the_file, file_path)
             module = importlib.util.module_from_spec(spec)
 
+            # Finalize the loading process
             spec.loader.exec_module(module)
+
             for name in dir(module):
                 class_ = getattr(module, name)
 
@@ -437,7 +514,31 @@ class Engine:
                         else class_for_lua.__name__
                     )
 
+                    # !not being used. Maybe later, but not now
+
+                    # Now, the filtering out of widgets
+                    # Considering that the widgets (memory consumers) are found in this dir,
+                    # We need to only import the widgets found in the user's code
+                    # if self.filter_out_load_classes_based_on_dir(
+                    #     the_path, "components"
+                    # ):
+                    #     try:
+                    #         if (
+                    #             not object_name.startswith("__")
+                    #             and not object_name in self.loaded_user_classes
+                    #         ):
+                    #             # print(object_name)
+                    #             continue
+                    #             # pass
+
+                    #     except Exception as e:
+                    #         pass
+                    # print(e)
+                    # print(file)
+
                     # Create the lua objects
+                    # print(object_name)
+
                     self.engine.globals()[object_name] = class_for_lua
 
 

@@ -144,7 +144,7 @@ class Tab(QTabWidget, EnginePart):
     def getCurrentIndex(self):
         return self.currentIndex() + 1
 
-    def setCurrentTab(self, tab):
+    def setCurrentChild(self, tab):
         self.setCurrentWidget(tab)
 
     def getCount(self):

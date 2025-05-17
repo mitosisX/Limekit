@@ -5,7 +5,6 @@ from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.components.base.base_widget import BaseWidget
 
 
-
 class GifPlayer(QLabel, BaseWidget, EnginePart):
     def __init__(self, filename):
         super().__init__()
@@ -17,18 +16,6 @@ class GifPlayer(QLabel, BaseWidget, EnginePart):
         # size = self.movie.scaledSize()
         # self.setGeometry(200, 200, size.width(), size.height())
         # self.setSize(20, 20)
-
-        self.movie_screen = QLabel()
-
-        # Make label fit the gif
-        # self.movie_screen.setSizePolicy(
-        #     QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed
-        # )
-        # self.movie_screen.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        # Create the layout
-        # main_layout = QVBoxLayout()
-        # main_layout.addWidget(self.movie_screen)
 
         # self.setLayout(main_layout)
 

@@ -2,13 +2,13 @@ class Script:
     @classmethod
     def read_app_lua(cls):
         return """
-      app = {
+app = {
     -- allows one to invoke a function with args
     -- partial(func, arg1, arg2, ...) and returns the function
     partial = function(func, ...)
-        local args = {...}
+        local args = { ... }
         return function(...)
-            local newArgs = {...}
+            local newArgs = { ... }
             for i, arg in ipairs(args) do
                 table.insert(newArgs, 1, arg)
             end
@@ -21,11 +21,21 @@ class Script:
     isIDE = function()
         return __engineState()
     end,
+    -- Gets a proper path for each OS
+    normalPath = function(path)
+        return __Path.normalize_path(path)
+    end,
+    getDirName = function(path)
+        return __Path.get_dir_name(path)
+    end,
     joinPaths = function(...)
-        return __paths.join_paths(...)
+        return __Path.join_paths(...)
     end,
     getStandardPath = function(path)
         return __paths.get_path(path)
+    end,
+    garbageCollect = function()
+        __Path.garbage_collect()
     end,
     runProject = function(path)
         return __appCore(path)
@@ -148,6 +158,10 @@ class Script:
     writeBytes = function(file, bytes)
         __file.writeBytes(file, bytes)
     end,
+    formatJSON = function(content, indent)
+        indent = indent or 1
+        return __fileutils.format_json(content, indent)
+    end,
     readJSON = function(file)
         return __fileutils.read_file_json(file)
     end,
@@ -221,8 +235,8 @@ class Script:
     infoAlertDialog = function(parent, title, message)
         return __iPopup(parent, title, message)
     end,
-    questionAlertDialog = function(parent, title, message)
-        return __qPopup(parent, title, message).display()
+    questionAlertDialog = function(parent, title, message, buttons)
+        return __qPopup(parent, title, message, buttons).display()
     end,
     warningAlertDialog = function(parent, title, message)
         return __wPopup(parent, title, message)
@@ -318,4 +332,5 @@ class Script:
     end
     -- validators ##################
 }
+
     """

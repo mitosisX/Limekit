@@ -5,6 +5,7 @@ from limekit.framework.core.engine.parts import EnginePart
 
 class Paths(EnginePart):
     name = "__paths"
+
     paths = {
         "desktop": QStandardPaths.StandardLocation.DesktopLocation,
         "documents": QStandardPaths.StandardLocation.DocumentsLocation,

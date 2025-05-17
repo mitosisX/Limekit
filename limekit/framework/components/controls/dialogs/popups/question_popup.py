@@ -10,40 +10,52 @@ class QuestionPopup(QMessageBox, EnginePart):
     result = None
 
     # The title can contain HTML elements too
-    def __init__(self, parent, title, message):
-        self.msg_box = self.question(parent, title, message)
-        # self.msg_box.setWindowTitle(title)
-        # self.msg_box.setText(message)
+    def __init__(self, parent, title, message, buttons=None):
+        self.msg_box = self.question(
+            parent, title, message, self.__decideButtons(buttons)
+        )
 
-        # Map the button text to the standard button
-        # self.button_map = {
-        #     "yes": QMessageBox.Yes,
-        #     "no": QMessageBox.No,
-        #     "cancel": QMessageBox.Cancel,
-        #     "ok": QMessageBox.Ok,
-        #     "abort": QMessageBox.Abort,
-        #     "retry": QMessageBox.Retry,
-        #     "ignore": QMessageBox.Ignore,
-        #     "save": QMessageBox.Save,
-        #     "discard": QMessageBox.Discard,
-        #     "apply": QMessageBox.Apply,
-        #     "reset": QMessageBox.Reset,
-        #     "restoredefaults": QMessageBox.RestoreDefaults,
-        # }
+    def __decideButtons(self, _buttons):
+        buttons = (
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            if not _buttons
+            else QMessageBox.StandardButton.NoButton
+        )
 
-        # # Add each button to the message box
-        # for button_text in Converter.list_(buttons):
-        #     button_text_ = button_text.lower().strip()
+        button_mapping = {
+            "ok": QMessageBox.StandardButton.Ok,
+            "open": QMessageBox.StandardButton.Open,
+            "save": QMessageBox.StandardButton.Save,
+            "cancel": QMessageBox.StandardButton.Cancel,
+            "close": QMessageBox.StandardButton.Close,
+            "apply": QMessageBox.StandardButton.Apply,
+            "restoredefaults": QMessageBox.StandardButton.RestoreDefaults,
+            "help": QMessageBox.StandardButton.Help,
+            "saveall": QMessageBox.StandardButton.SaveAll,
+            "yes": QMessageBox.StandardButton.Yes,
+            "reset": QMessageBox.StandardButton.Reset,
+            "yestoall": QMessageBox.StandardButton.YesToAll,
+            "discard": QMessageBox.StandardButton.Discard,
+            "no": QMessageBox.StandardButton.No,
+            "notoall": QMessageBox.StandardButton.NoToAll,
+            "abort": QMessageBox.StandardButton.Abort,
+            "retry": QMessageBox.StandardButton.Retry,
+            "ignore": QMessageBox.StandardButton.Ignore,
+        }
 
-        #     button = button_map.get(button_text_)
+        try:
+            for _button in _buttons.values():
+                if button_mapping.get(_button.lower()):
+                    print("##### ", _button)
+                    buttons |= button_mapping[_button.lower()]
 
-        #     if button is not None:
-        #         self.msg_box.addButton(button)
+        except AttributeError:
+            pass
 
-        # Display the message box and return the clicked button
-        # self.result = self.msg_box.sho()
+        return buttons
 
     def display(self):
+        print(self.msg_box)
         if self.msg_box == QMessageBox.StandardButton.Yes:
             return True
 

@@ -8,8 +8,8 @@ This is a Dumb Dialog. Oftenly used for "Ok", "Cancel" operations
 """
 
 
-class Dialog(QDialog, EnginePart):
-    name = "Modal"
+class Modal(QDialog, EnginePart):
+    # name = "Modal"
     onShownEvent = None
     onResizeEvent = None
     onCloseEvent = None

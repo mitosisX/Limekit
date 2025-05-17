@@ -18,13 +18,22 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
     onKeyPressChangeFunc = None
     onContentChangeFunc = None
     onModificationChangeFunc = None
+    onVerticalScrollBarValueChangeFunc = None
+    onHorizontalScrollBarValueChangeFunc = None
 
-    def __init__(self, text=""):
+    def __init__(self, text=None):
         super().__init__(text)
         BaseWidget.__init__(self, widget=self)
 
         self.textChanged.connect(self.__handleTextChange)
         self.cursorPositionChanged.connect(self.__handleCursorChange)
+        self.verticalScrollBar().valueChanged.connect(
+            self.__handleVerticalScrollBarValueChange
+        )
+        self.horizontalScrollBar().valueChanged.connect(
+            self.__handleHorizontalScrollBarValueChange
+        )
+
         # self.selectionChanged.connect(self.__handleTextSelection)
         self.document().modificationChanged.connect(self.__handleModificationChange)
         self.document().contentsChange.connect(self.__handeContentChange)
@@ -32,6 +41,20 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
         self.installEventFilter(self)
 
     # Events ---------------------------------
+    def setOnHorizontalScrollBarValueChange(self, onHorizontalScrollBarValueChangeFunc):
+        self.onHorizontalScrollBarValueChangeFunc = onHorizontalScrollBarValueChangeFunc
+
+    def __handleHorizontalScrollBarValueChange(self, value):
+        if self.onHorizontalScrollBarValueChangeFunc:
+            self.onHorizontalScrollBarValueChangeFunc(self, value)
+
+    def setOnVerticalScrollBarValueChange(self, onVerticalScrollBarValueChangeFunc):
+        self.onVerticalScrollBarValueChangeFunc = onVerticalScrollBarValueChangeFunc
+
+    def __handleVerticalScrollBarValueChange(self, value):
+        if self.onVerticalScrollBarValueChangeFunc:
+            self.onVerticalScrollBarValueChangeFunc(self, value)
+
     def setOnModificationChanged(self, onModificationChangeFunc):
         self.onModificationChangeFunc = onModificationChangeFunc
 
@@ -47,18 +70,18 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
         if self.onContentChangeFunc:
             self.onContentChangeFunc(self, position, chars_removed, chars_added)
 
-    def setOnCursorPositionChange(self, onCursorPositionChangedFunc):
+    def setOnCursorPositionChanged(self, onCursorPositionChangedFunc):
         self.onCursorPositionChangedFunc = onCursorPositionChangedFunc
+
+    def __handleCursorChange(self):
+        if self.onCursorPositionChangedFunc:
+            self.onCursorPositionChangedFunc(self)
 
     def setOnKeyPress(self, onKeyPressChangeFunc):
         self.onKeyPressChangeFunc = onKeyPressChangeFunc
 
     def setOnTextChange(self, onTextChangedFunc):
         self.onTextChangedFunc = onTextChangedFunc
-
-    def __handleCursorChange(self):
-        if self.onCursorPositionChangedFunc:
-            self.onCursorPositionChangedFunc(self)
 
     def __handleTextChange(self):
         if self.onTextChangedFunc:
@@ -78,6 +101,63 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
         super().keyPressEvent(event)
 
     # --------------------------------- Events
+
+    # Qt.ScrollBarAlwaysOff  # Hides scrollbar permanently
+    # Qt.ScrollBarAlwaysOn   # Always shows scrollbar
+    # Qt.ScrollBarAsNeeded   # Default (shows only when content overflows)
+
+    def __decideScrollBehavior(self, scroll_policy):
+        policy_mapping = {
+            "overflow": Qt.ScrollBarPolicy.ScrollBarAsNeeded,
+            "hidden": Qt.ScrollBarPolicy.ScrollBarAlwaysOff,
+            "always_on": Qt.ScrollBarPolicy.ScrollBarAlwaysOn,
+        }
+
+        if scroll_policy not in policy_mapping:
+            raise ValueError(f"Invalid scroll policy type: {scroll_policy}.")
+
+        return policy_mapping[scroll_policy]
+
+    def setHorizontalScrollBarBehavior(self, prop):
+        self.setHorizontalScrollBarPolicy(self.__decideScrollBehavior(prop))
+
+    def setVerticalScrollBarBehavior(self, prop):
+        self.setVerticalScrollBarPolicy(self.__decideScrollBehavior(prop))
+
+    def setVerticalScrollBarValue(self, value):
+        self.verticalScrollBar().setValue(value)
+
+    def setHorizontalScrollBarValue(self, value):
+        self.horizontalScrollBar().setValue(value)
+
+    def setTextInteraction(self, interaction):
+        interaction_map = {
+            "none": Qt.TextInteractionFlag.NoTextInteraction,
+            "text": Qt.TextInteractionFlag.TextBrowserInteraction,
+            "editable": Qt.TextInteractionFlag.TextEditorInteraction,
+            "read_only": Qt.TextInteractionFlag.TextBrowserInteraction,
+        }
+
+        try:
+            self.setTextInteractionFlags(interaction_map[interaction.lower()])
+        except KeyError:
+            print(f"Invalid text interaction '{interaction}'.")
+
+    def setFrameShape(self, frame_type):
+        frame_map = {
+            "none": QTextEdit.Shape.NoFrame,
+            "box": QFrame.Shape.Box,
+            "panel": QFrame.Shape.Panel,
+            "winpanel": QFrame.Shape.WinPanel,
+            "hline": QFrame.Shape.HLine,
+            "vline": QFrame.Shape.VLine,
+            "styledpanel": QFrame.Shape.StyledPanel,
+        }
+
+        try:
+            super().setFrameShape(QTextEdit.NoFrame)
+        except KeyError:
+            print(f"Invalid frame type '{frame_type}'.")
 
     def setWrapMode(self, mode):
         mode_map = {
@@ -195,6 +275,9 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
     def setTabSpacing(self, spacing):
         self.setTabStopDistance(spacing)
 
+    def getLineCount(self):
+        return self.document().lineCount()
+
     def getBlockNumber(self):
         return self.__getCursor().blockNumber()
 
@@ -204,8 +287,17 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
     def __getCursor(self):
         return self.textCursor()
 
+    def setFixedWidth(self, width):
+        super().setFixedWidth(width)
+
+    def setFixedHeight(self, height):
+        super().setFixedHeight(height)
+
     def setTextSize(self, size):
-        self.setFontPointSize(int(size))
+        font = QFont()
+        font.setPointSize(size)
+        super().setFont(font)
+        # self.setFontPointSize(int(size))
 
     def setFont(self, font_):
         font = QFont()
@@ -311,3 +403,32 @@ class TextField(QTextEdit, BaseWidget, EnginePart):
 
     def setModified(self, modified: bool):
         self.document().setModified(modified)
+
+    def zoomIn(self, value):
+        return super().zoomIn(value)
+
+    def zoomOut(self, value):
+        return super().zoomOut(value)
+
+    def setTabSize(self, size):
+        font_metrics = self.fontMetrics()
+        space_width = font_metrics.horizontalAdvance(" ")
+        tab_distance = space_width * size
+
+        self.setTabStopDistance(tab_distance)
+
+    """
+            What is a "Block"?
+            
+    A block is essentially a paragraph or a line in the document.
+
+    Every time you press Enter/Return, you create a new block.
+
+    Even an empty document has 1 block (an empty line).
+    """
+
+    def getBlockCount(self):
+        return self.document().blockCount()
+
+    def setStyle(self, style):
+        self.setStyleSheet(style)

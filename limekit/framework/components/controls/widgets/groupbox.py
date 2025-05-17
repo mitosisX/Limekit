@@ -23,6 +23,12 @@ class GroupBox(QGroupBox, BaseWidget, EnginePart):
     def setStyle(self, styleSheet):
         self.setStyleSheet(styleSheet)
 
+    def getChild(self):
+        return self.widget()
+
+    def getLayout(self):
+        return self.layout()
+
     def setBackgroundColor(self, color):
         super().setStyleSheet(f"background-color: {color};")
 
@@ -52,3 +58,6 @@ class GroupBox(QGroupBox, BaseWidget, EnginePart):
 
     def setToolTipDuration(self, duration):
         super().toolTipDuration(duration)
+
+    def collect(self):
+        self.deleteLater()

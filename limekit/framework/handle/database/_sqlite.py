@@ -3,7 +3,7 @@ from limekit.framework.core.engine.parts import EnginePart
 from limekit.framework.handle.scripts.swissknife.converters import Converter
 
 
-class SqliteDB3(EnginePart):
+class SqliteDB3:
     name = "Sqlite3"
 
     def __init__(self, db=""):

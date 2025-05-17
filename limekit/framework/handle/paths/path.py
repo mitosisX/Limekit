@@ -1,3 +1,4 @@
+import gc
 import os
 import fnmatch
 import limekit
@@ -36,6 +37,10 @@ class Path(EnginePart):
         return cls.join_paths(cls.current_project_dir(), "images")
 
     # ____________________________________________________________
+
+    @classmethod
+    def garbage_collect(cls):
+        gc.collect()
 
     @classmethod
     def project_file(cls):
@@ -128,7 +133,7 @@ class Path(EnginePart):
 
     @classmethod
     # removes the last dir in any given path
-    def get_parent_dir(self, path):
+    def get_parent_dir(cls, path):
         # Normalize the path (handles trailing slashes, different slashes, etc.)
         normalized_path = os.path.normpath(path)
 
@@ -158,6 +163,18 @@ class Path(EnginePart):
 
         return normalized_path
         # return os.path.join(*path)
+
+    @classmethod
+    def get_dir_name(cls, path):
+        """
+        Returns the name of the file or directory at the end of the path.
+        """
+        base_name = os.path.dirname(path)
+        return cls.normalize_path(base_name)
+
+    @classmethod
+    def normalize_path(cls, path):
+        return os.path.normpath(path)
 
     # The path to the user's project scripts dir
     @classmethod

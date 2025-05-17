@@ -7,5 +7,5 @@ from limekit.framework.components.base.base_layout import BaseLayout
 class HorizontalLayout(BaseLayout, EnginePart):
     name = "HLayout"
 
-    def __init__(self):
-        super().__init__(QBoxLayout.Direction.LeftToRight, parent=None)
+    def __init__(self, parent=None):
+        super().__init__(QBoxLayout.Direction.LeftToRight, parent=parent)

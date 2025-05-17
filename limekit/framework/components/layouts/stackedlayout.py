@@ -9,8 +9,6 @@ class StackedLayout(QStackedLayout, EnginePart):
     def getLayout(self):
         return self.layout()
 
-    
-
     def getAt(self, index):
         return self.takeAt(index - 1)
 

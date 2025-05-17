@@ -1,3 +1,4 @@
+import gc
 import time
 import lupa
 import heapq
@@ -96,9 +97,7 @@ class WeightedGraph:
     # Method to add an edge to the graph with a specified weight
     def add_edge(self, start, end, weight):
         if start not in self.graph:
-            self.graph[
-                start
-            ] = (
+            self.graph[start] = (
                 []
             )  # Initialize an empty list for the start node if it's not already in the graph
 
@@ -107,9 +106,7 @@ class WeightedGraph:
         )  # Add the end node and weight to the start node's list
 
         if end not in self.graph:
-            self.graph[
-                end
-            ] = (
+            self.graph[end] = (
                 []
             )  # Initialize an empty list for the end node if it's not already in the graph
 
@@ -141,9 +138,9 @@ class WeightedGraph:
             for neighbor, weight in self.graph[current_node]:
                 distance = current_distance + weight
                 if distance < shortest_distances[neighbor]:
-                    shortest_distances[
-                        neighbor
-                    ] = distance  # Update the shortest distance
+                    shortest_distances[neighbor] = (
+                        distance  # Update the shortest distance
+                    )
                     previous_nodes[neighbor] = current_node  # Update the previous node
                     heapq.heappush(
                         priority_queue, (distance, neighbor)

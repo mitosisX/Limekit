@@ -1,5 +1,6 @@
-from PySide6.QtWidgets import QBoxLayout
 from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QBoxLayout
+from limekit.framework.components.controls.widgets.spacer import Spacer
 
 
 class BaseLayout(QBoxLayout):
@@ -29,6 +30,12 @@ class BaseLayout(QBoxLayout):
     def addLayout(self, layout, stretch=0):
         return super().addLayout(layout, stretch)
 
+    def getLayoutAt(self, index):
+        return self.itemAt(index - 1).layout()
+
+    def getChildAt(self, index):
+        return self.itemAt(index - 1).widget()
+
     # Counts all children available in the layout
     def getCount(self):
         return self.count()
@@ -36,11 +43,14 @@ class BaseLayout(QBoxLayout):
     def getLayout(self):
         return self.layout()
 
-    def addSpacer(self, spacer):
+    def addSpacer(self, spacer: Spacer):
         self.addSpacerItem(spacer)
 
     def addStretch(self, stretch=1):
         super().addStretch(stretch)
+
+    def setSpacing(self, spacing):
+        super().setSpacing(spacing)
 
     def setMargins(self, left, top, right, bottom):
         self.setContentsMargins(left, top, right, bottom)

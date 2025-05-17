@@ -25,15 +25,15 @@ class DropShadow(QGraphicsDropShadowEffect, EnginePart):
         self.setOffset(2, 5)
         widget.setGraphicsEffect(self)
 
-    def __init___(self, kwargs):
-        super().__init__(parent=None)
+    # def __init___(self, kwargs):
+    #     super().__init__(parent=None)
 
-        if "offset" in kwargs:
-            self.setOffset(int(kwargs["offset"]))
+    #     if "offset" in kwargs:
+    #         self.setOffset(int(kwargs["offset"]))
 
-        if "bradius" in kwargs:
-            self.setBlurRadius(int(kwargs["bradius"]))
+    #     if "bradius" in kwargs:
+    #         self.setBlurRadius(int(kwargs["bradius"]))
 
-        if "widget" in kwargs:
-            widget = kwargs["widget"]
-            widget.setGraphicsEffect(self)
+    #     if "widget" in kwargs:
+    #         widget = kwargs["widget"]
+    #         widget.setGraphicsEffect(self)

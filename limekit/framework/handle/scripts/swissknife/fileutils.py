@@ -121,13 +121,24 @@ class FileUtils(EnginePart):
         return Converter.table_from(data)
 
     @classmethod
+    def format_json(cls, json_text, indent=4) -> str:
+        """
+        Format a json text with the specified indentation.
+        """
+        data = json.loads(json_text)
+        formatted_json = json.dumps(data, indent=indent)
+        return formatted_json
+
+    @classmethod
     def write_file_json(cls, path, data):
         """
         Write a json file at the given path with the specified data encoded in json format.
         """
-        print(Converter.table_to_dict(data))
+        # print(Converter.table_to_dict(data))
         # content = json.dumps(dict(Converter.table_from(data)), indent=4)
         # File.write_file(path, content)
+
+        pass
 
     @classmethod
     def is_dir(cls, path) -> bool:

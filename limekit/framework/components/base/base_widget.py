@@ -3,11 +3,8 @@ from PySide6.QtCore import QSize
 
 
 class BaseWidget:
-    def __init__(self, widget: QWidget):
+    def __init__(self, widget):
         self.widget = widget
-
-    # def __init__(self, parent=None):
-    #     super().__init__(parent)
 
     def enable(self):
         self.widget.setEnabled(True)
@@ -30,6 +27,12 @@ class BaseWidget:
 
     def setSize(self, width, height):
         self.widget.resize(width, height)
+
+    def setWidth(self, width):
+        self.widget.resize(width, self.height())
+
+    def setHeight(self, height):
+        self.widget.resize(self.width(), height)
 
     def setMinHeight(self, height):
         self.widget.setMinimumHeight(height)

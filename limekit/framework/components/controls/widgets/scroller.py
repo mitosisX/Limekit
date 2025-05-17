@@ -17,8 +17,8 @@ class Scroller(QScrollArea, BaseWidget, EnginePart):
         self.parent_widget = QWidget()
         self.setWidget(self.parent_widget)
 
-        self.setHorizontalScrollProperty("required")
-        self.setVerticalScrollProperty("required")
+        self.setHorizontalScrollBarBehavior("overflow")
+        self.setVerticalScrollBarBehavior("overflow")
         self.setResizable(True)
 
         self.verticalScrollBar().valueChanged.connect(self.__handleScroll)
@@ -63,20 +63,20 @@ class Scroller(QScrollArea, BaseWidget, EnginePart):
     def setResizable(self, resizable):
         self.setWidgetResizable(resizable)
 
-    def __decideScrollProperty(self, prop):
+    def __decideScrollBehavior(self, prop):
         policy = Qt.ScrollBarPolicy.ScrollBarAsNeeded
 
-        if prop == "required":
+        if prop == "overflow":
             policy = Qt.ScrollBarPolicy.ScrollBarAsNeeded
         elif prop == ("hidden"):
             policy = Qt.ScrollBarPolicy.ScrollBarAlwaysOff
-        elif prop == ("always"):
+        elif prop == ("alwayson"):
             policy = Qt.ScrollBarPolicy.ScrollBarAlwaysOn
 
         return policy
 
-    def setHorizontalScrollProperty(self, prop):
-        self.setHorizontalScrollBarPolicy(self.__decideScrollProperty(prop))
+    def setHorizontalScrollBarBehavior(self, prop):
+        self.setHorizontalScrollBarPolicy(self.__decideScrollBehavior(prop))
 
-    def setVerticalScrollProperty(self, prop):
-        self.setVerticalScrollBarPolicy(self.__decideScrollProperty(prop))
+    def setVerticalScrollBarBehavior(self, prop):
+        self.setVerticalScrollBarPolicy(self.__decideScrollBehavior(prop))
