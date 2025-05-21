@@ -840,23 +840,7 @@
         "documentation": {}
     },
     {
-        "label": "QHBoxLayout",
-        "importPath": "PySide6.QtWidgets",
-        "description": "PySide6.QtWidgets",
-        "isExtraImport": true,
-        "detail": "PySide6.QtWidgets",
-        "documentation": {}
-    },
-    {
-        "label": "QVBoxLayout",
-        "importPath": "PySide6.QtWidgets",
-        "description": "PySide6.QtWidgets",
-        "isExtraImport": true,
-        "detail": "PySide6.QtWidgets",
-        "documentation": {}
-    },
-    {
-        "label": "QLayout",
+        "label": "QBoxLayout",
         "importPath": "PySide6.QtWidgets",
         "description": "PySide6.QtWidgets",
         "isExtraImport": true,
@@ -865,6 +849,14 @@
     },
     {
         "label": "QWidget",
+        "importPath": "PySide6.QtWidgets",
+        "description": "PySide6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PySide6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QSizePolicy",
         "importPath": "PySide6.QtWidgets",
         "description": "PySide6.QtWidgets",
         "isExtraImport": true,
@@ -984,22 +976,6 @@
         "documentation": {}
     },
     {
-        "label": "QDialog",
-        "importPath": "PySide6.QtWidgets",
-        "description": "PySide6.QtWidgets",
-        "isExtraImport": true,
-        "detail": "PySide6.QtWidgets",
-        "documentation": {}
-    },
-    {
-        "label": "QDialogButtonBox",
-        "importPath": "PySide6.QtWidgets",
-        "description": "PySide6.QtWidgets",
-        "isExtraImport": true,
-        "detail": "PySide6.QtWidgets",
-        "documentation": {}
-    },
-    {
         "label": "QErrorMessage",
         "importPath": "PySide6.QtWidgets",
         "description": "PySide6.QtWidgets",
@@ -1025,6 +1001,22 @@
     },
     {
         "label": "QMessageBox",
+        "importPath": "PySide6.QtWidgets",
+        "description": "PySide6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PySide6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QDialog",
+        "importPath": "PySide6.QtWidgets",
+        "description": "PySide6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PySide6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QDialogButtonBox",
         "importPath": "PySide6.QtWidgets",
         "description": "PySide6.QtWidgets",
         "isExtraImport": true,
@@ -1113,6 +1105,14 @@
     },
     {
         "label": "QTabWidget",
+        "importPath": "PySide6.QtWidgets",
+        "description": "PySide6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PySide6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QTabBar",
         "importPath": "PySide6.QtWidgets",
         "description": "PySide6.QtWidgets",
         "isExtraImport": true,
@@ -1400,6 +1400,14 @@
         "documentation": {}
     },
     {
+        "label": "QFrame",
+        "importPath": "PySide6.QtWidgets",
+        "description": "PySide6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PySide6.QtWidgets",
+        "documentation": {}
+    },
+    {
         "label": "QSlider",
         "importPath": "PySide6.QtWidgets",
         "description": "PySide6.QtWidgets",
@@ -1417,6 +1425,14 @@
     },
     {
         "label": "QStackedWidget",
+        "importPath": "PySide6.QtWidgets",
+        "description": "PySide6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PySide6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QSpacerItem",
         "importPath": "PySide6.QtWidgets",
         "description": "PySide6.QtWidgets",
         "isExtraImport": true,
@@ -1600,7 +1616,7 @@
         "documentation": {}
     },
     {
-        "label": "QHBoxLayout",
+        "label": "QBoxLayout",
         "importPath": "PySide6.QtWidgets",
         "description": "PySide6.QtWidgets",
         "isExtraImport": true,
@@ -1624,7 +1640,7 @@
         "documentation": {}
     },
     {
-        "label": "QVBoxLayout",
+        "label": "QBoxLayout",
         "importPath": "PySide6.QtWidgets",
         "description": "PySide6.QtWidgets",
         "isExtraImport": true,
@@ -1641,6 +1657,14 @@
     },
     {
         "label": "QCompleter",
+        "importPath": "PySide6.QtWidgets",
+        "description": "PySide6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PySide6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QTextEdit",
         "importPath": "PySide6.QtWidgets",
         "description": "PySide6.QtWidgets",
         "isExtraImport": true,
@@ -2256,6 +2280,14 @@
         "documentation": {}
     },
     {
+        "label": "QSize",
+        "importPath": "PySide6.QtCore",
+        "description": "PySide6.QtCore",
+        "isExtraImport": true,
+        "detail": "PySide6.QtCore",
+        "documentation": {}
+    },
+    {
         "label": "Qt",
         "importPath": "PySide6.QtCore",
         "description": "PySide6.QtCore",
@@ -2472,6 +2504,14 @@
         "documentation": {}
     },
     {
+        "label": "Qt",
+        "importPath": "PySide6.QtCore",
+        "description": "PySide6.QtCore",
+        "isExtraImport": true,
+        "detail": "PySide6.QtCore",
+        "documentation": {}
+    },
+    {
         "label": "Property",
         "importPath": "PySide6.QtCore",
         "description": "PySide6.QtCore",
@@ -2600,6 +2640,14 @@
         "documentation": {}
     },
     {
+        "label": "Qt",
+        "importPath": "PySide6.QtCore",
+        "description": "PySide6.QtCore",
+        "isExtraImport": true,
+        "detail": "PySide6.QtCore",
+        "documentation": {}
+    },
+    {
         "label": "QPoint",
         "importPath": "PySide6.QtCore",
         "description": "PySide6.QtCore",
@@ -2705,6 +2753,14 @@
     },
     {
         "label": "Qt",
+        "importPath": "PySide6.QtCore",
+        "description": "PySide6.QtCore",
+        "isExtraImport": true,
+        "detail": "PySide6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "QRegularExpression",
         "importPath": "PySide6.QtCore",
         "description": "PySide6.QtCore",
         "isExtraImport": true,
@@ -2872,22 +2928,6 @@
         "documentation": {}
     },
     {
-        "label": "Optional",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "Union",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
         "label": "Dict",
         "importPath": "typing",
         "description": "typing",
@@ -2905,6 +2945,54 @@
     },
     {
         "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
         "importPath": "typing",
         "description": "typing",
         "isExtraImport": true,
@@ -4969,6 +5057,70 @@
         "documentation": {}
     },
     {
+        "label": "EnginePart",
+        "importPath": "limekit.framework.core.engine.parts",
+        "description": "limekit.framework.core.engine.parts",
+        "isExtraImport": true,
+        "detail": "limekit.framework.core.engine.parts",
+        "documentation": {}
+    },
+    {
+        "label": "EnginePart",
+        "importPath": "limekit.framework.core.engine.parts",
+        "description": "limekit.framework.core.engine.parts",
+        "isExtraImport": true,
+        "detail": "limekit.framework.core.engine.parts",
+        "documentation": {}
+    },
+    {
+        "label": "EnginePart",
+        "importPath": "limekit.framework.core.engine.parts",
+        "description": "limekit.framework.core.engine.parts",
+        "isExtraImport": true,
+        "detail": "limekit.framework.core.engine.parts",
+        "documentation": {}
+    },
+    {
+        "label": "EnginePart",
+        "importPath": "limekit.framework.core.engine.parts",
+        "description": "limekit.framework.core.engine.parts",
+        "isExtraImport": true,
+        "detail": "limekit.framework.core.engine.parts",
+        "documentation": {}
+    },
+    {
+        "label": "EnginePart",
+        "importPath": "limekit.framework.core.engine.parts",
+        "description": "limekit.framework.core.engine.parts",
+        "isExtraImport": true,
+        "detail": "limekit.framework.core.engine.parts",
+        "documentation": {}
+    },
+    {
+        "label": "EnginePart",
+        "importPath": "limekit.framework.core.engine.parts",
+        "description": "limekit.framework.core.engine.parts",
+        "isExtraImport": true,
+        "detail": "limekit.framework.core.engine.parts",
+        "documentation": {}
+    },
+    {
+        "label": "EnginePart",
+        "importPath": "limekit.framework.core.engine.parts",
+        "description": "limekit.framework.core.engine.parts",
+        "isExtraImport": true,
+        "detail": "limekit.framework.core.engine.parts",
+        "documentation": {}
+    },
+    {
+        "label": "EnginePart",
+        "importPath": "limekit.framework.core.engine.parts",
+        "description": "limekit.framework.core.engine.parts",
+        "isExtraImport": true,
+        "detail": "limekit.framework.core.engine.parts",
+        "documentation": {}
+    },
+    {
         "label": "QPainter",
         "importPath": "PySide6.QtGui",
         "description": "PySide6.QtGui",
@@ -5577,7 +5729,7 @@
         "documentation": {}
     },
     {
-        "label": "QPixmap",
+        "label": "QIcon",
         "importPath": "PySide6.QtGui",
         "description": "PySide6.QtGui",
         "isExtraImport": true,
@@ -5585,7 +5737,7 @@
         "documentation": {}
     },
     {
-        "label": "QIcon",
+        "label": "QPixmap",
         "importPath": "PySide6.QtGui",
         "description": "PySide6.QtGui",
         "isExtraImport": true,
@@ -5841,6 +5993,14 @@
         "documentation": {}
     },
     {
+        "label": "QKeyEvent",
+        "importPath": "PySide6.QtGui",
+        "description": "PySide6.QtGui",
+        "isExtraImport": true,
+        "detail": "PySide6.QtGui",
+        "documentation": {}
+    },
+    {
         "label": "QIcon",
         "importPath": "PySide6.QtGui",
         "description": "PySide6.QtGui",
@@ -5913,6 +6073,30 @@
         "documentation": {}
     },
     {
+        "label": "QKeyEvent",
+        "importPath": "PySide6.QtGui",
+        "description": "PySide6.QtGui",
+        "isExtraImport": true,
+        "detail": "PySide6.QtGui",
+        "documentation": {}
+    },
+    {
+        "label": "QShortcut",
+        "importPath": "PySide6.QtGui",
+        "description": "PySide6.QtGui",
+        "isExtraImport": true,
+        "detail": "PySide6.QtGui",
+        "documentation": {}
+    },
+    {
+        "label": "QKeySequence",
+        "importPath": "PySide6.QtGui",
+        "description": "PySide6.QtGui",
+        "isExtraImport": true,
+        "detail": "PySide6.QtGui",
+        "documentation": {}
+    },
+    {
         "label": "QPixmap",
         "importPath": "PySide6.QtGui",
         "description": "PySide6.QtGui",
@@ -5961,7 +6145,7 @@
         "documentation": {}
     },
     {
-        "label": "QShortcut",
+        "label": "QSyntaxHighlighter",
         "importPath": "PySide6.QtGui",
         "description": "PySide6.QtGui",
         "isExtraImport": true,
@@ -5969,7 +6153,23 @@
         "documentation": {}
     },
     {
-        "label": "QKeySequence",
+        "label": "QTextCharFormat",
+        "importPath": "PySide6.QtGui",
+        "description": "PySide6.QtGui",
+        "isExtraImport": true,
+        "detail": "PySide6.QtGui",
+        "documentation": {}
+    },
+    {
+        "label": "QFont",
+        "importPath": "PySide6.QtGui",
+        "description": "PySide6.QtGui",
+        "isExtraImport": true,
+        "detail": "PySide6.QtGui",
+        "documentation": {}
+    },
+    {
+        "label": "QColor",
         "importPath": "PySide6.QtGui",
         "description": "PySide6.QtGui",
         "isExtraImport": true,
@@ -6369,6 +6569,14 @@
         "documentation": {}
     },
     {
+        "label": "Converter",
+        "importPath": "limekit.framework.handle.scripts.swissknife.converters",
+        "description": "limekit.framework.handle.scripts.swissknife.converters",
+        "isExtraImport": true,
+        "detail": "limekit.framework.handle.scripts.swissknife.converters",
+        "documentation": {}
+    },
+    {
         "label": "destroy_engine",
         "importPath": "limekit.framework.core.engine.destroyer",
         "description": "limekit.framework.core.engine.destroyer",
@@ -6745,6 +6953,22 @@
         "documentation": {}
     },
     {
+        "label": "BaseWidget",
+        "importPath": "limekit.framework.components.base.base_widget",
+        "description": "limekit.framework.components.base.base_widget",
+        "isExtraImport": true,
+        "detail": "limekit.framework.components.base.base_widget",
+        "documentation": {}
+    },
+    {
+        "label": "BaseWidget",
+        "importPath": "limekit.framework.components.base.base_widget",
+        "description": "limekit.framework.components.base.base_widget",
+        "isExtraImport": true,
+        "detail": "limekit.framework.components.base.base_widget",
+        "documentation": {}
+    },
+    {
         "label": "TableItem",
         "importPath": "limekit.framework.components.controls.widgets.tableitem",
         "description": "limekit.framework.components.controls.widgets.tableitem",
@@ -6774,6 +6998,22 @@
         "description": "limekit.framework.components.controls.widgets.treeview_item",
         "isExtraImport": true,
         "detail": "limekit.framework.components.controls.widgets.treeview_item",
+        "documentation": {}
+    },
+    {
+        "label": "App",
+        "importPath": "limekit.framework.core.runner.app",
+        "description": "limekit.framework.core.runner.app",
+        "isExtraImport": true,
+        "detail": "limekit.framework.core.runner.app",
+        "documentation": {}
+    },
+    {
+        "label": "App",
+        "importPath": "limekit.framework.core.runner.app",
+        "description": "limekit.framework.core.runner.app",
+        "isExtraImport": true,
+        "detail": "limekit.framework.core.runner.app",
         "documentation": {}
     },
     {
@@ -7758,11 +7998,69 @@
         "documentation": {}
     },
     {
+        "label": "Spacer",
+        "importPath": "limekit.framework.components.controls.widgets.spacer",
+        "description": "limekit.framework.components.controls.widgets.spacer",
+        "isExtraImport": true,
+        "detail": "limekit.framework.components.controls.widgets.spacer",
+        "documentation": {}
+    },
+    {
         "label": "TabItem",
         "importPath": "limekit.framework.components.controls.widgets.containers.tabitem",
         "description": "limekit.framework.components.controls.widgets.containers.tabitem",
         "isExtraImport": true,
         "detail": "limekit.framework.components.controls.widgets.containers.tabitem",
+        "documentation": {}
+    },
+    {
+        "label": "TabBar",
+        "importPath": "limekit.framework.components.controls.widgets.containers.tabbar",
+        "description": "limekit.framework.components.controls.widgets.containers.tabbar",
+        "isExtraImport": true,
+        "detail": "limekit.framework.components.controls.widgets.containers.tabbar",
+        "documentation": {}
+    },
+    {
+        "label": "BaseLayout",
+        "importPath": "limekit.framework.components.base.base_layout",
+        "description": "limekit.framework.components.base.base_layout",
+        "isExtraImport": true,
+        "detail": "limekit.framework.components.base.base_layout",
+        "documentation": {}
+    },
+    {
+        "label": "BaseLayout",
+        "importPath": "limekit.framework.components.base.base_layout",
+        "description": "limekit.framework.components.base.base_layout",
+        "isExtraImport": true,
+        "detail": "limekit.framework.components.base.base_layout",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "LuaParser",
+        "importPath": "limekit.framework.core.engine.lua_parser",
+        "description": "limekit.framework.core.engine.lua_parser",
+        "isExtraImport": true,
+        "detail": "limekit.framework.core.engine.lua_parser",
+        "documentation": {}
+    },
+    {
+        "label": "gc",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "gc",
+        "description": "gc",
+        "detail": "gc",
         "documentation": {}
     },
     {
@@ -9660,7 +9958,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.base.base_layout",
         "description": "limekit.framework.components.base.base_layout",
-        "peekOfCode": "class BaseLayout:\n    \"\"\"Base class for HorizontalLayout and VerticalLayout to reduce code duplication.\"\"\"\n    def __init__(self, parent: Optional[QWidget] = None):\n        self._layout = self._create_layout()\n        if parent:\n            parent.setLayout(self._layout)\n    def _create_layout(self) -> QLayout:\n        \"\"\"To be implemented by subclasses (returns QHBoxLayout or QVBoxLayout).\"\"\"\n        raise NotImplementedError\n    def addChild(self, child: Union[QWidget, QLayout], stretch: int = 0) -> None:",
+        "peekOfCode": "class BaseLayout(QBoxLayout):\n    \"\"\"Base class for all layout wrappers\"\"\"\n    # Common alignment constants\n    ALIGNMENTS = {\n        \"leading\": Qt.AlignmentFlag.AlignLeading,\n        \"left\": Qt.AlignmentFlag.AlignLeft,\n        \"right\": Qt.AlignmentFlag.AlignRight,\n        \"trailing\": Qt.AlignmentFlag.AlignTrailing,\n        \"hcenter\": Qt.AlignmentFlag.AlignHCenter,\n        \"justify\": Qt.AlignmentFlag.AlignJustify,",
         "detail": "limekit.framework.components.base.base_layout",
         "documentation": {}
     },
@@ -9669,8 +9967,17 @@
         "kind": 6,
         "importPath": "limekit.framework.components.base.base_widget",
         "description": "limekit.framework.components.base.base_widget",
-        "peekOfCode": "class BaseWidget:\n    def __init__(self, widget: QWidget):\n        self.widget = widget\n    def enable(self):\n        self.widget.setEnabled(True)\n    def disable(self):\n        self.widget.setEnabled(False)\n    def setBackgroundColor(self, color):\n        self.widget.setStyleSheet(f\"background-color: {color};\")\n    def setFixedSizes(self, width, height):",
+        "peekOfCode": "class BaseWidget:\n    def setEnabled(self, enabled: bool):\n        super().setEnabled(enabled)\n    def setBackgroundColor(self, color):\n        self.setStyleSheet(f\"background-color: {color};\")\n    def setFixedSize(self, width, height):\n        super().setFixedSize(QSize(width, height))\n    def setStyle(self, style):\n        self.setStyleSheet(style)\n    # Also acts as the padding",
         "detail": "limekit.framework.components.base.base_widget",
+        "documentation": {}
+    },
+    {
+        "label": "BaseWidget",
+        "kind": 6,
+        "importPath": "limekit.framework.components.base._base_widget",
+        "description": "limekit.framework.components.base._base_widget",
+        "peekOfCode": "class BaseWidget:\n    def setEnabled(self, enabled: bool):\n        super().setEnabled(enabled)\n    def setBackgroundColor(self, color):\n        self.setStyleSheet(f\"background-color: {color};\")\n    def setFixedSize(self, width, height):\n        super().setFixedSize(QSize(width, height))\n    def setStyle(self, style):\n        self.setStyleSheet(style)\n    # Also acts as the padding",
+        "detail": "limekit.framework.components.base._base_widget",
         "documentation": {}
     },
     {
@@ -9777,7 +10084,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.dialogs.inputs.getmultiline",
         "description": "limekit.framework.components.controls.dialogs.inputs.getmultiline",
-        "peekOfCode": "class MultilineInputDialog(EnginePart):\n    name = \"__multilineInputDialog\"\n    @classmethod\n    def show(cls, parent, title, label, content):\n        # content is set to blank in lua \"app\" table\n        text, dialog = QInputDialog.getMultiLineText(parent, title, label, content)\n        return text if dialog else \"\"",
+        "peekOfCode": "class MultilineInputDialog(EnginePart):\n    name = \"__multilineInputDialog\"\n    @classmethod\n    def show(cls, parent, title, label, content):\n        # content is set to blank in lua \"app\" table\n        text, dialog = QInputDialog.getMultiLineText(parent, title, label, content)\n        return text if dialog else None",
         "detail": "limekit.framework.components.controls.dialogs.inputs.getmultiline",
         "documentation": {}
     },
@@ -9786,7 +10093,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.dialogs.inputs.gettext",
         "description": "limekit.framework.components.controls.dialogs.inputs.gettext",
-        "peekOfCode": "class TextInputDialog(EnginePart):\n    name = \"__textInputDialog\"\n    @classmethod\n    def show(cls, parent=None, title=\"Title\", text=\"Dialog content\"):\n        text, dialog = QInputDialog.getText(parent, title, text)\n        return text if dialog else \"\"\n    def isDone(self):\n        return self.dialog and self.text != \"\"\n    def getText(self):\n        return self.text",
+        "peekOfCode": "class TextInputDialog(EnginePart):\n    name = \"__textInputDialog\"\n    @classmethod\n    def show(cls, parent=None, title=\"Title\", text=\"Dialog content\"):\n        text, dialog = QInputDialog.getText(parent, title, text)\n        return text if dialog else None\n    def isDone(self):\n        return self.dialog and self.text != \"\"\n    def getText(self):\n        return self.text",
         "detail": "limekit.framework.components.controls.dialogs.inputs.gettext",
         "documentation": {}
     },
@@ -9831,7 +10138,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.dialogs.popups.question_popup",
         "description": "limekit.framework.components.controls.dialogs.popups.question_popup",
-        "peekOfCode": "class QuestionPopup(QMessageBox, EnginePart):\n    name = \"__qPopup\"\n    result = None\n    # The title can contain HTML elements too\n    def __init__(self, parent, title, message):\n        self.msg_box = self.question(parent, title, message)\n        # self.msg_box.setWindowTitle(title)\n        # self.msg_box.setText(message)\n        # Map the button text to the standard button\n        # self.button_map = {",
+        "peekOfCode": "class QuestionPopup(QMessageBox, EnginePart):\n    name = \"__qPopup\"\n    result = None\n    # The title can contain HTML elements too\n    def __init__(self, parent, title, message, buttons=None):\n        self.msg_box = self.question(\n            parent, title, message, self.__decideButtons(buttons)\n        )\n    def __decideButtons(self, _buttons):\n        buttons = (",
         "detail": "limekit.framework.components.controls.dialogs.popups.question_popup",
         "documentation": {}
     },
@@ -9854,15 +10161,6 @@
         "documentation": {}
     },
     {
-        "label": "Dialog",
-        "kind": 6,
-        "importPath": "limekit.framework.components.controls.dialogs.dialog",
-        "description": "limekit.framework.components.controls.dialogs.dialog",
-        "peekOfCode": "class Dialog(QDialog, EnginePart):\n    name = \"Modal\"\n    onShownEvent = None\n    onResizeEvent = None\n    onCloseEvent = None\n    onResizeEvent = None\n    def __init__(self, parent, title=\"Modal - Limkit\"):\n        super().__init__(parent)\n        self.setWindowTitle(title)\n        self.buttons = QDialogButtonBox.StandardButton.Ok",
-        "detail": "limekit.framework.components.controls.dialogs.dialog",
-        "documentation": {}
-    },
-    {
         "label": "TextInputDialog",
         "kind": 6,
         "importPath": "limekit.framework.components.controls.dialogs.error",
@@ -9876,7 +10174,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.dialogs.folderpicker",
         "description": "limekit.framework.components.controls.dialogs.folderpicker",
-        "peekOfCode": "class FolderPicker(QFileDialog, EnginePart):\n    name = \"__folderPickerDialog\"\n    def __init__(self):\n        super().__init__()\n    def display(self, parent, title, dir):\n        folder = self.getExistingDirectory(\n            parent, title, dir, options=QFileDialog.Option.ShowDirsOnly\n        )\n        return folder if folder else \"\"",
+        "peekOfCode": "class FolderPicker(QFileDialog, EnginePart):\n    name = \"__folderPickerDialog\"\n    def __init__(self):\n        super().__init__()\n    def display(self, parent, title, dir):\n        folder = self.getExistingDirectory(\n            parent, title, dir, options=QFileDialog.Option.ShowDirsOnly\n        )\n        return folder if folder else None",
         "detail": "limekit.framework.components.controls.dialogs.folderpicker",
         "documentation": {}
     },
@@ -9896,6 +10194,15 @@
         "description": "limekit.framework.components.controls.dialogs.messagebox",
         "peekOfCode": "class MessageBox(EnginePart):\n    name = \"__alert\"\n    result = None\n    def __init__(self, parent, title, text, icon, buttons):\n        buttons = Converter.list_(buttons)\n        self.dialog = QMessageBox(parent)\n        self.dialog.setWindowTitle(title)\n        self.dialog.setText(text)\n        # self.dialog.setStandardButtons(QMessageBox.Ok)\n        self.dialog.setIcon(self.__decideIcon(icon))",
         "detail": "limekit.framework.components.controls.dialogs.messagebox",
+        "documentation": {}
+    },
+    {
+        "label": "Modal",
+        "kind": 6,
+        "importPath": "limekit.framework.components.controls.dialogs.modal",
+        "description": "limekit.framework.components.controls.dialogs.modal",
+        "peekOfCode": "class Modal(QDialog, EnginePart):\n    # name = \"Modal\"\n    onShownEvent = None\n    onResizeEvent = None\n    onCloseEvent = None\n    onResizeEvent = None\n    def __init__(self, parent, title=\"Modal - Limkit\"):\n        super().__init__(parent)\n        self.setWindowTitle(title)\n        self.buttons = QDialogButtonBox.StandardButton.Ok",
+        "detail": "limekit.framework.components.controls.dialogs.modal",
         "documentation": {}
     },
     {
@@ -10011,7 +10318,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.containers.tab",
         "description": "limekit.framework.components.controls.widgets.containers.tab",
-        "peekOfCode": "class Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    def __init__(self):\n        super().__init__()\n        self.tabCloseRequested.connect(self.__handleTabClosing)\n    def setOnTabClose(self, onTabClosingFunc):\n        self.onTabClosingFunc = onTabClosingFunc\n    def __handleTabClosing(self, index):\n        if self.onTabClosingFunc:\n            self.onTabClosingFunc(self, index)",
+        "peekOfCode": "class Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    onTabChangeFunc = None\n    onTabMovedFunc = None\n    def __init__(self):\n        super().__init__()\n        self.tabCloseRequested.connect(self.__handleTabClosing)\n        self.currentChanged.connect(self.__handleTabChange)\n        self.tabBar().tabMoved.connect(self.__handleTabMoved)\n        # self.setTabBar(TabBar())",
         "detail": "limekit.framework.components.controls.widgets.containers.tab",
         "documentation": {}
     },
@@ -10173,7 +10480,7 @@
         "kind": 2,
         "importPath": "limekit.framework.components.controls.widgets.containers.tab",
         "description": "limekit.framework.components.controls.widgets.containers.tab",
-        "peekOfCode": "def setTabText(self, index: int, text: str) -> None: ...\ndef setTabToolTip(self, index: int, tip: str) -> None: ...\ndef setTabVisible(self, index: int, visible: bool) -> None: ...\ndef setTabsClosable(self, closeable: bool) -> None: ...\ndef showEvent(self, arg__1: PySide6.QtGui.QShowEvent) -> None: ...\ndef tabsClosable(self) -> bool: ...\n\"\"\"\nclass Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    def __init__(self):",
+        "peekOfCode": "def setTabText(self, index: int, text: str) -> None: ...\ndef setTabToolTip(self, index: int, tip: str) -> None: ...\ndef setTabVisible(self, index: int, visible: bool) -> None: ...\ndef setTabsClosable(self, closeable: bool) -> None: ...\ndef showEvent(self, arg__1: PySide6.QtGui.QShowEvent) -> None: ...\ndef tabsClosable(self) -> bool: ...\n\"\"\"\nclass Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    onTabChangeFunc = None",
         "detail": "limekit.framework.components.controls.widgets.containers.tab",
         "documentation": {}
     },
@@ -10182,7 +10489,7 @@
         "kind": 2,
         "importPath": "limekit.framework.components.controls.widgets.containers.tab",
         "description": "limekit.framework.components.controls.widgets.containers.tab",
-        "peekOfCode": "def setTabToolTip(self, index: int, tip: str) -> None: ...\ndef setTabVisible(self, index: int, visible: bool) -> None: ...\ndef setTabsClosable(self, closeable: bool) -> None: ...\ndef showEvent(self, arg__1: PySide6.QtGui.QShowEvent) -> None: ...\ndef tabsClosable(self) -> bool: ...\n\"\"\"\nclass Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    def __init__(self):\n        super().__init__()",
+        "peekOfCode": "def setTabToolTip(self, index: int, tip: str) -> None: ...\ndef setTabVisible(self, index: int, visible: bool) -> None: ...\ndef setTabsClosable(self, closeable: bool) -> None: ...\ndef showEvent(self, arg__1: PySide6.QtGui.QShowEvent) -> None: ...\ndef tabsClosable(self) -> bool: ...\n\"\"\"\nclass Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    onTabChangeFunc = None\n    onTabMovedFunc = None",
         "detail": "limekit.framework.components.controls.widgets.containers.tab",
         "documentation": {}
     },
@@ -10191,7 +10498,7 @@
         "kind": 2,
         "importPath": "limekit.framework.components.controls.widgets.containers.tab",
         "description": "limekit.framework.components.controls.widgets.containers.tab",
-        "peekOfCode": "def setTabVisible(self, index: int, visible: bool) -> None: ...\ndef setTabsClosable(self, closeable: bool) -> None: ...\ndef showEvent(self, arg__1: PySide6.QtGui.QShowEvent) -> None: ...\ndef tabsClosable(self) -> bool: ...\n\"\"\"\nclass Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    def __init__(self):\n        super().__init__()\n        self.tabCloseRequested.connect(self.__handleTabClosing)",
+        "peekOfCode": "def setTabVisible(self, index: int, visible: bool) -> None: ...\ndef setTabsClosable(self, closeable: bool) -> None: ...\ndef showEvent(self, arg__1: PySide6.QtGui.QShowEvent) -> None: ...\ndef tabsClosable(self) -> bool: ...\n\"\"\"\nclass Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    onTabChangeFunc = None\n    onTabMovedFunc = None\n    def __init__(self):",
         "detail": "limekit.framework.components.controls.widgets.containers.tab",
         "documentation": {}
     },
@@ -10200,7 +10507,7 @@
         "kind": 2,
         "importPath": "limekit.framework.components.controls.widgets.containers.tab",
         "description": "limekit.framework.components.controls.widgets.containers.tab",
-        "peekOfCode": "def setTabsClosable(self, closeable: bool) -> None: ...\ndef showEvent(self, arg__1: PySide6.QtGui.QShowEvent) -> None: ...\ndef tabsClosable(self) -> bool: ...\n\"\"\"\nclass Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    def __init__(self):\n        super().__init__()\n        self.tabCloseRequested.connect(self.__handleTabClosing)\n    def setOnTabClose(self, onTabClosingFunc):",
+        "peekOfCode": "def setTabsClosable(self, closeable: bool) -> None: ...\ndef showEvent(self, arg__1: PySide6.QtGui.QShowEvent) -> None: ...\ndef tabsClosable(self) -> bool: ...\n\"\"\"\nclass Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    onTabChangeFunc = None\n    onTabMovedFunc = None\n    def __init__(self):\n        super().__init__()",
         "detail": "limekit.framework.components.controls.widgets.containers.tab",
         "documentation": {}
     },
@@ -10209,7 +10516,7 @@
         "kind": 2,
         "importPath": "limekit.framework.components.controls.widgets.containers.tab",
         "description": "limekit.framework.components.controls.widgets.containers.tab",
-        "peekOfCode": "def showEvent(self, arg__1: PySide6.QtGui.QShowEvent) -> None: ...\ndef tabsClosable(self) -> bool: ...\n\"\"\"\nclass Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    def __init__(self):\n        super().__init__()\n        self.tabCloseRequested.connect(self.__handleTabClosing)\n    def setOnTabClose(self, onTabClosingFunc):\n        self.onTabClosingFunc = onTabClosingFunc",
+        "peekOfCode": "def showEvent(self, arg__1: PySide6.QtGui.QShowEvent) -> None: ...\ndef tabsClosable(self) -> bool: ...\n\"\"\"\nclass Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    onTabChangeFunc = None\n    onTabMovedFunc = None\n    def __init__(self):\n        super().__init__()\n        self.tabCloseRequested.connect(self.__handleTabClosing)",
         "detail": "limekit.framework.components.controls.widgets.containers.tab",
         "documentation": {}
     },
@@ -10218,8 +10525,17 @@
         "kind": 2,
         "importPath": "limekit.framework.components.controls.widgets.containers.tab",
         "description": "limekit.framework.components.controls.widgets.containers.tab",
-        "peekOfCode": "def tabsClosable(self) -> bool: ...\n\"\"\"\nclass Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    def __init__(self):\n        super().__init__()\n        self.tabCloseRequested.connect(self.__handleTabClosing)\n    def setOnTabClose(self, onTabClosingFunc):\n        self.onTabClosingFunc = onTabClosingFunc\n    def __handleTabClosing(self, index):",
+        "peekOfCode": "def tabsClosable(self) -> bool: ...\n\"\"\"\nclass Tab(QTabWidget, EnginePart):\n    onTabClosingFunc = None\n    onTabChangeFunc = None\n    onTabMovedFunc = None\n    def __init__(self):\n        super().__init__()\n        self.tabCloseRequested.connect(self.__handleTabClosing)\n        self.currentChanged.connect(self.__handleTabChange)",
         "detail": "limekit.framework.components.controls.widgets.containers.tab",
+        "documentation": {}
+    },
+    {
+        "label": "TabBar",
+        "kind": 6,
+        "importPath": "limekit.framework.components.controls.widgets.containers.tabbar",
+        "description": "limekit.framework.components.controls.widgets.containers.tabbar",
+        "peekOfCode": "class TabBar(QTabBar):\n    def __init__(self):\n        super().__init__()",
+        "detail": "limekit.framework.components.controls.widgets.containers.tabbar",
         "documentation": {}
     },
     {
@@ -10281,7 +10597,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.button",
         "description": "limekit.framework.components.controls.widgets.button",
-        "peekOfCode": "class Button(QPushButton, BaseWidget, EnginePart):\n    onClickFunc = None\n    def __init__(self, text=\"Button\"):\n        super().__init__()\n        BaseWidget.__init__(self, widget=self)\n        self.setText(text)\n        self.clicked.connect(self.__handleOnClick)\n    def setOnClick(self, onClickFunc):\n        self.onClickFunc = onClickFunc\n        # mouse_event = QApplication.mouseButtons()",
+        "peekOfCode": "class Button(BaseWidget, QPushButton, EnginePart):\n    onClickFunc = None\n    def __init__(self, text=\"Button\"):\n        super().__init__()\n        self.setText(text)\n        self.clicked.connect(self.__handleOnClick)\n    def setOnClick(self, onClickFunc):\n        self.onClickFunc = onClickFunc\n        # mouse_event = QApplication.mouseButtons()\n        # if mouse_event == Qt.LeftButton:",
         "detail": "limekit.framework.components.controls.widgets.button",
         "documentation": {}
     },
@@ -10299,7 +10615,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.checkbox",
         "description": "limekit.framework.components.controls.widgets.checkbox",
-        "peekOfCode": "class CheckBox(QCheckBox, BaseWidget, EnginePart):\n    onStateChangedFunc = None\n    def __init__(self, text=\"\"):\n        super().__init__()\n        BaseWidget.__init__(self, widget=self)\n        self.setText(text)\n        self.clicked.connect(self._handleStateChange)\n    def _handleStateChange(self, state):\n        if self.onStateChangedFunc:\n            try:",
+        "peekOfCode": "class CheckBox(BaseWidget, QCheckBox, EnginePart):\n    onStateChangedFunc = None\n    def __init__(self, text=\"\"):\n        super().__init__()\n        self.setText(text)\n        self.clicked.connect(self._handleStateChange)\n    def _handleStateChange(self, state):\n        if self.onStateChangedFunc:\n            try:\n                self.onStateChangedFunc(self, state)",
         "detail": "limekit.framework.components.controls.widgets.checkbox",
         "documentation": {}
     },
@@ -10317,7 +10633,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.commandbutton",
         "description": "limekit.framework.components.controls.widgets.commandbutton",
-        "peekOfCode": "class CommandButton(QCommandLinkButton, BaseWidget, EnginePart):\n    onClickFunc = None\n    def __init__(self, text=\"Button\"):\n        super().__init__()\n        BaseWidget.__init__(self, widget=self)\n        self.setText(text)\n        self.clicked.connect(self.__handleOnClick)\n    def setOnClick(self, onClickFunc):\n        self.onClickFunc = onClickFunc\n    def __handleOnClick(self):",
+        "peekOfCode": "class CommandButton(BaseWidget, QCommandLinkButton, EnginePart):\n    onClickFunc = None\n    def __init__(self, text=\"Button\"):\n        super().__init__()\n        self.setText(text)\n        self.clicked.connect(self.__handleOnClick)\n    def setOnClick(self, onClickFunc):\n        self.onClickFunc = onClickFunc\n    def __handleOnClick(self):\n        if self.onClickFunc:",
         "detail": "limekit.framework.components.controls.widgets.commandbutton",
         "documentation": {}
     },
@@ -10326,7 +10642,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.container",
         "description": "limekit.framework.components.controls.widgets.container",
-        "peekOfCode": "class Container(QWidget, EnginePart):\n    # name = \"Container\"\n    def __init__(self):\n        super().__init__()\n    def __init__(self, parent=None):\n        super().__init__(parent)\n    def setLayout(self, layout):\n        super().setLayout(layout)\n    def setSize(self, width, height):\n        super().resize(width, height)",
+        "peekOfCode": "class Container(BaseWidget, QWidget, EnginePart):\n    def __init__(self, parent=None):\n        super().__init__(parent=parent)\n    def setLayout(self, layout):\n        super().setLayout(layout)\n    def setSize(self, width, height):\n        super().resize(width, height)\n    def getChild(self):\n        return self.widget()\n    def getLayout(self):",
         "detail": "limekit.framework.components.controls.widgets.container",
         "documentation": {}
     },
@@ -10506,7 +10822,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.gifplayer",
         "description": "limekit.framework.components.controls.widgets.gifplayer",
-        "peekOfCode": "class GifPlayer(QLabel, BaseWidget, EnginePart):\n    def __init__(self, filename):\n        super().__init__()\n        BaseWidget.__init__(self, widget=self)\n        # Load the file into a QMovie\n        self.movie = QMovie(filename)\n        # size = self.movie.scaledSize()\n        # self.setGeometry(200, 200, size.width(), size.height())\n        # self.setSize(20, 20)\n        self.movie_screen = QLabel()",
+        "peekOfCode": "class GifPlayer(BaseWidget, QLabel, EnginePart):\n    def __init__(self, filename):\n        super().__init__()\n        # Load the file into a QMovie\n        self.movie = QMovie(filename)\n        # size = self.movie.scaledSize()\n        # self.setGeometry(200, 200, size.width(), size.height())\n        # self.setSize(20, 20)\n        # self.setLayout(main_layout)\n        # Add the QMovie object to the label",
         "detail": "limekit.framework.components.controls.widgets.gifplayer",
         "documentation": {}
     },
@@ -10515,7 +10831,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.groupbox",
         "description": "limekit.framework.components.controls.widgets.groupbox",
-        "peekOfCode": "class GroupBox(QGroupBox, BaseWidget, EnginePart):\n    def __init__(self, title=\"\"):\n        super().__init__(title)\n        BaseWidget.__init__(self, widget=self)\n    def setLayout(self, layout):\n        super().setLayout(layout)\n    def setStyle(self, styleSheet):\n        self.setStyleSheet(styleSheet)\n    def setBackgroundColor(self, color):\n        super().setStyleSheet(f\"background-color: {color};\")",
+        "peekOfCode": "class GroupBox(BaseWidget, QGroupBox, EnginePart):\n    def __init__(self, title=\"\"):\n        super().__init__(title)\n    def setLayout(self, layout):\n        super().setLayout(layout)\n    def setStyle(self, styleSheet):\n        self.setStyleSheet(styleSheet)\n    def getChild(self):\n        return self.widget()\n    def getLayout(self):",
         "detail": "limekit.framework.components.controls.widgets.groupbox",
         "documentation": {}
     },
@@ -10551,7 +10867,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.label",
         "description": "limekit.framework.components.controls.widgets.label",
-        "peekOfCode": "class Label(QLabel, BaseWidget, EnginePart):\n    onClickFunc = None\n    # @lupa.unpacks_lua_table\n    def __init__(self, text=\"Label\"):\n        super().__init__()\n        BaseWidget.__init__(self, widget=self)\n        self.pixmap = None\n        self.setText(text)\n        # self.clicked.connect(self.__handleOnClick)\n    def mousePressEvent(self, ev: QMouseEvent):",
+        "peekOfCode": "class Label(BaseWidget, QLabel, EnginePart):\n    onClickFunc = None\n    # @lupa.unpacks_lua_table\n    def __init__(self, text=\"Label\"):\n        super().__init__()\n        self.pixmap = None\n        self.setText(text)\n        # self.clicked.connect(self.__handleOnClick)\n    def mousePressEvent(self, ev: QMouseEvent):\n        if self.onClickFunc:",
         "detail": "limekit.framework.components.controls.widgets.label",
         "documentation": {}
     },
@@ -10578,7 +10894,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.listbox",
         "description": "limekit.framework.components.controls.widgets.listbox",
-        "peekOfCode": "class ListBox(QListWidget, BaseWidget, EnginePart):\n    onCurrentItemChangeFunc = None\n    onDoubleClickCurrentItemChangeFunc = None\n    def __init__(self, items=None):\n        # By defaulf, the ViewMode is on ListMode\n        super().__init__(parent=None)\n        BaseWidget.__init__(self, widget=self)\n        if items:\n            self.setItems(items)\n        self.setAltRowColors(True)",
+        "peekOfCode": "class ListBox(BaseWidget, QListWidget, EnginePart):\n    onCurrentItemChangeFunc = None\n    onDoubleClickCurrentItemChangeFunc = None\n    def __init__(self, items=None):\n        # By defaulf, the ViewMode is on ListMode\n        super().__init__(parent=None)\n        if items:\n            self.setItems(items)\n        self.setAltRowColors(True)\n        self.currentItemChanged.connect(self.__handleItemSelect)",
         "detail": "limekit.framework.components.controls.widgets.listbox",
         "documentation": {}
     },
@@ -10587,7 +10903,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.progressbar",
         "description": "limekit.framework.components.controls.widgets.progressbar",
-        "peekOfCode": "class ProgressBar(QProgressBar, BaseWidget, EnginePart):\n    def __init__(self):\n        super().__init__()\n        BaseWidget.__init__(self, widget=self)\n    # Setting the range 0,0 makes the progress bar indeterminate\n    def setRange(self, start, end):\n        super().setRange(start, end)\n    def setValue(self, value):\n        super().setValue(value)\n    def getValue(self):",
+        "peekOfCode": "class ProgressBar(BaseWidget, QProgressBar, EnginePart):\n    def __init__(self):\n        super().__init__()\n    # Setting the range 0,0 makes the progress bar indeterminate\n    def setRange(self, start, end):\n        super().setRange(start, end)\n    def setValue(self, value):\n        super().setValue(value)\n    def getValue(self):\n        return self.value()",
         "detail": "limekit.framework.components.controls.widgets.progressbar",
         "documentation": {}
     },
@@ -10605,8 +10921,17 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.scroller",
         "description": "limekit.framework.components.controls.widgets.scroller",
-        "peekOfCode": "class Scroller(QScrollArea, BaseWidget, EnginePart):\n    onScrollFunc = None\n    def __init__(self):\n        super().__init__(parent=None)\n        BaseWidget.__init__(self, widget=self)\n        self.vertical_scrollbar = self.verticalScrollBar()\n        self.horizontal_scrollbar = self.horizontalScrollBar()\n        self.parent_widget = QWidget()\n        self.setWidget(self.parent_widget)\n        self.setHorizontalScrollProperty(\"required\")",
+        "peekOfCode": "class Scroller(BaseWidget, QScrollArea, EnginePart):\n    onScrollFunc = None\n    def __init__(self):\n        super().__init__(parent=None)\n        self.vertical_scrollbar = self.verticalScrollBar()\n        self.horizontal_scrollbar = self.horizontalScrollBar()\n        self.parent_widget = QWidget()\n        self.setWidget(self.parent_widget)\n        self.setHorizontalScrollBarBehavior(\"overflow\")\n        self.setVerticalScrollBarBehavior(\"overflow\")",
         "detail": "limekit.framework.components.controls.widgets.scroller",
+        "documentation": {}
+    },
+    {
+        "label": "Separator",
+        "kind": 6,
+        "importPath": "limekit.framework.components.controls.widgets.separator",
+        "description": "limekit.framework.components.controls.widgets.separator",
+        "peekOfCode": "class Separator(QFrame, EnginePart):\n    def __init__(self, orientation=\"horizontal\", parent=None):\n        super().__init__(parent)\n        self.set_orientation(orientation)\n        # Default styling\n        self.setLineWidth(1)\n        self.setFrameShadow(QFrame.Shadow.Sunken)\n        self.setMidLineWidth(0)\n    # Private method to set the frame shape based on orientation\n    def set_orientation(self, orientation):",
+        "detail": "limekit.framework.components.controls.widgets.separator",
         "documentation": {}
     },
     {
@@ -10625,6 +10950,15 @@
         "description": "limekit.framework.components.controls.widgets.slidingstackedwidget",
         "peekOfCode": "class SlidingStackedWidget(QStackedWidget, EnginePart):\n    LEFT2RIGHT, RIGHT2LEFT, TOP2BOTTOM, BOTTOM2TOP, AUTOMATIC = range(5)\n    def __init__(self):\n        super().__init__(parent=None)\n        self._pnow = QPoint(0, 0)\n        self._speed = 500\n        self._now = 0\n        self._current = 0\n        self._next = 0\n        self._active = 0",
         "detail": "limekit.framework.components.controls.widgets.slidingstackedwidget",
+        "documentation": {}
+    },
+    {
+        "label": "Spacer",
+        "kind": 6,
+        "importPath": "limekit.framework.components.controls.widgets.spacer",
+        "description": "limekit.framework.components.controls.widgets.spacer",
+        "peekOfCode": "class Spacer(QSpacerItem, EnginePart):\n    def __init__(self, width, height):\n        super().__init__(width, height)",
+        "detail": "limekit.framework.components.controls.widgets.spacer",
         "documentation": {}
     },
     {
@@ -10821,7 +11155,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.textfield",
         "description": "limekit.framework.components.controls.widgets.textfield",
-        "peekOfCode": "class TextField(QTextEdit, BaseWidget, EnginePart):\n    onTextChangedFunc = None\n    onTextSelectionChangedFunc = None\n    onCursorPositionChangedFunc = None\n    def __init__(self, text=\"\"):\n        super().__init__(text)\n        BaseWidget.__init__(self, widget=self)\n        self.textChanged.connect(self.__handleTextChange)\n        self.cursorPositionChanged.connect(self.__handleCursorChange)\n        # self.selectionChanged.connect(self.__handleTextSelection)",
+        "peekOfCode": "class TextField(BaseWidget, QTextEdit, EnginePart):\n    onTextChangedFunc = None\n    onTextSelectionChangedFunc = None\n    onCursorPositionChangedFunc = None\n    onKeyPressChangeFunc = None\n    onContentChangeFunc = None\n    onModificationChangeFunc = None\n    onVerticalScrollBarValueChangeFunc = None\n    onHorizontalScrollBarValueChangeFunc = None\n    def __init__(self, text=None):",
         "detail": "limekit.framework.components.controls.widgets.textfield",
         "documentation": {}
     },
@@ -10830,7 +11164,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.treeview_item",
         "description": "limekit.framework.components.controls.widgets.treeview_item",
-        "peekOfCode": "class TreeViewItem(QStandardItem, EnginePart):\n    onClickFunc = None\n    def __init__(self, text):\n        super().__init__(text)\n        # BaseWidget.__init__(self, widget=self)\n    def setIcon(self, icon):\n        if isinstance(icon, str):\n            super().setIcon(QIcon(icon))\n            return\n        super().setIcon(icon)",
+        "peekOfCode": "class TreeViewItem(QStandardItem, EnginePart):\n    onClickFunc = None\n    def __init__(self, text):\n        super().__init__(text)\n    def setIcon(self, icon):\n        if isinstance(icon, str):\n            super().setIcon(QIcon(icon))\n            return\n        super().setIcon(icon)\n    def setEditable(self, editable):",
         "detail": "limekit.framework.components.controls.widgets.treeview_item",
         "documentation": {}
     },
@@ -10839,7 +11173,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.treewidget",
         "description": "limekit.framework.components.controls.widgets.treewidget",
-        "peekOfCode": "class TreeView(QTreeView, BaseWidget, EnginePart):\n    onClickFunc = None\n    def __init__(self):\n        super().__init__()\n        BaseWidget.__init__(self, widget=self)\n        self.model = QStandardItemModel()\n        self.setModel(self.model)\n    def setMaxColumns(self, num):\n        self.setColumnCount(num)\n    def setHeaders(self, headers):",
+        "peekOfCode": "class TreeView(BaseWidget, QTreeView, EnginePart):\n    onClickFunc = None\n    def __init__(self):\n        super().__init__()\n        self.model = QStandardItemModel()\n        self.setModel(self.model)\n    def setMaxColumns(self, num):\n        self.setColumnCount(num)\n    def setHeaders(self, headers):\n        self.model.setHorizontalHeaderLabels(headers.values())",
         "detail": "limekit.framework.components.controls.widgets.treewidget",
         "documentation": {}
     },
@@ -10848,7 +11182,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.controls.widgets.vertical_line",
         "description": "limekit.framework.components.controls.widgets.vertical_line",
-        "peekOfCode": "class VLine(QFrame, EnginePart):\n    def __init__(self):\n        super().__init__()\n        self.setFrameShape(QFrame.VLine)\n        self.setFrameShadow(QFrame.Sunken)",
+        "peekOfCode": "class VLine(QFrame, EnginePart):\n    def __init__(self):\n        super().__init__()\n        self.setFrameShape(QFrame.Shape.VLine)\n        self.setFrameShadow(QFrame.Shadow.Sunken)",
         "detail": "limekit.framework.components.controls.widgets.vertical_line",
         "documentation": {}
     },
@@ -10868,6 +11202,24 @@
         "description": "limekit.framework.components.gui.dropshadow",
         "peekOfCode": "class DropShadow(QGraphicsDropShadowEffect, EnginePart):\n    @lupa.unpacks_lua_table\n    def __init__(self, widget):\n        super().__init__(parent=None)\n        self = QGraphicsDropShadowEffect(self)\n        self.setBlurRadius(50)\n        # shadow.setColor('#7090B0')\n        # Calculate alpha value for 15% transparency\n        alpha_percentage = 20\n        alpha_value = alpha_percentage / 100.0",
         "detail": "limekit.framework.components.gui.dropshadow",
+        "documentation": {}
+    },
+    {
+        "label": "KeyBoard",
+        "kind": 6,
+        "importPath": "limekit.framework.components.gui.keyboard",
+        "description": "limekit.framework.components.gui.keyboard",
+        "peekOfCode": "class KeyBoard(EnginePart):\n    \"\"\"Utility class to check if a pressed key matches a given string (e.g., 'A', 'Enter', 'Ctrl+A').\"\"\"\n    # Mapping of string keys to Qt.Key_* constants\n    KEY_MAP = {\n        # Letters (A-Z)\n        **{chr(k): getattr(Qt, f\"Key_{chr(k)}\") for k in range(ord(\"A\"), ord(\"Z\") + 1)},\n        # Numbers (0-9)\n        **{str(k): getattr(Qt, f\"Key_{k}\") for k in range(0, 10)},\n        # Function keys (F1-F24)\n        **{f\"F{k}\": getattr(Qt, f\"Key_F{k}\") for k in range(1, 25)},",
+        "detail": "limekit.framework.components.gui.keyboard",
+        "documentation": {}
+    },
+    {
+        "label": "KeyboardShortcut",
+        "kind": 6,
+        "importPath": "limekit.framework.components.gui.keyboard_shortcut",
+        "description": "limekit.framework.components.gui.keyboard_shortcut",
+        "peekOfCode": "class KeyboardShortcut(EnginePart):\n    shortcutKeyFunc = None\n    def __init__(self, window, shortcut) -> None:\n        self.key_sequence = QKeySequence(shortcut)\n        self.quitSc = QShortcut(self.key_sequence, window)\n        self.quitSc.activated.connect(self.__handleKeys)\n    def __handleKeys(self):\n        if self.shortcutKeyFunc:\n            self.shortcutKeyFunc()\n    def setOnKeyPress(self, shortcutKeyFunc):",
+        "detail": "limekit.framework.components.gui.keyboard_shortcut",
         "documentation": {}
     },
     {
@@ -10938,7 +11290,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.layouts.hlayout",
         "description": "limekit.framework.components.layouts.hlayout",
-        "peekOfCode": "class HorizontalLayout(QHBoxLayout, EnginePart):\n    name = \"HLayout\"\n    def __init__(self):\n        super().__init__(parent=None)\n    def addChild(self, child, stretch=0):\n        self.addWidget(child, stretch)\n    def addLayout(self, lay):\n        super().addLayout(lay)\n    def getCount(self):\n        return self.count()",
+        "peekOfCode": "class HorizontalLayout(BaseLayout, EnginePart):\n    name = \"HLayout\"\n    def __init__(self, parent=None):\n        super().__init__(QBoxLayout.Direction.LeftToRight, parent=parent)",
         "detail": "limekit.framework.components.layouts.hlayout",
         "documentation": {}
     },
@@ -10956,7 +11308,7 @@
         "kind": 6,
         "importPath": "limekit.framework.components.layouts.vlayout",
         "description": "limekit.framework.components.layouts.vlayout",
-        "peekOfCode": "class VerticalLayout(QVBoxLayout, EnginePart):\n    name = \"VLayout\"\n    def __init__(self, parent=None):\n        super().__init__(parent)\n    def addChild(self, child, stretch=0):\n        self.addWidget(child, stretch)\n    def setContentAlignment(self, *alignments):\n        qt_alignments = {\n            \"leading\": Qt.AlignmentFlag.AlignLeading,\n            \"left\": Qt.AlignmentFlag.AlignLeft,",
+        "peekOfCode": "class VerticalLayout(BaseLayout, EnginePart):\n    name = \"VLayout\"\n    def __init__(self, parent=None):\n        super().__init__(QBoxLayout.Direction.TopToBottom, parent=parent)",
         "detail": "limekit.framework.components.layouts.vlayout",
         "documentation": {}
     },
@@ -10992,7 +11344,7 @@
         "kind": 6,
         "importPath": "limekit.framework.core.engine.app_engine",
         "description": "limekit.framework.core.engine.app_engine",
-        "peekOfCode": "class Engine:\n    # _instance = None\n    # For whatever or whoever's reason, dare not have two engine instances running\n    # Here's your singleton design pattern\n    # def __new__(cls):\n    #     if cls._instance is None:\n    #         cls._instance = super().__new__(cls)\n    #         cls._instance.engine = None\n    #     return cls._instance\n    def __init__(self):",
+        "peekOfCode": "class Engine:\n    def __init__(self):\n        self.projects_dir = \"\"\n        self.app = App()  # holds the PySide6 QApplication\n        self.app_events = AppEvents()\n        self.routing = Routing()\n        self.limekit_root_dir = settings.limekit_SITEPACKAGE_DIR\n        # only the widgets or corresponding widget items to be loaded will be stored here\n        self.loaded_user_classes = set()\n        # self.plugin_manager = PluginManager()  # The code that init all user plugins",
         "detail": "limekit.framework.core.engine.app_engine",
         "documentation": {}
     },
@@ -11021,6 +11373,15 @@
         "description": "limekit.framework.core.engine.global_",
         "peekOfCode": "class GlobalEngine:\n    global_engine = None",
         "detail": "limekit.framework.core.engine.global_",
+        "documentation": {}
+    },
+    {
+        "label": "LuaParser",
+        "kind": 6,
+        "importPath": "limekit.framework.core.engine.lua_parser",
+        "description": "limekit.framework.core.engine.lua_parser",
+        "peekOfCode": "class LuaParser:\n    def remove_lua_comments(self, content):\n        \"\"\"Remove all Lua comments from the content.\"\"\"\n        # Remove block comments: --[[ ... ]]\n        content = re.sub(r\"--\\[\\[.*?\\]\\]\", \"\", content, flags=re.DOTALL)\n        # Remove line comments: -- ...\n        content = re.sub(r\"--.*$\", \"\", content, flags=re.MULTILINE)\n        return content\n    def find_function_definitions(self, content):\n        \"\"\"Find all function definitions in the Lua file.\"\"\"",
+        "detail": "limekit.framework.core.engine.lua_parser",
         "documentation": {}
     },
     {
@@ -11132,12 +11493,39 @@
         "documentation": {}
     },
     {
+        "label": "RegularExpression",
+        "kind": 6,
+        "importPath": "limekit.framework.gui.regular_expression",
+        "description": "limekit.framework.gui.regular_expression",
+        "peekOfCode": "class RegularExpression(QRegularExpression, EnginePart):\n    onHighlightBlockFunc = None\n    def __init__(self, regex):\n        super().__init__(regex)",
+        "detail": "limekit.framework.gui.regular_expression",
+        "documentation": {}
+    },
+    {
         "label": "QtSignal",
         "kind": 6,
         "importPath": "limekit.framework.gui.signal",
         "description": "limekit.framework.gui.signal",
         "peekOfCode": "class QtSignal(QObject, EnginePart):\n    \"\"\"\n    Signals are good when working with threads\n    \"\"\"\n    name = \"Signal\"\n    onSignalFunc = None\n    qt_signal = Signal()\n    def __init__(self):\n        super().__init__()\n        self.qt_signal.connect(self.__handleSignalEmit)",
         "detail": "limekit.framework.gui.signal",
+        "documentation": {}
+    },
+    {
+        "label": "SyntaxHighlighter",
+        "kind": 6,
+        "importPath": "limekit.framework.gui.syntax_highlighter",
+        "description": "limekit.framework.gui.syntax_highlighter",
+        "peekOfCode": "class SyntaxHighlighter(QSyntaxHighlighter, EnginePart):\n    onHighlightBlockFunc = None\n    def __init__(self, parent: QTextEdit = None):\n        super().__init__(parent.document())\n    def setOnHighlighBlock(self, onHighlightBlockFunc):\n        self.onHighlightBlockFunc = onHighlightBlockFunc\n    def highlightBlock(self, text):\n        if self.onHighlightBlockFunc:\n            self.onHighlightBlockFunc(self, text)\n    def setFormat(self, start, length, format):",
+        "detail": "limekit.framework.gui.syntax_highlighter",
+        "documentation": {}
+    },
+    {
+        "label": "TextFormat",
+        "kind": 6,
+        "importPath": "limekit.framework.gui.text_format",
+        "description": "limekit.framework.gui.text_format",
+        "peekOfCode": "class TextFormat(QTextCharFormat, EnginePart):\n    def __init__(self):\n        super().__init__()\n    def setForegroundColor(self, r, g, b):\n        self.setForeground(QColor(r, g, b))\n    def setFontWeight(self, style):\n        weight_mapping = {\n            \"thin\": QFont.Weight.Thin,\n            \"extralight\": QFont.Weight.ExtraLight,\n            \"light\": QFont.Weight.Light,",
+        "detail": "limekit.framework.gui.text_format",
         "documentation": {}
     },
     {
@@ -11161,19 +11549,28 @@
     {
         "label": "SqliteDB3",
         "kind": 6,
-        "importPath": "limekit.framework.handle.database.sqlite",
-        "description": "limekit.framework.handle.database.sqlite",
-        "peekOfCode": "class SqliteDB3(EnginePart):\n    name = \"Sqlite3\"\n    def __init__(self, db=\"\"):\n        if db == \":memory:\":\n            self.connection = sqlite3.connect(\":memory:\")\n        else:\n            self.connection = sqlite3.connect(db)\n        self.command = self.connection.cursor()\n    def save(self):\n        self.connection.commit()",
-        "detail": "limekit.framework.handle.database.sqlite",
+        "importPath": "limekit.framework.handle.database.sqlite3",
+        "description": "limekit.framework.handle.database.sqlite3",
+        "peekOfCode": "class SqliteDB3(EnginePart):\n    \"\"\"\n    An advanced SQLite3 database wrapper with extended functionality.\n    Example Usage:\n        db = SqliteDB3(\"mydatabase.db\")\n        db.create_table(\"users\", {\n            \"id\": \"INTEGER PRIMARY KEY AUTOINCREMENT\",\n            \"name\": \"TEXT NOT NULL\",\n            \"email\": \"TEXT UNIQUE\"\n        })",
+        "detail": "limekit.framework.handle.database.sqlite3",
         "documentation": {}
     },
     {
-        "label": "KeyboardShortcut",
+        "label": "SqliteError",
         "kind": 6,
-        "importPath": "limekit.framework.handle.keyboard_shortcuts.keys",
-        "description": "limekit.framework.handle.keyboard_shortcuts.keys",
-        "peekOfCode": "class KeyboardShortcut(EnginePart):\n    shortcutKeyFunc = None\n    def __init__(self, window, shortcut) -> None:\n        self.key_sequence = QKeySequence(shortcut)\n        self.quitSc = QShortcut(self.key_sequence, window)\n        self.quitSc.activated.connect(self.__handleKeys)\n    def __handleKeys(self):\n        if self.shortcutKeyFunc:\n            self.shortcutKeyFunc()\n    def setOnKeyPress(self, shortcutKeyFunc):",
-        "detail": "limekit.framework.handle.keyboard_shortcuts.keys",
+        "importPath": "limekit.framework.handle.database.sqlite3",
+        "description": "limekit.framework.handle.database.sqlite3",
+        "peekOfCode": "class SqliteError(Exception):\n    \"\"\"Custom exception for SQLite operations.\"\"\"\n    pass",
+        "detail": "limekit.framework.handle.database.sqlite3",
+        "documentation": {}
+    },
+    {
+        "label": "SqliteDB3",
+        "kind": 6,
+        "importPath": "limekit.framework.handle.database._sqlite",
+        "description": "limekit.framework.handle.database._sqlite",
+        "peekOfCode": "class SqliteDB3:\n    name = \"Sqlite3\"\n    def __init__(self, db=\"\"):\n        if db == \":memory:\":\n            self.connection = sqlite3.connect(\":memory:\")\n        else:\n            self.connection = sqlite3.connect(db)\n        self.command = self.connection.cursor()\n    def save(self):\n        self.connection.commit()",
+        "detail": "limekit.framework.handle.database._sqlite",
         "documentation": {}
     },
     {
@@ -11361,7 +11758,7 @@
         "kind": 6,
         "importPath": "limekit.framework.handle.scripts.swissknife.utils",
         "description": "limekit.framework.handle.scripts.swissknife.utils",
-        "peekOfCode": "class WeightedGraph:\n    infinity_number = float(\"inf\")\n    def __init__(self):\n        self.graph = {}  # Initialize an empty graph\n    # Method to add an edge to the graph with a specified weight\n    def add_edge(self, start, end, weight):\n        if start not in self.graph:\n            self.graph[\n                start\n            ] = (",
+        "peekOfCode": "class WeightedGraph:\n    infinity_number = float(\"inf\")\n    def __init__(self):\n        self.graph = {}  # Initialize an empty graph\n    # Method to add an edge to the graph with a specified weight\n    def add_edge(self, start, end, weight):\n        if start not in self.graph:\n            self.graph[start] = (\n                []\n            )  # Initialize an empty list for the start node if it's not already in the graph",
         "detail": "limekit.framework.handle.scripts.swissknife.utils",
         "documentation": {}
     },
@@ -11435,15 +11832,6 @@
         "description": "limekit.framework.handle.system.timer",
         "peekOfCode": "class Timer(QTimer, EnginePart):\n    # name = \"__timer\"\n    onTimeoutFunc = None\n    def __init__(self, interval, onTimeoutFunc):\n        super().__init__(parent=None)\n        self.setInterval(interval)\n        self.start()\n        self.timeout.connect(self.__handleTimeoutFunc)\n    def __handleTimeoutFunc(self):\n        if self.onTimeoutFunc:",
         "detail": "limekit.framework.handle.system.timer",
-        "documentation": {}
-    },
-    {
-        "label": "Toast",
-        "kind": 6,
-        "importPath": "limekit.framework.handle.system.toast",
-        "description": "limekit.framework.handle.system.toast",
-        "peekOfCode": "class Toast:\n    def __init__(self, values):\n        pass",
-        "detail": "limekit.framework.handle.system.toast",
         "documentation": {}
     },
     {
@@ -11523,8 +11911,35 @@
         "kind": 6,
         "importPath": "limekit.framework.scripts.script",
         "description": "limekit.framework.scripts.script",
-        "peekOfCode": "class Script:\n    @classmethod\n    def read_app_lua(cls):\n        return \"\"\"\n    app = {\n    -- allows one to invoke a function with args\n    -- partial(func, arg1, arg2, ...) and returns the function\n    partial = function(func, ...)\n        local args = {...}\n        return function(...)",
+        "peekOfCode": "class Script:\n    @classmethod\n    def read_app_lua(cls):\n        return \"\"\"\napp = {\n    -- allows one to invoke a function with args\n    -- partial(func, arg1, arg2, ...) and returns the function\n    partial = function(func, ...)\n        local args = { ... }\n        return function(...)",
         "detail": "limekit.framework.scripts.script",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "limekit.framework.scripts.script",
+        "description": "limekit.framework.scripts.script",
+        "peekOfCode": "app = {\n    -- allows one to invoke a function with args\n    -- partial(func, arg1, arg2, ...) and returns the function\n    partial = function(func, ...)\n        local args = { ... }\n        return function(...)\n            local newArgs = { ... }\n            for i, arg in ipairs(args) do\n                table.insert(newArgs, 1, arg)\n            end",
+        "detail": "limekit.framework.scripts.script",
+        "documentation": {}
+    },
+    {
+        "label": "LimerApplication",
+        "kind": 6,
+        "importPath": "limekit.framework.run",
+        "description": "limekit.framework.run",
+        "peekOfCode": "class LimerApplication:\n    def __init__(self):\n        self.engine = Engine()  # Behold! The Engine -- where all the magic happens\n    def _handle_python_error(self, exception) -> None:\n        if isinstance(exception, TypeError) and \"takes exactly one argument\" in str(\n            exception\n        ):\n            excep_msg = str(exception)\n            end = excep_msg.index(\"()\") + 2\n            exce_ = excep_msg[:end]",
+        "detail": "limekit.framework.run",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "limekit.framework.run",
+        "description": "limekit.framework.run",
+        "peekOfCode": "app = LimerApplication()\napp.run()",
+        "detail": "limekit.framework.run",
         "documentation": {}
     },
     {

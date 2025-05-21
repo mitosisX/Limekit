@@ -77,6 +77,11 @@ app.openFile()
 6. Delegates
     - QStyledItemDelegate
 
+    FUN
+
+ASCII ART
+https://budavariam.github.io/asciiart-text/
+
     Important
 
 use "py -m pip install -e ." for "hot reload"
