@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QScrollArea, QWidget
 from limekit.engine.parts import EnginePart
-from limekit.components.base.base_widget import BaseWidget
+from limekit.components.base.widget_base import BaseWidget
 
 
 class Scroller(BaseWidget, QScrollArea, EnginePart):

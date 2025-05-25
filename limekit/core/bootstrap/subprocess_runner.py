@@ -17,11 +17,10 @@ class ProjectRunner(QProcess):
         self.started.connect(self._handleProcessStarted)
         self.finished.connect(self._handleProcessFinished)
 
-    # Windows uses python, while macOS uses python3 to execute python
+    # Windows uses "python", Linux & macOS use "python3" to execute python
     # Take this into consideration
     def run(self):
-        # Initially, the approach failed for lack of -u flag; this flashes stdout stream out
-        # immediately
+        # -u for capture stdout
 
         self.start(
             # nt refers to Windows
@@ -56,10 +55,6 @@ class ProjectRunner(QProcess):
         if self.onProcessFinished:
             self.onProcessFinished()
 
-        # endText = "Finished"
-
     def _handleProcessStarted(self):
         if self.onProcessStarted:
             self.onProcessStarted()
-
-        # startText = "Started"

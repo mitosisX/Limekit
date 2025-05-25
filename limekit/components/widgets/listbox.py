@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QListWidget, QListWidgetItem
 from PySide6.QtGui import QIcon
 from PySide6.QtCore import QSize
 from limekit.engine.parts import EnginePart
-from limekit.components.base.base_widget import BaseWidget
+from limekit.components.base.widget_base import BaseWidget
 from limekit.utils.converters import Converter
 
 

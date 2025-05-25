@@ -3,7 +3,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtCore import QSize
 from limekit.engine.parts import EnginePart
 from limekit.engine.lifecycle.shutdown import destroy_engine
-from limekit.components.base.base_widget import BaseWidget
+from limekit.components.base.widget_base import BaseWidget
 
 
 class CheckBox(BaseWidget, QCheckBox, EnginePart):

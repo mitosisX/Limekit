@@ -2,7 +2,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QProgressBar
 
 from limekit.engine.parts import EnginePart
-from limekit.components.base.base_widget import BaseWidget
+from limekit.components.base.widget_base import BaseWidget
 
 
 class ProgressBar(BaseWidget, QProgressBar, EnginePart):
