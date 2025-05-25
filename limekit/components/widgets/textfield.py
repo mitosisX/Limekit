@@ -8,7 +8,7 @@ from PySide6.QtGui import (
     QKeyEvent,
 )
 from limekit.engine.parts import EnginePart
-from limekit.components.base.base_widget import BaseWidget
+from limekit.components.base.widget_base import BaseWidget
 
 
 class TextField(BaseWidget, QTextEdit, EnginePart):

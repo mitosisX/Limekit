@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QLabel
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QMouseEvent, QPixmap, QFont
 from limekit.engine.parts import EnginePart
-from limekit.components.base.base_widget import BaseWidget
+from limekit.components.base.widget_base import BaseWidget
 
 #   Alignments
 # 1. Qt.AlignLeft

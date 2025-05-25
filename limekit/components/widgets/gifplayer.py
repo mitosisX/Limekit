@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QWidget, QLabel, QSizePolicy, QVBoxLayout
 from PySide6.QtGui import QMovie
 from PySide6.QtCore import QByteArray, Qt, QSize
 from limekit.engine.parts import EnginePart
-from limekit.components.base.base_widget import BaseWidget
+from limekit.components.base.widget_base import BaseWidget
 
 
 class GifPlayer(BaseWidget, QLabel, EnginePart):

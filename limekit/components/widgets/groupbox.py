@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QGroupBox
 from limekit.engine.parts import EnginePart
-from limekit.components.base.base_widget import BaseWidget
+from limekit.components.base.widget_base import BaseWidget
 
 """
 Only a layout can be used to add widgets using setLayout method

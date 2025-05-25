@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QTabWidget
 from limekit.engine.parts import EnginePart
 from limekit.components.widgets.containers.tabitem import TabItem
 from limekit.components.widgets.containers.tabbar import TabBar
-from limekit.components.base.base_widget import BaseWidget
+from limekit.components.base.widget_base import BaseWidget
 
 """
 Functions available in PySide6 documentation

@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QTreeView, QStyle
 from limekit.engine.parts import EnginePart
 from limekit.engine.lifecycle.shutdown import destroy_engine
 from limekit.components.widgets.items.treeview_item import TreeViewItem
-from limekit.components.base.base_widget import BaseWidget
+from limekit.components.base.widget_base import BaseWidget
 
 
 class TreeView(BaseWidget, QTreeView, EnginePart):

@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QBoxLayout, QLayout
 from limekit.engine.parts import EnginePart
 from PySide6.QtCore import Qt
-from limekit.components.base.base_layout import BaseLayout
+from limekit.components.base.layout_base import BaseLayout
 
 
 class HorizontalLayout(BaseLayout, EnginePart):
