@@ -584,13 +584,13 @@ class AdvancedSlider(QWidget, EnginePart):
 
         return self.__text_color
 
-    def setTextColor(self, color: QColor):
+    def setTextColor(self, color):
         """Set the text color of the slider
 
         :param color: new text color
         """
 
-        self.__text_color = color
+        self.__text_color = QColor(color)
         self.__force_repaint = True
         self.update()
 
@@ -602,13 +602,13 @@ class AdvancedSlider(QWidget, EnginePart):
 
         return self.__background_color
 
-    def setBackgroundColor(self, color: QColor):
+    def setBackgroundColor(self, color):
         """Set the background color of the slider
 
         :param color: new background color
         """
 
-        self.__background_color = color
+        self.__background_color = QColor(color)
         self.__force_repaint = True
         self.update()
 
@@ -620,13 +620,13 @@ class AdvancedSlider(QWidget, EnginePart):
 
         return self.__accent_color
 
-    def setAccentColor(self, color: QColor):
+    def setAccentColor(self, color):
         """Set the accent color of the slider
 
         :param color: new accent color
         """
 
-        self.__accent_color = color
+        self.__accent_color = QColor(color)
         self.__force_repaint = True
         self.update()
 
@@ -638,13 +638,13 @@ class AdvancedSlider(QWidget, EnginePart):
 
         return self.__border_color
 
-    def setBorderColor(self, color: QColor):
+    def setBorderColor(self, color):
         """Set the border color of the slider
 
         :param color: new border color
         """
 
-        self.__border_color = color
+        self.__border_color = QColor(color)
         self.__update_stylesheet()
         self.__force_repaint = True
         self.update()

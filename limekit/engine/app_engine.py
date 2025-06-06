@@ -1,6 +1,6 @@
 """
-from project Abigail
-    - Every code I write falls under "project Abigail"
+from project Abie
+    - Every code I write falls under "project Abie"
 
             13 September, 2023 08:43 AM (Wednesday)
 
@@ -14,7 +14,7 @@ through a batch script; the creation script is half-baked (only able to run a pr
 
             18 December, 2023 6:32 AM (Monday)
 
-The virt env idea was a total disaster, I had to reinvent my code to make it work
+The virtual env idea was a total disaster, I had to reinvent my code to make it work
 """
 
 import re
