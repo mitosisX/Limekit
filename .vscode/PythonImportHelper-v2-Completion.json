@@ -3209,6 +3209,14 @@
         "documentation": {}
     },
     {
+        "label": "destroy_engine",
+        "importPath": "limekit.engine.lifecycle.shutdown",
+        "description": "limekit.engine.lifecycle.shutdown",
+        "isExtraImport": true,
+        "detail": "limekit.engine.lifecycle.shutdown",
+        "documentation": {}
+    },
+    {
         "label": "QPrintPreviewDialog",
         "importPath": "PySide6.QtPrintSupport",
         "description": "PySide6.QtPrintSupport",
@@ -4033,10 +4041,10 @@
     },
     {
         "label": "*",
-        "importPath": "limekit.run",
-        "description": "limekit.run",
+        "importPath": "limekit.runner",
+        "description": "limekit.runner",
         "isExtraImport": true,
-        "detail": "limekit.run",
+        "detail": "limekit.runner",
         "documentation": {}
     },
     {
@@ -5015,7 +5023,7 @@
         "kind": 6,
         "importPath": "limekit.components.widgets.image",
         "description": "limekit.components.widgets.image",
-        "peekOfCode": "class Image(QLabel, EnginePart):\n    onClickFunc = None\n    # @lupa.unpacks_lua_table\n    def __init__(self, path):\n        super().__init__()\n        self.pixmap = None\n        self.setImage(path)\n        # if \"size\" in kwargs:\n        #     width, height = kwargs[\"size\"].values()\n        #     self.resizeImage(width, height)",
+        "peekOfCode": "class Image(QLabel, EnginePart):\n    onClickFunc = None\n    # @lupa.unpacks_lua_table\n    def __init__(self, path):\n        super().__init__()\n        self.pixmap = None\n        self.image_path = path\n        self.setImage(self.image_path)\n        # if \"size\" in kwargs:\n        #     width, height = kwargs[\"size\"].values()",
         "detail": "limekit.components.widgets.image",
         "documentation": {}
     },
@@ -5033,7 +5041,7 @@
         "kind": 6,
         "importPath": "limekit.components.widgets.label",
         "description": "limekit.components.widgets.label",
-        "peekOfCode": "class Label(BaseWidget, QLabel, EnginePart):\n    onClickFunc = None\n    # @lupa.unpacks_lua_table\n    def __init__(self, text=\"Label\"):\n        super().__init__()\n        self.pixmap = None\n        self.setText(text)\n        # self.clicked.connect(self.__handleOnClick)\n    def mousePressEvent(self, ev: QMouseEvent):\n        if self.onClickFunc:",
+        "peekOfCode": "class Label(BaseWidget, QLabel, EnginePart):\n    onClickFunc = None\n    # @lupa.unpacks_lua_table\n    def __init__(self, text=\"Label\"):\n        super().__init__()\n        self.pixmap = None\n        self.image_path = \"\"\n        self.setText(text)\n        # self.clicked.connect(self.__handleOnClick)\n    def mousePressEvent(self, ev: QMouseEvent):",
         "detail": "limekit.components.widgets.label",
         "documentation": {}
     },
@@ -5949,19 +5957,19 @@
     {
         "label": "LimerApplication",
         "kind": 6,
-        "importPath": "limekit.run",
-        "description": "limekit.run",
+        "importPath": "limekit.runner",
+        "description": "limekit.runner",
         "peekOfCode": "class LimerApplication:\n    def __init__(self):\n        self.engine = Engine()  # Behold! The Engine -- where all the magic happens\n    def _handle_python_error(self, exception) -> None:\n        if isinstance(exception, TypeError) and \"takes exactly one argument\" in str(\n            exception\n        ):\n            excep_msg = str(exception)\n            end = excep_msg.index(\"()\") + 2\n            exce_ = excep_msg[:end]",
-        "detail": "limekit.run",
+        "detail": "limekit.runner",
         "documentation": {}
     },
     {
         "label": "app",
         "kind": 5,
-        "importPath": "limekit.run",
-        "description": "limekit.run",
+        "importPath": "limekit.runner",
+        "description": "limekit.runner",
         "peekOfCode": "app = LimerApplication()\napp.run()",
-        "detail": "limekit.run",
+        "detail": "limekit.runner",
         "documentation": {}
     }
 ]

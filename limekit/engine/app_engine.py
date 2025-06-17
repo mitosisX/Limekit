@@ -49,6 +49,8 @@ from limekit.core.routing.routes import Routing
 
 from limekit.lua.script import Script
 from limekit.engine.parser.lua_parser import LuaParser
+from limekit.engine.lifecycle.shutdown import destroy_engine
+
 
 """
   _     _                _    _ _     _____             _            
@@ -251,8 +253,13 @@ class Engine:
     def execute_main_lua(self):
         path_to_main = Path.scripts("main.lua")
         # print("### ", Path.project_path)
-        main_lua_content = File.read_file(path_to_main)
-        self.execute(main_lua_content)
+
+        try:
+            main_lua_content = File.read_file(path_to_main)
+            self.execute(main_lua_content)
+        except FileNotFoundError as ex:
+            print("EntryPointError: No main.lua file found ")
+            destroy_engine()
 
     # The PySide6 engine that handles the mainloop of the program
     def set_eventloop(self):
@@ -330,56 +337,6 @@ class Engine:
             # Using format() instead of f-string for broader Python version compatibility
             lua_command = "package.path = '{}' .. package.path".format(paths_string)
             self.execute(lua_command)
-
-    # !depracated
-    def set_custom_lua_require_pathh(self):
-        """
-        This method checks for a ".require" file in user projects dir and sets the paths in lua's
-        global package.path
-
-        Add a trailing ?.lua to each path during iteration
-
-        Structure: C:/dir1/dir2;D:/dir1; or sep by \n D:/lua;D:/Misc;
-        """
-
-        req_file_path = os.path.join(Path.project_path, ".require")
-
-        dirs_for_require = []  # Where
-
-        if Path.check_path(req_file_path):
-            require_file = File.read_file(req_file_path)
-            dirs_for_require = (
-                require_file.split(";")[:-1]
-                if ";" in require_file
-                else require_file.split("\n")[:-1]
-            )
-
-            misc_path_append = Path.misc_dir().replace(
-                "\\", "/"
-            )  # make sure all scripts in the misc can be "require"-d
-
-            dirs_for_require.append(misc_path_append)
-
-            paths = ""
-
-            for dir in dirs_for_require:
-                if dir != "":
-                    # proper_path = f"{dir}{'/' if not dir.endswith('/') else ''}?.lua;"
-                    proper_path = "%s%s?.lua;" % (
-                        dir,
-                        "/" if not dir.endswith("/") else "",
-                    )
-                    paths += proper_path
-
-            # fix_slash = paths.replace("\\", "/")
-
-            # self.execute(f"package.path = '{paths}' .. package.path")
-            self.execute("package.path = '" + paths + "' .. package.path")
-        else:
-            misc_path_append = Path.misc_dir().replace("\\", os.path.sep) + "/?.lua"
-
-            # self.execute(f"package.path = '{misc_path_append};' .. package.path")
-            self.execute("package.path = '" + misc_path_append + ";' .. package.path")
 
     """
     Load and intialize all plugins from the user

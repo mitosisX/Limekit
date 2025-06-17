@@ -13,8 +13,8 @@ class Image(QLabel, EnginePart):
         super().__init__()
 
         self.pixmap = None
-
-        self.setImage(path)
+        self.image_path = path
+        self.setImage(self.image_path)
 
         # if "size" in kwargs:
         #     width, height = kwargs["size"].values()
@@ -58,6 +58,9 @@ class Image(QLabel, EnginePart):
 
         # self.setScaledContents(True)
         self.setPixmap(self.pixmap)
+
+    def getImagePath(self):
+        return self.image_path
 
     def resizeImage(self, width, height):
         scaled = self.pixmap.scaled(

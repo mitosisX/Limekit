@@ -34,6 +34,7 @@ class Label(BaseWidget, QLabel, EnginePart):
         super().__init__()
 
         self.pixmap = None
+        self.image_path = ""
 
         self.setText(text)
         # self.clicked.connect(self.__handleOnClick)
@@ -113,10 +114,14 @@ class Label(BaseWidget, QLabel, EnginePart):
         super().setCursor(cursors.get(cursor_type) or cursors["ibeam"])
 
     def setImage(self, path):
-        self.pixmap = QPixmap(path)
+        self.image_path = path
+        self.pixmap = QPixmap(self.image_path)
 
         # self.setScaledContents(True)
         self.setPixmap(self.pixmap)
+
+    def getImagePath(self):
+        return self.image_path
 
     def setImageSize(self, width, height):
         scaled = self.pixmap.scaled(
