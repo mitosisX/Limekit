@@ -2,5 +2,5 @@
 
     !!!!!! IF YOU ARE ALREADY A PYTHON DEVELOPER, FEEL FREE TO SKIP !!!!
 
-use "py -m pip install -e ." in the root directory of limekit framework for python module "hot reload"
+Use "py -m pip install -e ." in the root directory of limekit framework for python module "hot reload"
     - This prevents from running pip install for every modification

@@ -1,24 +1,8 @@
-TODO
+            TODO list
 
-    CUSTOM WIDGETS
-
-* Fluent Widgets
-- CheckBox
-- RadioButton
-- Tabs
- * Segmented
- * Pivoted
-
-* rrd_widgets
- 
-- BreadCrumbs
-
-2. Custom title bar windows plugin
-
-https://github.com/Zingzy/hPyT/tree/main
-
-3. 
-4. 
-5. 
-6. 
-
+- Fluent UI
+- Silicon UI
+- QML Quick Widgets
+- rrd_widgets
+- hPyT - Hack Python Titlebar
+    * https://github.com/Zingzy/hPyT/tree/main
