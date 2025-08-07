@@ -13,9 +13,9 @@ Limekit's architecture consists of three key layers:
 
 1. **Qt/PySide6 Base** - Provides native widgets and rendering
 2. **Python Wrapper Layer** - 40+ wrapper classes exposing Qt functionality
-3. **Lupa Bridge** - Exposes wrapped components to lua runtime
+3. **lupa Bridge** - Exposes wrapped components to lua runtime
 
-The [Lupa engine](https://github.com/scoder/lupa) handles all lua/Python interoperability, allowing your lua code to interact with Qt widgets seamlessly.
+The [lupa engine](https://github.com/scoder/lupa) handles all lua/Python interoperability, allowing your lua code to interact with Qt widgets seamlessly.
 
 ## ⚠️ Project Status Note
 
@@ -56,53 +56,42 @@ Download the Limer (required):
 ## 🖼️ Showcase
 
 <div align="right" style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 16px; direction: rtl;">
-  <div style="width: 200px;">
-    <img src="images/1.png" width="200" alt="Material Light Theme"><br>
-    <div align="center">Material Light</div>
+  <div style="width: 500px;">
+    <img src="images/1.png" width="500" alt="Limekit"><br>
+    <!-- <div align="center">Material Light</div> -->
   </div>
-  <div style="width: 200px;">
-    <img src="images/2.png" width="200" alt="Material Dark Theme"><br>
-    <div align="center">Material Dark</div>
+  <div style="width: 500px;">
+    <img src="images/2.png" width="500" alt="Limekit"><br>
   </div>
-  <div style="width: 200px;">
-    <img src="images/3.png" width="200" alt="Fluent Theme Preview"><br>
-    <div align="center">Fluent Preview</div>
+  <div style="width: 500px;">
+    <img src="images/3.png" width="500" alt="Limekit"><br>
   </div>
-  <div style="width: 200px;">
-    <img src="images/4.png" width="200" alt="Widget Gallery"><br>
-    <div align="center">Widget Gallery</div>
+  <div style="width: 500px;">
+    <img src="images/4.png" width="500" alt="Limekit"><br>
   </div>
-  <div style="width: 200px;">
-    <img src="images/5.png" width="200" alt="Demo Application"><br>
-    <div align="center">Demo App</div>
+  <div style="width: 500px;">
+    <img src="images/5.png" width="500" alt="Limekitt"><br>
   </div>
-  <div style="width: 200px;">
-    <img src="images/6.png" width="200" alt="Custom Theme"><br>
-    <div align="center">Custom Theme</div>
+  <div style="width: 500px;">
+    <img src="images/6.png" width="500" alt="Limekit"><br>
   </div>
-  <div style="width: 200px;">
-    <img src="images/7.png" width="200" alt="Custom Theme"><br>
-    <div align="center">Custom Theme</div>
+  <div style="width: 500px;">
+    <img src="images/7.png" width="500" alt="Limekit"><br>
   </div>
-  <div style="width: 200px;">
-    <img src="images/8.png" width="200" alt="Custom Theme"><br>
-    <div align="center">Custom Theme</div>
+  <div style="width: 500px;">
+    <img src="images/8.png" width="500" alt="Limekit"><br>
   </div>
-  <div style="width: 200px;">
-    <img src="images/9.png" width="200" alt="Custom Theme"><br>
-    <div align="center">Custom Theme</div>
+  <div style="width: 500px;">
+    <img src="images/9.png" width="500" alt="Limekit"><br>
   </div>
-  <div style="width: 200px;">
-    <img src="images/10.png" width="200" alt="Custom Theme"><br>
-    <div align="center">Custom Theme</div>
+  <div style="width: 500px;">
+    <img src="images/10.png" width="500" alt="Limekit"><br>
   </div>
-  <div style="width: 200px;">
-    <img src="images/11.png" width="200" alt="Custom Theme"><br>
-    <div align="center">Custom Theme</div>
+  <div style="width: 500px;">
+    <img src="images/11.png" width="500" alt="Limekit"><br>
   </div>
-  <div style="width: 200px;">
-    <img src="images/12.png" width="200" alt="Custom Theme"><br>
-    <div align="center">Custom Theme</div>
+  <div style="width: 500px;">
+    <img src="images/12.png" width="500" alt="Limekit"><br>
   </div>
 </div>
 
