@@ -10,9 +10,13 @@ setuptools.setup(
     license="GNU",
     packages=setuptools.find_packages(),
     package_data={
-        "limekit.framework": ["scripts/*.lua"],  # Explicitly include .lua files
-        "limekit.framework.handle.theming.misc": ["themes/*"],  # Non-recursive
+        # Include all .lua files in limekit/lua/
+        "limekit": ["lua/*.lua"],
+        # Include all .qss files in the themes directory
+        "limekit.core.theming": ["themes/misc/themes/*.qss"],
+        # You can add more patterns as needed
     },
+    include_package_data=True,
     install_requires=[
         "PySide6==6.4.2",
         "qt_material",
@@ -22,7 +26,7 @@ setuptools.setup(
         "emoji",
         "playsound",
         "lupa",
-        "PyInstaller"
+        "PyInstaller",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

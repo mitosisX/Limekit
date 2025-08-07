@@ -87,28 +87,7 @@ class Menu(QMenu, EnginePart):
                 self.fromTemplate(item["submenu"], submenu)
 
             else:
-                # label = item["label"]
-
                 self.template_add_menu_item(item, parent)
-
-                # action = MenuItem(label, self)
-
-                # if "-" in label:
-                #     self.addSeparator()
-
-                # if "accelerator" in item or "shortcut" in item:
-                #     action.setShortcut(item["accelerator"] or item["shortcut"])
-
-                # if "click" in item:
-                #     action.setOnClick(item["click"])
-
-                # if "icon" in item:
-                #     action.setIcon(item["icon"])
-
-                # if "name" in item:
-                #     self.addToObject(item["name"], action)
-
-                # parent.addMenuItem(action)
 
     def template_add_menu_item(self, item, parent):
         label = item["label"]
@@ -132,49 +111,13 @@ class Menu(QMenu, EnginePart):
             # print(item["extra"])
             pass
 
+        if "disabled" in item:
+            self.setDisabled(item["disabled"])
+
         if "name" in item:
             self.addToObject(item["name"], action)
 
         parent.addMenuItem(action)
-
-        # def buildFromTemplate(self, template):
-        #     self.fromTemplate(template, self)
-
-        # def fromTemplate(self, items, parent):
-        # for item in items.values():
-        #     label = item["label"]
-        #     if "submenu" in item:
-        #         submenu = Menu(label)
-        #         parent.addDropMenu(submenu)
-
-        #         if "icon" in item:
-        #             submenu.setIcon(item["icon"])
-
-        #         if "name" in item:
-        #             self.addToObject(item["name"], parent)
-
-        #         self.fromTemplate(item["submenu"], submenu)
-
-        #     else:
-        #         # label = item["label"]
-        #         action = MenuItem(label, self)
-
-        #         if "-" in label:
-        #             self.addSeparator()
-
-        #         if "accelerator" in item or "shortcut" in item:
-        #             action.setShortcut(item["accelerator"] or item["shortcut"])
-
-        #         if "click" in item:
-        #             action.setOnClick(item["click"])
-
-        #         if "icon" in item:
-        #             action.setIcon(item["icon"])
-
-        #         if "name" in item:
-        #             self.addToObject(item["name"], action)
-
-        #         parent.addMenuItem(action)
 
     def addToObject(self, name, obj):
         self.objects.update({name: obj})

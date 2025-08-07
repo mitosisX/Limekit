@@ -76,7 +76,7 @@ class LimerApplication:
             print(e)
 
         except Exception as e:
-            print(f"Unexpected error: {e}", exc_info=True)
+            print(f"Unexpected error: {e}")
 
         except ModuleNotFoundError as e:
             print(e)

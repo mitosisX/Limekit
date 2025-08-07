@@ -65,6 +65,9 @@ class Menubar(QMenuBar, EnginePart):
                 if "accelerator" in item or "shortcut" in item:
                     action.setShortcut(item["accelerator"] or item["shortcut"])
 
+                if "disabled" in item:
+                    action.setDisabled(item["disabled"])
+
                 if "icon" in item:
                     action.setIcon(item["icon"])
 

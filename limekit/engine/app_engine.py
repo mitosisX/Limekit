@@ -1,20 +1,26 @@
 """
-from project Abigail
-    - Every code I write falls under "project Abigail"
+         _     _                _    _ _     _____                                            _    
+        | |   (_)_ __ ___   ___| | _(_) |_  |  ___| __ __ _ _ __ ___   _____      _____  _ __| | __
+        | |   | | '_ ` _ \ / _ \ |/ / | __| | |_ | '__/ _` | '_ ` _ \ / _ \ \ /\ / / _ \| '__| |/ /
+        | |___| | | | | | |  __/   <| | |_  |  _|| | | (_| | | | | | |  __/\ V  V / (_) | |  |   < 
+        |_____|_|_| |_| |_|\___|_|\_\_|\__| |_|  |_|  \__,_|_| |_| |_|\___| \_/\_/ \___/|_|  |_|\_\
+                                                                                                    
+from project Abie
+    - Every code I write falls under "project Abie"
 
             13 September, 2023 08:43 AM (Wednesday)
 
-The project is going pretty great. Haven't yet released it. nor developed
+The project is going pretty great. Haven't yet released it, nor developed
 a project creation script, nor how the virtual env shall work.
 
             24 October, 2023 14:12 PM (Tuesday)
 
-I now have the virtual env up and running and able to execute a project creation py file
+I now have the virtual env up and running and able to execute a project creation file
 through a batch script; the creation script is half-baked (only able to run a project, nothing else)
 
             18 December, 2023 6:32 AM (Monday)
 
-The virt env idea was a total disaster, I had to reinvent my code to make it work
+The virtual env idea was a total disaster, I had to "reinvent" my code to make it work
 """
 
 import re
@@ -49,6 +55,8 @@ from limekit.core.routing.routes import Routing
 
 from limekit.lua.script import Script
 from limekit.engine.parser.lua_parser import LuaParser
+from limekit.engine.lifecycle.shutdown import destroy_engine
+
 
 """
   _     _                _    _ _     _____             _            
@@ -228,7 +236,15 @@ class Engine:
         # for some reason, reading from a file caused alot of errors, and the workaround it
         # was to duplicate the limekit.lua file content into some variable
 
-        limekit_file_content = Script.read_app_lua()
+        limekit_lua_file = Path.join_paths(self.limekit_root_dir, "lua", "limekit.lua")
+
+        limekit_file_content = File.read_file(limekit_lua_file)
+
+        # print(limekit_file_content)
+
+        # print(File.read_file(p))
+
+        # limekit_file_content = Script.read_app_lua()
         self.execute(limekit_file_content)
 
     """
@@ -251,8 +267,13 @@ class Engine:
     def execute_main_lua(self):
         path_to_main = Path.scripts("main.lua")
         # print("### ", Path.project_path)
-        main_lua_content = File.read_file(path_to_main)
-        self.execute(main_lua_content)
+
+        try:
+            main_lua_content = File.read_file(path_to_main)
+            self.execute(main_lua_content)
+        except FileNotFoundError as ex:
+            print("EntryPointError: No main.lua file found ")
+            destroy_engine()
 
     # The PySide6 engine that handles the mainloop of the program
     def set_eventloop(self):
@@ -330,56 +351,6 @@ class Engine:
             # Using format() instead of f-string for broader Python version compatibility
             lua_command = "package.path = '{}' .. package.path".format(paths_string)
             self.execute(lua_command)
-
-    # !depracated
-    def set_custom_lua_require_pathh(self):
-        """
-        This method checks for a ".require" file in user projects dir and sets the paths in lua's
-        global package.path
-
-        Add a trailing ?.lua to each path during iteration
-
-        Structure: C:/dir1/dir2;D:/dir1; or sep by \n D:/lua;D:/Misc;
-        """
-
-        req_file_path = os.path.join(Path.project_path, ".require")
-
-        dirs_for_require = []  # Where
-
-        if Path.check_path(req_file_path):
-            require_file = File.read_file(req_file_path)
-            dirs_for_require = (
-                require_file.split(";")[:-1]
-                if ";" in require_file
-                else require_file.split("\n")[:-1]
-            )
-
-            misc_path_append = Path.misc_dir().replace(
-                "\\", "/"
-            )  # make sure all scripts in the misc can be "require"-d
-
-            dirs_for_require.append(misc_path_append)
-
-            paths = ""
-
-            for dir in dirs_for_require:
-                if dir != "":
-                    # proper_path = f"{dir}{'/' if not dir.endswith('/') else ''}?.lua;"
-                    proper_path = "%s%s?.lua;" % (
-                        dir,
-                        "/" if not dir.endswith("/") else "",
-                    )
-                    paths += proper_path
-
-            # fix_slash = paths.replace("\\", "/")
-
-            # self.execute(f"package.path = '{paths}' .. package.path")
-            self.execute("package.path = '" + paths + "' .. package.path")
-        else:
-            misc_path_append = Path.misc_dir().replace("\\", os.path.sep) + "/?.lua"
-
-            # self.execute(f"package.path = '{misc_path_append};' .. package.path")
-            self.execute("package.path = '" + misc_path_append + ";' .. package.path")
 
     """
     Load and intialize all plugins from the user

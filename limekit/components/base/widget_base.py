@@ -40,6 +40,12 @@ class BaseWidget:
     def setMaxWidth(self, width):
         self.setMaximumWidth(width)
 
+    def hide(self):
+        super().hide()
+
+    def show(self):
+        super().show()
+
     def setVisibility(self, visibility):
         self.setVisible(visibility)
 
@@ -51,6 +57,7 @@ class BaseWidget:
             "maximum": QSizePolicy.Policy.Maximum,
             "minimum": QSizePolicy.Policy.Minimum,
             "minimumexpanding": QSizePolicy.Policy.MinimumExpanding,
+            "preferred": QSizePolicy.Policy.Preferred,
         }
 
         horizontal = horizontal.lower()

@@ -28,7 +28,7 @@ class ProjectRunner(QProcess):
             [
                 "-u",
                 "-c",
-                "from limekit import run",
+                "from limekit import runner",
                 self.project_path,
             ],
         )

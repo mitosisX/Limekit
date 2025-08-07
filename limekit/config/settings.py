@@ -2,16 +2,6 @@ import limekit
 
 # Everything that needs to be initialized in the engines
 INSTALLED_PARTS = [
-    "limekit.framework.components",
-    "limekit.framework.core.mechanism",
-    # "limekit.framework.components.layouts",
-    # "limekit.framework.components.charts",
-    "limekit.framework.gui",
-    "limekit.framework.handle",
-    #
-    #
-    #
-    # New
     "limekit.core",
     "limekit.components",
     "limekit.gui",

@@ -1,3 +1,4 @@
+from limekit.core.theming.themes.qtthemes.theme import QtThemes
 from limekit.core.theming.themes.material.theme import MaterialStyle
 from limekit.core.theming.themes.misc.theme import MiscellaneousStyle
 from limekit.core.theming.themes.darklight.theme import DarkLight
@@ -17,12 +18,18 @@ class Theme(EnginePart):
 
         if provided_theme == "material":
             return MaterialStyle()
+
         elif provided_theme == "misc":
             return MiscellaneousStyle()
+
         elif provided_theme == "darklight":
             return DarkLight()
+
         elif provided_theme == "darkstyle":
             return DarkStyle()
+
+        elif provided_theme == "qtthemes":
+            return QtThemes()
 
     # Depending on the theme selected, apply particular theme name
     def setTheme(self, theme=""):
