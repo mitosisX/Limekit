@@ -6,8 +6,13 @@ from limekit.components.base.widget_base import BaseWidget
 
 
 class Container(BaseWidget, QWidget, EnginePart):
+    onKeyPressFunc = None
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
+
+    def setOnKeyPress(self, onKeyPressFunc):
+        self.onKeyPressFunc = onKeyPressFunc
 
     def setLayout(self, layout):
         super().setLayout(layout)
@@ -23,3 +28,7 @@ class Container(BaseWidget, QWidget, EnginePart):
 
     def setStyle(self, style):
         self.setStyleSheet(style)
+
+    def keyPressEvent(self, event):
+        if self.onKeyPressFunc:
+            return self.onKeyPressFunc(self, event)

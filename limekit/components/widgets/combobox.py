@@ -89,6 +89,7 @@ class ComboBox(QComboBox, EnginePart):
 
     def setItems(self, items):
         items = items.values() if lupa.lua_type(items) == "table" else items
+
         for item in items:
             self.addItem(item)
 

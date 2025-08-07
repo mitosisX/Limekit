@@ -56,6 +56,9 @@ class Toolbar(QToolBar, EnginePart):
 
         self.setToolButtonStyle(button_style)
 
+    def setMovable(self, movable):
+        return super().setMovable(movable)
+
     def addButton(self, button):
         self.addAction(button)
 

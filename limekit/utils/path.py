@@ -179,19 +179,20 @@ class Path(EnginePart):
     # The path to the user's project scripts dir
     @classmethod
     def scripts(cls, resource):
-        return cls.path_res_joiner("scripts", resource)
+        return cls.normalize_path(cls.path_res_joiner("scripts", resource))
 
     # The path to the user's project images dir
     @classmethod
     def images(cls, resource):
-        return cls.path_res_joiner("images", resource)
+        return cls.normalize_path(cls.path_res_joiner("images", resource))
 
     # The path to the user's project images dir
     @classmethod
     def misc(cls, resource):
-        return cls.path_res_joiner("misc", resource)
+        return cls.normalize_path(cls.path_res_joiner("misc", resource))
 
     # The path to the user's project plugins dir
+    # !!!!!!!!!! NOT YET UTILIZED; SUBJECT TO CHANGE
     @classmethod
     def plugins(cls):
         return cls.path_res_joiner(cls.project_path, "plugins")
@@ -205,6 +206,7 @@ class Path(EnginePart):
     def path_res_joiner(cls, path, resource):
         return os.path.join(cls.project_path, path, resource)
 
+    # Used in Limekit "site packages" paths
     @classmethod
     def dot_path(cls, dot_path):
         """

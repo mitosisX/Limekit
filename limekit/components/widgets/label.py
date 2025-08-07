@@ -30,7 +30,7 @@ class Label(BaseWidget, QLabel, EnginePart):
     onClickFunc = None
 
     # @lupa.unpacks_lua_table
-    def __init__(self, text="Label"):
+    def __init__(self, text=""):
         super().__init__()
 
         self.pixmap = None

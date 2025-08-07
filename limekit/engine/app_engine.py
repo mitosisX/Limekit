@@ -1,20 +1,26 @@
 """
+         _     _                _    _ _     _____                                            _    
+        | |   (_)_ __ ___   ___| | _(_) |_  |  ___| __ __ _ _ __ ___   _____      _____  _ __| | __
+        | |   | | '_ ` _ \ / _ \ |/ / | __| | |_ | '__/ _` | '_ ` _ \ / _ \ \ /\ / / _ \| '__| |/ /
+        | |___| | | | | | |  __/   <| | |_  |  _|| | | (_| | | | | | |  __/\ V  V / (_) | |  |   < 
+        |_____|_|_| |_| |_|\___|_|\_\_|\__| |_|  |_|  \__,_|_| |_| |_|\___| \_/\_/ \___/|_|  |_|\_\
+                                                                                                    
 from project Abie
     - Every code I write falls under "project Abie"
 
             13 September, 2023 08:43 AM (Wednesday)
 
-The project is going pretty great. Haven't yet released it. nor developed
+The project is going pretty great. Haven't yet released it, nor developed
 a project creation script, nor how the virtual env shall work.
 
             24 October, 2023 14:12 PM (Tuesday)
 
-I now have the virtual env up and running and able to execute a project creation py file
+I now have the virtual env up and running and able to execute a project creation file
 through a batch script; the creation script is half-baked (only able to run a project, nothing else)
 
             18 December, 2023 6:32 AM (Monday)
 
-The virtual env idea was a total disaster, I had to reinvent my code to make it work
+The virtual env idea was a total disaster, I had to "reinvent" my code to make it work
 """
 
 import re
@@ -230,7 +236,15 @@ class Engine:
         # for some reason, reading from a file caused alot of errors, and the workaround it
         # was to duplicate the limekit.lua file content into some variable
 
-        limekit_file_content = Script.read_app_lua()
+        limekit_lua_file = Path.join_paths(self.limekit_root_dir, "lua", "limekit.lua")
+
+        limekit_file_content = File.read_file(limekit_lua_file)
+
+        # print(limekit_file_content)
+
+        # print(File.read_file(p))
+
+        # limekit_file_content = Script.read_app_lua()
         self.execute(limekit_file_content)
 
     """

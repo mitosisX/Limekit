@@ -1,10 +1,10 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QKeyEvent
-from limekit.engine.parts import EnginePart
+from typing import Optional
 
 
-class KeyBoard(EnginePart):
-    """Utility class to check if a pressed key matches a given string (e.g., 'A', 'Enter', 'Ctrl+A')."""
+class QtKeyMatcher:
+    """Matches QKeyEvent against string representations of keys (e.g., 'A', 'Enter', 'Ctrl+A')."""
 
     # Mapping of string keys to Qt.Key_* constants
     KEY_MAP = {
@@ -100,43 +100,65 @@ class KeyBoard(EnginePart):
         "Meta": Qt.MetaModifier,
     }
 
-    @classmethod
-    def pressed(cls, key_event: QKeyEvent, key_str: str) -> bool:
-        """Check if the pressed key matches the given string.
+    def __init__(self, key_str: str):
+        """Initialize with a key string to match against.
 
         Args:
-            key_event (QKeyEvent): The key event from keyPressEvent.
-            key_str (str): The key to check (e.g., "A", "Enter", "Ctrl+Shift+A").
+            key_str: String representation of key (e.g., "A", "Enter", "Ctrl+Shift+A")
+        """
+        self.key_str = key_str
+        self._parse_key_string(key_str)
+
+    def _parse_key_string(self, key_str: str):
+        """Parse the key string into components."""
+        if "+" in key_str:
+            parts = [part.strip() for part in key_str.split("+")]
+            self.modifiers = [self.MODIFIER_MAP[mod] for mod in parts[:-1]]
+            self.key = self.KEY_MAP[parts[-1]]
+        else:
+            self.modifiers = []
+            self.key = self.KEY_MAP[key_str]
+
+    def matches(self, event: QKeyEvent) -> bool:
+        """Check if the key event matches the specified key combination.
+
+        Args:
+            event: The QKeyEvent to check
 
         Returns:
-            bool: True if the pressed key matches, False otherwise.
-
-        Raises:
-            ValueError: If the key_str is invalid or not mapped.
+            bool: True if the event matches the key combination
         """
-        if "+" in key_str:
-            # Handle modifier combinations (e.g., "Ctrl+A")
-            parts = [part.strip() for part in key_str.split("+")]
-            modifiers_ok = True
+        # Check main key
+        if event.key() != self.key:
+            return False
 
-            # Check all parts except last as modifiers
-            for mod_str in parts[:-1]:
-                qt_mod = cls.MODIFIER_MAP.get(mod_str)
-                if qt_mod is None:
-                    raise ValueError(f"Invalid modifier: {mod_str}")
-                if not (key_event.modifiers() & qt_mod):
-                    modifiers_ok = False
+        # Check modifiers
+        for modifier in self.modifiers:
+            if not event.modifiers() & modifier:
+                return False
 
-            # Check the main key (last part)
-            qt_key = cls.KEY_MAP.get(parts[-1])
-            if qt_key is None:
-                raise ValueError(f"Key '{parts[-1]}' is not mapped in KEY_MAP.")
+        # Ensure no extra modifiers are pressed (unless Shift is allowed for letters)
+        allowed_modifiers = Qt.KeyboardModifiers()
+        for mod in self.modifiers:
+            allowed_modifiers |= mod
 
-            return modifiers_ok and (key_event.key() == qt_key)
+        # Allow Shift modifier for letter keys if not explicitly specified
+        if (
+            self.key >= Qt.Key_A and self.key <= Qt.Key_Z
+        ) and Qt.ShiftModifier not in self.modifiers:
+            allowed_modifiers |= Qt.ShiftModifier
 
-        else:
-            # Single key check (e.g., "A", "Enter")
-            qt_key = cls.KEY_MAP.get(key_str)
-            if qt_key is None:
-                raise ValueError(f"Key '{key_str}' is not mapped in KEY_MAP.")
-            return key_event.key() == qt_key
+        return event.modifiers() == allowed_modifiers
+
+    @classmethod
+    def is_key(cls, event: QKeyEvent, key_str: str) -> bool:
+        """Convenience method to check a key event against a key string.
+
+        Args:
+            event: The QKeyEvent to check
+            key_str: String representation of key (e.g., "A", "Enter", "Ctrl+Shift+A")
+
+        Returns:
+            bool: True if the event matches the key combination
+        """
+        return cls(key_str).matches(event)
