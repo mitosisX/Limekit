@@ -22,6 +22,7 @@ setuptools.setup(
         "qt_material",
         "qdarkstyle",
         "qtmodern",
+        "pyqtdarktheme",
         "psutil",
         "emoji",
         "playsound",

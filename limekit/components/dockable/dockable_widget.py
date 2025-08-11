@@ -8,13 +8,13 @@ from limekit.engine.parts import EnginePart
 class Dock(QDockWidget, EnginePart):
     name = "Dockable"
 
-    def __init__(self, title="Dockable"):
-        super().__init__(title, parent=None)
+    def __init__(self, title=None):
+        super().__init__(title=title, parent=None)
 
         self.parent_widget = QWidget()
         self.setWidget(self.parent_widget)
 
-    def setProperties(self, props):
+    def setProperties(self, props=None):
         """Set dock widget features based on provided properties.
 
         Args:
@@ -23,9 +23,8 @@ class Dock(QDockWidget, EnginePart):
                 None value resets all features.
         """
         # Initialize with no features
-        features = QDockWidget.DockWidgetFeature.NoDockWidgetFeatures
-
         if not props:
+            features = QDockWidget.DockWidgetFeature.NoDockWidgetFeatures
             self.setFeatures(features)
             return
 

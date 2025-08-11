@@ -736,6 +736,14 @@
         "documentation": {}
     },
     {
+        "label": "QUrl",
+        "importPath": "PySide6.QtCore",
+        "description": "PySide6.QtCore",
+        "isExtraImport": true,
+        "detail": "PySide6.QtCore",
+        "documentation": {}
+    },
+    {
         "label": "QSize",
         "importPath": "PySide6.QtCore",
         "description": "PySide6.QtCore",
@@ -936,7 +944,63 @@
         "documentation": {}
     },
     {
+        "label": "Signal",
+        "importPath": "PySide6.QtCore",
+        "description": "PySide6.QtCore",
+        "isExtraImport": true,
+        "detail": "PySide6.QtCore",
+        "documentation": {}
+    },
+    {
         "label": "Qt",
+        "importPath": "PySide6.QtCore",
+        "description": "PySide6.QtCore",
+        "isExtraImport": true,
+        "detail": "PySide6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "QObject",
+        "importPath": "PySide6.QtCore",
+        "description": "PySide6.QtCore",
+        "isExtraImport": true,
+        "detail": "PySide6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "Signal",
+        "importPath": "PySide6.QtCore",
+        "description": "PySide6.QtCore",
+        "isExtraImport": true,
+        "detail": "PySide6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "Property",
+        "importPath": "PySide6.QtCore",
+        "description": "PySide6.QtCore",
+        "isExtraImport": true,
+        "detail": "PySide6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "QObject",
+        "importPath": "PySide6.QtCore",
+        "description": "PySide6.QtCore",
+        "isExtraImport": true,
+        "detail": "PySide6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "Signal",
+        "importPath": "PySide6.QtCore",
+        "description": "PySide6.QtCore",
+        "isExtraImport": true,
+        "detail": "PySide6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "Property",
         "importPath": "PySide6.QtCore",
         "description": "PySide6.QtCore",
         "isExtraImport": true,
@@ -961,6 +1025,14 @@
     },
     {
         "label": "QPoint",
+        "importPath": "PySide6.QtCore",
+        "description": "PySide6.QtCore",
+        "isExtraImport": true,
+        "detail": "PySide6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "Property",
         "importPath": "PySide6.QtCore",
         "description": "PySide6.QtCore",
         "isExtraImport": true,
@@ -4745,6 +4817,38 @@
         "documentation": {}
     },
     {
+        "label": "EnginePart",
+        "importPath": "limekit.engine.parts",
+        "description": "limekit.engine.parts",
+        "isExtraImport": true,
+        "detail": "limekit.engine.parts",
+        "documentation": {}
+    },
+    {
+        "label": "EnginePart",
+        "importPath": "limekit.engine.parts",
+        "description": "limekit.engine.parts",
+        "isExtraImport": true,
+        "detail": "limekit.engine.parts",
+        "documentation": {}
+    },
+    {
+        "label": "EnginePart",
+        "importPath": "limekit.engine.parts",
+        "description": "limekit.engine.parts",
+        "isExtraImport": true,
+        "detail": "limekit.engine.parts",
+        "documentation": {}
+    },
+    {
+        "label": "EnginePart",
+        "importPath": "limekit.engine.parts",
+        "description": "limekit.engine.parts",
+        "isExtraImport": true,
+        "detail": "limekit.engine.parts",
+        "documentation": {}
+    },
+    {
         "label": "QPainter",
         "importPath": "PySide6.QtGui",
         "description": "PySide6.QtGui",
@@ -6550,6 +6654,14 @@
         "description": "limekit.components.widgets.containers.tabbar",
         "isExtraImport": true,
         "detail": "limekit.components.widgets.containers.tabbar",
+        "documentation": {}
+    },
+    {
+        "label": "BaseWidget",
+        "importPath": "limekit.components.base.widget_base",
+        "description": "limekit.components.base.widget_base",
+        "isExtraImport": true,
+        "detail": "limekit.components.base.widget_base",
         "documentation": {}
     },
     {
@@ -8032,6 +8144,14 @@
         "description": "limekit.engine.app_engine",
         "isExtraImport": true,
         "detail": "limekit.engine.app_engine",
+        "documentation": {}
+    },
+    {
+        "label": "QQuickWidget",
+        "importPath": "PySide6.QtQuickWidgets",
+        "description": "PySide6.QtQuickWidgets",
+        "isExtraImport": true,
+        "detail": "PySide6.QtQuickWidgets",
         "documentation": {}
     },
     {
@@ -10289,7 +10409,7 @@
         "kind": 6,
         "importPath": "limekit.components.dockable.dockable_widget",
         "description": "limekit.components.dockable.dockable_widget",
-        "peekOfCode": "class Dock(QDockWidget, EnginePart):\n    name = \"Dockable\"\n    def __init__(self, title=\"Dockable\"):\n        super().__init__(title, parent=None)\n        self.parent_widget = QWidget()\n        self.setWidget(self.parent_widget)\n    def setProperties(self, props):\n        \"\"\"Set dock widget features based on provided properties.\n        Args:\n            props: Dictionary of properties to enable/disable features.",
+        "peekOfCode": "class Dock(QDockWidget, EnginePart):\n    name = \"Dockable\"\n    def __init__(self, title=None):\n        super().__init__(title=title, parent=None)\n        self.parent_widget = QWidget()\n        self.setWidget(self.parent_widget)\n    def setProperties(self, props=None):\n        \"\"\"Set dock widget features based on provided properties.\n        Args:\n            props: Dictionary of properties to enable/disable features.",
         "detail": "limekit.components.dockable.dockable_widget",
         "documentation": {}
     },
@@ -10766,7 +10886,7 @@
         "kind": 6,
         "importPath": "limekit.components.widgets.container",
         "description": "limekit.components.widgets.container",
-        "peekOfCode": "class Container(BaseWidget, QWidget, EnginePart):\n    onKeyPressFunc = None\n    def __init__(self, parent=None):\n        super().__init__(parent=parent)\n    def setOnKeyPress(self, onKeyPressFunc):\n        self.onKeyPressFunc = onKeyPressFunc\n    def setLayout(self, layout):\n        super().setLayout(layout)\n    def setSize(self, width, height):\n        super().resize(width, height)",
+        "peekOfCode": "class Container(BaseWidget, QWidget, EnginePart):\n    onKeyPressFunc = None\n    def __init__(self, parent=None):\n        super().__init__(parent=parent)\n    # Allows adding child without setting a layout\n    def createContainer(self, child):\n        return self.createWindowContainer(child)\n    def setOnKeyPress(self, onKeyPressFunc):\n        self.onKeyPressFunc = onKeyPressFunc\n    def setLayout(self, layout):",
         "detail": "limekit.components.widgets.container",
         "documentation": {}
     },
@@ -11029,6 +11149,15 @@
         "description": "limekit.components.widgets.progressbar",
         "peekOfCode": "class ProgressBar(BaseWidget, QProgressBar, EnginePart):\n    def __init__(self):\n        super().__init__()\n    # Setting the range 0,0 makes the progress bar indeterminate\n    def setRange(self, start, end):\n        super().setRange(start, end)\n    def setValue(self, value):\n        super().setValue(value)\n    def getValue(self):\n        return self.value()",
         "detail": "limekit.components.widgets.progressbar",
+        "documentation": {}
+    },
+    {
+        "label": "QmlWidget",
+        "kind": 6,
+        "importPath": "limekit.components.widgets.qmlwidget",
+        "description": "limekit.components.widgets.qmlwidget",
+        "peekOfCode": "class QmlWidget(BaseWidget, QQuickWidget, EnginePart):\n    def __init__(self, parent=None):\n        super().__init__(parent)\n        self.setResizeMode(QQuickWidget.ResizeMode.SizeRootObjectToView)\n    def setSource(self, source):\n        super().setSource(QUrl.fromLocalFile(source))\n    def setBridge(self, name, bridge):\n        self.engine().rootContext().setContextProperty(name, bridge)\n    # def setResizeMode(self, mode):\n    #     QQuickWidget.ResizeMode.",
+        "detail": "limekit.components.widgets.qmlwidget",
         "documentation": {}
     },
     {
@@ -11693,7 +11822,7 @@
         "kind": 6,
         "importPath": "limekit.engine.parts",
         "description": "limekit.engine.parts",
-        "peekOfCode": "class EnginePart:\n    \"\"\"\n    If name hasn't been assigned, that signifies that the class name (class.__name__)\n    should be used instead\n    \"\"\"\n    name = \"\"\n    premium = False  # To be used for license restrictions\n    def __str__(self):\n        return \"Limekit lua gui framework\"",
+        "peekOfCode": "class EnginePart:\n    \"\"\"\n    If name hasn't been assigned, that signifies that the class name (class.__name__)\n    should be used instead\n    \"\"\"\n    name = \"\"\n    premium = False  # To be used for license restrictions\n    # def __str__(self):\n    #     return \"Limekit lua gui framework\"",
         "detail": "limekit.engine.parts",
         "documentation": {}
     },
@@ -11713,6 +11842,24 @@
         "description": "limekit.gui.autocomplete",
         "peekOfCode": "class AutoComplete(QCompleter, EnginePart):\n    def __init__(self, data):\n        super().__init__(data.values() if lupa.lua_type(data) == \"table\" else data)\n        self.setCaseSensitivity(Qt.CaseInsensitive)\n        self.setCompletionMode(QCompleter.CompletionMode.PopupCompletion)\n        self.setWrapAround(False)",
         "detail": "limekit.gui.autocomplete",
+        "documentation": {}
+    },
+    {
+        "label": "Bridge",
+        "kind": 6,
+        "importPath": "limekit.gui.bridge",
+        "description": "limekit.gui.bridge",
+        "peekOfCode": "class Bridge(QObject, EnginePart):\n    textChanged = Signal()\n    def __init__(self, parent=None):\n        super().__init__(parent)\n        self._text = \"Text\"\n    def getText(self):\n        return self._text\n    def setText(self, value):\n        if self._text != value:\n            self._text = value",
+        "detail": "limekit.gui.bridge",
+        "documentation": {}
+    },
+    {
+        "label": "Controller",
+        "kind": 6,
+        "importPath": "limekit.gui.controller",
+        "description": "limekit.gui.controller",
+        "peekOfCode": "class Controller(QObject, EnginePart):\n    textChanged = Signal()\n    def __init__(self, parent=None):\n        super().__init__(parent)\n        self._text = \"Text\"\n    def getText(self):\n        return self._text\n    def setText(self, value):\n        if self._text != value:\n            self._text = value",
+        "detail": "limekit.gui.controller",
         "documentation": {}
     },
     {
@@ -11770,6 +11917,15 @@
         "documentation": {}
     },
     {
+        "label": "QProperty",
+        "kind": 6,
+        "importPath": "limekit.gui.property",
+        "description": "limekit.gui.property",
+        "peekOfCode": "class QProperty(EnginePart):\n    name = \"Property\"\n    def __init__(self, _type, getter=None, setter=None, notifier=None):\n        print(\"$$$$$$$$$$$$$ \", _type)\n        print(\"$$$$$$$$$$$$$ \", getter)\n        print(\"$$$$$$$$$$$$$ \", setter)\n        print(\"$$$$$$$$$$$$$ \", notifier)\n        self.property = Property(type=_type, fget=getter, fset=setter, notify=notifier)",
+        "detail": "limekit.gui.property",
+        "documentation": {}
+    },
+    {
         "label": "RegularExpression",
         "kind": 6,
         "importPath": "limekit.gui.regular_expression",
@@ -11783,7 +11939,7 @@
         "kind": 6,
         "importPath": "limekit.gui.signal",
         "description": "limekit.gui.signal",
-        "peekOfCode": "class QtSignal(QObject, EnginePart):\n    \"\"\"\n    Signals are good when working with threads\n    \"\"\"\n    name = \"Signal\"\n    onSignalFunc = None\n    qt_signal = Signal()\n    def __init__(self):\n        super().__init__()\n        self.qt_signal.connect(self.__handleSignalEmit)",
+        "peekOfCode": "class QtSignal(QObject, EnginePart):\n    \"\"\"\n    Signals are good when working with threads\n    \"\"\"\n    name = \"QSignal\"\n    onSignalFunc = None\n    my_signal = Signal()\n    def __init__(self):\n        super().__init__()\n        # self.my_signal.connect(self.__handleSignalEmit)",
         "detail": "limekit.gui.signal",
         "documentation": {}
     },

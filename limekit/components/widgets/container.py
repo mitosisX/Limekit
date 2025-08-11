@@ -11,6 +11,10 @@ class Container(BaseWidget, QWidget, EnginePart):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
 
+    # Allows adding child without setting a layout
+    def createContainer(self, child):
+        return self.createWindowContainer(child)
+
     def setOnKeyPress(self, onKeyPressFunc):
         self.onKeyPressFunc = onKeyPressFunc
 

@@ -35,7 +35,7 @@ from playsound import playsound
 
 import lupa
 from lupa import LuaRuntime
-from PySide6.QtCore import QFileSystemWatcher
+from PySide6.QtCore import QFileSystemWatcher, Signal
 
 # from faker import Faker
 
@@ -408,6 +408,7 @@ class Engine:
             # "fake": Faker(),
             # "Workbook": Workbook,
             "route": self.routing.fetch_resource,
+            "Signal": Signal,
             "Sound": playsound,
             # "Bar": Bar,
             # "requests": requests,

@@ -20,13 +20,15 @@ class QtSignal(QObject, EnginePart):
     Signals are good when working with threads
     """
 
-    name = "Signal"
+    name = "QSignal"
     onSignalFunc = None
-    qt_signal = Signal()
+
+    my_signal = Signal()
 
     def __init__(self):
         super().__init__()
-        self.qt_signal.connect(self.__handleSignalEmit)
+
+        # self.my_signal.connect(self.__handleSignalEmit)
 
     def __handleSignalEmit(self):
         if self.onSignalFunc:
@@ -36,4 +38,7 @@ class QtSignal(QObject, EnginePart):
         self.onSignalFunc = onSignalFunc
 
     def relay(self):
-        self.qt_signal.emit()
+        self.my_signal.emit()
+
+    def getSignal(self):
+        return self.my_signal

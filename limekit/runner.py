@@ -58,7 +58,10 @@ class LimerApplication:
 
     def run(self) -> None:
         try:
-            if len(sys.argv) > 1:
+            if len(sys.argv) == 1:
+                self._initialize_path(".")
+
+            elif len(sys.argv) > 1:
                 self._initialize_path(sys.argv[1])
 
             self.engine.start()
