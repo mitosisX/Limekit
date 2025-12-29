@@ -4,42 +4,17 @@ from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Qt
 
 
+# High DPI settings MUST be set before QApplication is created
+QApplication.setHighDpiScaleFactorRoundingPolicy(
+    Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
+)
+
+
 class App:
     app = QApplication(sys.argv)
-    # app = None
 
-    # The commented method below prevents the program from closing once all windows
-    # have been closed; the programs runs in the background
-    # app.setQuitOnLastWindowClosed(False)
-
-    # Start the mainloop
     @classmethod
     def execute(cls):
-        # QApplication.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
-        # QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
-
-        # App.app.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling, True)
-        # App.app.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps, True)
-
-        # # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-        # QApplication.setHighDpiScaleFactorRoundingPolicy(
-        #     Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
-        # )
-
-        QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
-        QApplication.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
-
-        # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-        QApplication.setHighDpiScaleFactorRoundingPolicy(
-            Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
-        )
-
-        # App.app.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
-        # App.app.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
-        # App.app.setHighDpiScaleFactorRoundingPolicy(
-        #     Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
-        # )
-
         try:
             sys.exit(cls.app.exec())
         except Exception as ex:
