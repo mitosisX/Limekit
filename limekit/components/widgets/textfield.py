@@ -298,10 +298,15 @@ class TextField(BaseWidget, QTextEdit, EnginePart):
         super().setFont(font)
         # self.setFontPointSize(int(size))
 
-    def setFont(self, font_):
+    def setFont(self, font_name, size=None):
         font = QFont()
-        font.fromString(font_)
+        if size is not None:
+            font.setFamily(font_name)
+            font.setPointSize(int(size))
+        else:
+            font.fromString(font_name)
         self.setCurrentFont(font)
+        super().setFont(font)
 
     def setTextColor(self, color):
         super().setTextColor(color)
@@ -428,3 +433,8 @@ class TextField(BaseWidget, QTextEdit, EnginePart):
 
     def getBlockCount(self):
         return self.document().blockCount()
+
+    def scrollToEnd(self):
+        """Scroll to the end of the document."""
+        scrollbar = self.verticalScrollBar()
+        scrollbar.setValue(scrollbar.maximum())

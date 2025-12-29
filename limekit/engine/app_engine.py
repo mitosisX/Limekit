@@ -232,77 +232,117 @@ class Engine:
     def set_eventloop(self):
         self.app.execute()
 
+    def _get_all_subdirectories(self, root_path):
+        """Recursively get all subdirectories of a path."""
+        subdirs = []
+        if not os.path.exists(root_path):
+            return subdirs
+
+        for root, dirs, files in os.walk(root_path):
+            # Add the root itself
+            subdirs.append(root)
+
+        return subdirs
+
+    def _normalize_lua_path(self, path):
+        """Normalize a path for Lua's package.path (forward slashes, no trailing slash)."""
+        return os.path.normpath(path).replace("\\", "/").rstrip("/")
+
     def set_custom_lua_require_path(self):
         """
-        Sets custom Lua require paths by reading from a '.require' file in the project directory.
-        Adds all specified directories plus the misc directory to Lua's package.path.
+        Sets custom Lua require paths for both development and frozen (packaged) modes.
 
         Features:
+        - Works in both IDE (development) and frozen (PyInstaller) modes
+        - Adds all subdirectories of scripts/ and misc/ to package.path
+        - Supports init.lua pattern (require "folder" finds folder/init.lua)
+        - Handles .require file with relative paths (frozen-compatible)
         - Works across all operating systems (Windows, macOS, Linux)
-        - Handles both forward and backward slashes in input paths
-        - Properly formats paths for Lua's package.path
-        - Supports both semicolon and newline separated paths in .require file
-        - Adds paths in a cross-platform way that Lua will understand
 
-        The .require file format can be:
-        C:/dir1/dir2;D:/dir1
-        or
-        C:\\dir1\\dir2
-        D:\\dir1
-        or any mix of separators
+        In frozen mode:
+        - Absolute paths in .require are skipped (they won't exist)
+        - Relative paths are resolved against the bundle directory
+        - All script subdirectories are automatically included
         """
-
-        # Define the path to the .require file
-        req_file_path = os.path.join(Path.project_path, ".require")
-
-        # Initialize list to store all paths we'll add to package.path
         lua_path_entries = []
+        project_root = Path.project_path
+        is_frozen = not self.isIDE()
+
+        # Get base directories
+        scripts_path = self._normalize_lua_path(Path.scripts_dir())
+        misc_path = self._normalize_lua_path(Path.misc_dir())
+
+        # Add main directories with both ?.lua and ?/init.lua patterns
+        # This allows: require "module" AND require "folder" (finds folder/init.lua)
+        lua_path_entries.append(f"{scripts_path}/?.lua")
+        lua_path_entries.append(f"{scripts_path}/?/init.lua")
+        lua_path_entries.append(f"{misc_path}/?.lua")
+        lua_path_entries.append(f"{misc_path}/?/init.lua")
+
+        # Add ALL subdirectories of scripts/ and misc/ to support nested requires
+        # This allows files in subdirectories to require siblings without full paths
+        # e.g., in scripts/gui/modals/dialog.lua: require "utils" finds scripts/gui/modals/utils.lua
+        for subdir in self._get_all_subdirectories(Path.scripts_dir()):
+            normalized = self._normalize_lua_path(subdir)
+            if normalized != scripts_path:  # Don't duplicate the root
+                lua_path_entries.append(f"{normalized}/?.lua")
+                lua_path_entries.append(f"{normalized}/?/init.lua")
+
+        for subdir in self._get_all_subdirectories(Path.misc_dir()):
+            normalized = self._normalize_lua_path(subdir)
+            if normalized != misc_path:  # Don't duplicate the root
+                lua_path_entries.append(f"{normalized}/?.lua")
 
         # Process .require file if it exists
+        req_file_path = os.path.join(project_root, ".require")
         if Path.check_path(req_file_path):
             try:
-                # Read the file content
                 require_content = File.read_file(req_file_path)
 
-                # Split paths by either semicolon or newline, and filter out empty entries
+                # Split paths by semicolon or newline
                 raw_paths = []
                 if ";" in require_content:
-                    raw_paths = [
-                        p.strip() for p in require_content.split(";") if p.strip()
-                    ]
+                    raw_paths = [p.strip() for p in require_content.split(";") if p.strip()]
                 else:
-                    raw_paths = [
-                        p.strip() for p in require_content.split("\n") if p.strip()
-                    ]
+                    raw_paths = [p.strip() for p in require_content.split("\n") if p.strip()]
 
-                # Process each path to ensure proper formatting
                 for path in raw_paths:
-                    # Normalize the path to use forward slashes (works on all platforms in Lua)
-                    normalized_path = path.replace("\\", "/")
-                    # Remove any trailing slash to standardize
-                    normalized_path = normalized_path.rstrip("/")
-                    # Add the ?.lua suffix (Lua's require pattern)
-                    lua_path_entries.append(f"{normalized_path}/?.lua")
+                    normalized_path = path.replace("\\", "/").rstrip("/")
+
+                    # Check if path is absolute
+                    is_absolute = os.path.isabs(path) or (len(path) > 1 and path[1] == ':')
+
+                    if is_frozen and is_absolute:
+                        # In frozen mode, skip absolute paths - they won't exist
+                        # Users should use relative paths for frozen-compatible requires
+                        from limekit.core.error_handler import warn
+                        warn(f"Skipping absolute require path in frozen mode: {path}", "AppEngine")
+                        continue
+                    elif not is_absolute:
+                        # Relative path - resolve against project root
+                        resolved = os.path.join(project_root, path)
+                        normalized_path = self._normalize_lua_path(resolved)
+
+                    # Only add if the path exists
+                    if os.path.exists(normalized_path.replace("/", os.sep)):
+                        lua_path_entries.append(f"{normalized_path}/?.lua")
+                        lua_path_entries.append(f"{normalized_path}/?/init.lua")
 
             except Exception as e:
                 from limekit.core.error_handler import warn
                 warn(f"Failed to process .require file: {e}", "AppEngine")
 
-        # Always add the misc directory
-        misc_path = os.path.normpath(Path.misc_dir()).replace("\\", "/").rstrip("/")
-        scripts_path = (
-            os.path.normpath(Path.scripts_dir()).replace("\\", "/").rstrip("/")
-        )
-        lua_path_entries.append(f"{misc_path}/?.lua")
-        lua_path_entries.append(f"{scripts_path}/?.lua")
-
-        # Combine all paths into a single string for Lua
+        # Combine all paths and set package.path
         if lua_path_entries:
-            # Join all paths with semicolons (Lua's path separator)
-            paths_string = ";".join(lua_path_entries) + ";"
+            # Remove duplicates while preserving order
+            seen = set()
+            unique_paths = []
+            for p in lua_path_entries:
+                if p not in seen:
+                    seen.add(p)
+                    unique_paths.append(p)
 
-            # Prepend these paths to Lua's existing package.path
-            # Using format() instead of f-string for broader Python version compatibility
+            paths_string = ";".join(unique_paths) + ";"
             lua_command = "package.path = '{}' .. package.path".format(paths_string)
             self.execute(lua_command)
 
@@ -353,40 +393,160 @@ class Engine:
             self._load_frozen_classes()
 
     def _load_frozen_classes(self):
-        """Load limekit classes in frozen mode using pkgutil."""
-        import pkgutil
+        """Load limekit classes in frozen mode by explicitly importing all modules."""
+        # Explicit list of all modules containing EnginePart subclasses
+        # This is necessary because pkgutil.walk_packages doesn't work reliably in frozen apps
+        frozen_modules = [
+            # Layouts
+            "limekit.components.layouts.vlayout",
+            "limekit.components.layouts.hlayout",
+            "limekit.components.layouts.grid",
+            "limekit.components.layouts.formlayout",
+            "limekit.components.layouts.stackedlayout",
+            # Widgets
+            "limekit.components.widgets.button",
+            "limekit.components.widgets.label",
+            "limekit.components.widgets.lineedit",
+            "limekit.components.widgets.textfield",
+            "limekit.components.widgets.checkbox",
+            "limekit.components.widgets.radiobutton",
+            "limekit.components.widgets.combobox",
+            "limekit.components.widgets.listbox",
+            "limekit.components.widgets.slider",
+            "limekit.components.widgets.progressbar",
+            "limekit.components.widgets.spinner",
+            "limekit.components.widgets.doublespinner",
+            "limekit.components.widgets.table",
+            "limekit.components.widgets.treewidget",
+            "limekit.components.widgets.groupbox",
+            "limekit.components.widgets.splitter",
+            "limekit.components.widgets.spacer",
+            "limekit.components.widgets.separator",
+            "limekit.components.widgets.image",
+            "limekit.components.widgets.gifplayer",
+            "limekit.components.widgets.window",
+            "limekit.components.widgets.container",
+            "limekit.components.widgets.scroller",
+            "limekit.components.widgets.buttongroup",
+            "limekit.components.widgets.commandbutton",
+            "limekit.components.widgets.lcdnumber",
+            "limekit.components.widgets.font_combobox",
+            "limekit.components.widgets.accordion",
+            "limekit.components.widgets.knob",
+            "limekit.components.widgets.advanced_slider",
+            "limekit.components.widgets.horizontal_line",
+            "limekit.components.widgets.vertical_line",
+            "limekit.components.widgets.slidingstackedwidget",
+            # Container widgets
+            "limekit.components.widgets.containers.tab",
+            "limekit.components.widgets.containers.tabbar",
+            "limekit.components.widgets.containers.tabitem",
+            # Picker widgets
+            "limekit.components.widgets.pickers.calendar",
+            "limekit.components.widgets.pickers.datepicker",
+            "limekit.components.widgets.pickers.timepicker",
+            # Item widgets
+            "limekit.components.widgets.items.tableitem",
+            "limekit.components.widgets.items.treeview_item",
+            # Menu
+            "limekit.components.menu.menu",
+            "limekit.components.menu.menuitem",
+            "limekit.components.menu.dropmenu",
+            "limekit.components.menubar.menubar",
+            # Toolbar
+            "limekit.components.toolbar.toolbar",
+            "limekit.components.toolbar.toolbar_button",
+            # Statusbar
+            "limekit.components.statusbar.statusbar",
+            # Dialogs
+            "limekit.components.dialogs.modal",
+            "limekit.components.dialogs.messagebox",
+            "limekit.components.dialogs.openfile",
+            "limekit.components.dialogs.savefile",
+            "limekit.components.dialogs.folderpicker",
+            "limekit.components.dialogs.font",
+            "limekit.components.dialogs.color",
+            "limekit.components.dialogs.error",
+            "limekit.components.dialogs.print_preview",
+            "limekit.components.dialogs.popups.alert_dialog",
+            "limekit.components.dialogs.popups.about_popup",
+            "limekit.components.dialogs.popups.critical_popup",
+            "limekit.components.dialogs.popups.information_popup",
+            "limekit.components.dialogs.popups.warning_popup",
+            "limekit.components.dialogs.popups.question_popup",
+            "limekit.components.dialogs.inputs.text_dialog",
+            "limekit.components.dialogs.inputs.multiline_input",
+            "limekit.components.dialogs.inputs.combobox_dialog",
+            "limekit.components.dialogs.inputs.integer_input",
+            "limekit.components.dialogs.inputs.double_input",
+            # Dockable
+            "limekit.components.dockable.dockable_widget",
+            # Charts
+            "limekit.components.charts.chart",
+            "limekit.components.charts.chartview",
+            "limekit.components.charts.categoryaxis",
+            "limekit.components.charts.linegraph.linechart",
+            "limekit.components.charts.bar.barchart",
+            "limekit.components.charts.bar.barset",
+            "limekit.components.charts.area.areachart",
+            "limekit.components.charts.axis.valueaxis",
+            # Core utilities
+            "limekit.core.paths",
+            "limekit.core.clipboard",
+            "limekit.core.timer",
+            "limekit.core.systemtray",
+            "limekit.core.system_notifcation",
+            "limekit.core.database.sqlite3",
+            "limekit.core.bootstrap.subprocess_runner",
+            "limekit.core.bootstrap.engine_launcher",
+            # Utils
+            "limekit.utils.path",
+            "limekit.utils.file",
+            "limekit.utils.sound",
+            "limekit.utils.encoding",
+            "limekit.utils.fileutils",
+            "limekit.utils.sysutil",
+            "limekit.utils.converters",
+            "limekit.utils.validators",
+            "limekit.utils.emoji_str",
+            "limekit.utils.utils",
+            "limekit.utils.sorter",
+            # GUI utilities
+            "limekit.gui.app_styles",
+            "limekit.gui.font",
+            "limekit.gui.keyboard",
+            "limekit.gui.keyboard_shortcut",
+            "limekit.gui.dropshadow",
+            "limekit.gui.syntax_highlighter",
+            "limekit.gui.threading",
+            # Theming
+            "limekit.core.theming.themes.themer",
+            "limekit.core.theming.themes.material.theme",
+            "limekit.core.theming.themes.darkstylesheet.theme",
+            "limekit.core.theming.themes.darklight.theme",
+            "limekit.core.theming.themes.qtthemes.theme",
+            "limekit.core.theming.themes.misc.theme",
+            "limekit.core.theming.palletes.palleting",
+        ]
 
-        for package_name in settings.INSTALLED_PARTS:
+        for modname in frozen_modules:
             try:
-                package = importlib.import_module(package_name)
+                module = importlib.import_module(modname)
 
-                # Walk through all submodules
-                for importer, modname, ispkg in pkgutil.walk_packages(
-                    path=package.__path__,
-                    prefix=package.__name__ + ".",
-                    onerror=lambda x: None
-                ):
-                    try:
-                        module = importlib.import_module(modname)
-
-                        # Find EnginePart subclasses in the module
-                        for name in dir(module):
-                            obj = getattr(module, name)
-                            if (
-                                isinstance(obj, type)
-                                and issubclass(obj, EnginePart)
-                                and obj is not EnginePart
-                            ):
-                                object_name = obj.name if obj.name else obj.__name__
-                                self.engine.globals()[object_name] = obj
-
-                    except Exception as e:
-                        from limekit.core.error_handler import error_handler
-                        error_handler.handle_import_error(modname, e)
+                # Find EnginePart subclasses in the module
+                for name in dir(module):
+                    obj = getattr(module, name)
+                    if (
+                        isinstance(obj, type)
+                        and issubclass(obj, EnginePart)
+                        and obj is not EnginePart
+                    ):
+                        object_name = obj.name if obj.name else obj.__name__
+                        self.engine.globals()[object_name] = obj
 
             except Exception as e:
                 from limekit.core.error_handler import warn
-                warn(f"Failed to load package {package_name}: {e}", "AppEngine")
+                warn(f"Failed to import {modname}: {e}", "AppEngine")
 
     def gather_additional_parts(self):
         """

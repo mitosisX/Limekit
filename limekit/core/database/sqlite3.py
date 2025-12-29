@@ -1,4 +1,10 @@
-import sqlite3
+try:
+    import sqlite3
+    _HAS_SQLITE3 = True
+except ImportError:
+    _HAS_SQLITE3 = False
+    sqlite3 = None
+
 from typing import Optional, Union, List, Dict, Any, Tuple
 from limekit.engine.parts import EnginePart
 from limekit.utils.converters import Converter
@@ -36,6 +42,11 @@ class SqliteDB3(EnginePart):
             # In-memory database
             db = SqliteDB3(":memory:")
         """
+        if not _HAS_SQLITE3:
+            from limekit.core.error_handler import warn
+            warn("sqlite3 module not available", "Database")
+            raise SqliteError("sqlite3 module not available")
+
         try:
             if db == ":memory:":
                 self.connection = sqlite3.connect(

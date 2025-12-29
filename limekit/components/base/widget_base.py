@@ -6,6 +6,9 @@ class BaseWidget:
     def setEnabled(self, enabled: bool):
         super().setEnabled(enabled)
 
+    def setStyleSheet(self, style):
+        super().setStyleSheet(style)
+
     def setBackgroundColor(self, color):
         self.setStyleSheet(f"background-color: {color};")
 
@@ -45,6 +48,9 @@ class BaseWidget:
 
     def show(self):
         super().show()
+
+    def setVisible(self, visible):
+        super().setVisible(visible)
 
     def setVisibility(self, visibility):
         self.setVisible(visibility)
