@@ -1,19 +1,13 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QDialog, QDialogButtonBox
 from limekit.engine.parts import EnginePart
-from limekit.engine.lifecycle.shutdown import destroy_engine
-
-"""
-This is a Dumb Dialog. Oftenly used for "Ok", "Cancel" operations
-"""
+from limekit.core.error_handler import handle_widget_error
 
 
 class Modal(QDialog, EnginePart):
-    # name = "Modal"
     onShownEvent = None
     onResizeEvent = None
     onCloseEvent = None
-    onResizeEvent = None
 
     def __init__(self, parent, title="Modal - Limkit"):
         super().__init__(parent)
@@ -23,12 +17,6 @@ class Modal(QDialog, EnginePart):
         self.buttons = QDialogButtonBox.StandardButton.Ok
         self.dialog_buttons = QDialogButtonBox(self.buttons)
 
-        # self.dialog_buttons.clicked.connect(self.accept)
-        # self.dialog_buttons.rejected.connect(self.reject)
-
-        # self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setDefault(True)
-
-    # Events ----------------------
     def setOnShown(self, func):
         self.onShownEvent = func
 
@@ -38,20 +26,17 @@ class Modal(QDialog, EnginePart):
             try:
                 self.onShownEvent(self)
             except Exception as ex:
-                print(ex)
-                # destroy_engine()
+                handle_widget_error(ex, "Modal", "onShown")
 
     def setOnClose(self, func):
         self.onCloseEvent = func
 
-    # event has: ignore and accept
     def closeEvent(self, event):
         if self.onCloseEvent:
             try:
                 self.onCloseEvent(self, event)
             except Exception as ex:
-                print(ex)
-                # destroy_engine()
+                handle_widget_error(ex, "Modal", "onClose")
 
     def setOnResize(self, func):
         self.onResizeEvent = func
@@ -61,8 +46,7 @@ class Modal(QDialog, EnginePart):
             try:
                 self.onResizeEvent(self)
             except Exception as ex:
-                print(ex)
-                # destroy_engine()
+                handle_widget_error(ex, "Modal", "onResize")
 
     # ---------------------- Events
 

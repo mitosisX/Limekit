@@ -2,6 +2,7 @@ import lupa
 import hashlib
 from limekit.engine.parts import EnginePart
 from limekit.engine.globals.global_engine import GlobalEngine
+from limekit.core.error_handler import warn
 
 
 class Converter(EnginePart):
@@ -31,13 +32,12 @@ class Converter(EnginePart):
             try:
                 return py_method(*args, **kwargs)
             except TypeError as ex:
-                print(ex)
+                warn(f"py_kwargs_ call failed: {ex}", "Converter")
         else:
             try:
                 return py_method(**kwargs)
             except TypeError as ex:
-                # py_method(*[None], **kwargs)
-                print(ex)
+                warn(f"py_kwargs_ call failed: {ex}", "Converter")
 
     # redesign of the above method. Just remebered about unboxing, so had to shorten it.
     # 14 September, 2023 (4:57 PM) (Thursday) (Mzuzu)
@@ -57,8 +57,7 @@ class Converter(EnginePart):
                 ret_method_kwargs = py_method(**kwargs)
                 return ret_method_kwargs
         except TypeError as ex:
-            # py_method(*[None], **kwargs)
-            print(ex)
+            warn(f"py_kwargs call failed: {ex}", "Converter")
 
     # Allows using python indexing [:], [::2], [::-1]
     @classmethod
@@ -85,8 +84,8 @@ class Converter(EnginePart):
             h = hashlib.new(hash_type)
             h.update(text.encode("utf-8"))
             return h.hexdigest()
-        except ValueError as exception:
-            print(exception)
+        except ValueError as ex:
+            warn(f"Invalid hash type '{hash_type}': {ex}", "Converter")
 
     # redefining some of the in-built python methods
 
@@ -136,7 +135,6 @@ class Converter(EnginePart):
     def table_to_dict(cls, table):
         py_dict = {}
         for k, v in table.items():
-            print(k)
             if lupa.lua_type(v) == "table":
                 py_dict[k] = cls.table_to_dict(v.values())
             else:

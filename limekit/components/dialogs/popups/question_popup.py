@@ -46,11 +46,11 @@ class QuestionPopup(QMessageBox, EnginePart):
         try:
             for _button in _buttons.values():
                 if button_mapping.get(_button.lower()):
-                    print("##### ", _button)
                     buttons |= button_mapping[_button.lower()]
 
-        except AttributeError:
-            pass
+        except AttributeError as ex:
+            from limekit.core.error_handler import warn
+            warn(f"Invalid button configuration: {ex}", "QuestionPopup")
 
         return buttons
 

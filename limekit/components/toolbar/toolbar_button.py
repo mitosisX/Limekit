@@ -1,6 +1,6 @@
 from PySide6.QtGui import QAction, QIcon
 from limekit.engine.parts import EnginePart
-from limekit.engine.lifecycle.shutdown import destroy_engine
+from limekit.core.error_handler import handle_widget_error
 
 """
 Icon Size: 64x64
@@ -25,8 +25,7 @@ class ToolbarButton(QAction, EnginePart):
             try:
                 self.onClickFunction(self)
             except Exception as ex:
-                print(ex)
-                # destroy_engine()
+                handle_widget_error(ex, "ToolbarButton", "onClick")
 
     def setText(slelf, text):
         super().setText(text)

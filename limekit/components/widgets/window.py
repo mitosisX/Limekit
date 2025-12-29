@@ -38,10 +38,9 @@ class Window(QMainWindow, EnginePart):
                 width, height = kwargs["size"].values()
                 self.setSize(width, height)
             except ValueError as ex:
-                print(ex)
+                from limekit.core.error_handler import warn
+                warn(f"Invalid window size format, using default 400x400: {ex}", "Window")
                 self.setSize(400, 400)
-
-                # print("Error: Not all sizes provided. Using {400, 400}")
         else:
             self.setSize(400, 400)
 

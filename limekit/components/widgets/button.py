@@ -2,8 +2,8 @@ from PySide6.QtGui import QIcon
 from PySide6.QtCore import QSize
 from PySide6.QtWidgets import QPushButton
 from limekit.engine.parts import EnginePart
-from limekit.engine.lifecycle.shutdown import destroy_engine
 from limekit.components.base.widget_base import BaseWidget
+from limekit.core.error_handler import handle_widget_error
 
 
 class Button(BaseWidget, QPushButton, EnginePart):
@@ -18,24 +18,13 @@ class Button(BaseWidget, QPushButton, EnginePart):
 
     def setOnClick(self, onClickFunc):
         self.onClickFunc = onClickFunc
-        # mouse_event = QApplication.mouseButtons()
-
-        # if mouse_event == Qt.LeftButton:
-        #     print("Left button clicked")
-        # elif mouse_event == Qt.RightButton:
-        #     print("Right button clicked")
-
-        # double_click = QApplication.mouseDoubleClickInterval()
-        # if self.button.underMouse() and self.button.clickCount() == 2:
-        #     print("Double click")
 
     def __handleOnClick(self):
         if self.onClickFunc:
             try:
                 self.onClickFunc(self)
             except Exception as ex:
-                print(ex)
-                # destroy_engine()
+                handle_widget_error(ex, "Button", "onClick")
 
     def getText(self):
         return self.text()

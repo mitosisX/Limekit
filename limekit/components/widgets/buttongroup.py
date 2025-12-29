@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QButtonGroup
 from limekit.engine.parts import EnginePart
-from limekit.engine.lifecycle.shutdown import destroy_engine
+from limekit.core.error_handler import handle_widget_error
 
 """
 Only a layout can be used to add widgets using setLayout method
@@ -31,5 +31,4 @@ class ButtonGroup(QButtonGroup, EnginePart):
             try:
                 self.onClickFunc(self, button)
             except Exception as ex:
-                print(ex)
-                # destroy_engine()
+                handle_widget_error(ex, "ButtonGroup", "onClick")

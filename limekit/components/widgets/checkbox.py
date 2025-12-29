@@ -2,8 +2,8 @@ from PySide6.QtWidgets import QCheckBox
 from PySide6.QtGui import QIcon
 from PySide6.QtCore import QSize
 from limekit.engine.parts import EnginePart
-from limekit.engine.lifecycle.shutdown import destroy_engine
 from limekit.components.base.widget_base import BaseWidget
+from limekit.core.error_handler import handle_widget_error
 
 
 class CheckBox(BaseWidget, QCheckBox, EnginePart):
@@ -20,8 +20,7 @@ class CheckBox(BaseWidget, QCheckBox, EnginePart):
             try:
                 self.onStateChangedFunc(self, state)
             except Exception as ex:
-                print(ex)
-                # destroy_engine()
+                handle_widget_error(ex, "CheckBox", "onCheck")
 
     def setOnCheck(self, onStateChangedFunc):
         self.onStateChangedFunc = onStateChangedFunc

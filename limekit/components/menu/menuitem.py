@@ -1,6 +1,7 @@
 from PySide6.QtGui import QAction
 from PySide6.QtGui import QIcon, QFont
 from limekit.engine.parts import EnginePart
+from limekit.core.error_handler import handle_widget_error
 
 
 class MenuItem(QAction, EnginePart):
@@ -29,7 +30,7 @@ class MenuItem(QAction, EnginePart):
             try:
                 self.onClickFunction(self)
             except Exception as ex:
-                print(ex)
+                handle_widget_error(ex, "MenuItem", "onClick")
 
     def setOnClick(self, onClickFunction):
         self.onClickFunction = onClickFunction

@@ -6,6 +6,7 @@ INSTALLED_PARTS = [
     "limekit.components",
     "limekit.gui",
     "limekit.utils",
+    "limekit.build",
 ]
 
 # You'll sometimes not want some dir walked

@@ -1,7 +1,7 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QMenu
 from limekit.engine.parts import EnginePart
-from limekit.engine.lifecycle.shutdown import destroy_engine
+from limekit.core.error_handler import handle_widget_error
 from limekit.components.menu.menuitem import MenuItem
 
 
@@ -20,8 +20,7 @@ class Menu(QMenu, EnginePart):
             try:
                 self.onClickFunction(self)
             except Exception as ex:
-                print(ex)
-                destroy_engine()
+                handle_widget_error(ex, "Menu", "onClick")
 
     def setOnClick(self, onClickFunction):
         self.onClickFunction = onClickFunction

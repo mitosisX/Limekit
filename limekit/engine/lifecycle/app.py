@@ -18,4 +18,5 @@ class App:
         try:
             sys.exit(cls.app.exec())
         except Exception as ex:
-            print(ex)
+            from limekit.core.error_handler import handle_exception
+            handle_exception(ex, context="Application Event Loop", fatal=True)

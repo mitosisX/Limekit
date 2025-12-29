@@ -1,27 +1,4 @@
-"""
-         _     _                _    _ _     _____                                            _    
-        | |   (_)_ __ ___   ___| | _(_) |_  |  ___| __ __ _ _ __ ___   _____      _____  _ __| | __
-        | |   | | '_ ` _ \ / _ \ |/ / | __| | |_ | '__/ _` | '_ ` _ \ / _ \ \ /\ / / _ \| '__| |/ /
-        | |___| | | | | | |  __/   <| | |_  |  _|| | | (_| | | | | | |  __/\ V  V / (_) | |  |   < 
-        |_____|_|_| |_| |_|\___|_|\_\_|\__| |_|  |_|  \__,_|_| |_| |_|\___| \_/\_/ \___/|_|  |_|\_\
-                                                                                                    
-from project Abie
-    - Every code I write falls under "project Abie"
-
-            13 September, 2023 08:43 AM (Wednesday)
-
-The project is going pretty great. Haven't yet released it, nor developed
-a project creation script, nor how the virtual env shall work.
-
-            24 October, 2023 14:12 PM (Tuesday)
-
-I now have the virtual env up and running and able to execute a project creation file
-through a batch script; the creation script is half-baked (only able to run a project, nothing else)
-
-            18 December, 2023 6:32 AM (Monday)
-
-The virtual env idea was a total disaster, I had to "reinvent" my code to make it work
-"""
+# Limekit Engine - The core of the framework
 
 import re
 import os
@@ -58,17 +35,9 @@ from limekit.engine.parser.lua_parser import LuaParser
 from limekit.engine.lifecycle.shutdown import destroy_engine
 
 
-"""
-  _     _                _    _ _     _____             _            
- | |   (_)_ __ ___   ___| | _(_) |_  | ____|_ __   __ _(_)_ __   ___ 
- | |   | | '_ ` _ \ / _ \ |/ / | __| |  _| | '_ \ / _` | | '_ \ / _ \
- | |___| | | | | | |  __/   <| | |_  | |___| | | | (_| | | | | |  __/
- |_____|_|_| |_| |_|\___|_|\_\_|\__| |_____|_| |_|\__, |_|_| |_|\___|
-                                                  |___/              
-
-This is where all the magic happens. The Engine is the core of the framework, 
-as it is responsible for executing the lua code, and pretty much everything else.
-"""
+# Limekit Engine Class
+# This is where all the magic happens. The Engine is the core of the framework,
+# responsible for executing lua code and managing the application lifecycle.
 
 
 class Engine:
@@ -145,10 +114,12 @@ class Engine:
                             self.loaded_user_classes.add(class_name)
 
                     except FileNotFoundError:
-                        print(f"Error: File '{file_path}' not found.")
+                        from limekit.core.error_handler import warn
+                        warn(f"File '{file_path}' not found during class scanning", "AppEngine")
                         return
                     except Exception as e:
-                        print(f"Error reading file: {e}")
+                        from limekit.core.error_handler import warn
+                        warn(f"Error reading file during class scanning: {e}", "AppEngine")
                         return
 
         self.loaded_user_classes.add("Window")
@@ -216,35 +187,15 @@ class Engine:
 
     # All core lua code for the limekit framework
     def execute_vital_lua(self):
-        # vital_files = [
-        #     "limekit.framework.scripts.limekit",
-        # ]
-
-        # for vital_file in vital_files:
-        #     clean_path_file = Path.join_paths(
-        #         Path.remove_last_dir(settings.limekit_SITEPACKAGE_DIR),
-        #         f"{Path.dot_path(vital_file)}.lua",
-        #     )
-
-        # -----------------------------------------------------------------------
-        # -----------------------------------------------------------------------
-        # -----------------------------------------------------------------------
-        # -----------------------------------------------------------------------
-
-        #
-        # the file with the "app" table
-        # for some reason, reading from a file caused alot of errors, and the workaround it
-        # was to duplicate the limekit.lua file content into some variable
-
-        limekit_lua_file = Path.join_paths(self.limekit_root_dir, "lua", "limekit.lua")
+        # For frozen apps, look in _MEIPASS; otherwise use site-packages
+        if self.isIDE():
+            # Development mode - use installed limekit package
+            limekit_lua_file = Path.join_paths(self.limekit_root_dir, "lua", "limekit.lua")
+        else:
+            # Frozen mode - use bundled limekit.lua from _MEIPASS
+            limekit_lua_file = Path.join_paths(sys._MEIPASS, "limekit", "lua", "limekit.lua")
 
         limekit_file_content = File.read_file(limekit_lua_file)
-
-        # print(limekit_file_content)
-
-        # print(File.read_file(p))
-
-        # limekit_file_content = Script.read_app_lua()
         self.execute(limekit_file_content)
 
     """
@@ -272,7 +223,9 @@ class Engine:
             main_lua_content = File.read_file(path_to_main)
             self.execute(main_lua_content)
         except FileNotFoundError as ex:
-            print("EntryPointError: No main.lua file found ")
+            from limekit.core.error_handler import handle_exception
+            handle_exception(ex, context="EntryPoint", fatal=True)
+            print("\nEntryPointError: No main.lua file found in scripts directory")
             destroy_engine()
 
     # The PySide6 engine that handles the mainloop of the program
@@ -294,8 +247,8 @@ class Engine:
         The .require file format can be:
         C:/dir1/dir2;D:/dir1
         or
-        C:\dir1\dir2
-        D:\dir1
+        C:\\dir1\\dir2
+        D:\\dir1
         or any mix of separators
         """
 
@@ -332,7 +285,8 @@ class Engine:
                     lua_path_entries.append(f"{normalized_path}/?.lua")
 
             except Exception as e:
-                print(f"Warning: Failed to process .require file: {e}")
+                from limekit.core.error_handler import warn
+                warn(f"Failed to process .require file: {e}", "AppEngine")
 
         # Always add the misc directory
         misc_path = os.path.normpath(Path.misc_dir()).replace("\\", "/").rstrip("/")
@@ -381,17 +335,58 @@ class Engine:
 
     # This method walks through all dir specified in in the settings.py INSTALLED_PARTS
     def gather_from_dirs(self):
-        walked_classes = []  # holds all the classes found in the dir to be executed
+        if self.isIDE():
+            # Development mode - walk filesystem to discover classes
+            walked_classes = []
 
-        for app in settings.INSTALLED_PARTS:
-            app_path = Path.dot_path(app)
-            limekit_dir = Path.get_parent_dir(settings.limekit_SITEPACKAGE_DIR)
-            full_path = os.path.join(limekit_dir, app_path)
+            for app in settings.INSTALLED_PARTS:
+                app_path = Path.dot_path(app)
+                limekit_dir = Path.get_parent_dir(settings.limekit_SITEPACKAGE_DIR)
+                full_path = os.path.join(limekit_dir, app_path)
 
-            files_obtained = Path.walk_dir_get_files(full_path)
-            walked_classes += files_obtained
+                files_obtained = Path.walk_dir_get_files(full_path)
+                walked_classes += files_obtained
 
-        self.load_classes(walked_classes)
+            self.load_classes(walked_classes)
+        else:
+            # Frozen mode - use pkgutil to discover bundled modules
+            self._load_frozen_classes()
+
+    def _load_frozen_classes(self):
+        """Load limekit classes in frozen mode using pkgutil."""
+        import pkgutil
+
+        for package_name in settings.INSTALLED_PARTS:
+            try:
+                package = importlib.import_module(package_name)
+
+                # Walk through all submodules
+                for importer, modname, ispkg in pkgutil.walk_packages(
+                    path=package.__path__,
+                    prefix=package.__name__ + ".",
+                    onerror=lambda x: None
+                ):
+                    try:
+                        module = importlib.import_module(modname)
+
+                        # Find EnginePart subclasses in the module
+                        for name in dir(module):
+                            obj = getattr(module, name)
+                            if (
+                                isinstance(obj, type)
+                                and issubclass(obj, EnginePart)
+                                and obj is not EnginePart
+                            ):
+                                object_name = obj.name if obj.name else obj.__name__
+                                self.engine.globals()[object_name] = obj
+
+                    except Exception as e:
+                        from limekit.core.error_handler import error_handler
+                        error_handler.handle_import_error(modname, e)
+
+            except Exception as e:
+                from limekit.core.error_handler import warn
+                warn(f"Failed to load package {package_name}: {e}", "AppEngine")
 
     def gather_additional_parts(self):
         """

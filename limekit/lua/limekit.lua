@@ -36,6 +36,12 @@ app = {
     runProject = function(path)
         return __appCore(path)
     end,
+    -- Build project into standalone executable
+    -- options: { console = false, output_dir = nil }
+    buildProject = function(path, options)
+        options = options or {}
+        return __appBuild(path, options)
+    end,
     randomChoice = function(table_)
         return __utils.random_string(table_)
     end,

@@ -256,7 +256,8 @@ class FileUtils(EnginePart):
         try:
             shutil.copyfile(source, destination)
         except FileExistsError as ex:
-            print(ex)
+            from limekit.core.error_handler import warn
+            warn(f"File already exists at destination: {ex}", "FileUtils")
 
     @staticmethod
     def get_filename_ext(path):
@@ -283,5 +284,6 @@ class FileUtils(EnginePart):
             os.rename(new, old)
             return True
         except OSError as ex:
-            print(ex)
+            from limekit.core.error_handler import warn
+            warn(f"Failed to rename '{new}' to '{old}': {ex}", "FileUtils")
             return False
