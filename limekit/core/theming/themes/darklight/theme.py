@@ -1,11 +1,15 @@
 import qdarktheme
+from PySide6.QtWidgets import QApplication
 from limekit.utils.converters import Converter
 
 
 class DarkLight:
     def setTheme(self, theme_type):
         # dark, light or auto
-        qdarktheme.setup_theme(theme_type)
+        app = QApplication.instance()
+        if app:
+            stylesheet = qdarktheme.load_stylesheet(theme_type)
+            app.setStyleSheet(stylesheet)
 
     """
     list_themes() returns themes without an .xml extention and 
