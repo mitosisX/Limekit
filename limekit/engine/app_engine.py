@@ -418,6 +418,7 @@ class Engine:
             "limekit.components.widgets.doublespinner",
             "limekit.components.widgets.table",
             "limekit.components.widgets.treewidget",
+            "limekit.components.widgets.tree_widget",
             "limekit.components.widgets.groupbox",
             "limekit.components.widgets.splitter",
             "limekit.components.widgets.spacer",

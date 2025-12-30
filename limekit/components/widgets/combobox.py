@@ -125,3 +125,27 @@ class ComboBox(QComboBox, EnginePart):
 
     def setMinContentLength(self, length):
         self.setMinimumContentsLength(length)
+
+    def setMinWidth(self, width):
+        self.setMinimumWidth(width)
+
+    def setMaxWidth(self, width):
+        self.setMaximumWidth(width)
+
+    def setMinHeight(self, height):
+        self.setMinimumHeight(height)
+
+    def setMaxHeight(self, height):
+        self.setMaximumHeight(height)
+
+    def getCurrentText(self):
+        return self.currentText()
+
+    def setCurrentIndex(self, index):
+        super().setCurrentIndex(index)
+
+    def setFixedWidth(self, width):
+        super().setFixedWidth(width)
+
+    def setFixedHeight(self, height):
+        super().setFixedHeight(height)

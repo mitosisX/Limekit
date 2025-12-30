@@ -12,23 +12,35 @@ class GifPlayer(BaseWidget, QLabel, EnginePart):
         # Load the file into a QMovie
         self.movie = QMovie(filename)
 
-        # size = self.movie.scaledSize()
-        # self.setGeometry(200, 200, size.width(), size.height())
-        # self.setSize(20, 20)
-
-        # self.setLayout(main_layout)
-
-        # Add the QMovie object to the label
+        # Add the QMovie object to the label with caching enabled
         self.movie.setCacheMode(QMovie.CacheMode.CacheAll)
-        # self.movie.setSpeed(100)
         self.setMovie(self.movie)
-        self.movie.start()
+        # Don't start automatically - let setSize be called first if needed
+        self._autostart_pending = True
+
+    def showEvent(self, event):
+        """Start movie when widget becomes visible, if not already started."""
+        super().showEvent(event)
+        if self._autostart_pending:
+            self._autostart_pending = False
+            self.movie.start()
 
     def setSize(self, width, height):
+        was_running = self.movie.state() == QMovie.MovieState.Running
+
+        # Stop the movie before changing size to prevent flickering
+        if was_running:
+            self.movie.stop()
+
         self.movie.setScaledSize(QSize(width, height))
 
+        # Restart if it was running, or start if autostart is pending
+        if was_running or self._autostart_pending:
+            self._autostart_pending = False
+            self.movie.start()
+
     def setSpeed(self, speed):
-        self.movie.speed(speed)
+        self.movie.setSpeed(speed)
 
     def pause(self):
         self.movie.setPaused(True)

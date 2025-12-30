@@ -108,6 +108,43 @@ class Table(QTableWidget, EnginePart):
     def setMaxRows(self, rows):
         self.setRowCount(rows)
 
+    def setColumns(self, headers):
+        """Set column headers from a Lua table."""
+        header_list = list(headers.values())
+        self.setColumnCount(len(header_list))
+        self.setHorizontalHeaderLabels(header_list)
+
+    def setColumnWidth(self, column, width):
+        """Set the width of a specific column."""
+        super().setColumnWidth(column, width)
+
+    def addRow(self):
+        """Add a new row at the end of the table."""
+        row_count = self.rowCount()
+        self.insertRow(row_count)
+        return row_count
+
+    def setItemText(self, row, column, text):
+        """Set text in a cell."""
+        super().setItem(row, column, QTableWidgetItem(str(text)))
+
+    def removeRow(self, row):
+        """Remove a row by index."""
+        super().removeRow(row)
+
+    def getRowCount(self):
+        """Get the number of rows."""
+        return self.rowCount()
+
+    def setSelectionBehavior(self, behavior):
+        """Set selection behavior: 'items', 'rows', or 'columns'."""
+        behaviors = {
+            'items': QAbstractItemView.SelectionBehavior.SelectItems,
+            'rows': QAbstractItemView.SelectionBehavior.SelectRows,
+            'columns': QAbstractItemView.SelectionBehavior.SelectColumns
+        }
+        super().setSelectionBehavior(behaviors.get(behavior.lower(), behaviors['items']))
+
     # Can only be set after headers have been applied
     def setColumnHeaderToolTip(self, header, tooltip):
         self.horizontalHeaderItem(header).setToolTip(tooltip)

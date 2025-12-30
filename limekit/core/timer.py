@@ -6,10 +6,11 @@ class Timer(QTimer, EnginePart):
     # name = "__timer"
     onTimeoutFunc = None
 
-    def __init__(self, interval, onTimeoutFunc):
+    def __init__(self, interval=None, onTimeoutFunc=None):
         super().__init__(parent=None)
-        self.setInterval(interval)
-        self.start()
+        if interval is not None:
+            self.setInterval(interval)
+            self.start()
         self.timeout.connect(self.__handleTimeoutFunc)
 
     def __handleTimeoutFunc(self):
@@ -27,3 +28,8 @@ class Timer(QTimer, EnginePart):
 
     def setOnTimeout(self, onTimeoutFunc):
         self.onTimeoutFunc = onTimeoutFunc
+
+    @staticmethod
+    def singleShot(msec, callback):
+        """Execute callback once after msec milliseconds."""
+        QTimer.singleShot(msec, callback)

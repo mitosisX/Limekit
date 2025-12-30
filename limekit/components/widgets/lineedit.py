@@ -128,3 +128,24 @@ class LineEdit(QLineEdit, EnginePart):
 
     def setCursorMoveStyle(self, style):
         super().setCursorMoveStyle(Qt.CursorMoveStyle.VisualMoveStyle)
+
+    def clear(self):
+        super().clear()
+
+    def setMinHeight(self, height):
+        self.setMinimumHeight(height)
+
+    def setMaxHeight(self, height):
+        self.setMaximumHeight(height)
+
+    def setMinWidth(self, width):
+        self.setMinimumWidth(width)
+
+    def setMaxWidth(self, width):
+        self.setMaximumWidth(width)
+
+    def setFixedWidth(self, width):
+        super().setFixedWidth(width)
+
+    def setFixedHeight(self, height):
+        super().setFixedHeight(height)

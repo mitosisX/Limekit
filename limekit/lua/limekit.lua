@@ -274,6 +274,9 @@ app = {
     createFolder = function(path)
         __fileutils.make_dirs(path)
     end,
+    deleteFile = function(file)
+        __file.remove_file(file)
+    end,
     -- ################## CPU or Sys related
     playSound = function(file)
         __sound.play_sound(file)
