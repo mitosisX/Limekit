@@ -18,7 +18,7 @@ setuptools.setup(
     },
     include_package_data=True,
     install_requires=[
-        "PySide6==6.4.2",
+        "PySide6",
         "qt_material",
         "qdarkstyle",
         "qtmodern",

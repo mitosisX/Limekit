@@ -1,9 +1,8 @@
-PySide6 == 6.4.2
+PySide6
 pyqtdarktheme
 qdarkstyle
 qt_material
 qtmodern
 psutil
 emoji
-playsound
 lupa

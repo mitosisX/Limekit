@@ -16,11 +16,8 @@ class QuestionPopup(QMessageBox, EnginePart):
         )
 
     def __decideButtons(self, _buttons):
-        buttons = (
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
-            if not _buttons
-            else QMessageBox.StandardButton.NoButton
-        )
+        if not _buttons:
+            return QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
 
         button_mapping = {
             "ok": QMessageBox.StandardButton.Ok,
@@ -43,8 +40,11 @@ class QuestionPopup(QMessageBox, EnginePart):
             "ignore": QMessageBox.StandardButton.Ignore,
         }
 
+        buttons = QMessageBox.StandardButton.NoButton
+
         try:
-            for _button in _buttons.values():
+            button_values = _buttons.values() if hasattr(_buttons, 'values') else _buttons
+            for _button in button_values:
                 if button_mapping.get(_button.lower()):
                     buttons |= button_mapping[_button.lower()]
 
