@@ -59,6 +59,9 @@ class Path(EnginePart):
 
     @classmethod
     def list_dir(cls, path):
+        # ponytail: files/missing paths list as empty instead of raising NotADirectoryError
+        if not os.path.isdir(path):
+            return Converter.table_from([])
         return Converter.table_from(sorted(os.listdir(path), key=str.lower))
 
     @classmethod
