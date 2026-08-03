@@ -1,8 +1,12 @@
 PySide6
+lupa
+playsound
+psutil
+emoji
 pyqtdarktheme
 qdarkstyle
 qt_material
 qtmodern
-psutil
-emoji
-lupa
+pytest
+pytest-qt
+import-linter
