@@ -11,6 +11,21 @@
 **Spec:** `docs/superpowers/specs/2026-08-03-limekit-p0-kernel-design.md`
 **Branch:** `limekit-2.0`
 
+## Execution Order
+
+**Tasks are numbered by topic but executed in this order:**
+
+```
+1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11 → 16 → 12 → 13 → 14 → 15 → 17
+                                              ↑
+                            pilot widgets run BEFORE the generators
+```
+
+Task 16 (pilot widgets) creates the first classes carrying `__lime__`. The three
+generators (12 manifest, 13 `limekit.lua`, 14 stubs) assert over a non-empty registry,
+so running them first would either fail outright or pass vacuously. Task 16 moves ahead
+of them; nothing else changes.
+
 ## Global Constraints
 
 Every task's requirements implicitly include this section.
@@ -1999,7 +2014,10 @@ def test_every_listed_module_is_importable():
 def test_import_all_populates_the_registry():
     from limekit.kernel.registry import registry
     manifest.import_all()
-    assert len(registry.all()) == len(manifest.MODULES) or registry.all()
+    registered = {cls.__lime__ for cls in registry.all()}
+    assert registered, "import_all() registered nothing"
+    # Every listed module must contribute at least one registered class.
+    assert len(registered) >= len(manifest.MODULES)
 
 
 def test_regenerating_the_manifest_is_a_no_op():
@@ -2129,8 +2147,8 @@ python tools/generate_manifest.py
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `python -m pytest tests/kernel/test_manifest.py -v`
-Expected: PASS. Until Task 16 migrates real widgets, `MODULES` may be empty —
-if so, run this task's tests again after Task 16 and confirm they still pass.
+Expected: PASS (4 tests). Task 16 runs before this one (see Execution Order), so the
+registry already contains the five pilot widgets and `MODULES` is non-empty.
 
 - [ ] **Step 5: Commit**
 
@@ -2331,11 +2349,7 @@ def test_stub_documents_generated_accessors():
     from limekit.kernel.registry import registry
     manifest.import_all()
 
-    try:
-        cls = registry.get("ui.Button")
-    except Exception:
-        return                          # ui.Button arrives in Task 16
-
+    cls = registry.get("ui.Button")     # Task 16 runs first; this must exist
     text = (STUBS / "ui.lua").read_text(encoding="utf-8")
     for prop in cls.__props__:
         getter, setter, _ = prop.accessor_names()
@@ -2503,14 +2517,18 @@ def test_import_contracts_hold():
     assert result.returncode == 0, result.stdout + result.stderr
 
 
-def test_global_engine_is_gone():
-    """That singleton existed only to paper over a circular import."""
-    hits = list(REPO.glob("limekit/**/*.py"))
-    offenders = [
-        p for p in hits
-        if "GlobalEngine" in p.read_text(encoding="utf-8", errors="ignore")
-    ]
-    assert offenders == [], f"GlobalEngine still referenced in: {offenders}"
+def test_kernel_does_not_import_the_legacy_engine():
+    """The new kernel must not reach back into the 1.x runtime.
+
+    The legacy tree itself survives P0 so existing apps keep working; it is
+    removed in P1. What matters here is that kernel/ never depends on it.
+    """
+    offenders = []
+    for path in (REPO / "limekit" / "kernel").rglob("*.py"):
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        if "limekit.engine" in text or "GlobalEngine" in text:
+            offenders.append(path.relative_to(REPO).as_posix())
+    assert offenders == [], f"kernel reaches into the legacy engine: {offenders}"
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -2532,31 +2550,28 @@ source_modules =
     limekit.kernel
 forbidden_modules =
     limekit.widgets
-    limekit.layouts
-    limekit.dialogs
-    limekit.charts
-    limekit.services
-    limekit.toolkit
     limekit.build
+    limekit.engine
+    limekit.components
+    limekit.utils
+    limekit.gui
+    limekit.core
 
 [importlinter:contract:layers]
 name = strict layering
 type = layers
 layers =
     limekit.widgets
-    limekit.services
-    limekit.toolkit
     limekit.kernel
 ```
 
-Then delete the legacy singleton and its uses:
-
-```bash
-git rm limekit/engine/globals/global_engine.py
-```
-
-Replace every `GlobalEngine.global_engine` reference with the runtime injected via
-`limekit.kernel.bridge.convert.set_runtime`, which Task 9 already provides.
+> **Scope note.** The legacy `limekit/engine/`, `limekit/components/`, `limekit/utils/`
+> and `limekit/gui/` trees survive P0 untouched, so existing 1.x apps keep running
+> while the new kernel is built beside them. `GlobalEngine` therefore still exists;
+> it has 8 references in `app_engine.py` and `converters.py`. Removing it is **P1
+> work**, done when those trees are retired. What P0 guarantees, and what this
+> contract enforces, is that `limekit/kernel/` never depends on any of them —
+> so the layering violation cannot propagate into the new code.
 
 - [ ] **Step 4: Run test to verify it passes**
 
@@ -2567,7 +2582,7 @@ Expected: PASS (2 tests)
 
 ```bash
 git add .importlinter tests/test_layering.py
-git commit -m "test: enforce kernel layering and remove GlobalEngine"
+git commit -m "test: enforce kernel independence from the legacy trees"
 ```
 
 ---
@@ -2979,60 +2994,123 @@ Expected: FAIL — the demos still use the 1.x flat-global API (`Window{...}`, `
 
 - [ ] **Step 3: Write minimal implementation**
 
-This task's deliverable is the harness plus an honest record of what does not yet pass. Migrating all ~40 demos is P1 work, not P0.
+This task's deliverable is the harness plus an honest record of what does not yet pass.
 
-Migrate exactly one demo by hand to prove the path end to end — `limekit-demos/calculator` is the right choice because it exercises the `eval()` removal:
-
-```lua
--- limekit-demos/calculator/scripts/main.lua  (2.0 API)
-local ui  = require("limekit.ui")
-local sys = require("limekit.sys")
-
-local window = ui.Window { title = "Calculator - Limekit", size = {280, 80} }
-local display = ui.TextField()
-display:setReadOnly(true)
-
--- app.eval() used builtins.eval and is gone; this is arithmetic-only.
-local function compute(expression)
-  return sys.evalExpression(expression)
-end
-```
-
-Then mark the rest explicitly so the suite reports the truth rather than a
-green tick it has not earned:
+**No demo is migrated in P0.** The calculator needs `ui.Window` and `ui.TextField`;
+`Window` is deliberately excluded from the Task 16 pilot set because its hand-written
+event overrides need the `Method` spec plumbing that P1 introduces. Migrating demos
+is P1 work. Every demo therefore `xfail`s, and the xfail count is the P1 backlog.
 
 ```python
-UNMIGRATED = {p.name for p in demo_projects()} - {"calculator"}
-
-
+@pytest.mark.skipif(not demo_projects(), reason="limekit-demos checkout not found")
 @pytest.mark.parametrize("project", demo_projects(), ids=lambda p: p.name)
 def test_demo_boots_without_error(project, qapp):
     from limekit.kernel.app import LimekitApp
 
-    if project.name in UNMIGRATED:
-        pytest.xfail(f"{project.name} still uses the 1.x API - migrate in P1")
+    # Every demo still uses the 1.x flat-global API. P1 migrates them; until
+    # then this suite exists to measure the gap, not to hide it.
+    pytest.xfail(f"{project.name} uses the 1.x API - migrate in P1")
 
     with LimekitApp(project) as app:
         app.load_project()
         assert app.errors == (), f"{project.name} reported: {app.errors}"
 ```
 
-> `sys.evalExpression` is referenced here but not built by any P0 task. Add it as
-> part of this task: a `toolkit/text.py` function walking `ast.parse(expr, mode="eval")`
-> and permitting only `Expression`, `BinOp`, `UnaryOp`, `Constant`, and the operator
-> nodes `Add`, `Sub`, `Mult`, `Div`, `FloorDiv`, `Mod`, `Pow`, `USub`, `UAdd`;
-> anything else raises `BridgeError`. Register it at `sys.evalExpression`.
+Also build `sys.evalExpression`, which replaces the `eval` builtin that P0 removes
+from Lua globals (`app_engine.py` injected `builtins.eval`; the calculator demo
+called it). Create `limekit/toolkit/text.py`:
+
+```python
+# limekit/toolkit/text.py
+"""Safe replacements for the Python builtins P0 stops injecting into Lua."""
+
+import ast
+import operator
+
+from limekit.kernel.declarative import LimeObject
+from limekit.kernel.errors import BridgeError
+
+_OPERATORS = {
+    ast.Add: operator.add, ast.Sub: operator.sub,
+    ast.Mult: operator.mul, ast.Div: operator.truediv,
+    ast.FloorDiv: operator.floordiv, ast.Mod: operator.mod,
+    ast.Pow: operator.pow,
+    ast.USub: operator.neg, ast.UAdd: operator.pos,
+}
+
+
+def _evaluate(node):
+    if isinstance(node, ast.Expression):
+        return _evaluate(node.body)
+    if isinstance(node, ast.Constant):
+        if isinstance(node.value, (int, float)):
+            return node.value
+        raise BridgeError(f"only numbers are allowed, got {node.value!r}")
+    if isinstance(node, ast.BinOp) and type(node.op) in _OPERATORS:
+        return _OPERATORS[type(node.op)](_evaluate(node.left), _evaluate(node.right))
+    if isinstance(node, ast.UnaryOp) and type(node.op) in _OPERATORS:
+        return _OPERATORS[type(node.op)](_evaluate(node.operand))
+    raise BridgeError(
+        f"{type(node).__name__} is not permitted in an expression"
+    )
+
+
+class Sys(LimeObject):
+    __lime__ = "sys.Expr"
+
+    @staticmethod
+    def evalExpression(expression):
+        """Arithmetic only. Never exposes builtins.eval to Lua."""
+        try:
+            tree = ast.parse(str(expression), mode="eval")
+        except SyntaxError as exc:
+            raise BridgeError(f"malformed expression: {expression!r}") from exc
+        return _evaluate(tree)
+```
+
+Add a test for it in the same task:
+
+```python
+# tests/toolkit/test_text.py
+import pytest
+from limekit.toolkit.text import Sys
+from limekit.kernel.errors import BridgeError
+
+
+@pytest.mark.parametrize("expr,expected", [
+    ("1 + 1", 2), ("2 * (3 + 4)", 14), ("-5 + 2", -3), ("7 / 2", 3.5),
+])
+def test_arithmetic(expr, expected):
+    assert Sys.evalExpression(expr) == expected
+
+
+@pytest.mark.parametrize("expr", [
+    "__import__('os').system('echo pwned')",
+    "open('/etc/passwd').read()",
+    "[].__class__",
+    "lambda: 1",
+])
+def test_code_execution_is_refused(expr):
+    with pytest.raises(BridgeError):
+        Sys.evalExpression(expr)
+
+
+def test_malformed_expression_raises():
+    with pytest.raises(BridgeError, match="malformed"):
+        Sys.evalExpression("1 +")
+```
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `python -m pytest tests/test_demo_smoke.py -v`
-Expected: PASS for `calculator`, XFAIL for the rest. The xfail count is the P1 backlog.
+Run: `python -m pytest tests/test_demo_smoke.py tests/toolkit/ -v`
+Expected: XFAIL for every demo (that count is the P1 backlog), PASS for the 8
+`evalExpression` tests.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add tests/test_demo_smoke.py limekit/toolkit/
-git commit -m "test: add headless demo smoke suite and migrate the calculator demo"
+git add tests/test_demo_smoke.py tests/toolkit/ limekit/toolkit/
+git commit -m "test: add demo smoke harness and safe expression evaluator"
 ```
 
 ---
