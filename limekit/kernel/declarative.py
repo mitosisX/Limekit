@@ -4,9 +4,44 @@ Uses __init_subclass__ rather than a metaclass: type(QWidget) is a Shiboken
 metaclass, and a naive `class Meta(type)` raises a metaclass conflict.
 """
 
+from limekit.kernel.errors import BridgeError
 from limekit.kernel.spec import Prop, Event, Method
 
 _SPEC_TYPES = (Prop, Event, Method)
+
+
+def _install_prop(cls, prop):
+    """Generate get/set accessors for one Prop.
+
+    C2: the Qt functions are resolved HERE, before setattr runs. A Prop named
+    `text` installs `setText`, which would otherwise shadow QPushButton.setText
+    and recurse infinitely when the generated setter looked it up by name.
+    """
+    getter_name, setter_name, alias = prop.accessor_names()
+
+    qt_get = getattr(cls, prop.qt[0])
+    qt_set = getattr(cls, prop.qt[1])
+    coerce, validate, label = prop.coerce, prop.validate, prop.name
+
+    def getter(self, _g=qt_get):
+        return _g(self)
+
+    def setter(self, value, _s=qt_set, _c=coerce, _v=validate, _n=label):
+        if _c is not None:
+            value = _c(value)
+        if _v is not None and not _v(value):
+            raise BridgeError(f"invalid value for {_n!r}: {value!r}")
+        _s(self, value)
+        return self          # allow chaining from Lua
+
+    getter.__name__ = getter_name
+    setter.__name__ = setter_name
+    getter.__doc__ = setter.__doc__ = prop.doc or None
+
+    setattr(cls, getter_name, getter)
+    setattr(cls, setter_name, setter)
+    if alias:
+        setattr(cls, alias, getter)
 
 
 class LimeObject:
@@ -61,3 +96,6 @@ class LimeObject:
         cls.__props__ = tuple(props.values())
         cls.__events__ = tuple(events.values())
         cls.__methods__ = tuple(methods.values())
+
+        for prop in cls.__props__:
+            _install_prop(cls, prop)
