@@ -102,6 +102,35 @@ lupa 2.8, Python 3.13:
 | Lua attaching arbitrary fields to a Python widget instance | Works (relevant to P2's component model) |
 | 8 threads concurrently executing on one `LuaRuntime` | No errors, no corruption — lupa 2.8 serialises behind a lock. It does **not** parallelise. Qt mutation must still occur on the GUI thread. Deadlock behaviour under Qt slot re-entrancy is **not** established by this spike and must be verified during P3. |
 
+A second spike (`spike_shadowing.py`) surfaced two constraints that the design must
+honour. Both were found by testing, not by inspection, and both silently break the
+generated accessors if ignored.
+
+**C1 — Spec objects shadow the Qt attributes they describe.**
+Declaring `text = Prop(...)` in a class body shadows `QPushButton.text`, so
+`instance.text` yields the `Prop` object rather than the bound Qt method. The collector
+**must `delattr` every `Prop`/`Event` from the class after collecting it**, allowing the
+Qt attribute to resurface through the MRO. Verified: after cleanup, `b.text` is again a
+`builtin_function_or_method`.
+
+**C2 — Qt methods must be bound at generation time, not looked up at call time.**
+A `Prop` named `text` generates a setter called `setText` — the same name as the Qt
+method it needs to call. If the generated setter does `getattr(self, "setText")(value)`
+it resolves to *itself* and recurses. The generator must capture the underlying
+functions before installing anything:
+
+```python
+qt_get_fn = getattr(cls, prop.qt[0])   # resolve BEFORE setattr shadows it
+qt_set_fn = getattr(cls, prop.qt[1])
+
+def setter(self, value, _s=qt_set_fn, _c=prop.coerce):
+    return _s(self, _c(value) if _c else value)
+```
+
+Verified with this fix: coercion applies (`setText(42)` → `'42'`), a subclass may
+override an inherited `Prop` without corrupting the parent, and a raising Lua handler is
+contained by the guard rather than escaping into the Qt event loop.
+
 ---
 
 ## 3. Architecture
