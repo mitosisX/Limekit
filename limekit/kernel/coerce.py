@@ -1,4 +1,4 @@
-"""Coercions a Prop names via `coerce=`.
+"""Coercions that a Prop specifies via `coerce=`.
 
 One shared table per Qt enum, replacing the divergent copies previously
 spread across BaseLayout, Label, Window and ComboBox.
@@ -14,7 +14,10 @@ from limekit.kernel.errors import BridgeError
 def Icon(value):
     if isinstance(value, QIcon):
         return value
-    return QIcon(value)
+    try:
+        return QIcon(value)
+    except (TypeError, ValueError) as exc:
+        raise BridgeError(f"expected a QIcon or path string, got {value!r}") from exc
 
 
 def Size(value):
@@ -24,20 +27,37 @@ def Size(value):
         width, height = value
     except (TypeError, ValueError) as exc:
         raise BridgeError(f"expected a {{width, height}} pair, got {value!r}") from exc
-    return QSize(int(width), int(height))
+    try:
+        return QSize(int(width), int(height))
+    except (TypeError, ValueError) as exc:
+        raise BridgeError(f"expected numeric width and height, got {value!r}") from exc
 
 
 def Colour(value):
     if isinstance(value, QColor):
         return value
     if isinstance(value, (tuple, list)):
-        return QColor(*(int(c) for c in value))
-    return QColor(value)
+        try:
+            return QColor(*(int(c) for c in value))
+        except (TypeError, ValueError) as exc:
+            raise BridgeError(f"expected numeric RGB components, got {value!r}") from exc
+    try:
+        color = QColor(value)
+        if not color.isValid():
+            raise BridgeError(f"invalid color string {value!r}")
+        return color
+    except (TypeError, ValueError) as exc:
+        raise BridgeError(f"expected a color string or RGB tuple, got {value!r}") from exc
 
 
 def LuaIndex(value):
     """Lua is 1-indexed; Qt is 0-indexed. Convert at the boundary."""
-    index = int(value)
+    try:
+        index = int(value)
+    except (TypeError, ValueError) as exc:
+        raise BridgeError(
+            f"expected a numeric index, got {value!r} - the Limekit API is 1-indexed"
+        ) from exc
     if index < 1:
         raise BridgeError(
             f"index {index} is out of range - the Limekit API is 1-indexed"

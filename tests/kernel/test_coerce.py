@@ -64,3 +64,41 @@ def test_size_policies_are_complete():
         "fixed", "expanding", "ignore", "maximum",
         "minimum", "minimumexpanding", "preferred",
     }
+
+
+# Failure mode tests
+
+
+def test_icon_rejects_non_icon_non_path(qapp):
+    with pytest.raises(BridgeError):
+        Icon(12345)
+
+
+def test_size_rejects_non_numeric_width(qapp):
+    with pytest.raises(BridgeError):
+        Size(("a", 600))
+
+
+def test_size_rejects_non_numeric_height(qapp):
+    with pytest.raises(BridgeError):
+        Size((800, "b"))
+
+
+def test_colour_rejects_non_numeric_rgb_components(qapp):
+    with pytest.raises(BridgeError):
+        Colour(("a", "b", "c"))
+
+
+def test_colour_rejects_unparseable_string(qapp):
+    with pytest.raises(BridgeError):
+        Colour("not-a-colour")
+
+
+def test_lua_index_rejects_non_numeric_string(qapp):
+    with pytest.raises(BridgeError, match="1-indexed"):
+        LuaIndex("abc")
+
+
+def test_lua_index_rejects_none(qapp):
+    with pytest.raises(BridgeError, match="1-indexed"):
+        LuaIndex(None)
