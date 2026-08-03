@@ -397,4 +397,15 @@ would commit the kernel to a model with no consumer to validate it against.
 5. Every Lua callback crosses `guard.py`; no unguarded handler-attachment path exists.
 6. A Lua error reports its real `.lua` file and line, with no string-surgery in the path.
 7. All ~40 demo projects boot headless without exception under the migrated API.
-8. The defect table in §1.2 is closed, each with a regression test.
+8. The following rows of the §1.2 defect table are closed, each with a regression
+   test: the `label.py` cursor map, the `listbox.py` sequence handling, the
+   `converters.py` dead code, the `CheckBox`/`Button` coercion split, the unguarded
+   callbacks, the injected builtins, and the `playsound` dependency gap.
+
+   **Explicitly not closed by P0**, because they depend on machinery later phases
+   introduce:
+
+   - The four `Window` defects (`onContextMenuEvent`, `just_shown`, `closeEvent`,
+     `showEvent` re-centring). `Window` is a `QMainWindow` with hand-written event
+     overrides and needs the `Method` spec plumbing from **P1**.
+   - `gui/threading.py:21`'s infinite recursion — **P3**.
