@@ -810,8 +810,24 @@ class LimeObject:
 
         props, events, methods = {}, {}, {}
 
+        # CORRECTION (found during execution): scanning only vars(base) is
+        # BROKEN. C1's delattr already removed a parent's specs at the
+        # parent's own creation time, so vars(parent) no longer holds them
+        # when a subclass is built — two-generation inheritance silently
+        # loses the parent's props.
+        #
+        # Each base therefore contributes via exactly one of two paths:
+        #   - an already-built ancestor: its collected __props__ tuples
+        #   - the class being built now: its live vars() spec objects
         # Reversed MRO so a subclass declaration overwrites its parent's.
         for base in reversed(cls.__mro__):
+            for prop in getattr(base, "__props__", ()) if base is not cls else ():
+                props[prop.name] = prop
+            for event in getattr(base, "__events__", ()) if base is not cls else ():
+                events[event.name] = event
+            for method in getattr(base, "__methods__", ()) if base is not cls else ():
+                methods[method.name] = method
+
             for key, value in vars(base).items():
                 if isinstance(value, Prop):
                     props[key] = value
