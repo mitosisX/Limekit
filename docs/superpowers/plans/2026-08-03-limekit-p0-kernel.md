@@ -11,6 +11,27 @@
 **Spec:** `docs/superpowers/specs/2026-08-03-limekit-p0-kernel-design.md`
 **Branch:** `limekit-2.0`
 
+> ## ⚠️ This plan was executed, and eight of its code blocks were wrong
+>
+> **The shipped code and its tests are authoritative, not this document.** The plan
+> was written without executing any of its code; execution found eight defects that
+> reading could not. Tasks 5, 6 and 10's blocks are corrected inline below. The rest
+> are recorded here rather than rewritten, because the implementation is the truth now:
+>
+> | Task | Defect found by executing it |
+> |---|---|
+> | 4 | Coercions did their conversions outside the guard, leaking raw `TypeError`/`ValueError` past the `BridgeError` boundary |
+> | 5 | C1's `delattr` and the `vars(base)` collection strategy are mutually incompatible — two-generation inheritance silently lost the parent's props *(corrected inline)* |
+> | 6 | Eager `getattr(cls, ...)` resolved to a parent's generated wrapper, so `coerce` fired once per inheritance level; it also raised on abstract mixins, making Task 16's `LimeWidget` undefinable *(corrected inline)* |
+> | 10 | `eval('return ...')` is a syntax error — lupa's `eval` compiles an expression *(corrected inline)* |
+> | 10 | `package.preload` loaders written as bare Python lambdas arrive in Lua as `userdata`, so `require` silently skips them *(corrected inline)* |
+> | 10 | `_LOCATION` used `re.match` anchored at `^\[string`, but lupa prefixes compile errors with `"error loading code: "` — so every syntax error lost its line number *(corrected inline)* |
+> | 10 | The disallowed-globals list included `print`; lupa injects no Python builtins at all, so this deleted Lua's own stdlib `print` for no benefit *(corrected inline)* |
+> | 15 | `python -m importlinter.cli lint` is a silent no-op (no `__main__` guard in 2.13), and five of seven `forbidden_modules` are namespace packages grimp cannot see — the contract enforced nothing |
+> | 17 | `evalExpression` permitted `Pow`, so `9**9**9` passed the allowlist and hung indefinitely |
+>
+> Full findings, rulings and deferred minors: `.superpowers/sdd/2026-08-03-limekit-p0-kernel/progress.md`.
+
 ## Execution Order
 
 **Tasks are numbered by topic but executed in this order:**
