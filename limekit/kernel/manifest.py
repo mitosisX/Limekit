@@ -9,6 +9,7 @@ missing here is missing in BOTH, rather than only in the packaged app.
 import importlib
 
 MODULES = (
+    "limekit.toolkit.text",
     "limekit.widgets.button",
     "limekit.widgets.checkbox",
     "limekit.widgets.combobox",
