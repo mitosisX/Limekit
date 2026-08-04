@@ -4,6 +4,7 @@ Uses __init_subclass__ rather than a metaclass: type(QWidget) is a Shiboken
 metaclass, and a naive `class Meta(type)` raises a metaclass conflict.
 """
 
+from limekit.kernel.bridge.guard import guard
 from limekit.kernel.errors import BridgeError
 from limekit.kernel.spec import Prop, Event, Method
 
@@ -81,6 +82,51 @@ def _install_prop(cls, prop):
         setattr(cls, alias, getter)
 
 
+def _install_event(cls, event):
+    """Generate `setOn<Name>` for one Event.
+
+    The generated setter is the only way to attach a handler, so every
+    handler is guarded by construction.
+
+    Unlike props, the Qt signal is resolved on the *instance* at attach
+    time (`getattr(self, _sig)`), not on the class at generation time. A
+    signal name like `clicked` is never shadowed by a generated name like
+    `setOnClick`, so there's no C2 collision -- and because nothing here
+    touches the class's MRO for the signal itself, installing this on an
+    abstract mixin (before it's combined with a concrete Qt widget) is
+    safe; no abstract-mixin deferral is needed.
+    """
+    setter_name = event.setter_name()
+    signal_name, passes_self, label = event.qt_signal, event.passes_self, event.name
+    slot_attr = f"_lime_slot_{event.name}"
+
+    def attach(self, handler, _sig=signal_name, _self=passes_self,
+               _ev=label, _slot=slot_attr):
+        signal = getattr(self, _sig)
+
+        previous = getattr(self, _slot, None)
+        if previous is not None:
+            signal.disconnect(previous)
+
+        widget_name = type(self).__name__
+        if _self:
+            def call(*args, _h=handler, _w=self):
+                return _h(_w, *args)
+        else:
+            def call(*args, _h=handler):
+                return _h(*args)
+
+        slot = guard(call, widget=widget_name, event=_ev)
+        setattr(self, _slot, slot)
+        signal.connect(slot)
+        return self
+
+    attach.__name__ = setter_name
+    attach.__doc__ = event.doc or None
+    attach._lime_generated = True
+    setattr(cls, setter_name, attach)
+
+
 class LimeObject:
     """Base for every class exposed to Lua.
 
@@ -136,3 +182,6 @@ class LimeObject:
 
         for prop in cls.__props__:
             _install_prop(cls, prop)
+
+        for event in cls.__events__:
+            _install_event(cls, event)
