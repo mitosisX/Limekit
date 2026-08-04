@@ -58,3 +58,30 @@ class LimeWidget(LimeObject):
     def setBackgroundColor(self, colour):
         self.setStyleSheet(f"background-color: {colour};")
         return self
+
+    # -- Qt natives re-exposed as Python methods ---------------------------
+    #
+    # lupa hands back Python-defined functions *unbound* but Qt-native
+    # methods *bound*. So `w:getText()` (generated, Python) works while
+    # `w:show()` (Qt native) raises "takes no arguments (1 given)" -- the
+    # user would have to remember which methods take `:` and which take `.`.
+    #
+    # Wrapping the natives people actually call keeps one rule for Lua:
+    # always use `:`. 1.x achieved the same thing by hand-redeclaring these
+    # on every widget class; doing it once on the shared base is the point
+    # of having a shared base.
+
+    def show(self):
+        super().show()
+        return self
+
+    def hide(self):
+        super().hide()
+        return self
+
+    def close(self):
+        return super().close()
+
+    def setFocus(self):
+        super().setFocus()
+        return self

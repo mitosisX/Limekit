@@ -20,3 +20,17 @@ class Button(LimeWidget, QPushButton):
     def __init__(self, text="Button"):
         super().__init__()
         self.setText(text)
+
+    def click(self):
+        """Qt native re-exposed so Lua's `button:click()` colon syntax works.
+
+        lupa returns Python-defined methods unbound but Qt natives bound, so
+        without this wrapper `b:click()` raises "takes no arguments (1 given)"
+        while `b:getText()` is fine -- two calling conventions in one API.
+        """
+        super().click()
+        return self
+
+    def toggle(self):
+        super().toggle()
+        return self
