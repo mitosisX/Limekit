@@ -9,12 +9,17 @@ missing here is missing in BOTH, rather than only in the packaged app.
 import importlib
 
 MODULES = (
+    "limekit.layouts.grid",
+    "limekit.layouts.hlayout",
+    "limekit.layouts.vlayout",
     "limekit.toolkit.text",
     "limekit.widgets.button",
     "limekit.widgets.checkbox",
     "limekit.widgets.combobox",
     "limekit.widgets.label",
     "limekit.widgets.listbox",
+    "limekit.widgets.textfield",
+    "limekit.widgets.window",
 )
 
 

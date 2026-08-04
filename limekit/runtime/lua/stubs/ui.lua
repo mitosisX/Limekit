@@ -249,6 +249,30 @@ function ComboBox:isEditable() end
 ---@return ComboBox
 function ComboBox:setOnItemSelect(handler) end
 
+---@class GridLayout
+local GridLayout = {}
+
+--- Get the spacing property.
+---@return integer
+function GridLayout:getSpacing() end
+
+--- Set the spacing property.
+---@param value integer
+---@return GridLayout
+function GridLayout:setSpacing(value) end
+
+---@class HLayout
+local HLayout = {}
+
+--- Get the spacing property.
+---@return integer
+function HLayout:getSpacing() end
+
+--- Set the spacing property.
+---@param value integer
+---@return HLayout
+function HLayout:setSpacing(value) end
+
 ---@class Label
 local Label = {}
 
@@ -384,10 +408,189 @@ function ListBox:setOnItemSelect(handler) end
 ---@return ListBox
 function ListBox:setOnItemDoubleClick(handler) end
 
+---@class TextField
+local TextField = {}
+
+--- Get the enabled property.
+---@return boolean
+function TextField:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return TextField
+function TextField:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function TextField:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function TextField:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return TextField
+function TextField:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function TextField:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function TextField:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return TextField
+function TextField:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function TextField:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return TextField
+function TextField:setStyleSheet(value) end
+
+--- Get the editor's plain-text content.
+---@return string
+function TextField:getPlainText() end
+
+--- Set the editor's plain-text content.
+---@param value string
+---@return TextField
+function TextField:setPlainText(value) end
+
+--- Get the html property.
+---@return string
+function TextField:getHtml() end
+
+--- Set the html property.
+---@param value string
+---@return TextField
+function TextField:setHtml(value) end
+
+--- Get the readOnly property.
+---@return boolean
+function TextField:getReadOnly() end
+
+--- Set the readOnly property.
+---@param value boolean
+---@return TextField
+function TextField:setReadOnly(value) end
+
+--- Get the readOnly property.
+---@return boolean
+function TextField:isReadOnly() end
+
+--- Get placeholder shown while empty.
+---@return string
+function TextField:getHint() end
+
+--- Set placeholder shown while empty.
+---@param value string
+---@return TextField
+function TextField:setHint(value) end
+
+--- Attach a handler for onTextChange.
+---@param handler fun(widget: TextField)
+---@return TextField
+function TextField:setOnTextChange(handler) end
+
+--- Attach a handler for onCursorMove.
+---@param handler fun(widget: TextField)
+---@return TextField
+function TextField:setOnCursorMove(handler) end
+
+---@class VLayout
+local VLayout = {}
+
+--- Get the spacing property.
+---@return integer
+function VLayout:getSpacing() end
+
+--- Set the spacing property.
+---@param value integer
+---@return VLayout
+function VLayout:setSpacing(value) end
+
+---@class Window
+local Window = {}
+
+--- Get the enabled property.
+---@return boolean
+function Window:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Window
+function Window:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Window:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Window:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Window
+function Window:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Window:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Window:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Window
+function Window:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Window:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Window
+function Window:setStyleSheet(value) end
+
+--- Get the window's title-bar text.
+---@return string
+function Window:getTitle() end
+
+--- Set the window's title-bar text.
+---@param value string
+---@return Window
+function Window:setTitle(value) end
+
+--- Get the window's icon.
+---@return any
+function Window:getIcon() end
+
+--- Set the window's icon.
+---@param value any
+---@return Window
+function Window:setIcon(value) end
+
 local ui = {}
 ui.Button = Button
 ui.CheckBox = CheckBox
 ui.ComboBox = ComboBox
+ui.GridLayout = GridLayout
+ui.HLayout = HLayout
 ui.Label = Label
 ui.ListBox = ListBox
+ui.TextField = TextField
+ui.VLayout = VLayout
+ui.Window = Window
 return ui

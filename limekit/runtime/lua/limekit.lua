@@ -20,8 +20,13 @@ limekit.ui = require("limekit.ui")
 --   ui.Button
 --   ui.CheckBox
 --   ui.ComboBox
+--   ui.GridLayout
+--   ui.HLayout
 --   ui.Label
 --   ui.ListBox
+--   ui.TextField
+--   ui.VLayout
+--   ui.Window
 
 
 return limekit
