@@ -9,6 +9,7 @@ missing here is missing in BOTH, rather than only in the packaged app.
 import importlib
 
 MODULES = (
+    "limekit.layouts.formlayout",
     "limekit.layouts.grid",
     "limekit.layouts.hlayout",
     "limekit.layouts.vlayout",
@@ -19,11 +20,25 @@ MODULES = (
     "limekit.services.theming",
     "limekit.toolkit.text",
     "limekit.widgets.button",
+    "limekit.widgets.buttongroup",
     "limekit.widgets.checkbox",
     "limekit.widgets.combobox",
+    "limekit.widgets.container",
+    "limekit.widgets.doublespinner",
+    "limekit.widgets.groupbox",
+    "limekit.widgets.horizontal_line",
+    "limekit.widgets.image",
     "limekit.widgets.label",
+    "limekit.widgets.lineedit",
     "limekit.widgets.listbox",
+    "limekit.widgets.progressbar",
+    "limekit.widgets.radiobutton",
+    "limekit.widgets.scroller",
+    "limekit.widgets.slider",
+    "limekit.widgets.spinner",
+    "limekit.widgets.splitter",
     "limekit.widgets.textfield",
+    "limekit.widgets.vertical_line",
     "limekit.widgets.window",
 )
 

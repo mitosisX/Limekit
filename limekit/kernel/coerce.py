@@ -140,6 +140,11 @@ TOOLBAR_AREAS = {
     "bottom": Qt.ToolBarArea.BottomToolBarArea,
 }
 
+ORIENTATIONS = {
+    "horizontal": Qt.Orientation.Horizontal,
+    "vertical": Qt.Orientation.Vertical,
+}
+
 SIZE_POLICIES = {
     "fixed": QSizePolicy.Policy.Fixed,
     "expanding": QSizePolicy.Policy.Expanding,

@@ -27,16 +27,31 @@ limekit.sys = require("limekit.sys")
 -- ui
 limekit.ui = require("limekit.ui")
 --   ui.Button
+--   ui.ButtonGroup
 --   ui.CheckBox
 --   ui.ComboBox
+--   ui.Container
 --   ui.Dialogs
+--   ui.DoubleSpinner
+--   ui.FormLayout
 --   ui.GridLayout
+--   ui.GroupBox
 --   ui.HLayout
+--   ui.HLine
+--   ui.Image
 --   ui.Label
+--   ui.LineEdit
 --   ui.ListBox
+--   ui.ProgressBar
+--   ui.RadioButton
+--   ui.Scroller
+--   ui.Slider
+--   ui.Spinner
+--   ui.Splitter
 --   ui.TextField
 --   ui.Theme
 --   ui.VLayout
+--   ui.VLine
 --   ui.Window
 
 

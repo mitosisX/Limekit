@@ -110,6 +110,27 @@ function Button:isChecked() end
 ---@return Button
 function Button:setOnClick(handler) end
 
+---@class ButtonGroup
+local ButtonGroup = {}
+
+--- Get the exclusive property.
+---@return boolean
+function ButtonGroup:getExclusive() end
+
+--- Set the exclusive property.
+---@param value boolean
+---@return ButtonGroup
+function ButtonGroup:setExclusive(value) end
+
+--- Get the exclusive property.
+---@return boolean
+function ButtonGroup:isExclusive() end
+
+--- Attach a handler for onClick.
+---@param handler fun(widget: ButtonGroup)
+---@return ButtonGroup
+function ButtonGroup:setOnClick(handler) end
+
 ---@class CheckBox
 local CheckBox = {}
 
@@ -249,8 +270,155 @@ function ComboBox:isEditable() end
 ---@return ComboBox
 function ComboBox:setOnItemSelect(handler) end
 
+---@class Container
+local Container = {}
+
+--- Get the enabled property.
+---@return boolean
+function Container:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Container
+function Container:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Container:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Container:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Container
+function Container:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Container:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Container:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Container
+function Container:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Container:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Container
+function Container:setStyleSheet(value) end
+
+--- Get the layout property.
+---@return any
+function Container:getLayout() end
+
+--- Set the layout property.
+---@param value any
+---@return Container
+function Container:setLayout(value) end
+
 ---@class Dialogs
 local Dialogs = {}
+
+---@class DoubleSpinner
+local DoubleSpinner = {}
+
+--- Get the enabled property.
+---@return boolean
+function DoubleSpinner:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return DoubleSpinner
+function DoubleSpinner:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function DoubleSpinner:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function DoubleSpinner:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return DoubleSpinner
+function DoubleSpinner:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function DoubleSpinner:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function DoubleSpinner:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return DoubleSpinner
+function DoubleSpinner:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function DoubleSpinner:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return DoubleSpinner
+function DoubleSpinner:setStyleSheet(value) end
+
+--- Get the value property.
+---@return number
+function DoubleSpinner:getValue() end
+
+--- Set the value property.
+---@param value number
+---@return DoubleSpinner
+function DoubleSpinner:setValue(value) end
+
+--- Get the prefix property.
+---@return string
+function DoubleSpinner:getPrefix() end
+
+--- Set the prefix property.
+---@param value string
+---@return DoubleSpinner
+function DoubleSpinner:setPrefix(value) end
+
+--- Get the suffix property.
+---@return string
+function DoubleSpinner:getSuffix() end
+
+--- Set the suffix property.
+---@param value string
+---@return DoubleSpinner
+function DoubleSpinner:setSuffix(value) end
+
+--- Attach a handler for onValueChange.
+---@param handler fun(widget: DoubleSpinner)
+---@return DoubleSpinner
+function DoubleSpinner:setOnValueChange(handler) end
+
+---@class FormLayout
+local FormLayout = {}
+
+--- Get the spacing property.
+---@return integer
+function FormLayout:getSpacing() end
+
+--- Set the spacing property.
+---@param value integer
+---@return FormLayout
+function FormLayout:setSpacing(value) end
 
 ---@class GridLayout
 local GridLayout = {}
@@ -264,6 +432,110 @@ function GridLayout:getSpacing() end
 ---@return GridLayout
 function GridLayout:setSpacing(value) end
 
+---@class GroupBox
+local GroupBox = {}
+
+--- Get the enabled property.
+---@return boolean
+function GroupBox:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return GroupBox
+function GroupBox:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function GroupBox:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function GroupBox:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return GroupBox
+function GroupBox:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function GroupBox:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function GroupBox:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return GroupBox
+function GroupBox:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function GroupBox:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return GroupBox
+function GroupBox:setStyleSheet(value) end
+
+--- Get the title property.
+---@return string
+function GroupBox:getTitle() end
+
+--- Set the title property.
+---@param value string
+---@return GroupBox
+function GroupBox:setTitle(value) end
+
+--- Get the checkable property.
+---@return boolean
+function GroupBox:getCheckable() end
+
+--- Set the checkable property.
+---@param value boolean
+---@return GroupBox
+function GroupBox:setCheckable(value) end
+
+--- Get the checkable property.
+---@return boolean
+function GroupBox:isCheckable() end
+
+--- Get the checked property.
+---@return boolean
+function GroupBox:getChecked() end
+
+--- Set the checked property.
+---@param value boolean
+---@return GroupBox
+function GroupBox:setChecked(value) end
+
+--- Get the checked property.
+---@return boolean
+function GroupBox:isChecked() end
+
+--- Get the flat property.
+---@return boolean
+function GroupBox:getFlat() end
+
+--- Set the flat property.
+---@param value boolean
+---@return GroupBox
+function GroupBox:setFlat(value) end
+
+--- Get the flat property.
+---@return boolean
+function GroupBox:isFlat() end
+
+--- Get the layout property.
+---@return any
+function GroupBox:getLayout() end
+
+--- Set the layout property.
+---@param value any
+---@return GroupBox
+function GroupBox:setLayout(value) end
+
 ---@class HLayout
 local HLayout = {}
 
@@ -275,6 +547,100 @@ function HLayout:getSpacing() end
 ---@param value integer
 ---@return HLayout
 function HLayout:setSpacing(value) end
+
+---@class HLine
+local HLine = {}
+
+--- Get the enabled property.
+---@return boolean
+function HLine:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return HLine
+function HLine:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function HLine:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function HLine:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return HLine
+function HLine:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function HLine:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function HLine:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return HLine
+function HLine:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function HLine:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return HLine
+function HLine:setStyleSheet(value) end
+
+---@class Image
+local Image = {}
+
+--- Get the enabled property.
+---@return boolean
+function Image:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Image
+function Image:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Image:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Image:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Image
+function Image:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Image:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Image:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Image
+function Image:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Image:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Image
+function Image:setStyleSheet(value) end
 
 ---@class Label
 local Label = {}
@@ -354,6 +720,117 @@ function Label:getTextAlignment() end
 ---@return Label
 function Label:setTextAlignment(value) end
 
+---@class LineEdit
+local LineEdit = {}
+
+--- Get the enabled property.
+---@return boolean
+function LineEdit:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return LineEdit
+function LineEdit:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function LineEdit:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function LineEdit:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return LineEdit
+function LineEdit:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function LineEdit:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function LineEdit:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return LineEdit
+function LineEdit:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function LineEdit:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return LineEdit
+function LineEdit:setStyleSheet(value) end
+
+--- Get the text property.
+---@return string
+function LineEdit:getText() end
+
+--- Set the text property.
+---@param value string
+---@return LineEdit
+function LineEdit:setText(value) end
+
+--- Get the readOnly property.
+---@return boolean
+function LineEdit:getReadOnly() end
+
+--- Set the readOnly property.
+---@param value boolean
+---@return LineEdit
+function LineEdit:setReadOnly(value) end
+
+--- Get the readOnly property.
+---@return boolean
+function LineEdit:isReadOnly() end
+
+--- Get the maxLength property.
+---@return integer
+function LineEdit:getMaxLength() end
+
+--- Set the maxLength property.
+---@param value integer
+---@return LineEdit
+function LineEdit:setMaxLength(value) end
+
+--- Get placeholder shown while empty.
+---@return string
+function LineEdit:getHint() end
+
+--- Set placeholder shown while empty.
+---@param value string
+---@return LineEdit
+function LineEdit:setHint(value) end
+
+--- Get one of: normal, password, hideinput, passwordonedit.
+---@return any
+function LineEdit:getInputMode() end
+
+--- Set one of: normal, password, hideinput, passwordonedit.
+---@param value any
+---@return LineEdit
+function LineEdit:setInputMode(value) end
+
+--- Attach a handler for onTextChange.
+---@param handler fun(widget: LineEdit)
+---@return LineEdit
+function LineEdit:setOnTextChange(handler) end
+
+--- Attach a handler for onReturnPress.
+---@param handler fun(widget: LineEdit)
+---@return LineEdit
+function LineEdit:setOnReturnPress(handler) end
+
+--- Attach a handler for onTextSelection.
+---@param handler fun(widget: LineEdit)
+---@return LineEdit
+function LineEdit:setOnTextSelection(handler) end
+
 ---@class ListBox
 local ListBox = {}
 
@@ -410,6 +887,455 @@ function ListBox:setOnItemSelect(handler) end
 ---@param handler fun(widget: ListBox)
 ---@return ListBox
 function ListBox:setOnItemDoubleClick(handler) end
+
+---@class ProgressBar
+local ProgressBar = {}
+
+--- Get the enabled property.
+---@return boolean
+function ProgressBar:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return ProgressBar
+function ProgressBar:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function ProgressBar:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function ProgressBar:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return ProgressBar
+function ProgressBar:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function ProgressBar:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function ProgressBar:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return ProgressBar
+function ProgressBar:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function ProgressBar:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return ProgressBar
+function ProgressBar:setStyleSheet(value) end
+
+--- Get the value property.
+---@return integer
+function ProgressBar:getValue() end
+
+--- Set the value property.
+---@param value integer
+---@return ProgressBar
+function ProgressBar:setValue(value) end
+
+--- Get the orientation property.
+---@return any
+function ProgressBar:getOrientation() end
+
+--- Set the orientation property.
+---@param value any
+---@return ProgressBar
+function ProgressBar:setOrientation(value) end
+
+---@class RadioButton
+local RadioButton = {}
+
+--- Get the enabled property.
+---@return boolean
+function RadioButton:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return RadioButton
+function RadioButton:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function RadioButton:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function RadioButton:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return RadioButton
+function RadioButton:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function RadioButton:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function RadioButton:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return RadioButton
+function RadioButton:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function RadioButton:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return RadioButton
+function RadioButton:setStyleSheet(value) end
+
+--- Get the text property.
+---@return string
+function RadioButton:getText() end
+
+--- Set the text property.
+---@param value string
+---@return RadioButton
+function RadioButton:setText(value) end
+
+--- Get the checked property.
+---@return boolean
+function RadioButton:getChecked() end
+
+--- Set the checked property.
+---@param value boolean
+---@return RadioButton
+function RadioButton:setChecked(value) end
+
+--- Get the checked property.
+---@return boolean
+function RadioButton:isChecked() end
+
+--- Get the icon property.
+---@return any
+function RadioButton:getIcon() end
+
+--- Set the icon property.
+---@param value any
+---@return RadioButton
+function RadioButton:setIcon(value) end
+
+--- Get a {width, height} pair.
+---@return any
+function RadioButton:getIconSize() end
+
+--- Set a {width, height} pair.
+---@param value any
+---@return RadioButton
+function RadioButton:setIconSize(value) end
+
+--- Attach a handler for onClick.
+---@param handler fun(widget: RadioButton)
+---@return RadioButton
+function RadioButton:setOnClick(handler) end
+
+---@class Scroller
+local Scroller = {}
+
+--- Get the enabled property.
+---@return boolean
+function Scroller:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Scroller
+function Scroller:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Scroller:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Scroller:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Scroller
+function Scroller:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Scroller:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Scroller:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Scroller
+function Scroller:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Scroller:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Scroller
+function Scroller:setStyleSheet(value) end
+
+--- Get the resizable property.
+---@return boolean
+function Scroller:getResizable() end
+
+--- Set the resizable property.
+---@param value boolean
+---@return Scroller
+function Scroller:setResizable(value) end
+
+--- Get the resizable property.
+---@return boolean
+function Scroller:isResizable() end
+
+---@class Slider
+local Slider = {}
+
+--- Get the enabled property.
+---@return boolean
+function Slider:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Slider
+function Slider:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Slider:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Slider:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Slider
+function Slider:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Slider:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Slider:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Slider
+function Slider:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Slider:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Slider
+function Slider:setStyleSheet(value) end
+
+--- Get the value property.
+---@return integer
+function Slider:getValue() end
+
+--- Set the value property.
+---@param value integer
+---@return Slider
+function Slider:setValue(value) end
+
+--- Get the orientation property.
+---@return any
+function Slider:getOrientation() end
+
+--- Set the orientation property.
+---@param value any
+---@return Slider
+function Slider:setOrientation(value) end
+
+--- Get the tickPosition property.
+---@return any
+function Slider:getTickPosition() end
+
+--- Set the tickPosition property.
+---@param value any
+---@return Slider
+function Slider:setTickPosition(value) end
+
+--- Attach a handler for onValueChange.
+---@param handler fun(widget: Slider)
+---@return Slider
+function Slider:setOnValueChange(handler) end
+
+---@class Spinner
+local Spinner = {}
+
+--- Get the enabled property.
+---@return boolean
+function Spinner:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Spinner
+function Spinner:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Spinner:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Spinner:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Spinner
+function Spinner:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Spinner:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Spinner:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Spinner
+function Spinner:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Spinner:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Spinner
+function Spinner:setStyleSheet(value) end
+
+--- Get the value property.
+---@return integer
+function Spinner:getValue() end
+
+--- Set the value property.
+---@param value integer
+---@return Spinner
+function Spinner:setValue(value) end
+
+--- Get the prefix property.
+---@return string
+function Spinner:getPrefix() end
+
+--- Set the prefix property.
+---@param value string
+---@return Spinner
+function Spinner:setPrefix(value) end
+
+--- Get the suffix property.
+---@return string
+function Spinner:getSuffix() end
+
+--- Set the suffix property.
+---@param value string
+---@return Spinner
+function Spinner:setSuffix(value) end
+
+--- Attach a handler for onValueChange.
+---@param handler fun(widget: Spinner)
+---@return Spinner
+function Spinner:setOnValueChange(handler) end
+
+---@class Splitter
+local Splitter = {}
+
+--- Get the enabled property.
+---@return boolean
+function Splitter:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Splitter
+function Splitter:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Splitter:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Splitter:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Splitter
+function Splitter:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Splitter:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Splitter:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Splitter
+function Splitter:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Splitter:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Splitter
+function Splitter:setStyleSheet(value) end
+
+--- Get the handleWidth property.
+---@return integer
+function Splitter:getHandleWidth() end
+
+--- Set the handleWidth property.
+---@param value integer
+---@return Splitter
+function Splitter:setHandleWidth(value) end
+
+--- Get the orientation property.
+---@return any
+function Splitter:getOrientation() end
+
+--- Set the orientation property.
+---@param value any
+---@return Splitter
+function Splitter:setOrientation(value) end
+
+--- Get a list of pane sizes, one per child.
+---@return any
+function Splitter:getSizes() end
+
+--- Set a list of pane sizes, one per child.
+---@param value any
+---@return Splitter
+function Splitter:setSizes(value) end
 
 ---@class TextField
 local TextField = {}
@@ -523,6 +1449,53 @@ function VLayout:getSpacing() end
 ---@return VLayout
 function VLayout:setSpacing(value) end
 
+---@class VLine
+local VLine = {}
+
+--- Get the enabled property.
+---@return boolean
+function VLine:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return VLine
+function VLine:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function VLine:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function VLine:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return VLine
+function VLine:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function VLine:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function VLine:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return VLine
+function VLine:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function VLine:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return VLine
+function VLine:setStyleSheet(value) end
+
 ---@class Window
 local Window = {}
 
@@ -590,15 +1563,30 @@ function Window:setIcon(value) end
 
 local ui = {}
 ui.Button = Button
+ui.ButtonGroup = ButtonGroup
 ui.CheckBox = CheckBox
 ui.ComboBox = ComboBox
+ui.Container = Container
 ui.Dialogs = Dialogs
+ui.DoubleSpinner = DoubleSpinner
+ui.FormLayout = FormLayout
 ui.GridLayout = GridLayout
+ui.GroupBox = GroupBox
 ui.HLayout = HLayout
+ui.HLine = HLine
+ui.Image = Image
 ui.Label = Label
+ui.LineEdit = LineEdit
 ui.ListBox = ListBox
+ui.ProgressBar = ProgressBar
+ui.RadioButton = RadioButton
+ui.Scroller = Scroller
+ui.Slider = Slider
+ui.Spinner = Spinner
+ui.Splitter = Splitter
 ui.TextField = TextField
 ui.Theme = Theme
 ui.VLayout = VLayout
+ui.VLine = VLine
 ui.Window = Window
 return ui
