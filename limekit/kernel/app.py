@@ -33,6 +33,9 @@ class LimekitApp:
         )
         self.qt_app = QApplication.instance() or QApplication(self.argv)
 
+        from limekit.services import resources
+        resources.set_project_root(self.project_path)
+
         from limekit.kernel import manifest
         manifest.import_all()
 

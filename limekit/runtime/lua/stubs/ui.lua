@@ -249,6 +249,9 @@ function ComboBox:isEditable() end
 ---@return ComboBox
 function ComboBox:setOnItemSelect(handler) end
 
+---@class Dialogs
+local Dialogs = {}
+
 ---@class GridLayout
 local GridLayout = {}
 
@@ -505,6 +508,9 @@ function TextField:setOnTextChange(handler) end
 ---@return TextField
 function TextField:setOnCursorMove(handler) end
 
+---@class Theme
+local Theme = {}
+
 ---@class VLayout
 local VLayout = {}
 
@@ -586,11 +592,13 @@ local ui = {}
 ui.Button = Button
 ui.CheckBox = CheckBox
 ui.ComboBox = ComboBox
+ui.Dialogs = Dialogs
 ui.GridLayout = GridLayout
 ui.HLayout = HLayout
 ui.Label = Label
 ui.ListBox = ListBox
 ui.TextField = TextField
+ui.Theme = Theme
 ui.VLayout = VLayout
 ui.Window = Window
 return ui

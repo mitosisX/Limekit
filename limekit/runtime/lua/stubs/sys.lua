@@ -4,6 +4,10 @@
 ---@class Expr
 local Expr = {}
 
+---@class System
+local System = {}
+
 local sys = {}
 sys.Expr = Expr
+sys.System = System
 return sys

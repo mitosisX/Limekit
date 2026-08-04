@@ -11,20 +11,31 @@
 
 local limekit = {}
 
+-- fs
+limekit.fs = require("limekit.fs")
+--   fs.FileSystem
+
+-- res
+limekit.res = require("limekit.res")
+--   res.Resources
+
 -- sys
 limekit.sys = require("limekit.sys")
 --   sys.Expr
+--   sys.System
 
 -- ui
 limekit.ui = require("limekit.ui")
 --   ui.Button
 --   ui.CheckBox
 --   ui.ComboBox
+--   ui.Dialogs
 --   ui.GridLayout
 --   ui.HLayout
 --   ui.Label
 --   ui.ListBox
 --   ui.TextField
+--   ui.Theme
 --   ui.VLayout
 --   ui.Window
 

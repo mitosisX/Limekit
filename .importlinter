@@ -30,11 +30,21 @@ forbidden_modules =
     limekit.widgets
     limekit.build
     limekit.toolkit
+    limekit.services
     limekit.engine
     limekit.components
     limekit.utils
     limekit.gui
     limekit.core
+# LimekitApp.boot() imports limekit.services.resources to hand it the
+# project root (set_project_root), mirroring how bridge/convert.py's
+# set_runtime is wired. That import is deliberately local to boot() rather
+# than module-level, so nothing else in kernel/ can casually reach into
+# services/ -- but grimp's static analysis sees import statements regardless
+# of nesting, so the one sanctioned call site must be named here explicitly
+# rather than silently passing.
+ignore_imports =
+    limekit.kernel.app -> limekit.services.resources
 
 [importlinter:contract:layers]
 name = strict layering
