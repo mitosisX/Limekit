@@ -956,8 +956,22 @@ def _install_prop(cls, prop):
     """
     getter_name, setter_name, alias = prop.accessor_names()
 
-    qt_get = getattr(cls, prop.qt[0])
-    qt_set = getattr(cls, prop.qt[1])
+    # CORRECTION (found during execution): a bare getattr(cls, ...) is BROKEN
+    # in two ways.
+    #   1. On a subclass, it finds the PARENT'S generated wrapper rather than
+    #      the native Qt method, because the generated setter shares its name
+    #      with the Qt setter. Each level then adds a wrapper: coerce fired
+    #      1/2/3 times down a three-level chain.
+    #   2. On an abstract mixin that declares props whose Qt methods live on
+    #      the concrete subclass, it raises AttributeError outright — which
+    #      made Task 16's LimeWidget impossible to define.
+    # Resolve through the MRO instead, skipping anything we generated, and
+    # defer installation when the Qt method is not present yet.
+    qt_get = _resolve_qt_method(cls, prop.qt[0])
+    qt_set = _resolve_qt_method(cls, prop.qt[1])
+    if qt_get is None or qt_set is None:
+        return                      # abstract mixin; the concrete subclass installs
+
     coerce, validate, label = prop.coerce, prop.validate, prop.name
 
     def getter(self, _g=qt_get):
@@ -975,10 +989,30 @@ def _install_prop(cls, prop):
     setter.__name__ = setter_name
     getter.__doc__ = setter.__doc__ = prop.doc or None
 
+    # Tag so _resolve_qt_method can walk past these on subclasses.
+    getter._lime_generated = True
+    setter._lime_generated = True
+
     setattr(cls, getter_name, getter)
     setattr(cls, setter_name, setter)
     if alias:
         setattr(cls, alias, getter)
+```
+
+And the resolver it depends on:
+
+```python
+def _resolve_qt_method(cls, name):
+    """Find the native Qt function called `name`, ignoring generated wrappers.
+
+    Returns None when the class does not have it yet — i.e. an abstract mixin
+    declaring props whose Qt methods only exist on the concrete subclass.
+    """
+    for klass in cls.__mro__:
+        candidate = klass.__dict__.get(name)
+        if candidate is not None and not getattr(candidate, "_lime_generated", False):
+            return candidate
+    return None
 ```
 
 At the end of `__init_subclass__`, after the three `cls.__*__` assignments:
