@@ -13,9 +13,40 @@ local System = {}
 ---@class Thread
 local Thread = {}
 
+---@class Timer
+local Timer = {}
+
+--- Get the timer's interval, in milliseconds.
+---@return integer
+function Timer:getInterval() end
+
+--- Set the timer's interval, in milliseconds.
+---@param value integer
+---@return Timer
+function Timer:setInterval(value) end
+
+--- Get the single_shot property.
+---@return boolean
+function Timer:getSingleShot() end
+
+--- Set the single_shot property.
+---@param value boolean
+---@return Timer
+function Timer:setSingleShot(value) end
+
+--- Get the single_shot property.
+---@return boolean
+function Timer:isSingleShot() end
+
+--- Fired every time the timer fires.
+---@param handler fun(widget: Timer)
+---@return Timer
+function Timer:setOnTimeout(handler) end
+
 local sys = {}
 sys.Expr = Expr
 sys.Signal = Signal
 sys.System = System
 sys.Thread = Thread
+sys.Timer = Timer
 return sys

@@ -13,6 +13,7 @@ from PySide6.QtWidgets import QDockWidget, QWidget
 
 from limekit.kernel.coerce import DOCK_AREAS, Enum, Icon
 from limekit.kernel.errors import BridgeError
+from limekit.kernel.registry import registry
 from limekit.kernel.spec import Event, Prop
 from limekit.widgets.base import LimeWidget
 
@@ -89,3 +90,11 @@ class Dock(LimeWidget, QDockWidget):
                 ) from None
         super().setFeatures(flags)
         return self
+
+
+# `Dockable` is 1.x's name for this exact class (`class Dock(QDockWidget,
+# EnginePart): name = "Dockable"` in components/dockable/dockable_widget.py)
+# -- not a distinct widget. Registered as a second path to the same class
+# rather than a duplicate subclass, so old demos requiring `ui.Dockable`
+# keep working unchanged.
+registry.register("ui.Dockable", Dock)

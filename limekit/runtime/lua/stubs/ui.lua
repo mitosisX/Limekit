@@ -109,6 +109,9 @@ function AdvancedSlider:setStyleSheet(value) end
 ---@return AdvancedSlider
 function AdvancedSlider:setOnValueChanged(handler) end
 
+---@class AutoComplete
+local AutoComplete = {}
+
 ---@class Button
 local Button = {}
 
@@ -698,6 +701,94 @@ function Dock:setOnLocationChange(handler) end
 ---@return Dock
 function Dock:setOnVisibilityChange(handler) end
 
+---@class Dockable
+local Dockable = {}
+
+--- Get the enabled property.
+---@return boolean
+function Dockable:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Dockable
+function Dockable:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Dockable:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Dockable:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Dockable
+function Dockable:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Dockable:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Dockable:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Dockable
+function Dockable:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Dockable:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Dockable
+function Dockable:setStyleSheet(value) end
+
+--- Get the title property.
+---@return string
+function Dockable:getTitle() end
+
+--- Set the title property.
+---@param value string
+---@return Dockable
+function Dockable:setTitle(value) end
+
+--- Get the icon property.
+---@return any
+function Dockable:getIcon() end
+
+--- Set the icon property.
+---@param value any
+---@return Dockable
+function Dockable:setIcon(value) end
+
+--- Get the floating property.
+---@return boolean
+function Dockable:getFloating() end
+
+--- Set the floating property.
+---@param value boolean
+---@return Dockable
+function Dockable:setFloating(value) end
+
+--- Get the floating property.
+---@return boolean
+function Dockable:isFloating() end
+
+--- Attach a handler for onLocationChange.
+---@param handler fun(widget: Dockable)
+---@return Dockable
+function Dockable:setOnLocationChange(handler) end
+
+--- Attach a handler for onVisibilityChange.
+---@param handler fun(widget: Dockable)
+---@return Dockable
+function Dockable:setOnVisibilityChange(handler) end
+
 ---@class DoubleSpinner
 local DoubleSpinner = {}
 
@@ -846,6 +937,45 @@ function DropMenu:setIcon(value) end
 ---@param handler fun(widget: DropMenu)
 ---@return DropMenu
 function DropMenu:setOnClick(handler) end
+
+---@class DropShadow
+local DropShadow = {}
+
+--- Get the shadow's blur radius, in pixels.
+---@return number
+function DropShadow:getBlurRadius() end
+
+--- Set the shadow's blur radius, in pixels.
+---@param value number
+---@return DropShadow
+function DropShadow:setBlurRadius(value) end
+
+--- Get the color property.
+---@return any
+function DropShadow:getColor() end
+
+--- Set the color property.
+---@param value any
+---@return DropShadow
+function DropShadow:setColor(value) end
+
+--- Get the offsetX property.
+---@return number
+function DropShadow:getOffsetX() end
+
+--- Set the offsetX property.
+---@param value number
+---@return DropShadow
+function DropShadow:setOffsetX(value) end
+
+--- Get the offsetY property.
+---@return number
+function DropShadow:getOffsetY() end
+
+--- Set the offsetY property.
+---@param value number
+---@return DropShadow
+function DropShadow:setOffsetY(value) end
 
 ---@class FontComboBox
 local FontComboBox = {}
@@ -2509,6 +2639,71 @@ function StatusBar:setSizeGripEnabled(value) end
 ---@return boolean
 function StatusBar:isSizeGripEnabled() end
 
+---@class SysNotification
+local SysNotification = {}
+
+--- Get the notification's icon.
+---@return any
+function SysNotification:getIcon() end
+
+--- Set the notification's icon.
+---@param value any
+---@return SysNotification
+function SysNotification:setIcon(value) end
+
+--- Fired when the user clicks the notification balloon.
+---@param handler fun(widget: SysNotification)
+---@return SysNotification
+function SysNotification:setOnClick(handler) end
+
+---@class SysTray
+local SysTray = {}
+
+--- Get the tray icon's image.
+---@return any
+function SysTray:getIcon() end
+
+--- Set the tray icon's image.
+---@param value any
+---@return SysTray
+function SysTray:setIcon(value) end
+
+--- Get the toolTip property.
+---@return string
+function SysTray:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return SysTray
+function SysTray:setToolTip(value) end
+
+--- Get the visible property.
+---@return boolean
+function SysTray:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return SysTray
+function SysTray:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function SysTray:isVisible() end
+
+--- Get the tray icon's right-click context menu.
+---@return any
+function SysTray:getMenu() end
+
+--- Set the tray icon's right-click context menu.
+---@param value any
+---@return SysTray
+function SysTray:setMenu(value) end
+
+--- Fired when the user clicks or double-clicks the tray icon.
+---@param handler fun(widget: SysTray)
+---@return SysTray
+function SysTray:setOnActivated(handler) end
+
 ---@class Tab
 local Tab = {}
 
@@ -3329,6 +3524,7 @@ function Window:setIcon(value) end
 local ui = {}
 ui.Accordion = Accordion
 ui.AdvancedSlider = AdvancedSlider
+ui.AutoComplete = AutoComplete
 ui.Button = Button
 ui.ButtonGroup = ButtonGroup
 ui.Calendar = Calendar
@@ -3339,8 +3535,10 @@ ui.Container = Container
 ui.DatePicker = DatePicker
 ui.Dialogs = Dialogs
 ui.Dock = Dock
+ui.Dockable = Dockable
 ui.DoubleSpinner = DoubleSpinner
 ui.DropMenu = DropMenu
+ui.DropShadow = DropShadow
 ui.FontComboBox = FontComboBox
 ui.FormLayout = FormLayout
 ui.GifPlayer = GifPlayer
@@ -3369,6 +3567,8 @@ ui.Spinner = Spinner
 ui.Splitter = Splitter
 ui.StackedLayout = StackedLayout
 ui.StatusBar = StatusBar
+ui.SysNotification = SysNotification
+ui.SysTray = SysTray
 ui.Tab = Tab
 ui.TabItem = TabItem
 ui.Table = Table

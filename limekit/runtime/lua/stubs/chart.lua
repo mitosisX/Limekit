@@ -43,6 +43,62 @@ function Chart:getTitle() end
 ---@return Chart
 function Chart:setTitle(value) end
 
+---@class ChartCanvas
+local ChartCanvas = {}
+
+--- Get the enabled property.
+---@return boolean
+function ChartCanvas:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return ChartCanvas
+function ChartCanvas:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function ChartCanvas:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function ChartCanvas:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return ChartCanvas
+function ChartCanvas:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function ChartCanvas:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function ChartCanvas:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return ChartCanvas
+function ChartCanvas:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function ChartCanvas:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return ChartCanvas
+function ChartCanvas:setStyleSheet(value) end
+
+--- Get the chart property.
+---@return any
+function ChartCanvas:getChart() end
+
+--- Set the chart property.
+---@param value any
+---@return ChartCanvas
+function ChartCanvas:setChart(value) end
+
 ---@class ChartView
 local ChartView = {}
 
@@ -129,6 +185,7 @@ chart.BarChart = BarChart
 chart.BarSet = BarSet
 chart.CategoryAxis = CategoryAxis
 chart.Chart = Chart
+chart.ChartCanvas = ChartCanvas
 chart.ChartView = ChartView
 chart.LineChart = LineChart
 chart.ValueAxis = ValueAxis

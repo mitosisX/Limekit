@@ -9,6 +9,7 @@ from PySide6.QtGui import QPainter
 from limekit.charts._qtcharts import HAS_QTCHARTS, QChart, QChartView, require_charts
 from limekit.kernel.bridge.convert import to_lua
 from limekit.kernel.coerce import Enum
+from limekit.kernel.registry import registry
 from limekit.kernel.spec import Prop
 from limekit.widgets.base import LimeWidget
 
@@ -44,3 +45,11 @@ class ChartView(LimeWidget, QChartView if HAS_QTCHARTS else QObject):
 
     def getThemes(self):
         return to_lua(sorted(_THEMES))
+
+
+# `ChartCanvas` is 1.x's name for this exact class
+# (components/charts/chartview.py: `class ChartCanvas(QChartView,
+# EnginePart)`) -- not a distinct widget. Registered as a second path to
+# the same class rather than a duplicate subclass, so old demos requiring
+# `chart.ChartCanvas` keep working unchanged.
+registry.register("chart.ChartCanvas", ChartView)

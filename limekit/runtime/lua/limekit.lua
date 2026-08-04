@@ -18,6 +18,7 @@ limekit.chart = require("limekit.chart")
 --   chart.BarSet
 --   chart.CategoryAxis
 --   chart.Chart
+--   chart.ChartCanvas
 --   chart.ChartView
 --   chart.LineChart
 --   chart.ValueAxis
@@ -40,11 +41,13 @@ limekit.sys = require("limekit.sys")
 --   sys.Signal
 --   sys.System
 --   sys.Thread
+--   sys.Timer
 
 -- ui
 limekit.ui = require("limekit.ui")
 --   ui.Accordion
 --   ui.AdvancedSlider
+--   ui.AutoComplete
 --   ui.Button
 --   ui.ButtonGroup
 --   ui.Calendar
@@ -55,8 +58,10 @@ limekit.ui = require("limekit.ui")
 --   ui.DatePicker
 --   ui.Dialogs
 --   ui.Dock
+--   ui.Dockable
 --   ui.DoubleSpinner
 --   ui.DropMenu
+--   ui.DropShadow
 --   ui.FontComboBox
 --   ui.FormLayout
 --   ui.GifPlayer
@@ -85,6 +90,8 @@ limekit.ui = require("limekit.ui")
 --   ui.Splitter
 --   ui.StackedLayout
 --   ui.StatusBar
+--   ui.SysNotification
+--   ui.SysTray
 --   ui.Tab
 --   ui.TabItem
 --   ui.Table
