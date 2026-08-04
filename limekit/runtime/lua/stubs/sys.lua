@@ -4,10 +4,18 @@
 ---@class Expr
 local Expr = {}
 
+---@class Signal
+local Signal = {}
+
 ---@class System
 local System = {}
 
+---@class Thread
+local Thread = {}
+
 local sys = {}
 sys.Expr = Expr
+sys.Signal = Signal
 sys.System = System
+sys.Thread = Thread
 return sys

@@ -11,6 +11,21 @@
 
 local limekit = {}
 
+-- chart
+limekit.chart = require("limekit.chart")
+--   chart.AreaChart
+--   chart.BarChart
+--   chart.BarSet
+--   chart.CategoryAxis
+--   chart.Chart
+--   chart.ChartView
+--   chart.LineChart
+--   chart.ValueAxis
+
+-- db
+limekit.db = require("limekit.db")
+--   db.Sqlite3
+
 -- fs
 limekit.fs = require("limekit.fs")
 --   fs.FileSystem
@@ -22,25 +37,36 @@ limekit.res = require("limekit.res")
 -- sys
 limekit.sys = require("limekit.sys")
 --   sys.Expr
+--   sys.Signal
 --   sys.System
+--   sys.Thread
 
 -- ui
 limekit.ui = require("limekit.ui")
+--   ui.Accordion
+--   ui.AdvancedSlider
 --   ui.Button
 --   ui.ButtonGroup
+--   ui.Calendar
 --   ui.CheckBox
 --   ui.ComboBox
+--   ui.CommandButton
 --   ui.Container
+--   ui.DatePicker
 --   ui.Dialogs
 --   ui.Dock
 --   ui.DoubleSpinner
 --   ui.DropMenu
+--   ui.FontComboBox
 --   ui.FormLayout
+--   ui.GifPlayer
 --   ui.GridLayout
 --   ui.GroupBox
 --   ui.HLayout
 --   ui.HLine
 --   ui.Image
+--   ui.Knob
+--   ui.LCDNumber
 --   ui.Label
 --   ui.LineEdit
 --   ui.ListBox
@@ -51,9 +77,13 @@ limekit.ui = require("limekit.ui")
 --   ui.ProgressBar
 --   ui.RadioButton
 --   ui.Scroller
+--   ui.Separator
 --   ui.Slider
+--   ui.SlidingStackedWidget
+--   ui.Spacer
 --   ui.Spinner
 --   ui.Splitter
+--   ui.StackedLayout
 --   ui.StatusBar
 --   ui.Tab
 --   ui.TabItem
@@ -61,6 +91,7 @@ limekit.ui = require("limekit.ui")
 --   ui.TableItem
 --   ui.TextField
 --   ui.Theme
+--   ui.TimePicker
 --   ui.Toolbar
 --   ui.ToolbarButton
 --   ui.TreeView
