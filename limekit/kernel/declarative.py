@@ -6,6 +6,7 @@ metaclass, and a naive `class Meta(type)` raises a metaclass conflict.
 
 from limekit.kernel.bridge.guard import guard
 from limekit.kernel.errors import BridgeError
+from limekit.kernel.registry import registry
 from limekit.kernel.spec import Prop, Event, Method
 
 _SPEC_TYPES = (Prop, Event, Method)
@@ -185,3 +186,10 @@ class LimeObject:
 
         for event in cls.__events__:
             _install_event(cls, event)
+
+        # `__lime__` declared directly on this class is the registration.
+        # `vars(cls)` rather than `cls.__lime__` so subclasses do not
+        # re-register under their parent's path.
+        path = vars(cls).get("__lime__")
+        if path:
+            registry.register(path, cls)
