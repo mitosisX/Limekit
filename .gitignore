@@ -8,7 +8,11 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
+# Anchored to the repo root: an unanchored `build/` also matched
+# limekit/build/, silently excluding the whole build system from
+# version control -- 10 files that Limer's Build button depends on
+# and that no fresh clone would have had.
+/build/
 develop-eggs/
 dist/
 downloads/
