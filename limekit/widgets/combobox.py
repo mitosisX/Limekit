@@ -9,7 +9,7 @@ from limekit.widgets.base import LimeWidget
 class ComboBox(LimeWidget, QComboBox):
     __lime__ = "ui.ComboBox"
 
-    editable = Prop(bool, default=False, qt=("isEditable", "setEditable"))
+    editable = Prop(bool, qt=("isEditable", "setEditable"))
 
     onItemSelect = Event("currentIndexChanged", passes_self=True)
 

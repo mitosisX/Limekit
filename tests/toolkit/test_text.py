@@ -75,3 +75,24 @@ def test_power_close_to_the_ceiling_is_not_accidentally_rejected():
 def test_non_string_non_number_input_is_refused(expression):
     with pytest.raises(BridgeError):
         Sys.evalExpression(expression)
+
+
+@pytest.mark.parametrize("expr", ["1/0", "1//0", "1%0"])
+def test_division_by_zero_raises_bridge_error_not_zero_division_error(expr):
+    # 1/0 is the single most likely input a real calculator user will type;
+    # it must never surface a raw ZeroDivisionError past the bridge.
+    with pytest.raises(BridgeError, match="division by zero"):
+        Sys.evalExpression(expr)
+
+
+def test_overflow_raises_bridge_error_not_overflow_error():
+    with pytest.raises(BridgeError, match="too large"):
+        Sys.evalExpression("1e200**3")
+
+
+def test_non_finite_result_is_rejected():
+    # 1e308 * 10 does not raise OverflowError -- it silently overflows a
+    # Python float to +inf. A calculator returning "inf" is not a usable
+    # result, so this is rejected the same way an explicit overflow is.
+    with pytest.raises(BridgeError, match="not a finite number"):
+        Sys.evalExpression("1e308*10")

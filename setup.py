@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="limekit",
-    version="1.0.0",
+    version="2.0.0a1",
     keywords="gui lua",
     author="Omega Msiska",
     author_email="omegamsiskah@gmail.com",
@@ -10,8 +10,12 @@ setuptools.setup(
     license="GNU",
     packages=setuptools.find_packages(),
     package_data={
-        # Include all .lua files in limekit/lua/
-        "limekit": ["lua/*.lua"],
+        # Generated runtime: limekit.lua and the LSP stubs (tools/generate_lua.py,
+        # tools/generate_stubs.py). limekit/runtime/ and limekit/runtime/lua/ both
+        # need __init__.py for find_packages() to see them at all -- without that,
+        # these files silently land in no wheel (the exact "works in dev, missing
+        # when shipped" defect this branch exists to eliminate).
+        "limekit.runtime.lua": ["*.lua", "stubs/*.lua"],
         # Include all .qss files in the themes directory
         "limekit.core.theming": ["themes/misc/themes/*.qss"],
         # You can add more patterns as needed

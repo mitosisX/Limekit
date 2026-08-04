@@ -12,8 +12,8 @@ _cursor = Enum(CURSORS, "cursor")
 class Label(LimeWidget, QLabel):
     __lime__ = "ui.Label"
 
-    text = Prop(str, default="", qt=("text", "setText"), coerce=str)
-    wordWrap = Prop(bool, default=False, qt=("wordWrap", "setWordWrap"))
+    text = Prop(str, qt=("text", "setText"), coerce=str)
+    wordWrap = Prop(bool, qt=("wordWrap", "setWordWrap"))
     textAlignment = Prop(object, qt=("alignment", "setAlignment"), coerce=_alignment)
 
     def __init__(self, text=""):

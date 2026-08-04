@@ -8,12 +8,12 @@ from limekit.widgets.base import LimeWidget
 class Button(LimeWidget, QPushButton):
     __lime__ = "ui.Button"
 
-    text = Prop(str, default="Button", qt=("text", "setText"), coerce=str,
+    text = Prop(str, qt=("text", "setText"), coerce=str,
                 doc="the button's caption")
     icon = Prop(object, qt=("icon", "setIcon"), coerce=Icon)
-    flat = Prop(bool, default=False, qt=("isFlat", "setFlat"))
-    checkable = Prop(bool, default=False, qt=("isCheckable", "setCheckable"))
-    checked = Prop(bool, default=False, qt=("isChecked", "setChecked"))
+    flat = Prop(bool, qt=("isFlat", "setFlat"))
+    checkable = Prop(bool, qt=("isCheckable", "setCheckable"))
+    checked = Prop(bool, qt=("isChecked", "setChecked"))
 
     onClick = Event("clicked", passes_self=True, doc="Fired when clicked.")
 

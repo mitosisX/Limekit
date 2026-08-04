@@ -1,5 +1,6 @@
 import pytest
 from limekit.kernel.bridge.guard import set_error_sink, reset_error_sink
+from limekit.kernel.errors import BridgeError
 
 
 @pytest.fixture(autouse=True)
@@ -63,6 +64,18 @@ def test_label_cursor_map_is_correct(qapp):
     assert label.cursor().shape() == Qt.CursorShape.WaitCursor
     label.setCursor("openhand")
     assert label.cursor().shape() == Qt.CursorShape.OpenHandCursor
+
+
+def test_set_size_with_non_numeric_width_raises_bridge_error(qapp):
+    from limekit.widgets.button import Button
+    with pytest.raises(BridgeError):
+        Button().setSize("a", 1)
+
+
+def test_set_location_with_none_raises_bridge_error(qapp):
+    from limekit.widgets.button import Button
+    with pytest.raises(BridgeError):
+        Button().setLocation(None, 0)
 
 
 def test_widgets_are_registered(qapp):

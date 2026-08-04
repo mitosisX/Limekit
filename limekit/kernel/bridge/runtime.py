@@ -19,10 +19,15 @@ _LOCATION = re.compile(r'\[string "(?P<source>[^"]*)"\]:(?P<line>\d+):\s*(?P<msg
 # globals at all -- eval/str/int/dict/tuple/len were never present. 1.x's
 # actual defect was that gather_additional_parts *explicitly injected*
 # Python's builtins as Lua globals; simply not doing that is the real fix,
-# and this list is mostly belt-and-braces (nil-ing something already absent
-# is a no-op). `print` is deliberately NOT here: it's Lua's own stdlib
-# function, not a Python shadow, and removing it would take away a
-# legitimate debugging facility for zero security benefit.
+# and this list is belt-and-braces (nil-ing something already absent is a
+# no-op). `print` is deliberately NOT here: it's Lua's own stdlib function,
+# not a Python shadow, and removing it would take away a legitimate
+# debugging facility for zero security benefit.
+#
+# This does NOT cover lupa's own `python` table (python.eval, python.builtins,
+# python.as_attrgetter, ...). That table is installed by LuaRuntime itself,
+# not by anything in this list, and register_eval/register_builtins are
+# disabled below to close it. See LimeRuntime.__init__.
 _DISALLOWED_GLOBALS = ("eval", "str", "int", "dict", "tuple", "len")
 
 
@@ -32,7 +37,13 @@ class LimeRuntime:
     def __init__(self, registry, *, package="limekit"):
         self.registry = registry
         self.package = package
-        self.lua = LuaRuntime(unpack_returned_tuples=True)
+        # register_eval and register_builtins default to True in lupa and
+        # install a `python` table with python.eval (arbitrary Python source
+        # execution) and python.builtins (e.g. python.builtins.open) reachable
+        # from any Lua script. Disabling both is the actual fix for C1; the
+        # AST sandbox in toolkit/text.py is otherwise trivially bypassable.
+        self.lua = LuaRuntime(unpack_returned_tuples=True,
+                              register_eval=False, register_builtins=False)
         convert.set_runtime(self.lua)
         self._strip_globals()
 

@@ -6,8 +6,9 @@ name = kernel imports nothing from the rest of limekit
 type = forbidden
 source_modules =
     limekit.kernel
-# limekit.widgets and limekit.build are real packages (they have __init__.py),
-# so grimp can see them and this contract genuinely enforces those two entries.
+# limekit.widgets, limekit.build and limekit.toolkit are real packages (they
+# have __init__.py), so grimp can see them and this contract genuinely
+# enforces those three entries.
 #
 # limekit.engine, limekit.components, limekit.utils, limekit.gui and
 # limekit.core have NO __init__.py -- they are PEP 420 implicit namespace
@@ -28,6 +29,7 @@ source_modules =
 forbidden_modules =
     limekit.widgets
     limekit.build
+    limekit.toolkit
     limekit.engine
     limekit.components
     limekit.utils

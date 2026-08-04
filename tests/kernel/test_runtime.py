@@ -10,7 +10,7 @@ from limekit.kernel.errors import LuaError
 @pytest.fixture
 def rt(qapp):
     class Button(LimeObject, QPushButton):
-        text = Prop(str, default="Button", qt=("text", "setText"), coerce=str)
+        text = Prop(str, qt=("text", "setText"), coerce=str)
 
         def __init__(self, text="Button"):
             super().__init__()
@@ -47,6 +47,16 @@ def test_require_caches_module_table(rt):
 def test_no_flat_globals_leak(rt):
     for name in ("Button", "eval", "str", "int", "dict", "tuple", "len"):
         assert rt.eval(f"{name} == nil"), f"{name} leaked into globals"
+
+
+def test_python_eval_and_builtins_are_disabled(rt):
+    """C1: register_eval/register_builtins must be off, or python.eval and
+    python.builtins reach arbitrary Python execution and filesystem access
+    from any Lua script, bypassing the toolkit/text.py AST sandbox entirely."""
+    assert rt.eval("python == nil or python.eval == nil"), \
+        "python.eval is reachable -- arbitrary Python execution from Lua"
+    assert rt.eval("python == nil or python.builtins == nil"), \
+        "python.builtins is reachable -- e.g. python.builtins.open(...)"
 
 
 def test_lua_stdlib_print_survives(rt):

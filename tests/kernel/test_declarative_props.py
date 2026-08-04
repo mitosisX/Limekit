@@ -2,14 +2,14 @@ import pytest
 from PySide6.QtWidgets import QPushButton
 from limekit.kernel.declarative import LimeObject
 from limekit.kernel.spec import Prop
-from limekit.kernel.errors import BridgeError
+from limekit.kernel.errors import BridgeError, RegistryError
 
 
 @pytest.fixture
 def Button(qapp):
     class Button(LimeObject, QPushButton):
-        text = Prop(str, default="Button", qt=("text", "setText"), coerce=str)
-        flat = Prop(bool, default=False, qt=("isFlat", "setFlat"))
+        text = Prop(str, qt=("text", "setText"), coerce=str)
+        flat = Prop(bool, qt=("isFlat", "setFlat"))
     return Button
 
 
@@ -91,7 +91,7 @@ def test_abstract_mixin_prop_installs_on_concrete_subclass(qapp):
     working accessors."""
 
     class LimeWidget(LimeObject):
-        enabled = Prop(bool, default=True, qt=("isEnabled", "setEnabled"))
+        enabled = Prop(bool, qt=("isEnabled", "setEnabled"))
 
     # The mixin itself has no isEnabled/setEnabled anywhere in its MRO, so
     # accessors must not be installed on it -- but defining it must not raise.
@@ -105,3 +105,52 @@ def test_abstract_mixin_prop_installs_on_concrete_subclass(qapp):
     w.setEnabled(False)
     assert w.getEnabled() is False
     assert w.isEnabled() is False
+
+
+def test_prop_colliding_with_an_unrelated_qt_method_raises(qapp):
+    """A Prop whose generated accessor name collides with an unrelated Qt
+    method must not silently replace it. fixedSize's generated setFixedSize
+    would otherwise call resize() instead of Qt's own setFixedSize."""
+    with pytest.raises(RegistryError, match="setFixedSize"):
+        class Widget(LimeObject, QPushButton):
+            fixedSize = Prop(object, qt=("size", "resize"))
+
+
+def test_prop_colliding_with_a_hand_written_method_raises(qapp):
+    """The ComboBox.getText shape: a hand-written method must not be
+    silently replaced by a generated accessor of the same name."""
+    with pytest.raises(RegistryError, match="getText"):
+        class Widget(LimeObject, QPushButton):
+            text = Prop(str, qt=("text", "setText"), coerce=str)
+
+            def getText(self):
+                return "hand-written"
+
+
+def test_diamond_inheritance_collects_props_from_all_branches(qapp):
+    """Two mixins declaring different props, combined via diamond
+    inheritance, must both end up on the leaf class -- the ancestor-tuple
+    collector merge (reversed MRO) must not drop either branch."""
+
+    class Base(LimeObject, QPushButton):
+        text = Prop(str, qt=("text", "setText"), coerce=str)
+
+    class LeftMixin(Base):
+        flat = Prop(bool, qt=("isFlat", "setFlat"))
+
+    class RightMixin(Base):
+        checkable = Prop(bool, qt=("isCheckable", "setCheckable"))
+
+    class Leaf(LeftMixin, RightMixin):
+        pass
+
+    names = {p.name for p in Leaf.__props__}
+    assert {"text", "flat", "checkable"} <= names
+
+    w = Leaf()
+    w.setText("hi")
+    w.setFlat(True)
+    w.setCheckable(True)
+    assert w.getText() == "hi"
+    assert w.isFlat() is True
+    assert w.isCheckable() is True

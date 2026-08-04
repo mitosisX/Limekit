@@ -8,8 +8,6 @@ import traceback
 
 from limekit.kernel.errors import WidgetCallbackError
 
-_DEFAULT_SINK = None
-
 
 def _print_sink(error):
     print(f"\n{error}")

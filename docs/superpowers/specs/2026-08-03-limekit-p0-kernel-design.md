@@ -140,7 +140,7 @@ contained by the guard rather than escaping into the Qt event loop.
 ```
 limekit/
 ├── kernel/                  # depends on nothing else in limekit
-│   ├── spec.py              # Prop · Event · Method (inert specs) + coercions
+│   ├── spec.py              # Prop · Event (inert specs) + coercions
 │   ├── declarative.py       # __init_subclass__ collector + accessor generation
 │   ├── registry.py          # single source of truth: dotted name → class + metadata
 │   ├── manifest.py          # GENERATED import list; used by dev AND frozen
@@ -172,20 +172,26 @@ runtime is injected rather than reached for.
 
 ### 3.2 The metadata layer
 
-Three inert spec types. No descriptor protocol, no metaclass.
+Two inert spec types. No descriptor protocol, no metaclass.
 
 ```python
 # kernel/spec.py
 class Prop:
-    def __init__(self, type_, *, default=None, qt=None,
+    def __init__(self, type_, *, qt=None,
                  coerce=None, validate=None, doc="", lua_name=None): ...
 
 class Event:
-    def __init__(self, qt_signal, *, passes_self=True, args=(), doc=""): ...
-
-class Method:
-    def __init__(self, *, qt=None, doc="", lua_name=None): ...
+    def __init__(self, qt_signal, *, passes_self=True, doc=""): ...
 ```
+
+`Prop.default`, `Event.args` and a third spec type `Method` were part of the original
+P0 design but were cut during the final whole-branch review: `default` was set on every
+widget declaration and read by nothing (widgets duplicate the value in `__init__`
+instead), `Method` was collected into `__methods__` and installed by nothing (all three
+generators ignored it), and `Event.args` was stored and never consumed. Shipping them
+unused would reproduce the exact defect §1.1 indicts 1.x's `settings.IGNORE_PARTS` for
+— declared and never referenced anywhere. All three can come back in P1 with a real
+consumer.
 
 Alongside them, `spec.py` defines the **coercion vocabulary** — small callables a `Prop`
 names via `coerce=`. These are not spec types; they are the conversion functions the
@@ -209,17 +215,17 @@ Widgets declare rather than implement:
 class Button(ButtonLike):
     __lime__ = "ui.Button"
 
-    text    = Prop(str,  default="Button", qt=("text", "setText"), coerce=str)
+    text    = Prop(str,  qt=("text", "setText"), coerce=str)
     icon    = Prop(Icon, qt=("icon", "setIcon"), coerce=QIcon)
-    flat    = Prop(bool, default=False, qt=("isFlat", "setFlat"))
-    checked = Prop(bool, default=False, qt=("isChecked", "setChecked"))
+    flat    = Prop(bool, qt=("isFlat", "setFlat"))
+    checked = Prop(bool, qt=("isChecked", "setChecked"))
 
     onClick = Event("clicked", passes_self=True)
 ```
 
-At class creation `__init_subclass__` walks the reversed MRO, collects every `Prop`,
-`Event` and `Method` (so subclasses inherit parent specs and may override them by
-name), and generates accessors. Those four declarations produce `setText`/`getText`,
+At class creation `__init_subclass__` walks the reversed MRO, collects every `Prop`
+and `Event` (so subclasses inherit parent specs and may override them by name), and
+generates accessors. Those four declarations produce `setText`/`getText`,
 `setIcon`/`getIcon`, `setFlat`/`isFlat`, `setChecked`/`isChecked` and `setOnClick` —
 each wrapped in the error guard — plus the LSP stub entry and the docs entry.
 
@@ -382,6 +388,7 @@ Named here so they are not silently absorbed. Each gets its own spec.
 | **P4** | Theming: design tokens, theme schema, variants, runtime switching |
 | **P5** | DX: LSP stubs consumed, source-mapped tracebacks surfaced, hot reload rework |
 | **P6** | Surface expansion: additional widget methods and toolkit functions |
+| **P1** | Harden `python.as_attrgetter` (e.g. a lupa `attribute_filter`). It remains a deliberate escape hatch in P0: lupa always installs it and it can reach a Qt signal directly, bypassing `guard.py`. Not attempted in P0 — real breakage risk, needs its own design. |
 
 P0 deliberately does **not** decide reactivity semantics. Doing so before P2 exists
 would commit the kernel to a model with no consumer to validate it against.
@@ -394,7 +401,11 @@ would commit the kernel to a model with no consumer to validate it against.
 2. `kernel/` passes the import-linter rule; `GlobalEngine` no longer exists.
 3. `manifest.py` regeneration is a verified no-op in CI.
 4. `limekit.lua` and the LSP stubs are generated; `lua/script.py` is deleted.
-5. Every Lua callback crosses `guard.py`; no unguarded handler-attachment path exists.
+5. No unguarded handler-attachment path exists **through the generated accessors** —
+   every `setOn<Name>` crosses `guard.py`. `python.as_attrgetter` remains a deliberate
+   escape hatch (lupa always installs it; it cannot be disabled) that reaches Qt
+   signals directly, e.g. `python.as_attrgetter(python.as_attrgetter(b).clicked).connect(...)`.
+   Hardening that path (an `attribute_filter`) is out of scope for P0 — see §6.
 6. A Lua error reports its real `.lua` file and line, with no string-surgery in the path.
 7. All ~40 demo projects boot headless without exception under the migrated API.
 8. The following rows of the §1.2 defect table are closed, each with a regression

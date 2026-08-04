@@ -5,11 +5,15 @@ metaclass, and a naive `class Meta(type)` raises a metaclass conflict.
 """
 
 from limekit.kernel.bridge.guard import guard
-from limekit.kernel.errors import BridgeError
+from limekit.kernel.errors import BridgeError, RegistryError
 from limekit.kernel.registry import registry
-from limekit.kernel.spec import Prop, Event, Method
+from limekit.kernel.spec import Prop, Event
 
-_SPEC_TYPES = (Prop, Event, Method)
+# `Method` was removed from the public spec surface: it was collected into
+# __methods__ but installed by nothing (all three generators ignored it).
+# Reintroduce it in P1 with a real consumer rather than leaving it declared
+# and dead -- see spec 1.1's own complaint about exactly this pattern.
+_SPEC_TYPES = (Prop, Event)
 
 
 def _resolve_qt_method(cls, name):
@@ -34,6 +38,45 @@ def _resolve_qt_method(cls, name):
         if fn is not None and not getattr(fn, "_lime_generated", False):
             return fn
     return None
+
+
+def _safe_setattr(cls, name, value, *, prop_name, allow=()):
+    """setattr, but refuse to silently clobber a name we did not generate.
+
+    Two verified shapes this catches: a Prop whose generated accessor name
+    collides with an unrelated Qt method (`fixedSize = Prop(..., qt=("size",
+    "resize"))` would otherwise replace LimeWidget.setFixedSize), and a
+    hand-written method silently replaced by a generated accessor of the
+    same name (ComboBox.getText, if a future `text` Prop ever lands on
+    ComboBox). Both used to fail silently at class-definition time; this
+    turns them into an immediate, loud RegistryError instead.
+
+    The whole MRO is checked (not just vars(cls)), the same way
+    _resolve_qt_method looks past generated wrappers: a Qt method like
+    setFixedSize lives on QWidget, several classes up from the widget that
+    declares the colliding Prop, so a vars(cls)-only check would miss it.
+
+    `allow` carries the exact qt_get/qt_set function objects _install_prop
+    already resolved for THIS prop (see C2): the common case is a generated
+    name that is deliberately identical to the underlying Qt method it
+    wraps (a `text` Prop generates `setText`, shadowing QWidget.setText on
+    purpose), and that intended shadow must not trip this check. A
+    subclass re-installing an inherited prop is likewise fine -- the
+    parent's accessor of the same name is tagged _lime_generated.
+    """
+    for klass in cls.__mro__:
+        existing = klass.__dict__.get(name)
+        if existing is not None:
+            if not any(existing is a for a in allow) and \
+                    not getattr(existing, "_lime_generated", False):
+                raise RegistryError(
+                    f"{cls.__name__}.{name} already exists on "
+                    f"{klass.__name__} and is not a generated accessor; "
+                    f"the {prop_name!r} spec cannot install its accessor "
+                    f"there without silently replacing it"
+                )
+            break
+    setattr(cls, name, value)
 
 
 def _install_prop(cls, prop):
@@ -77,10 +120,10 @@ def _install_prop(cls, prop):
     getter._lime_generated = True
     setter._lime_generated = True
 
-    setattr(cls, getter_name, getter)
-    setattr(cls, setter_name, setter)
+    _safe_setattr(cls, getter_name, getter, prop_name=prop.name, allow=(qt_get,))
+    _safe_setattr(cls, setter_name, setter, prop_name=prop.name, allow=(qt_set,))
     if alias:
-        setattr(cls, alias, getter)
+        _safe_setattr(cls, alias, getter, prop_name=prop.name, allow=(qt_get, qt_set))
 
 
 def _install_event(cls, event):
@@ -125,51 +168,46 @@ def _install_event(cls, event):
     attach.__name__ = setter_name
     attach.__doc__ = event.doc or None
     attach._lime_generated = True
-    setattr(cls, setter_name, attach)
+    _safe_setattr(cls, setter_name, attach, prop_name=event.name)
 
 
 class LimeObject:
     """Base for every class exposed to Lua.
 
-    Collects Prop/Event/Method declarations across the MRO, then deletes the
-    spec objects from the class so the Qt attributes they describe are no
-    longer shadowed (constraint C1).
+    Collects Prop/Event declarations across the MRO, then deletes the spec
+    objects from the class so the Qt attributes they describe are no longer
+    shadowed (constraint C1).
     """
 
     __lime__ = None
     __props__ = ()
     __events__ = ()
-    __methods__ = ()
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
 
-        props, events, methods = {}, {}, {}
+        props, events = {}, {}
 
         # Reversed MRO so a subclass declaration overwrites its parent's.
         #
-        # A parent's own Prop/Event/Method objects are gone from its
-        # __dict__ by the time we get here -- they were delattr'd when the
-        # parent itself was built (C1). So each ancestor contributes twice:
-        # its already-collected __props__/__events__/__methods__ tuples
-        # (inherited specs), then a scan of its still-live __dict__ (specs
-        # declared directly on it, only non-empty for `cls` itself since
-        # earlier ancestors were already cleaned).
+        # A parent's own Prop/Event objects are gone from its __dict__ by
+        # the time we get here -- they were delattr'd when the parent
+        # itself was built (C1). So each ancestor contributes twice: its
+        # already-collected __props__/__events__ tuples (inherited specs),
+        # then a scan of its still-live __dict__ (specs declared directly
+        # on it, only non-empty for `cls` itself since earlier ancestors
+        # were already cleaned).
         for base in reversed(cls.__mro__):
             own = vars(base)
             for p in own.get("__props__", ()):
                 props[p.name] = p
             for e in own.get("__events__", ()):
                 events[e.name] = e
-            for m in own.get("__methods__", ()):
-                methods[m.name] = m
             for key, value in own.items():
                 if isinstance(value, Prop):
                     props[key] = value
                 elif isinstance(value, Event):
                     events[key] = value
-                elif isinstance(value, Method):
-                    methods[key] = value
 
         # C1: drop the spec objects declared on THIS class. Parents were
         # already cleaned when they were themselves created.
@@ -179,7 +217,6 @@ class LimeObject:
 
         cls.__props__ = tuple(props.values())
         cls.__events__ = tuple(events.values())
-        cls.__methods__ = tuple(methods.values())
 
         for prop in cls.__props__:
             _install_prop(cls, prop)

@@ -46,6 +46,19 @@ def test_to_py_detects_array_vs_map(lua):
     assert convert.to_py(lua.eval('{x = 1}')) == {"x": 1}
 
 
+@pytest.mark.parametrize("source,expected", [
+    # Contiguous 1..n keys -> list. This is the load-bearing branch of the
+    # whole bridge: every widget accepting Lua tables depends on it telling
+    # arrays from maps correctly.
+    ('{[1]=1, [2]=2, [3]=3}', [1, 2, 3]),
+    # A gap in the key sequence (1, 2, 4 -- no 3) must NOT be mistaken for
+    # a contiguous array; it must become a dict keyed by the actual indices.
+    ('{[1]=1, [2]=2, [4]=4}', {1: 1, 2: 2, 4: 4}),
+])
+def test_to_py_gap_in_keys_becomes_a_dict(lua, source, expected):
+    assert convert.to_py(lua.eval(source)) == expected
+
+
 def test_to_py_is_recursive(lua):
     assert convert.to_py(lua.eval('{a = {1, 2}}')) == {"a": [1, 2]}
 

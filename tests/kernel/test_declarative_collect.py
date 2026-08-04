@@ -58,3 +58,32 @@ def test_lime_path_is_recorded(qapp):
         __lime__ = "ui.Thing"
 
     assert W.__lime__ == "ui.Thing"
+
+
+def test_event_slots_are_isolated_per_instance(qapp):
+    """Two widgets of the same class with different handlers must not
+    interfere -- the per-instance `_lime_slot_<name>` attribute (rather
+    than a class-level slot) is what makes reattaching a handler on one
+    instance disconnect only that instance's previous handler."""
+
+    class W(LimeObject, QPushButton):
+        onClick = Event("clicked")
+
+    calls = []
+    a = W()
+    b = W()
+    a.setOnClick(lambda w: calls.append("a"))
+    b.setOnClick(lambda w: calls.append("b"))
+
+    a.click()
+    b.click()
+
+    assert calls == ["a", "b"]
+
+    # Reattaching on `a` must disconnect only `a`'s previous handler, not
+    # `b`'s -- proof the two instances don't share slot state.
+    calls.clear()
+    a.setOnClick(lambda w: calls.append("a2"))
+    a.click()
+    b.click()
+    assert calls == ["a2", "b"]

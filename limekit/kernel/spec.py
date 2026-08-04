@@ -22,7 +22,7 @@ class _Spec:
 class Prop(_Spec):
     """A readable/writable property backed by a pair of Qt methods."""
 
-    def __init__(self, type_, *, default=None, qt=None, coerce=None,
+    def __init__(self, type_, *, qt=None, coerce=None,
                  validate=None, doc="", lua_name=None):
         if not qt or len(qt) != 2:
             raise ValueError(
@@ -30,7 +30,6 @@ class Prop(_Spec):
                 "the kernel binds those functions at generation time."
             )
         self.type = type_
-        self.default = default
         self.qt = tuple(qt)
         self.coerce = coerce
         self.validate = validate
@@ -51,20 +50,10 @@ class Prop(_Spec):
 class Event(_Spec):
     """A Qt signal exposed to Lua as a `setOn<Name>` handler slot."""
 
-    def __init__(self, qt_signal, *, passes_self=True, args=(), doc=""):
+    def __init__(self, qt_signal, *, passes_self=True, doc=""):
         self.qt_signal = qt_signal
         self.passes_self = passes_self
-        self.args = tuple(args)
         self.doc = doc
 
     def setter_name(self):
         return f"set{_capitalise(self.name)}"
-
-
-class Method(_Spec):
-    """A Qt method re-exported to Lua under a possibly different name."""
-
-    def __init__(self, *, qt=None, doc="", lua_name=None):
-        self.qt = qt
-        self.doc = doc
-        self.lua_name = lua_name

@@ -1,5 +1,5 @@
 import pytest
-from limekit.kernel.spec import Prop, Event, Method
+from limekit.kernel.spec import Prop, Event
 
 
 def test_prop_records_its_attribute_name():
@@ -41,7 +41,9 @@ def test_event_defaults_to_passing_self():
     assert Event("clicked").passes_self is True
 
 
-def test_method_records_its_name():
-    class Holder:
-        center = Method(qt="center")
-    assert Holder.center.name == "center"
+def test_prop_has_no_default_kwarg():
+    # `default` was removed from the public spec surface (I4): it was set
+    # in every widget declaration and read by nothing -- the widgets'
+    # __init__ methods already carry the real defaults.
+    with pytest.raises(TypeError):
+        Prop(str, qt=("text", "setText"), default="x")

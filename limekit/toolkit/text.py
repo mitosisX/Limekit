@@ -98,6 +98,26 @@ class Sys(LimeObject):
             # deep expression exhausts it before we ever see a tree to walk.
             raise BridgeError("expression is nested too deeply") from exc
         try:
-            return _evaluate(tree)
+            result = _evaluate(tree)
         except RecursionError as exc:
             raise BridgeError("expression is nested too deeply") from exc
+        except BridgeError:
+            raise
+        except ZeroDivisionError as exc:
+            raise BridgeError(f"division by zero in {expression!r}") from exc
+        except OverflowError as exc:
+            raise BridgeError(f"result of {expression!r} is too large to represent") from exc
+        except Exception as exc:                            # noqa: BLE001
+            # Any other arithmetic failure (e.g. a ValueError from a corner
+            # case in operator.*) must still surface as a BridgeError, never
+            # a raw interpreter exception -- that is the one boundary this
+            # function exists to hold.
+            raise BridgeError(f"could not evaluate {expression!r}: {exc}") from exc
+
+        if isinstance(result, float) and not math.isfinite(result):
+            # 1e308 * 10 silently overflows a float to +-inf rather than
+            # raising OverflowError. A calculator returning "inf" or "nan"
+            # is not a usable result -- reject it the same way we reject an
+            # actual OverflowError above.
+            raise BridgeError(f"result of {expression!r} is not a finite number")
+        return result
