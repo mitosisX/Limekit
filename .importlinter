@@ -6,6 +6,25 @@ name = kernel imports nothing from the rest of limekit
 type = forbidden
 source_modules =
     limekit.kernel
+# limekit.widgets and limekit.build are real packages (they have __init__.py),
+# so grimp can see them and this contract genuinely enforces those two entries.
+#
+# limekit.engine, limekit.components, limekit.utils, limekit.gui and
+# limekit.core have NO __init__.py -- they are PEP 420 implicit namespace
+# packages. grimp 3.15 cannot discover namespace packages at all (confirmed by
+# experiment: importing `limekit.engine.parts` from a kernel module produces
+# no edge in grimp's graph, and this contract still reports KEPT). Listing
+# them here is therefore ASPIRATIONAL, not enforced -- do not read their
+# presence as proof the kernel is clean of them.
+#
+# The rule they represent IS enforced, just not by this file: see
+# tests/test_layering.py::test_kernel_does_not_import_the_legacy_engine, a
+# plain-text grep over limekit/kernel/**/*.py for "limekit.engine" and
+# "GlobalEngine". That test is the real gate for these five entries.
+#
+# These become mechanically enforceable if/when engine, components, utils,
+# gui or core ever gain an __init__.py -- a P1 change, expected when those
+# trees are retired, not something to do now.
 forbidden_modules =
     limekit.widgets
     limekit.build
