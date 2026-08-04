@@ -8,13 +8,22 @@ from lupa import LuaRuntime
 from limekit.kernel.bridge import convert
 from limekit.kernel.errors import LuaError
 
-# Lua reports errors as [string "name"]:LINE: message
-_LOCATION = re.compile(r'^\[string "(?P<source>[^"]*)"\]:(?P<line>\d+):\s*(?P<msg>.*)',
+# Lua reports errors as [string "name"]:LINE: message. Runtime errors start
+# with that directly; compile/syntax errors are prefixed with
+# "error loading code: " first, so this must SEARCH the text, not anchor to
+# its start.
+_LOCATION = re.compile(r'\[string "(?P<source>[^"]*)"\]:(?P<line>\d+):\s*(?P<msg>.*)',
                        re.DOTALL)
 
-# 1.x exposed these as bare Lua globals (Python builtins, plus Lua's own
-# `print`). Nothing gets a bare global in 2.0 -- require() is the only door.
-_DISALLOWED_GLOBALS = ("eval", "str", "int", "dict", "tuple", "print", "len")
+# Empirically, a fresh lupa.LuaRuntime() injects no Python builtins into Lua
+# globals at all -- eval/str/int/dict/tuple/len were never present. 1.x's
+# actual defect was that gather_additional_parts *explicitly injected*
+# Python's builtins as Lua globals; simply not doing that is the real fix,
+# and this list is mostly belt-and-braces (nil-ing something already absent
+# is a no-op). `print` is deliberately NOT here: it's Lua's own stdlib
+# function, not a Python shadow, and removing it would take away a
+# legitimate debugging facility for zero security benefit.
+_DISALLOWED_GLOBALS = ("eval", "str", "int", "dict", "tuple", "len")
 
 
 class LimeRuntime:
@@ -83,7 +92,7 @@ class LimeRuntime:
         printing the exception don't get a multi-line traceback dump.
         """
         text = str(exc)
-        match = _LOCATION.match(text)
+        match = _LOCATION.search(text)
         if match:
             msg = match.group("msg").strip().splitlines()[0]
             return LuaError(
