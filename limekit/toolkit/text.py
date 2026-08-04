@@ -2,6 +2,7 @@
 """Safe replacements for the Python builtins P0 stops injecting into Lua."""
 
 import ast
+import math
 import operator
 
 from limekit.kernel.declarative import LimeObject
@@ -15,6 +16,37 @@ _OPERATORS = {
     ast.USub: operator.neg, ast.UAdd: operator.pos,
 }
 
+# Ceiling on the estimated decimal-digit length of a ** result. An allowlist
+# over node types cannot reject "9**9**9" -- it is legal arithmetic, just
+# computationally explosive (9**387420489 has ~370 million digits). We must
+# estimate the size of the result *before* computing it and refuse anything
+# absurd, rather than let CPython's bigint pow spin forever. 1000 digits
+# leaves every realistic calculator use working.
+_MAX_POW_DIGITS = 1000
+
+
+def _check_pow_magnitude(base, exponent):
+    """Refuse a ** whose result would be absurdly large, without computing it."""
+    if base == 0:
+        if exponent < 0:
+            raise BridgeError(f"0 ** {exponent!r} is undefined")
+        return  # 0**positive == 0, 0**0 == 1: no growth either way
+    if abs(base) == 1:
+        return  # (+-1)**anything never grows in magnitude
+    if exponent == 0:
+        return  # anything**0 == 1
+    try:
+        digits = abs(exponent) * abs(math.log10(abs(base)))
+    except (ValueError, OverflowError):
+        digits = math.inf
+    if digits > _MAX_POW_DIGITS:
+        if math.isinf(digits):
+            raise BridgeError(f"{base!r} ** {exponent!r} is too large to evaluate safely")
+        raise BridgeError(
+            f"{base!r} ** {exponent!r} would produce a result with roughly "
+            f"{int(digits)} digits; refusing anything over {_MAX_POW_DIGITS} digits"
+        )
+
 
 def _evaluate(node):
     if isinstance(node, ast.Expression):
@@ -26,7 +58,17 @@ def _evaluate(node):
             return node.value
         raise BridgeError(f"only numbers are allowed, got {node.value!r}")
     if isinstance(node, ast.BinOp) and type(node.op) in _OPERATORS:
-        return _OPERATORS[type(node.op)](_evaluate(node.left), _evaluate(node.right))
+        left = _evaluate(node.left)
+        right = _evaluate(node.right)
+        if isinstance(node.op, ast.Pow):
+            # Check *before* computing -- computing it to find out how big
+            # it is defeats the purpose.
+            _check_pow_magnitude(left, right)
+        result = _OPERATORS[type(node.op)](left, right)
+        if isinstance(result, complex):
+            # e.g. (-1)**0.5: legal Python, not a number we can hand back.
+            raise BridgeError(f"{left!r} ** {right!r} is not a real number")
+        return result
     if isinstance(node, ast.UnaryOp) and type(node.op) in _OPERATORS:
         return _OPERATORS[type(node.op)](_evaluate(node.operand))
     raise BridgeError(
@@ -40,6 +82,13 @@ class Sys(LimeObject):
     @staticmethod
     def evalExpression(expression):
         """Arithmetic only. Never exposes builtins.eval to Lua."""
+        if not isinstance(expression, (str, int, float)) or isinstance(expression, bool):
+            # A Lua table (or anything else) arriving through the bridge
+            # must not be coerced by str() into something that happens to
+            # parse -- validate the shape of the input, not just its content.
+            raise BridgeError(
+                f"expression must be a string or number, got {type(expression).__name__}"
+            )
         try:
             tree = ast.parse(str(expression), mode="eval")
         except SyntaxError as exc:
