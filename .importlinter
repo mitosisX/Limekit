@@ -1,0 +1,23 @@
+[importlinter]
+root_package = limekit
+
+[importlinter:contract:kernel-is-independent]
+name = kernel imports nothing from the rest of limekit
+type = forbidden
+source_modules =
+    limekit.kernel
+forbidden_modules =
+    limekit.widgets
+    limekit.build
+    limekit.engine
+    limekit.components
+    limekit.utils
+    limekit.gui
+    limekit.core
+
+[importlinter:contract:layers]
+name = strict layering
+type = layers
+layers =
+    limekit.widgets
+    limekit.kernel
