@@ -30,7 +30,6 @@ from limekit.utils.fileutils import FileUtils
 
 from limekit.core.routing.routes import Routing
 
-from limekit.lua.script import Script
 from limekit.engine.parser.lua_parser import LuaParser
 from limekit.engine.lifecycle.shutdown import destroy_engine
 
