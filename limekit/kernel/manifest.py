@@ -63,6 +63,7 @@ MODULES = (
     "limekit.widgets.radiobutton",
     "limekit.widgets.scroller",
     "limekit.widgets.separator",
+    "limekit.widgets.shortcut",
     "limekit.widgets.slider",
     "limekit.widgets.slidingstackedwidget",
     "limekit.widgets.spacer",

@@ -1314,6 +1314,40 @@ function Image:getStyleSheet() end
 ---@return Image
 function Image:setStyleSheet(value) end
 
+---@class KeyboardShortcut
+local KeyboardShortcut = {}
+
+--- Get the enabled property.
+---@return boolean
+function KeyboardShortcut:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return KeyboardShortcut
+function KeyboardShortcut:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function KeyboardShortcut:isEnabled() end
+
+--- Get the autoRepeat property.
+---@return boolean
+function KeyboardShortcut:getAutoRepeat() end
+
+--- Set the autoRepeat property.
+---@param value boolean
+---@return KeyboardShortcut
+function KeyboardShortcut:setAutoRepeat(value) end
+
+--- Get the autoRepeat property.
+---@return boolean
+function KeyboardShortcut:isAutoRepeat() end
+
+--- Fired when the key sequence is pressed.
+---@param handler fun(widget: KeyboardShortcut)
+---@return KeyboardShortcut
+function KeyboardShortcut:setOnPress(handler) end
+
 ---@class Knob
 local Knob = {}
 
@@ -3397,6 +3431,76 @@ function TreeViewItem:setExpanded(value) end
 ---@return boolean
 function TreeViewItem:isExpanded() end
 
+---@class TreeWidget
+local TreeWidget = {}
+
+--- Get the enabled property.
+---@return boolean
+function TreeWidget:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return TreeWidget
+function TreeWidget:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function TreeWidget:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function TreeWidget:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return TreeWidget
+function TreeWidget:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function TreeWidget:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function TreeWidget:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return TreeWidget
+function TreeWidget:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function TreeWidget:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return TreeWidget
+function TreeWidget:setStyleSheet(value) end
+
+--- Get the headerHidden property.
+---@return boolean
+function TreeWidget:getHeaderHidden() end
+
+--- Set the headerHidden property.
+---@param value boolean
+---@return TreeWidget
+function TreeWidget:setHeaderHidden(value) end
+
+--- Get the headerHidden property.
+---@return boolean
+function TreeWidget:isHeaderHidden() end
+
+--- Attach a handler for onItemClick.
+---@param handler fun(widget: TreeWidget)
+---@return TreeWidget
+function TreeWidget:setOnItemClick(handler) end
+
+--- Attach a handler for onItemDoubleClick.
+---@param handler fun(widget: TreeWidget)
+---@return TreeWidget
+function TreeWidget:setOnItemDoubleClick(handler) end
+
 ---@class VLayout
 local VLayout = {}
 
@@ -3547,6 +3651,7 @@ ui.GroupBox = GroupBox
 ui.HLayout = HLayout
 ui.HLine = HLine
 ui.Image = Image
+ui.KeyboardShortcut = KeyboardShortcut
 ui.Knob = Knob
 ui.LCDNumber = LCDNumber
 ui.Label = Label
@@ -3580,6 +3685,7 @@ ui.Toolbar = Toolbar
 ui.ToolbarButton = ToolbarButton
 ui.TreeView = TreeView
 ui.TreeViewItem = TreeViewItem
+ui.TreeWidget = TreeWidget
 ui.VLayout = VLayout
 ui.VLine = VLine
 ui.Window = Window

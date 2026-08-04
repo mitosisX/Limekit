@@ -70,6 +70,7 @@ limekit.ui = require("limekit.ui")
 --   ui.HLayout
 --   ui.HLine
 --   ui.Image
+--   ui.KeyboardShortcut
 --   ui.Knob
 --   ui.LCDNumber
 --   ui.Label
@@ -103,6 +104,7 @@ limekit.ui = require("limekit.ui")
 --   ui.ToolbarButton
 --   ui.TreeView
 --   ui.TreeViewItem
+--   ui.TreeWidget
 --   ui.VLayout
 --   ui.VLine
 --   ui.Window

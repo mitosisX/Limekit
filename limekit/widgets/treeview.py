@@ -19,6 +19,7 @@ from limekit.kernel.coerce import Icon, LuaIndex
 from limekit.kernel.declarative import LimeObject
 from limekit.kernel.spec import Event, Prop
 from limekit.widgets.base import LimeWidget, _to_int
+from limekit.kernel.registry import registry
 
 
 class TreeViewItem(LimeObject, QTreeWidgetItem):
@@ -100,3 +101,13 @@ class TreeView(LimeWidget, QTreeWidget):
     def collapseAll(self):
         super().collapseAll()
         return self
+
+
+# `TreeWidget` is 1.x's other name for a tree. 1.x shipped two
+# implementations: components/widgets/tree_widget.py (QTreeWidget-based,
+# complete) and components/widgets/treewidget.py (QTreeView +
+# QStandardItemModel, self-labelled "Half baked", and calling
+# self.model(x, y) as though the model attribute were callable). This is a
+# port of the working one, registered under both names so a demo written
+# against either keeps resolving.
+registry.register("ui.TreeWidget", TreeView)
