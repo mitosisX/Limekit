@@ -1,25 +1,7 @@
 import pytest
-from PySide6.QtWidgets import QPushButton
 
 from limekit.kernel.app import LimekitApp
-from limekit.kernel.declarative import LimeObject
 from limekit.kernel.errors import ProjectError
-from limekit.kernel.registry import registry
-
-
-@pytest.fixture(autouse=True)
-def ui_module(qapp):
-    """A real project's main.lua starts with require("limekit.ui"); by the
-    time Task 12's manifest generator exists that module is populated for
-    real, but here only kernel/ exists, so register one trivial widget under
-    the global registry for the duration of each test, mirroring what
-    manifest.import_all() will eventually do."""
-
-    class Button(LimeObject, QPushButton):
-        __lime__ = "ui.Button"
-
-    yield
-    registry.clear_path("ui.Button")
 
 
 @pytest.fixture
