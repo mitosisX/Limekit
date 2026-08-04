@@ -329,6 +329,94 @@ function Container:setLayout(value) end
 ---@class Dialogs
 local Dialogs = {}
 
+---@class Dock
+local Dock = {}
+
+--- Get the enabled property.
+---@return boolean
+function Dock:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Dock
+function Dock:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Dock:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Dock:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Dock
+function Dock:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Dock:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Dock:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Dock
+function Dock:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Dock:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Dock
+function Dock:setStyleSheet(value) end
+
+--- Get the title property.
+---@return string
+function Dock:getTitle() end
+
+--- Set the title property.
+---@param value string
+---@return Dock
+function Dock:setTitle(value) end
+
+--- Get the icon property.
+---@return any
+function Dock:getIcon() end
+
+--- Set the icon property.
+---@param value any
+---@return Dock
+function Dock:setIcon(value) end
+
+--- Get the floating property.
+---@return boolean
+function Dock:getFloating() end
+
+--- Set the floating property.
+---@param value boolean
+---@return Dock
+function Dock:setFloating(value) end
+
+--- Get the floating property.
+---@return boolean
+function Dock:isFloating() end
+
+--- Attach a handler for onLocationChange.
+---@param handler fun(widget: Dock)
+---@return Dock
+function Dock:setOnLocationChange(handler) end
+
+--- Attach a handler for onVisibilityChange.
+---@param handler fun(widget: Dock)
+---@return Dock
+function Dock:setOnVisibilityChange(handler) end
+
 ---@class DoubleSpinner
 local DoubleSpinner = {}
 
@@ -407,6 +495,76 @@ function DoubleSpinner:setSuffix(value) end
 ---@param handler fun(widget: DoubleSpinner)
 ---@return DoubleSpinner
 function DoubleSpinner:setOnValueChange(handler) end
+
+---@class DropMenu
+local DropMenu = {}
+
+--- Get the enabled property.
+---@return boolean
+function DropMenu:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return DropMenu
+function DropMenu:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function DropMenu:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function DropMenu:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return DropMenu
+function DropMenu:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function DropMenu:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function DropMenu:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return DropMenu
+function DropMenu:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function DropMenu:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return DropMenu
+function DropMenu:setStyleSheet(value) end
+
+--- Get the title property.
+---@return string
+function DropMenu:getTitle() end
+
+--- Set the title property.
+---@param value string
+---@return DropMenu
+function DropMenu:setTitle(value) end
+
+--- Get the icon property.
+---@return any
+function DropMenu:getIcon() end
+
+--- Set the icon property.
+---@param value any
+---@return DropMenu
+function DropMenu:setIcon(value) end
+
+--- Attach a handler for onClick.
+---@param handler fun(widget: DropMenu)
+---@return DropMenu
+function DropMenu:setOnClick(handler) end
 
 ---@class FormLayout
 local FormLayout = {}
@@ -888,6 +1046,328 @@ function ListBox:setOnItemSelect(handler) end
 ---@return ListBox
 function ListBox:setOnItemDoubleClick(handler) end
 
+---@class Menu
+local Menu = {}
+
+--- Get the enabled property.
+---@return boolean
+function Menu:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Menu
+function Menu:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Menu:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Menu:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Menu
+function Menu:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Menu:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Menu:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Menu
+function Menu:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Menu:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Menu
+function Menu:setStyleSheet(value) end
+
+--- Get the title property.
+---@return string
+function Menu:getTitle() end
+
+--- Set the title property.
+---@param value string
+---@return Menu
+function Menu:setTitle(value) end
+
+--- Get the icon property.
+---@return any
+function Menu:getIcon() end
+
+--- Set the icon property.
+---@param value any
+---@return Menu
+function Menu:setIcon(value) end
+
+--- Attach a handler for onClick.
+---@param handler fun(widget: Menu)
+---@return Menu
+function Menu:setOnClick(handler) end
+
+---@class MenuItem
+local MenuItem = {}
+
+--- Get the action's caption.
+---@return string
+function MenuItem:getText() end
+
+--- Set the action's caption.
+---@param value string
+---@return MenuItem
+function MenuItem:setText(value) end
+
+--- Get the icon property.
+---@return any
+function MenuItem:getIcon() end
+
+--- Set the icon property.
+---@param value any
+---@return MenuItem
+function MenuItem:setIcon(value) end
+
+--- Get the enabled property.
+---@return boolean
+function MenuItem:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return MenuItem
+function MenuItem:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function MenuItem:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function MenuItem:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return MenuItem
+function MenuItem:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function MenuItem:isVisible() end
+
+--- Get the checkable property.
+---@return boolean
+function MenuItem:getCheckable() end
+
+--- Set the checkable property.
+---@param value boolean
+---@return MenuItem
+function MenuItem:setCheckable(value) end
+
+--- Get the checkable property.
+---@return boolean
+function MenuItem:isCheckable() end
+
+--- Get the checked property.
+---@return boolean
+function MenuItem:getChecked() end
+
+--- Set the checked property.
+---@param value boolean
+---@return MenuItem
+function MenuItem:setChecked(value) end
+
+--- Get the checked property.
+---@return boolean
+function MenuItem:isChecked() end
+
+--- Get the separator property.
+---@return boolean
+function MenuItem:getSeparator() end
+
+--- Set the separator property.
+---@param value boolean
+---@return MenuItem
+function MenuItem:setSeparator(value) end
+
+--- Get the separator property.
+---@return boolean
+function MenuItem:isSeparator() end
+
+--- Get the toolTip property.
+---@return string
+function MenuItem:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return MenuItem
+function MenuItem:setToolTip(value) end
+
+--- Get the statusTip property.
+---@return string
+function MenuItem:getStatusTip() end
+
+--- Set the statusTip property.
+---@param value string
+---@return MenuItem
+function MenuItem:setStatusTip(value) end
+
+--- Get the shortcut property.
+---@return string
+function MenuItem:getShortcut() end
+
+--- Set the shortcut property.
+---@param value string
+---@return MenuItem
+function MenuItem:setShortcut(value) end
+
+--- Attach a handler for onClick.
+---@param handler fun(widget: MenuItem)
+---@return MenuItem
+function MenuItem:setOnClick(handler) end
+
+---@class Menubar
+local Menubar = {}
+
+--- Get the enabled property.
+---@return boolean
+function Menubar:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Menubar
+function Menubar:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Menubar:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Menubar:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Menubar
+function Menubar:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Menubar:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Menubar:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Menubar
+function Menubar:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Menubar:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Menubar
+function Menubar:setStyleSheet(value) end
+
+---@class Modal
+local Modal = {}
+
+--- Get the enabled property.
+---@return boolean
+function Modal:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Modal
+function Modal:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Modal:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Modal:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Modal
+function Modal:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Modal:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Modal:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Modal
+function Modal:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Modal:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Modal
+function Modal:setStyleSheet(value) end
+
+--- Get the title property.
+---@return string
+function Modal:getTitle() end
+
+--- Set the title property.
+---@param value string
+---@return Modal
+function Modal:setTitle(value) end
+
+--- Get the icon property.
+---@return any
+function Modal:getIcon() end
+
+--- Set the icon property.
+---@param value any
+---@return Modal
+function Modal:setIcon(value) end
+
+--- Get the modal property.
+---@return boolean
+function Modal:getModal() end
+
+--- Set the modal property.
+---@param value boolean
+---@return Modal
+function Modal:setModal(value) end
+
+--- Get the modal property.
+---@return boolean
+function Modal:isModal() end
+
+--- Get the layout property.
+---@return any
+function Modal:getLayout() end
+
+--- Set the layout property.
+---@param value any
+---@return Modal
+function Modal:setLayout(value) end
+
 ---@class ProgressBar
 local ProgressBar = {}
 
@@ -1337,6 +1817,317 @@ function Splitter:getSizes() end
 ---@return Splitter
 function Splitter:setSizes(value) end
 
+---@class StatusBar
+local StatusBar = {}
+
+--- Get the enabled property.
+---@return boolean
+function StatusBar:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return StatusBar
+function StatusBar:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function StatusBar:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function StatusBar:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return StatusBar
+function StatusBar:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function StatusBar:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function StatusBar:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return StatusBar
+function StatusBar:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function StatusBar:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return StatusBar
+function StatusBar:setStyleSheet(value) end
+
+--- Get the sizeGripEnabled property.
+---@return boolean
+function StatusBar:getSizeGripEnabled() end
+
+--- Set the sizeGripEnabled property.
+---@param value boolean
+---@return StatusBar
+function StatusBar:setSizeGripEnabled(value) end
+
+--- Get the sizeGripEnabled property.
+---@return boolean
+function StatusBar:isSizeGripEnabled() end
+
+---@class Tab
+local Tab = {}
+
+--- Get the enabled property.
+---@return boolean
+function Tab:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Tab
+function Tab:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Tab:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Tab:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Tab
+function Tab:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Tab:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Tab:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Tab
+function Tab:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Tab:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Tab
+function Tab:setStyleSheet(value) end
+
+--- Get the movable property.
+---@return boolean
+function Tab:getMovable() end
+
+--- Set the movable property.
+---@param value boolean
+---@return Tab
+function Tab:setMovable(value) end
+
+--- Get the movable property.
+---@return boolean
+function Tab:isMovable() end
+
+--- Get the tabsClosable property.
+---@return boolean
+function Tab:getTabsClosable() end
+
+--- Set the tabsClosable property.
+---@param value boolean
+---@return Tab
+function Tab:setTabsClosable(value) end
+
+--- Get the tabsClosable property.
+---@return boolean
+function Tab:isTabsClosable() end
+
+--- Get the tabPosition property.
+---@return any
+function Tab:getTabPosition() end
+
+--- Set the tabPosition property.
+---@param value any
+---@return Tab
+function Tab:setTabPosition(value) end
+
+---@class TabItem
+local TabItem = {}
+
+--- Get the enabled property.
+---@return boolean
+function TabItem:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return TabItem
+function TabItem:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function TabItem:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function TabItem:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return TabItem
+function TabItem:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function TabItem:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function TabItem:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return TabItem
+function TabItem:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function TabItem:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return TabItem
+function TabItem:setStyleSheet(value) end
+
+--- Get the layout property.
+---@return any
+function TabItem:getLayout() end
+
+--- Set the layout property.
+---@param value any
+---@return TabItem
+function TabItem:setLayout(value) end
+
+---@class Table
+local Table = {}
+
+--- Get the enabled property.
+---@return boolean
+function Table:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Table
+function Table:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Table:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Table:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Table
+function Table:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Table:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Table:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Table
+function Table:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Table:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Table
+function Table:setStyleSheet(value) end
+
+--- Get the showGrid property.
+---@return boolean
+function Table:getShowGrid() end
+
+--- Set the showGrid property.
+---@param value boolean
+---@return Table
+function Table:setShowGrid(value) end
+
+--- Get the showGrid property.
+---@return boolean
+function Table:isShowGrid() end
+
+--- Get the sortingEnabled property.
+---@return boolean
+function Table:getSortingEnabled() end
+
+--- Set the sortingEnabled property.
+---@param value boolean
+---@return Table
+function Table:setSortingEnabled(value) end
+
+--- Get the sortingEnabled property.
+---@return boolean
+function Table:isSortingEnabled() end
+
+--- Get the alternatingRowColors property.
+---@return boolean
+function Table:getAlternatingRowColors() end
+
+--- Set the alternatingRowColors property.
+---@param value boolean
+---@return Table
+function Table:setAlternatingRowColors(value) end
+
+--- Get the alternatingRowColors property.
+---@return boolean
+function Table:isAlternatingRowColors() end
+
+--- Attach a handler for onCellClick.
+---@param handler fun(widget: Table)
+---@return Table
+function Table:setOnCellClick(handler) end
+
+--- Attach a handler for onCellDoubleClick.
+---@param handler fun(widget: Table)
+---@return Table
+function Table:setOnCellDoubleClick(handler) end
+
+--- Attach a handler for onCellChange.
+---@param handler fun(widget: Table)
+---@return Table
+function Table:setOnCellChange(handler) end
+
+---@class TableItem
+local TableItem = {}
+
+--- Get the text property.
+---@return string
+function TableItem:getText() end
+
+--- Set the text property.
+---@param value string
+---@return TableItem
+function TableItem:setText(value) end
+
 ---@class TextField
 local TextField = {}
 
@@ -1436,6 +2227,301 @@ function TextField:setOnCursorMove(handler) end
 
 ---@class Theme
 local Theme = {}
+
+---@class Toolbar
+local Toolbar = {}
+
+--- Get the enabled property.
+---@return boolean
+function Toolbar:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return Toolbar
+function Toolbar:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function Toolbar:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function Toolbar:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return Toolbar
+function Toolbar:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function Toolbar:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function Toolbar:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return Toolbar
+function Toolbar:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function Toolbar:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return Toolbar
+function Toolbar:setStyleSheet(value) end
+
+--- Get the movable property.
+---@return boolean
+function Toolbar:getMovable() end
+
+--- Set the movable property.
+---@param value boolean
+---@return Toolbar
+function Toolbar:setMovable(value) end
+
+--- Get the movable property.
+---@return boolean
+function Toolbar:isMovable() end
+
+--- Get the floatable property.
+---@return boolean
+function Toolbar:getFloatable() end
+
+--- Set the floatable property.
+---@param value boolean
+---@return Toolbar
+function Toolbar:setFloatable(value) end
+
+--- Get the floatable property.
+---@return boolean
+function Toolbar:isFloatable() end
+
+--- Get the iconSize property.
+---@return any
+function Toolbar:getIconSize() end
+
+--- Set the iconSize property.
+---@param value any
+---@return Toolbar
+function Toolbar:setIconSize(value) end
+
+--- Get how buttons show icon/text: icononly, textonly, textbesideicon, textundericon, followstyle.
+---@return any
+function Toolbar:getToolButtonStyle() end
+
+--- Set how buttons show icon/text: icononly, textonly, textbesideicon, textundericon, followstyle.
+---@param value any
+---@return Toolbar
+function Toolbar:setToolButtonStyle(value) end
+
+---@class ToolbarButton
+local ToolbarButton = {}
+
+--- Get the action's caption.
+---@return string
+function ToolbarButton:getText() end
+
+--- Set the action's caption.
+---@param value string
+---@return ToolbarButton
+function ToolbarButton:setText(value) end
+
+--- Get the icon property.
+---@return any
+function ToolbarButton:getIcon() end
+
+--- Set the icon property.
+---@param value any
+---@return ToolbarButton
+function ToolbarButton:setIcon(value) end
+
+--- Get the enabled property.
+---@return boolean
+function ToolbarButton:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return ToolbarButton
+function ToolbarButton:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function ToolbarButton:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function ToolbarButton:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return ToolbarButton
+function ToolbarButton:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function ToolbarButton:isVisible() end
+
+--- Get the checkable property.
+---@return boolean
+function ToolbarButton:getCheckable() end
+
+--- Set the checkable property.
+---@param value boolean
+---@return ToolbarButton
+function ToolbarButton:setCheckable(value) end
+
+--- Get the checkable property.
+---@return boolean
+function ToolbarButton:isCheckable() end
+
+--- Get the checked property.
+---@return boolean
+function ToolbarButton:getChecked() end
+
+--- Set the checked property.
+---@param value boolean
+---@return ToolbarButton
+function ToolbarButton:setChecked(value) end
+
+--- Get the checked property.
+---@return boolean
+function ToolbarButton:isChecked() end
+
+--- Get the separator property.
+---@return boolean
+function ToolbarButton:getSeparator() end
+
+--- Set the separator property.
+---@param value boolean
+---@return ToolbarButton
+function ToolbarButton:setSeparator(value) end
+
+--- Get the separator property.
+---@return boolean
+function ToolbarButton:isSeparator() end
+
+--- Get the toolTip property.
+---@return string
+function ToolbarButton:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return ToolbarButton
+function ToolbarButton:setToolTip(value) end
+
+--- Get the statusTip property.
+---@return string
+function ToolbarButton:getStatusTip() end
+
+--- Set the statusTip property.
+---@param value string
+---@return ToolbarButton
+function ToolbarButton:setStatusTip(value) end
+
+--- Get the shortcut property.
+---@return string
+function ToolbarButton:getShortcut() end
+
+--- Set the shortcut property.
+---@param value string
+---@return ToolbarButton
+function ToolbarButton:setShortcut(value) end
+
+--- Attach a handler for onClick.
+---@param handler fun(widget: ToolbarButton)
+---@return ToolbarButton
+function ToolbarButton:setOnClick(handler) end
+
+---@class TreeView
+local TreeView = {}
+
+--- Get the enabled property.
+---@return boolean
+function TreeView:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return TreeView
+function TreeView:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function TreeView:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function TreeView:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return TreeView
+function TreeView:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function TreeView:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function TreeView:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return TreeView
+function TreeView:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function TreeView:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return TreeView
+function TreeView:setStyleSheet(value) end
+
+--- Get the headerHidden property.
+---@return boolean
+function TreeView:getHeaderHidden() end
+
+--- Set the headerHidden property.
+---@param value boolean
+---@return TreeView
+function TreeView:setHeaderHidden(value) end
+
+--- Get the headerHidden property.
+---@return boolean
+function TreeView:isHeaderHidden() end
+
+--- Attach a handler for onItemClick.
+---@param handler fun(widget: TreeView)
+---@return TreeView
+function TreeView:setOnItemClick(handler) end
+
+--- Attach a handler for onItemDoubleClick.
+---@param handler fun(widget: TreeView)
+---@return TreeView
+function TreeView:setOnItemDoubleClick(handler) end
+
+---@class TreeViewItem
+local TreeViewItem = {}
+
+--- Get the expanded property.
+---@return boolean
+function TreeViewItem:getExpanded() end
+
+--- Set the expanded property.
+---@param value boolean
+---@return TreeViewItem
+function TreeViewItem:setExpanded(value) end
+
+--- Get the expanded property.
+---@return boolean
+function TreeViewItem:isExpanded() end
 
 ---@class VLayout
 local VLayout = {}
@@ -1568,7 +2654,9 @@ ui.CheckBox = CheckBox
 ui.ComboBox = ComboBox
 ui.Container = Container
 ui.Dialogs = Dialogs
+ui.Dock = Dock
 ui.DoubleSpinner = DoubleSpinner
+ui.DropMenu = DropMenu
 ui.FormLayout = FormLayout
 ui.GridLayout = GridLayout
 ui.GroupBox = GroupBox
@@ -1578,14 +2666,27 @@ ui.Image = Image
 ui.Label = Label
 ui.LineEdit = LineEdit
 ui.ListBox = ListBox
+ui.Menu = Menu
+ui.MenuItem = MenuItem
+ui.Menubar = Menubar
+ui.Modal = Modal
 ui.ProgressBar = ProgressBar
 ui.RadioButton = RadioButton
 ui.Scroller = Scroller
 ui.Slider = Slider
 ui.Spinner = Spinner
 ui.Splitter = Splitter
+ui.StatusBar = StatusBar
+ui.Tab = Tab
+ui.TabItem = TabItem
+ui.Table = Table
+ui.TableItem = TableItem
 ui.TextField = TextField
 ui.Theme = Theme
+ui.Toolbar = Toolbar
+ui.ToolbarButton = ToolbarButton
+ui.TreeView = TreeView
+ui.TreeViewItem = TreeViewItem
 ui.VLayout = VLayout
 ui.VLine = VLine
 ui.Window = Window
