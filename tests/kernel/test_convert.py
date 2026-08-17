@@ -1,4 +1,5 @@
 # tests/kernel/test_convert.py
+import lupa
 import pytest
 from lupa import LuaRuntime
 from limekit.kernel.bridge import convert
@@ -82,3 +83,38 @@ def test_as_callable_accepts_a_lua_function(lua):
 def test_as_callable_rejects_a_non_callable(lua):
     with pytest.raises(BridgeError, match="callable"):
         convert.as_callable(42)
+
+
+# -- outbound (generated getters) --------------------------------------------
+
+def test_outbound_converts_containers_to_lua_tables(lua):
+    """A Prop getter used to hand Lua a raw Python list.
+
+    `Splitter:setSizes({200, 500})` accepted a Lua table while `getSizes()`
+    returned something where `#` raised "attempt to get length of a POBJECT
+    value" and `[1]` silently gave the *second* element -- 0-indexed, in a
+    framework whose contract is 1-indexed.
+    """
+    table = convert.outbound([10, 20, 30])
+    assert lupa.lua_type(table) == "table"
+    assert list(table.values()) == [10, 20, 30]
+    assert table[1] == 10                    # 1-indexed, as Lua expects
+
+
+@pytest.mark.parametrize("value", ["text", 42, 3.5, True, None])
+def test_outbound_passes_plain_values_through(lua, value):
+    assert convert.outbound(value) is value
+
+
+def test_outbound_leaves_qt_objects_alone(lua):
+    """Icons, layouts and the like are handed back to the framework, not read."""
+    from PySide6.QtGui import QIcon
+    icon = QIcon()
+    assert convert.outbound(icon) is icon
+
+
+def test_outbound_without_a_runtime_returns_the_value_unchanged():
+    """Widgets are built straight from Python in this suite, with no Lua bound."""
+    convert.set_runtime(None)
+    payload = [1, 2, 3]
+    assert convert.outbound(payload) is payload

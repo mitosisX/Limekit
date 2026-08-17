@@ -32,6 +32,32 @@ def to_lua(value):
     return value
 
 
+def outbound(value):
+    """Python -> Lua for a value leaving through a generated accessor.
+
+    A Prop's setter runs `coerce` then `validate`; its getter used to run
+    nothing at all, so a container-valued Prop handed Lua a raw Python list.
+    `Splitter:setSizes({200, 500})` took a Lua table and `getSizes()` gave
+    back something where `#` raised "attempt to get length of a POBJECT
+    value" and `[1]` silently returned the *second* element -- 0-indexed,
+    in a framework whose whole contract is 1-indexed.
+
+    Only containers are converted. Everything else -- a QIcon, a layout, a
+    string, a number -- passes through untouched, because those are either
+    plain values Lua already understands or objects meant to be handed back
+    to the framework rather than inspected.
+
+    Unlike `to_lua`, a missing runtime is not an error here: widgets are
+    constructed directly from Python in the test suite, with no Lua in
+    sight, and a getter must keep working there.
+    """
+    if _runtime is None:
+        return value
+    if isinstance(value, (list, tuple, set, dict)):
+        return to_lua(value)
+    return value
+
+
 def to_py(value):
     """Lua -> Python. A table with keys 1..n becomes a list, else a dict."""
     if not _is_lua_table(value):

@@ -4,6 +4,8 @@ Uses __init_subclass__ rather than a metaclass: type(QWidget) is a Shiboken
 metaclass, and a naive `class Meta(type)` raises a metaclass conflict.
 """
 
+from limekit.kernel import affinity
+from limekit.kernel.bridge import convert
 from limekit.kernel.bridge.guard import guard
 from limekit.kernel.errors import BridgeError, RegistryError
 from limekit.kernel.registry import registry
@@ -103,10 +105,13 @@ def _install_prop(cls, prop):
 
     coerce, validate, label = prop.coerce, prop.validate, prop.name
 
-    def getter(self, _g=qt_get):
-        return _g(self)
+    def getter(self, _g=qt_get, _out=convert.outbound):
+        return _out(_g(self))
 
     def setter(self, value, _s=qt_set, _c=coerce, _v=validate, _n=label):
+        # Mutating a widget off the GUI thread is undefined behaviour in Qt.
+        # This is a bool test until a sys.Thread has actually been started.
+        affinity.require_gui_thread(_n, type(self).__name__)
         if _c is not None:
             value = _c(value)
         if _v is not None and not _v(value):

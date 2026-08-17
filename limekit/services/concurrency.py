@@ -14,6 +14,7 @@ here calls it properly instead of shadowing it with infinite recursion.
 from PySide6.QtCore import QObject, QThread
 from PySide6.QtCore import Signal as QtSignal
 
+from limekit.kernel import affinity
 from limekit.kernel.bridge.guard import guard
 from limekit.kernel.declarative import LimeObject
 from limekit.kernel.errors import BridgeError
@@ -50,6 +51,10 @@ class Thread(LimeObject, QThread):
             self._onThreadRun(self)
 
     def start(self):
+        # Arms the GUI-thread check on generated setters. Until some worker
+        # actually exists there is nothing to catch, so the check stays a
+        # single bool test -- see kernel/affinity.py.
+        affinity.note_worker_started()
         super().start()
         return self
 

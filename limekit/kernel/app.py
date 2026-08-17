@@ -7,6 +7,7 @@ the QApplication, so the framework can be imported by tests and tooling.
 import sys
 from pathlib import Path
 
+from limekit.kernel import affinity
 from limekit.kernel.bridge.guard import reset_error_sink, set_error_sink
 from limekit.kernel.bridge.runtime import LimeRuntime
 from limekit.kernel.errors import ProjectError
@@ -32,6 +33,11 @@ class LimekitApp:
             Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
         )
         self.qt_app = QApplication.instance() or QApplication(self.argv)
+
+        # boot() runs on the GUI thread, so this is the thread every widget
+        # will belong to. Recorded here so generated setters can catch a
+        # worker thread touching one -- see kernel/affinity.py.
+        affinity.set_gui_thread()
 
         from limekit.services import resources
         resources.set_project_root(self.project_path)
@@ -61,6 +67,7 @@ class LimekitApp:
 
     def shutdown(self):
         reset_error_sink()
+        affinity.reset()
         self.runtime = None
         self.qt_app = None
 
