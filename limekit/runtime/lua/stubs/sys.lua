@@ -4,14 +4,199 @@
 ---@class Expr
 local Expr = {}
 
+--- Arithmetic only. Never exposes builtins.eval to Lua.
+---@param expression any
+function Expr.evalExpression(expression) end
+
+---@class ProjectBuilder
+local ProjectBuilder = {}
+
+--- Creates a ProjectBuilder.
+---@param project_path any
+---@param options? any
+---@return ProjectBuilder
+function ProjectBuilder(project_path, options) end
+
+--- Starts the build.
+---@return ProjectBuilder
+function ProjectBuilder:build() end
+
+--- Every line the build has produced so far.
+---@return string[]
+function ProjectBuilder:getOutput() end
+
+--- Path to the built executable, once the build has finished.
+---@return string
+function ProjectBuilder:getOutputPath() end
+
+--- The project folder this builder was created for.
+---@return string
+function ProjectBuilder:getPath() end
+
+--- Whether the finished build succeeded.
+---@return boolean
+function ProjectBuilder:isSuccess() end
+
+--- Runs if the build fails with an error.
+---@param handler fun(message: string)
+---@return ProjectBuilder
+function ProjectBuilder:setOnBuildError(handler) end
+
+--- Runs when the build finishes, successfully or not.
+---@param handler fun(success: boolean, output_path: string)
+---@return ProjectBuilder
+function ProjectBuilder:setOnBuildFinished(handler) end
+
+--- Runs for each line the build writes. Use it to drive a console view.
+---@param handler fun(line: string)
+---@return ProjectBuilder
+function ProjectBuilder:setOnBuildOutput(handler) end
+
+--- Runs once the build has started.
+---@param handler fun()
+---@return ProjectBuilder
+function ProjectBuilder:setOnBuildStarted(handler) end
+
+--- Stops a build in progress.
+---@return ProjectBuilder
+function ProjectBuilder:stop() end
+
+---@class ProjectRunner
+local ProjectRunner = {}
+
+--- Creates a ProjectRunner.
+---@param project_path any
+---@return ProjectRunner
+function ProjectRunner(project_path) end
+
+--- The engine this project will run on: "1.0" or "2.0".
+---@return string
+function ProjectRunner:getApiVersion() end
+
+--- The project folder this runner was created for.
+---@return string
+function ProjectRunner:getPath() end
+
+--- Whether the project is currently running.
+---@return boolean
+function ProjectRunner:isRunning() end
+
+--- Runs when the project exits, however it exits.
+---@param handler fun()
+---@return ProjectRunner
+function ProjectRunner:setOnProcessFinished(handler) end
+
+--- Runs when the project writes to stdout or stderr.
+---@param handler fun(output: string)
+---@return ProjectRunner
+function ProjectRunner:setOnProcessReadyRead(handler) end
+
+--- Runs once the child process has started.
+---@param handler fun()
+---@return ProjectRunner
+function ProjectRunner:setOnProcessStarted(handler) end
+
+--- Stops the project.
+---@return ProjectRunner
+function ProjectRunner:stop() end
+
 ---@class Signal
 local Signal = {}
+
+--- Creates a Signal.
+---@return Signal
+function Signal() end
+
+--- Fires the signal -- safe to call across threads, unlike calling a handler directly.
+---@return Signal
+function Signal:relay() end
+
+---@param handler any
+---@return Signal
+function Signal:setOnSignal(handler) end
 
 ---@class System
 local System = {}
 
+---@param size any
+function System.bytesToReadableSize(size) end
+
+---@param name any
+function System.emoji(name) end
+
+--- Run a shell command and return (stdout, stderr, returncode). Bounded by a timeout so a hung child process cannot block the GUI thread forever -- 1.x's equivalent had no timeout at all.
+---@param cmd any
+function System.execute(cmd) end
+
+---@param code? any
+function System.exit(code) end
+
+---@param text any
+function System.fromBase64(text) end
+
+function System.getCPUCount() end
+
+function System.getClipboardText() end
+
+function System.getOSName() end
+
+function System.getOSVersion() end
+
+function System.getPlatformName() end
+
+function System.getProcessorName() end
+
+--- A named QStandardPaths location, e.g. 'documents', 'home'.
+---@param name any
+function System.getStandardPath(name) end
+
+---@param kind any
+---@param text any
+function System.makeHash(kind, text) end
+
+---@param items any
+function System.randomChoice(items) end
+
+---@param text any
+function System.setClipboardText(text) end
+
+---@param seconds any
+function System.sleep(seconds) end
+
+---@param text any
+---@param sep? any
+function System.splitString(text, sep) end
+
+---@param text any
+function System.toBase64(text) end
+
 ---@class Thread
 local Thread = {}
+
+--- Creates a Thread.
+---@return Thread
+function Thread() end
+
+function Thread:isRunning() end
+
+---@param handler any
+---@return Thread
+function Thread:setOnThreadRun(handler) end
+
+--- Pauses the calling thread for `seconds` -- QThread.sleep is a static method in Qt; exposed here as an instance method so Lua's `thread:sleep(2)` colon syntax works.
+---@param seconds any
+---@return Thread
+function Thread:sleep(seconds) end
+
+---@return Thread
+function Thread:start() end
+
+---@return Thread
+function Thread:stop() end
+
+---@param msecs? any
+---@return Thread
+function Thread:wait(msecs) end
 
 ---@class Timer
 local Timer = {}
@@ -43,8 +228,25 @@ function Timer:isSingleShot() end
 ---@return Timer
 function Timer:setOnTimeout(handler) end
 
+function Timer:isActive() end
+
+--- Fire `callback` once after `msec` milliseconds. The callback is guarded like every other Lua-attached handler -- 1.x's static `singleShot` connected the raw Lua function straight to `QTimer.singleShot`, so an error inside it would have escaped uncaught into the Qt event loop.
+---@param msec any
+---@param callback any
+function Timer.singleShot(msec, callback) end
+
+--- Qt native re-exposed so Lua's `timer:start()` colon syntax works. Accepts an optional one-shot interval override, matching `QTimer.start(msec)`'s overload, on top of 1.x's no-argument form.
+---@param msec? any
+---@return Timer
+function Timer:start(msec) end
+
+---@return Timer
+function Timer:stop() end
+
 local sys = {}
 sys.Expr = Expr
+sys.ProjectBuilder = ProjectBuilder
+sys.ProjectRunner = ProjectRunner
 sys.Signal = Signal
 sys.System = System
 sys.Thread = Thread

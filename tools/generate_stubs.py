@@ -9,8 +9,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
-from limekit.kernel import manifest                      # noqa: E402
-from limekit.kernel.registry import registry              # noqa: E402
+from limekit.kernel import introspect, manifest             # noqa: E402
+from limekit.kernel.registry import registry                # noqa: E402
 
 LUA_TYPES = {
     str: "string", int: "integer", float: "number", bool: "boolean",
@@ -21,10 +21,77 @@ def lua_type(python_type):
     return LUA_TYPES.get(python_type, "any")
 
 
+def prop_type(prop):
+    """The Lua type for a Prop, preferring an enum's actual options.
+
+    `Enum()` in kernel/coerce.py already records the valid strings on the
+    coercion as `.options`, and the generator used to throw them away and
+    emit `any`. Emitting the union instead means the editor can complete
+    `setOrientation("horizontal")` and flag a typo.
+    """
+    options = getattr(prop.coerce, "options", None)
+    if options:
+        return "|".join(f'"{o}"' for o in sorted(options))
+    return lua_type(prop.type)
+
+
+def _escape(text):
+    """One-line a docstring for a Lua `---` comment."""
+    return " ".join(text.split())
+
+
+def _doc_lines(text, fallback=""):
+    text = _escape(text) or fallback
+    return [f"--- {text}"] if text else []
+
+
+def render_params(info):
+    """Lua parameter list plus the `---@param` annotations for it."""
+    names, annotations = [], []
+    for pname, declared, has_default in info.params:
+        names.append(pname)
+        typename = declared or "any"
+        suffix = "?" if has_default else ""
+        annotations.append(f"---@param {pname}{suffix} {typename}")
+    if info.has_varargs:
+        names.append("...")
+        annotations.append("---@param ... any")
+    return ", ".join(names), annotations
+
+
+def render_method(class_name, info):
+    lines = _doc_lines(info.doc)
+    params, annotations = render_params(info)
+    lines.extend(annotations)
+
+    returns = info.returns
+    if returns == "self":
+        returns = class_name
+    if returns:
+        lines.append(f"---@return {returns}")
+
+    # Static methods are called with a dot (fs.FileSystem.readFile(path)),
+    # instance methods with a colon. The stub has to distinguish them or the
+    # language server prompts for the wrong call form.
+    separator = "." if info.is_static else ":"
+    lines.append(f"function {class_name}{separator}{info.name}({params}) end")
+    lines.append("")
+    return lines
+
+
 def render_class(name, cls):
     lines = [f"---@class {name}"]
     lines.append(f"local {name} = {{}}")
     lines.append("")
+
+    ctor = introspect.constructor(cls)
+    if ctor is not None:
+        params, annotations = render_params(ctor)
+        lines.extend(_doc_lines(ctor.doc, f"Creates a {name}."))
+        lines.extend(annotations)
+        lines.append(f"---@return {name}")
+        lines.append(f"function {name}({params}) end")
+        lines.append("")
 
     for prop in cls.__props__:
         getter, setter, alias = prop.accessor_names()
@@ -37,7 +104,7 @@ def render_class(name, cls):
         if not hasattr(cls, getter) or not hasattr(cls, setter):
             continue
 
-        typename = lua_type(prop.type)
+        typename = prop_type(prop)
         doc = prop.doc or f"the {prop.name} property"
 
         lines.append(f"--- Get {doc}.")
@@ -64,6 +131,11 @@ def render_class(name, cls):
         lines.append(f"---@return {name}")
         lines.append(f"function {name}:{event.setter_name()}(handler) end")
         lines.append("")
+
+    # Hand-written methods. Until this landed, a class whose whole API was
+    # hand-written (BarChart, CategoryAxis) rendered as an empty table.
+    for info in introspect.public_methods(cls):
+        lines.extend(render_method(name, info))
 
     return "\n".join(lines)
 

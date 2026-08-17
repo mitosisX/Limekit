@@ -4,6 +4,87 @@
 ---@class FileSystem
 local FileSystem = {}
 
+---@param path any
+---@param content any
+---@param encoding? any
+function FileSystem.appendFile(path, content, encoding) end
+
+---@param source any
+---@param destination any
+function FileSystem.copyFile(source, destination) end
+
+---@param path any
+function FileSystem.createFile(path) end
+
+---@param path any
+function FileSystem.createFolder(path) end
+
+---@param path any
+function FileSystem.deleteFile(path) end
+
+---@param path any
+function FileSystem.exists(path) end
+
+---@param text any
+---@param indent? any
+function FileSystem.formatJSON(text, indent) end
+
+---@param path any
+function FileSystem.getDirName(path) end
+
+---@param path any
+function FileSystem.getFileExt(path) end
+
+---@param path any
+function FileSystem.getFileName(path) end
+
+---@param path any
+function FileSystem.getFileSize(path) end
+
+---@param path any
+function FileSystem.isFileEmpty(path) end
+
+---@param path any
+function FileSystem.isFolder(path) end
+
+---@param ... any
+function FileSystem.joinPaths(...) end
+
+---@param path any
+function FileSystem.listFolder(path) end
+
+---@param path any
+function FileSystem.normalPath(path) end
+
+---@param path any
+---@param encoding? any
+function FileSystem.readFile(path, encoding) end
+
+---@param path any
+---@param encoding? any
+function FileSystem.readFileLines(path, encoding) end
+
+---@param path any
+function FileSystem.readJSON(path) end
+
+---@param path any
+---@param new_path any
+function FileSystem.renameFile(path, new_path) end
+
+---@param path any
+---@param show_hidden? any
+function FileSystem.walkDir(path, show_hidden) end
+
+---@param path any
+---@param content any
+---@param encoding? any
+function FileSystem.writeFile(path, content, encoding) end
+
+---@param path any
+---@param data any
+---@param indent? any
+function FileSystem.writeJSON(path, data, indent) end
+
 local fs = {}
 fs.FileSystem = FileSystem
 return fs

@@ -4,6 +4,12 @@
 ---@class AreaChart
 local AreaChart = {}
 
+--- Creates a AreaChart.
+---@param upper any
+---@param lower? any
+---@return AreaChart
+function AreaChart(upper, lower) end
+
 --- Get the name property.
 ---@return string
 function AreaChart:getName() end
@@ -16,8 +22,26 @@ function AreaChart:setName(value) end
 ---@class BarChart
 local BarChart = {}
 
+--- Creates a BarChart.
+---@return BarChart
+function BarChart() end
+
+--- Qt native re-exposed so it chains like every builder method.
+---@param barset any
+---@return BarChart
+function BarChart:append(barset) end
+
+---@param axis any
+---@return BarChart
+function BarChart:attachAxis(axis) end
+
 ---@class BarSet
 local BarSet = {}
+
+--- Creates a BarSet.
+---@param title? any
+---@return BarSet
+function BarSet(title) end
 
 --- Get the label property.
 ---@return string
@@ -28,11 +52,31 @@ function BarSet:getLabel() end
 ---@return BarSet
 function BarSet:setLabel(value) end
 
+--- Accepts a Lua table or Python sequence of numbers.
+---@param values any
+---@return BarSet
+function BarSet:append(values) end
+
 ---@class CategoryAxis
 local CategoryAxis = {}
 
+--- Creates a CategoryAxis.
+---@param categories? any
+---@return CategoryAxis
+function CategoryAxis(categories) end
+
+--- Accepts a Lua table or Python sequence of category labels.
+---@param categories any
+---@return CategoryAxis
+function CategoryAxis:append(categories) end
+
 ---@class Chart
 local Chart = {}
+
+--- Creates a Chart.
+---@param options? any
+---@return Chart
+function Chart(options) end
 
 --- Get the title property.
 ---@return string
@@ -43,8 +87,35 @@ function Chart:getTitle() end
 ---@return Chart
 function Chart:setTitle(value) end
 
+---@param axis any
+---@param position? any
+---@return Chart
+function Chart:addAxis(axis, position) end
+
+--- Qt native re-exposed so it chains like every builder method.
+---@param series any
+---@return Chart
+function Chart:addSeries(series) end
+
+---@param animation any
+---@return Chart
+function Chart:setAnimation(animation) end
+
+---@param position? any
+---@return Chart
+function Chart:setLegendAlignment(position) end
+
+---@param visible any
+---@return Chart
+function Chart:setLegendVisibility(visible) end
+
 ---@class ChartCanvas
 local ChartCanvas = {}
+
+--- Creates a ChartCanvas.
+---@param chart? any
+---@return ChartCanvas
+function ChartCanvas(chart) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -99,8 +170,55 @@ function ChartCanvas:getChart() end
 ---@return ChartCanvas
 function ChartCanvas:setChart(value) end
 
+function ChartCanvas:close() end
+
+function ChartCanvas:getThemes() end
+
+---@return ChartCanvas
+function ChartCanvas:hide() end
+
+---@param colour any
+---@return ChartCanvas
+function ChartCanvas:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return ChartCanvas
+function ChartCanvas:setFixedSize(width, height) end
+
+---@return ChartCanvas
+function ChartCanvas:setFocus() end
+
+---@param x any
+---@param y any
+---@return ChartCanvas
+function ChartCanvas:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return ChartCanvas
+function ChartCanvas:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return ChartCanvas
+function ChartCanvas:setSize(width, height) end
+
+---@param theme any
+---@return ChartCanvas
+function ChartCanvas:setTheme(theme) end
+
+---@return ChartCanvas
+function ChartCanvas:show() end
+
 ---@class ChartView
 local ChartView = {}
+
+--- Creates a ChartView.
+---@param chart? any
+---@return ChartView
+function ChartView(chart) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -155,8 +273,54 @@ function ChartView:getChart() end
 ---@return ChartView
 function ChartView:setChart(value) end
 
+function ChartView:close() end
+
+function ChartView:getThemes() end
+
+---@return ChartView
+function ChartView:hide() end
+
+---@param colour any
+---@return ChartView
+function ChartView:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return ChartView
+function ChartView:setFixedSize(width, height) end
+
+---@return ChartView
+function ChartView:setFocus() end
+
+---@param x any
+---@param y any
+---@return ChartView
+function ChartView:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return ChartView
+function ChartView:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return ChartView
+function ChartView:setSize(width, height) end
+
+---@param theme any
+---@return ChartView
+function ChartView:setTheme(theme) end
+
+---@return ChartView
+function ChartView:show() end
+
 ---@class LineChart
 local LineChart = {}
+
+--- Creates a LineChart.
+---@return LineChart
+function LineChart() end
 
 --- Get the name property.
 ---@return string
@@ -167,8 +331,23 @@ function LineChart:getName() end
 ---@return LineChart
 function LineChart:setName(value) end
 
+--- Qt native re-exposed so it chains like every builder method.
+---@param x any
+---@param y any
+---@return LineChart
+function LineChart:append(x, y) end
+
+--- Accepts a Lua table or Python sequence of {x, y} pairs.
+---@param points any
+---@return LineChart
+function LineChart:setData(points) end
+
 ---@class ValueAxis
 local ValueAxis = {}
+
+--- Creates a ValueAxis.
+---@return ValueAxis
+function ValueAxis() end
 
 --- Get the titleText property.
 ---@return string
@@ -178,6 +357,12 @@ function ValueAxis:getTitleText() end
 ---@param value string
 ---@return ValueAxis
 function ValueAxis:setTitleText(value) end
+
+--- Qt native re-exposed so it chains like every builder method.
+---@param start any
+---@param end any
+---@return ValueAxis
+function ValueAxis:setRange(start, end) end
 
 local chart = {}
 chart.AreaChart = AreaChart

@@ -28,6 +28,7 @@ MODULES = (
     "limekit.services.dialogs",
     "limekit.services.dropshadow",
     "limekit.services.fs",
+    "limekit.services.projects",
     "limekit.services.resources",
     "limekit.services.sysnotification",
     "limekit.services.system",

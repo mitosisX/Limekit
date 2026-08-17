@@ -4,6 +4,68 @@
 ---@class Sqlite3
 local Sqlite3 = {}
 
+--- Creates a Sqlite3.
+---@param path? any
+---@return Sqlite3
+function Sqlite3(path) end
+
+---@param target any
+---@return Sqlite3
+function Sqlite3:backup(target) end
+
+---@return Sqlite3
+function Sqlite3:beginTransaction() end
+
+---@return Sqlite3
+function Sqlite3:close() end
+
+---@return Sqlite3
+function Sqlite3:commit() end
+
+---@param table_name any
+---@param columns any
+---@param if_not_exists? any
+---@return Sqlite3
+function Sqlite3:createTable(table_name, columns, if_not_exists) end
+
+---@param query any
+---@param params? any
+---@return Sqlite3
+function Sqlite3:execute(query, params) end
+
+---@param query any
+---@param data any
+---@return Sqlite3
+function Sqlite3:executeMany(query, data) end
+
+---@param as_dict? any
+function Sqlite3:fetchAll(as_dict) end
+
+---@param as_dict? any
+function Sqlite3:fetchOne(as_dict) end
+
+function Sqlite3:fetchTables() end
+
+---@param table_name any
+function Sqlite3:getTableInfo(table_name) end
+
+---@param table_name any
+---@param data any
+---@param replace? any
+function Sqlite3:insert(table_name, data, replace) end
+
+---@return Sqlite3
+function Sqlite3:rollback() end
+
+--- Alias for commit().
+function Sqlite3:save() end
+
+---@param table_name any
+function Sqlite3:tableExists(table_name) end
+
+---@return Sqlite3
+function Sqlite3:vacuum() end
+
 local db = {}
 db.Sqlite3 = Sqlite3
 return db

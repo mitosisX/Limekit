@@ -4,6 +4,10 @@
 ---@class Accordion
 local Accordion = {}
 
+--- Creates a Accordion.
+---@return Accordion
+function Accordion() end
+
 --- Get the enabled property.
 ---@return boolean
 function Accordion:getEnabled() end
@@ -57,8 +61,66 @@ function Accordion:getCurrentIndex() end
 ---@return Accordion
 function Accordion:setCurrentIndex(value) end
 
+---@param child any
+---@param label any
+---@param icon? any
+---@return Accordion
+function Accordion:addChild(child, label, icon) end
+
+---@param layout any
+---@param label any
+---@param icon? any
+---@return Accordion
+function Accordion:addLayout(layout, label, icon) end
+
+function Accordion:close() end
+
+function Accordion:getCount() end
+
+---@return Accordion
+function Accordion:hide() end
+
+---@param colour any
+---@return Accordion
+function Accordion:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return Accordion
+function Accordion:setFixedSize(width, height) end
+
+---@return Accordion
+function Accordion:setFocus() end
+
+---@param x any
+---@param y any
+---@return Accordion
+function Accordion:setLocation(x, y) end
+
+---@param handler any
+---@return Accordion
+function Accordion:setOnCurrentChange(handler) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Accordion
+function Accordion:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Accordion
+function Accordion:setSize(width, height) end
+
+---@return Accordion
+function Accordion:show() end
+
 ---@class AdvancedSlider
 local AdvancedSlider = {}
+
+--- Creates a AdvancedSlider.
+---@return AdvancedSlider
+function AdvancedSlider() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -109,11 +171,193 @@ function AdvancedSlider:setStyleSheet(value) end
 ---@return AdvancedSlider
 function AdvancedSlider:setOnValueChanged(handler) end
 
+function AdvancedSlider:close() end
+
+function AdvancedSlider:getAccentColor() end
+
+function AdvancedSlider:getBackgroundColor() end
+
+function AdvancedSlider:getBorderColor() end
+
+function AdvancedSlider:getBorderRadius() end
+
+function AdvancedSlider:getDecimalSeparator() end
+
+function AdvancedSlider:getDecimals() end
+
+function AdvancedSlider:getFont() end
+
+function AdvancedSlider:getMaximum() end
+
+function AdvancedSlider:getMinimum() end
+
+function AdvancedSlider:getPageStep() end
+
+function AdvancedSlider:getPrefix() end
+
+function AdvancedSlider:getRange() end
+
+function AdvancedSlider:getSingleStep() end
+
+function AdvancedSlider:getSuffix() end
+
+function AdvancedSlider:getTextColor() end
+
+function AdvancedSlider:getThousandsSeparator() end
+
+function AdvancedSlider:getValue() end
+
+function AdvancedSlider:getValueFormatted() end
+
+function AdvancedSlider:getValuePosition() end
+
+---@return AdvancedSlider
+function AdvancedSlider:hide() end
+
+function AdvancedSlider:isFloat() end
+
+function AdvancedSlider:isKeyboardInputEnabled() end
+
+function AdvancedSlider:isMouseWheelInputEnabled() end
+
+function AdvancedSlider:isShowingValue() end
+
+---@param colour any
+---@return AdvancedSlider
+function AdvancedSlider:setAccentColor(colour) end
+
+--- Overrides LimeWidget.setBackgroundColor: this widget paints its own background rather than relying on a stylesheet.
+---@param colour any
+---@return AdvancedSlider
+function AdvancedSlider:setBackgroundColor(colour) end
+
+---@param colour any
+---@return AdvancedSlider
+function AdvancedSlider:setBorderColor(colour) end
+
+---@param radius any
+---@return AdvancedSlider
+function AdvancedSlider:setBorderRadius(radius) end
+
+---@param separator any
+---@return AdvancedSlider
+function AdvancedSlider:setDecimalSeparator(separator) end
+
+---@param decimals any
+---@return AdvancedSlider
+function AdvancedSlider:setDecimals(decimals) end
+
+---@param width any
+---@param height any
+---@return AdvancedSlider
+function AdvancedSlider:setFixedSize(width, height) end
+
+---@param use_float any
+---@return AdvancedSlider
+function AdvancedSlider:setFloat(use_float) end
+
+---@return AdvancedSlider
+function AdvancedSlider:setFocus() end
+
+--- Overrides QWidget.setFont(QFont) -- kept QFont-typed, unlike FontComboBox.setFont, matching the 1.x surface exactly.
+---@param font any
+---@return AdvancedSlider
+function AdvancedSlider:setFont(font) end
+
+---@param enabled any
+---@return AdvancedSlider
+function AdvancedSlider:setKeyboardInputEnabled(enabled) end
+
+---@param x any
+---@param y any
+---@return AdvancedSlider
+function AdvancedSlider:setLocation(x, y) end
+
+---@param maximum any
+---@return AdvancedSlider
+function AdvancedSlider:setMaximum(maximum) end
+
+---@param minimum any
+---@return AdvancedSlider
+function AdvancedSlider:setMinimum(minimum) end
+
+---@param enabled any
+---@return AdvancedSlider
+function AdvancedSlider:setMouseWheelInputEnabled(enabled) end
+
+---@param page_step any
+---@return AdvancedSlider
+function AdvancedSlider:setPageStep(page_step) end
+
+---@param prefix any
+---@return AdvancedSlider
+function AdvancedSlider:setPrefix(prefix) end
+
+---@param minimum any
+---@param maximum any
+---@return AdvancedSlider
+function AdvancedSlider:setRange(minimum, maximum) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return AdvancedSlider
+function AdvancedSlider:setResizeRule(horizontal, vertical) end
+
+---@param single_step any
+---@return AdvancedSlider
+function AdvancedSlider:setSingleStep(single_step) end
+
+---@param width any
+---@param height any
+---@return AdvancedSlider
+function AdvancedSlider:setSize(width, height) end
+
+---@param suffix any
+---@return AdvancedSlider
+function AdvancedSlider:setSuffix(suffix) end
+
+---@param colour any
+---@return AdvancedSlider
+function AdvancedSlider:setTextColor(colour) end
+
+---@param separator any
+---@return AdvancedSlider
+function AdvancedSlider:setThousandsSeparator(separator) end
+
+---@param value any
+---@return AdvancedSlider
+function AdvancedSlider:setValue(value) end
+
+---@return AdvancedSlider
+function AdvancedSlider:show() end
+
+---@param on any
+---@return AdvancedSlider
+function AdvancedSlider:showValue(on) end
+
 ---@class AutoComplete
 local AutoComplete = {}
 
+--- Creates a AutoComplete.
+---@param data? any
+---@return AutoComplete
+function AutoComplete(data) end
+
+function AutoComplete:isCaseSensitive() end
+
+--- Hand-written rather than a `Prop`: Qt's own getter/setter pair here is asymmetric -- `caseSensitivity()` returns a `Qt.CaseSensitivity` enum member, not the plain bool Lua callers pass to `setCaseSensitivity`. Converting both ways explicitly keeps the Lua-facing type a real boolean in both directions.
+---@param sensitive any
+---@return AutoComplete
+function AutoComplete:setCaseSensitive(sensitive) end
+
 ---@class Button
 local Button = {}
+
+--- Creates a Button.
+---@param text? any
+---@return Button
+function Button(text) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -221,6 +465,49 @@ function Button:isChecked() end
 ---@return Button
 function Button:setOnClick(handler) end
 
+--- Qt native re-exposed so Lua's `button:click()` colon syntax works. lupa returns Python-defined methods unbound but Qt natives bound, so without this wrapper `b:click()` raises "takes no arguments (1 given)" while `b:getText()` is fine -- two calling conventions in one API.
+---@return Button
+function Button:click() end
+
+function Button:close() end
+
+---@return Button
+function Button:hide() end
+
+---@param colour any
+---@return Button
+function Button:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return Button
+function Button:setFixedSize(width, height) end
+
+---@return Button
+function Button:setFocus() end
+
+---@param x any
+---@param y any
+---@return Button
+function Button:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Button
+function Button:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Button
+function Button:setSize(width, height) end
+
+---@return Button
+function Button:show() end
+
+---@return Button
+function Button:toggle() end
+
 ---@class ButtonGroup
 local ButtonGroup = {}
 
@@ -242,8 +529,21 @@ function ButtonGroup:isExclusive() end
 ---@return ButtonGroup
 function ButtonGroup:setOnClick(handler) end
 
+--- Qt native re-exposed so Lua's `group:addButton(b)` colon syntax works.
+---@param button any
+---@return ButtonGroup
+function ButtonGroup:addButton(button) end
+
+---@param button any
+---@return ButtonGroup
+function ButtonGroup:removeButton(button) end
+
 ---@class Calendar
 local Calendar = {}
+
+--- Creates a Calendar.
+---@return Calendar
+function Calendar() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -289,8 +589,68 @@ function Calendar:getStyleSheet() end
 ---@return Calendar
 function Calendar:setStyleSheet(value) end
 
+function Calendar:close() end
+
+function Calendar:getDate() end
+
+---@return Calendar
+function Calendar:hide() end
+
+function Calendar:isGridVisible() end
+
+---@param colour any
+---@return Calendar
+function Calendar:setBackgroundColor(colour) end
+
+---@param year any
+---@param month any
+---@param day any
+---@return Calendar
+function Calendar:setDate(year, month, day) end
+
+---@param width any
+---@param height any
+---@return Calendar
+function Calendar:setFixedSize(width, height) end
+
+---@return Calendar
+function Calendar:setFocus() end
+
+--- Qt native re-exposed so Lua's `:setGridVisible()` colon syntax works.
+---@param visible any
+---@return Calendar
+function Calendar:setGridVisible(visible) end
+
+---@param x any
+---@param y any
+---@return Calendar
+function Calendar:setLocation(x, y) end
+
+---@param handler any
+---@return Calendar
+function Calendar:setOnDatePicked(handler) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Calendar
+function Calendar:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Calendar
+function Calendar:setSize(width, height) end
+
+---@return Calendar
+function Calendar:show() end
+
 ---@class CheckBox
 local CheckBox = {}
+
+--- Creates a CheckBox.
+---@param text? any
+---@return CheckBox
+function CheckBox(text) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -363,8 +723,49 @@ function CheckBox:isChecked() end
 ---@return CheckBox
 function CheckBox:setOnCheck(handler) end
 
+function CheckBox:close() end
+
+---@return CheckBox
+function CheckBox:hide() end
+
+---@param colour any
+---@return CheckBox
+function CheckBox:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return CheckBox
+function CheckBox:setFixedSize(width, height) end
+
+---@return CheckBox
+function CheckBox:setFocus() end
+
+---@param x any
+---@param y any
+---@return CheckBox
+function CheckBox:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return CheckBox
+function CheckBox:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return CheckBox
+function CheckBox:setSize(width, height) end
+
+---@return CheckBox
+function CheckBox:show() end
+
 ---@class ComboBox
 local ComboBox = {}
+
+--- Creates a ComboBox.
+---@param items? any
+---@return ComboBox
+function ComboBox(items) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -428,8 +829,62 @@ function ComboBox:isEditable() end
 ---@return ComboBox
 function ComboBox:setOnItemSelect(handler) end
 
+--- Qt native re-exposed so Lua's `box:clear()` colon syntax works.
+---@return ComboBox
+function ComboBox:clear() end
+
+function ComboBox:close() end
+
+---@param index any
+function ComboBox:getItemAt(index) end
+
+function ComboBox:getText() end
+
+---@return ComboBox
+function ComboBox:hide() end
+
+---@param colour any
+---@return ComboBox
+function ComboBox:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return ComboBox
+function ComboBox:setFixedSize(width, height) end
+
+---@return ComboBox
+function ComboBox:setFocus() end
+
+---@param items any
+---@return ComboBox
+function ComboBox:setItems(items) end
+
+---@param x any
+---@param y any
+---@return ComboBox
+function ComboBox:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return ComboBox
+function ComboBox:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return ComboBox
+function ComboBox:setSize(width, height) end
+
+---@return ComboBox
+function ComboBox:show() end
+
 ---@class CommandButton
 local CommandButton = {}
+
+--- Creates a CommandButton.
+---@param text? any
+---@return CommandButton
+function CommandButton(text) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -507,8 +962,54 @@ function CommandButton:setIcon(value) end
 ---@return CommandButton
 function CommandButton:setOnClick(handler) end
 
+function CommandButton:close() end
+
+---@return CommandButton
+function CommandButton:hide() end
+
+---@param colour any
+---@return CommandButton
+function CommandButton:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return CommandButton
+function CommandButton:setFixedSize(width, height) end
+
+---@return CommandButton
+function CommandButton:setFocus() end
+
+---@param width any
+---@param height any
+---@return CommandButton
+function CommandButton:setIconSize(width, height) end
+
+---@param x any
+---@param y any
+---@return CommandButton
+function CommandButton:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return CommandButton
+function CommandButton:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return CommandButton
+function CommandButton:setSize(width, height) end
+
+---@return CommandButton
+function CommandButton:show() end
+
 ---@class Container
 local Container = {}
+
+--- Creates a Container.
+---@param parent? any
+---@return Container
+function Container(parent) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -563,8 +1064,52 @@ function Container:getLayout() end
 ---@return Container
 function Container:setLayout(value) end
 
+function Container:close() end
+
+---@return Container
+function Container:hide() end
+
+---@param colour any
+---@return Container
+function Container:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return Container
+function Container:setFixedSize(width, height) end
+
+---@return Container
+function Container:setFocus() end
+
+---@param x any
+---@param y any
+---@return Container
+function Container:setLocation(x, y) end
+
+---@param handler any
+---@return Container
+function Container:setOnKeyPress(handler) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Container
+function Container:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Container
+function Container:setSize(width, height) end
+
+---@return Container
+function Container:show() end
+
 ---@class DatePicker
 local DatePicker = {}
+
+--- Creates a DatePicker.
+---@return DatePicker
+function DatePicker() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -610,11 +1155,151 @@ function DatePicker:getStyleSheet() end
 ---@return DatePicker
 function DatePicker:setStyleSheet(value) end
 
+function DatePicker:close() end
+
+function DatePicker:getDate() end
+
+---@return DatePicker
+function DatePicker:hide() end
+
+---@param colour any
+---@return DatePicker
+function DatePicker:setBackgroundColor(colour) end
+
+--- 1.x defects not reproduced: `QDateTime(year, month, day, hour, minutes)` -- a 5-int-argument overload PySide's QDateTime does not have -- raised a raw TypeError on every call. Even fixed to build a proper QDateTime and call setDateTime() with it, PySide6's QDateEdit silently rolls the displayed date back a day on some datetime/locale combinations (verified against this Qt build). QDateEdit only ever displays a date, never a time, so the `hour`/`minutes` 1.x accepted were never shown anyway; going through the real Qt native `setDate(QDate)` sidesteps the QDateTime round-trip bug entirely.
+---@param year any
+---@param month any
+---@param day any
+---@return DatePicker
+function DatePicker:setDate(year, month, day) end
+
+---@param width any
+---@param height any
+---@return DatePicker
+function DatePicker:setFixedSize(width, height) end
+
+---@return DatePicker
+function DatePicker:setFocus() end
+
+---@param x any
+---@param y any
+---@return DatePicker
+function DatePicker:setLocation(x, y) end
+
+---@param handler any
+---@return DatePicker
+function DatePicker:setOnDatePick(handler) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return DatePicker
+function DatePicker:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return DatePicker
+function DatePicker:setSize(width, height) end
+
+---@return DatePicker
+function DatePicker:show() end
+
 ---@class Dialogs
 local Dialogs = {}
 
+---@param parent any
+---@param title any
+---@param message any
+function Dialogs.alert(parent, title, message) end
+
+---@param parent any
+---@param title any
+---@param label any
+---@param items any
+---@param index? any
+function Dialogs.comboBoxInput(parent, title, label, items, index) end
+
+---@param parent any
+---@param title any
+---@param message any
+function Dialogs.critical(parent, title, message) end
+
+---@param parent any
+---@param title any
+---@param label any
+---@param value? any
+---@param min_value? any
+---@param max_value? any
+---@param decimals? any
+function Dialogs.doubleInput(parent, title, label, value, min_value, max_value, decimals) end
+
+---@param parent any
+---@param title any
+---@param message any
+function Dialogs.info(parent, title, message) end
+
+---@param parent any
+---@param title any
+---@param label any
+---@param value? any
+---@param min_value? any
+---@param max_value? any
+---@param step? any
+function Dialogs.integerInput(parent, title, label, value, min_value, max_value, step) end
+
+---@param parent any
+---@param title any
+---@param label any
+---@param text? any
+function Dialogs.multilineInput(parent, title, label, text) end
+
+---@param parent any
+---@param title? any
+---@param directory? any
+---@param filters? any
+function Dialogs.openFile(parent, title, directory, filters) end
+
+---@param parent? any
+---@param initial? any
+function Dialogs.pickColour(parent, initial) end
+
+---@param parent any
+---@param title? any
+---@param directory? any
+function Dialogs.pickFolder(parent, title, directory) end
+
+---@param parent? any
+function Dialogs.pickFont(parent) end
+
+---@param parent any
+---@param title any
+---@param message any
+function Dialogs.question(parent, title, message) end
+
+---@param parent any
+---@param title? any
+---@param directory? any
+---@param filters? any
+function Dialogs.saveFile(parent, title, directory, filters) end
+
+---@param parent any
+---@param title any
+---@param label any
+---@param text? any
+function Dialogs.textInput(parent, title, label, text) end
+
+---@param parent any
+---@param title any
+---@param message any
+function Dialogs.warning(parent, title, message) end
+
 ---@class Dock
 local Dock = {}
+
+--- Creates a Dock.
+---@param title? any
+---@return Dock
+function Dock(title) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -701,8 +1386,75 @@ function Dock:setOnLocationChange(handler) end
 ---@return Dock
 function Dock:setOnVisibilityChange(handler) end
 
+function Dock:close() end
+
+function Dock:getChild() end
+
+function Dock:getLayout() end
+
+---@return Dock
+function Dock:hide() end
+
+--- Combine one or more area names, e.g. ("left", "right").
+---@param ... any
+---@return Dock
+function Dock:setAllowedAreas(...) end
+
+---@param colour any
+---@return Dock
+function Dock:setBackgroundColor(colour) end
+
+---@param child any
+---@return Dock
+function Dock:setChild(child) end
+
+--- Combine one or more of "floatable", "movable", "closable". Called with no arguments, the dock gets no features at all -- the same "none disables everything" behaviour 1.x's setProperties had, just without needing a Lua table wrapper to express it.
+---@param ... any
+---@return Dock
+function Dock:setFeatures(...) end
+
+---@param width any
+---@param height any
+---@return Dock
+function Dock:setFixedSize(width, height) end
+
+---@return Dock
+function Dock:setFocus() end
+
+---@param layout any
+---@return Dock
+function Dock:setLayout(layout) end
+
+---@param x any
+---@param y any
+---@return Dock
+function Dock:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Dock
+function Dock:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Dock
+function Dock:setSize(width, height) end
+
+---@param child any
+---@return Dock
+function Dock:setTitleBarChild(child) end
+
+---@return Dock
+function Dock:show() end
+
 ---@class Dockable
 local Dockable = {}
+
+--- Creates a Dockable.
+---@param title? any
+---@return Dockable
+function Dockable(title) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -789,6 +1541,68 @@ function Dockable:setOnLocationChange(handler) end
 ---@return Dockable
 function Dockable:setOnVisibilityChange(handler) end
 
+function Dockable:close() end
+
+function Dockable:getChild() end
+
+function Dockable:getLayout() end
+
+---@return Dockable
+function Dockable:hide() end
+
+--- Combine one or more area names, e.g. ("left", "right").
+---@param ... any
+---@return Dockable
+function Dockable:setAllowedAreas(...) end
+
+---@param colour any
+---@return Dockable
+function Dockable:setBackgroundColor(colour) end
+
+---@param child any
+---@return Dockable
+function Dockable:setChild(child) end
+
+--- Combine one or more of "floatable", "movable", "closable". Called with no arguments, the dock gets no features at all -- the same "none disables everything" behaviour 1.x's setProperties had, just without needing a Lua table wrapper to express it.
+---@param ... any
+---@return Dockable
+function Dockable:setFeatures(...) end
+
+---@param width any
+---@param height any
+---@return Dockable
+function Dockable:setFixedSize(width, height) end
+
+---@return Dockable
+function Dockable:setFocus() end
+
+---@param layout any
+---@return Dockable
+function Dockable:setLayout(layout) end
+
+---@param x any
+---@param y any
+---@return Dockable
+function Dockable:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Dockable
+function Dockable:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Dockable
+function Dockable:setSize(width, height) end
+
+---@param child any
+---@return Dockable
+function Dockable:setTitleBarChild(child) end
+
+---@return Dockable
+function Dockable:show() end
+
 ---@class DoubleSpinner
 local DoubleSpinner = {}
 
@@ -868,8 +1682,54 @@ function DoubleSpinner:setSuffix(value) end
 ---@return DoubleSpinner
 function DoubleSpinner:setOnValueChange(handler) end
 
+function DoubleSpinner:close() end
+
+---@return DoubleSpinner
+function DoubleSpinner:hide() end
+
+---@param colour any
+---@return DoubleSpinner
+function DoubleSpinner:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return DoubleSpinner
+function DoubleSpinner:setFixedSize(width, height) end
+
+---@return DoubleSpinner
+function DoubleSpinner:setFocus() end
+
+---@param x any
+---@param y any
+---@return DoubleSpinner
+function DoubleSpinner:setLocation(x, y) end
+
+---@param start any
+---@param end any
+---@return DoubleSpinner
+function DoubleSpinner:setRange(start, end) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return DoubleSpinner
+function DoubleSpinner:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return DoubleSpinner
+function DoubleSpinner:setSize(width, height) end
+
+---@return DoubleSpinner
+function DoubleSpinner:show() end
+
 ---@class DropMenu
 local DropMenu = {}
+
+--- Creates a DropMenu.
+---@param title? any
+---@return DropMenu
+function DropMenu(title) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -938,8 +1798,61 @@ function DropMenu:setIcon(value) end
 ---@return DropMenu
 function DropMenu:setOnClick(handler) end
 
+---@param menu any
+---@return DropMenu
+function DropMenu:addMenu(menu) end
+
+--- Qt native (`addAction`) re-exposed so it chains like every other Limekit builder method.
+---@param item any
+---@return DropMenu
+function DropMenu:addMenuItem(item) end
+
+---@return DropMenu
+function DropMenu:addSeparator() end
+
+function DropMenu:close() end
+
+---@return DropMenu
+function DropMenu:hide() end
+
+---@param colour any
+---@return DropMenu
+function DropMenu:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return DropMenu
+function DropMenu:setFixedSize(width, height) end
+
+---@return DropMenu
+function DropMenu:setFocus() end
+
+---@param x any
+---@param y any
+---@return DropMenu
+function DropMenu:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return DropMenu
+function DropMenu:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return DropMenu
+function DropMenu:setSize(width, height) end
+
+---@return DropMenu
+function DropMenu:show() end
+
 ---@class DropShadow
 local DropShadow = {}
+
+--- Creates a DropShadow.
+---@param widget? any
+---@return DropShadow
+function DropShadow(widget) end
 
 --- Get the shadow's blur radius, in pixels.
 ---@return number
@@ -977,8 +1890,22 @@ function DropShadow:getOffsetY() end
 ---@return DropShadow
 function DropShadow:setOffsetY(value) end
 
+--- Attach this effect to `widget`. Qt's `setGraphicsEffect` lives on the widget, not the effect, so 1.x's constructor-only attachment becomes an explicit, repeatable call -- a shadow can be built once and (re)applied to a different widget later.
+---@param widget any
+---@return DropShadow
+function DropShadow:applyTo(widget) end
+
+---@param x any
+---@param y any
+---@return DropShadow
+function DropShadow:setOffset(x, y) end
+
 ---@class FontComboBox
 local FontComboBox = {}
+
+--- Creates a FontComboBox.
+---@return FontComboBox
+function FontComboBox() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -1033,8 +1960,80 @@ function FontComboBox:getCurrentFont() end
 ---@return FontComboBox
 function FontComboBox:setCurrentFont(value) end
 
+---@param icon any
+---@param text any
+---@return FontComboBox
+function FontComboBox:addImageItem(icon, text) end
+
+--- Qt native re-exposed so it chains like every builder method.
+---@param text any
+---@return FontComboBox
+function FontComboBox:addItem(text) end
+
+---@param items any
+---@return FontComboBox
+function FontComboBox:addItems(items) end
+
+function FontComboBox:close() end
+
+function FontComboBox:getCurrentIndex() end
+
+function FontComboBox:getText() end
+
+---@return FontComboBox
+function FontComboBox:hide() end
+
+---@param colour any
+---@return FontComboBox
+function FontComboBox:setBackgroundColor(colour) end
+
+---@param index any
+---@return FontComboBox
+function FontComboBox:setCurrentIndex(index) end
+
+---@param width any
+---@param height any
+---@return FontComboBox
+function FontComboBox:setFixedSize(width, height) end
+
+---@return FontComboBox
+function FontComboBox:setFocus() end
+
+--- Overrides QWidget.setFont(QFont) with a string-accepting version, e.g. `combo:setFont("Arial,10,-1,5,50,0,0,0,0,0")`.
+---@param font_string any
+---@return FontComboBox
+function FontComboBox:setFont(font_string) end
+
+---@param x any
+---@param y any
+---@return FontComboBox
+function FontComboBox:setLocation(x, y) end
+
+---@param handler any
+---@return FontComboBox
+function FontComboBox:setOnItemSelect(handler) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return FontComboBox
+function FontComboBox:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return FontComboBox
+function FontComboBox:setSize(width, height) end
+
+---@return FontComboBox
+function FontComboBox:show() end
+
 ---@class FormLayout
 local FormLayout = {}
+
+--- Creates a FormLayout.
+---@param parent? any
+---@return FormLayout
+function FormLayout(parent) end
 
 --- Get the spacing property.
 ---@return integer
@@ -1045,8 +2044,54 @@ function FormLayout:getSpacing() end
 ---@return FormLayout
 function FormLayout:setSpacing(value) end
 
+--- `addChild("Name", field)` for a labelled row, or `addChild(widget)` (title is actually the widget) for a full-width unlabelled one - mirrors QFormLayout.addRow's own two call shapes.
+---@param title any
+---@param child? any
+---@return FormLayout
+function FormLayout:addChild(title, child) end
+
+---@param title any
+---@param layout any
+---@return FormLayout
+function FormLayout:addLayout(title, layout) end
+
+--- Remove and delete every item in the layout.
+---@return FormLayout
+function FormLayout:clear() end
+
+--- 1-indexed, like every Limekit collection accessor.
+---@param index any
+function FormLayout:getChildAt(index) end
+
+function FormLayout:getCount() end
+
+---@param index any
+function FormLayout:getLayoutAt(index) end
+
+--- 1-indexed, like every other Limekit collection accessor.
+---@param index any
+function FormLayout:getRowAt(index) end
+
+--- Combine one or more alignment names, e.g. ("center", "top").
+---@param ... any
+---@return FormLayout
+function FormLayout:setContentAlignment(...) end
+
+--- Also acts as the layout's padding.
+---@param left any
+---@param top any
+---@param right any
+---@param bottom any
+---@return FormLayout
+function FormLayout:setMargins(left, top, right, bottom) end
+
 ---@class GifPlayer
 local GifPlayer = {}
+
+--- Creates a GifPlayer.
+---@param filename any
+---@return GifPlayer
+function GifPlayer(filename) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -1092,8 +2137,79 @@ function GifPlayer:getStyleSheet() end
 ---@return GifPlayer
 function GifPlayer:setStyleSheet(value) end
 
+function GifPlayer:close() end
+
+--- 1-indexed, like every other Limekit collection accessor.
+function GifPlayer:getCurrentFrame() end
+
+function GifPlayer:getFramesCount() end
+
+function GifPlayer:getSpeed() end
+
+function GifPlayer:getState() end
+
+---@return GifPlayer
+function GifPlayer:hide() end
+
+---@param frame any
+---@return GifPlayer
+function GifPlayer:jumpToFrame(frame) end
+
+---@return GifPlayer
+function GifPlayer:nextFrame() end
+
+---@return GifPlayer
+function GifPlayer:pause() end
+
+---@param colour any
+---@return GifPlayer
+function GifPlayer:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return GifPlayer
+function GifPlayer:setFixedSize(width, height) end
+
+---@return GifPlayer
+function GifPlayer:setFocus() end
+
+---@param x any
+---@param y any
+---@return GifPlayer
+function GifPlayer:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return GifPlayer
+function GifPlayer:setResizeRule(horizontal, vertical) end
+
+--- Overrides LimeWidget.setSize: this scales the *movie*, not the widget geometry -- that is what the 1.x semantics were.
+---@param width any
+---@param height any
+---@return GifPlayer
+function GifPlayer:setSize(width, height) end
+
+---@param speed any
+---@return GifPlayer
+function GifPlayer:setSpeed(speed) end
+
+---@return GifPlayer
+function GifPlayer:show() end
+
+---@return GifPlayer
+function GifPlayer:start() end
+
+---@return GifPlayer
+function GifPlayer:stop() end
+
 ---@class GridLayout
 local GridLayout = {}
+
+--- Creates a GridLayout.
+---@param parent? any
+---@return GridLayout
+function GridLayout(parent) end
 
 --- Get the spacing property.
 ---@return integer
@@ -1104,8 +2220,65 @@ function GridLayout:getSpacing() end
 ---@return GridLayout
 function GridLayout:setSpacing(value) end
 
+---@param child any
+---@param row any
+---@param column any
+---@param rowSpan? any
+---@param columnSpan? any
+---@return GridLayout
+function GridLayout:addChild(child, row, column, rowSpan, columnSpan) end
+
+---@param layout any
+---@param row any
+---@param column any
+---@param rowSpan? any
+---@param columnSpan? any
+---@return GridLayout
+function GridLayout:addLayout(layout, row, column, rowSpan, columnSpan) end
+
+--- Remove and delete every item in the layout.
+---@return GridLayout
+function GridLayout:clear() end
+
+---@param row any
+---@param column any
+function GridLayout:getChildAt(row, column) end
+
+function GridLayout:getCount() end
+
+---@param index any
+function GridLayout:getLayoutAt(index) end
+
+---@param column any
+---@param stretch any
+---@return GridLayout
+function GridLayout:setColumnStretch(column, stretch) end
+
+--- Combine one or more alignment names, e.g. ("center", "top").
+---@param ... any
+---@return GridLayout
+function GridLayout:setContentAlignment(...) end
+
+--- Also acts as the layout's padding.
+---@param left any
+---@param top any
+---@param right any
+---@param bottom any
+---@return GridLayout
+function GridLayout:setMargins(left, top, right, bottom) end
+
+---@param row any
+---@param stretch any
+---@return GridLayout
+function GridLayout:setRowStretch(row, stretch) end
+
 ---@class GroupBox
 local GroupBox = {}
+
+--- Creates a GroupBox.
+---@param title? any
+---@return GroupBox
+function GroupBox(title) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -1208,8 +2381,49 @@ function GroupBox:getLayout() end
 ---@return GroupBox
 function GroupBox:setLayout(value) end
 
+function GroupBox:close() end
+
+---@return GroupBox
+function GroupBox:hide() end
+
+---@param colour any
+---@return GroupBox
+function GroupBox:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return GroupBox
+function GroupBox:setFixedSize(width, height) end
+
+---@return GroupBox
+function GroupBox:setFocus() end
+
+---@param x any
+---@param y any
+---@return GroupBox
+function GroupBox:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return GroupBox
+function GroupBox:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return GroupBox
+function GroupBox:setSize(width, height) end
+
+---@return GroupBox
+function GroupBox:show() end
+
 ---@class HLayout
 local HLayout = {}
+
+--- Creates a HLayout.
+---@param parent? any
+---@return HLayout
+function HLayout(parent) end
 
 --- Get the spacing property.
 ---@return integer
@@ -1220,8 +2434,56 @@ function HLayout:getSpacing() end
 ---@return HLayout
 function HLayout:setSpacing(value) end
 
+---@param child any
+---@param stretch? any
+---@return HLayout
+function HLayout:addChild(child, stretch) end
+
+---@param layout any
+---@param stretch? any
+---@return HLayout
+function HLayout:addLayout(layout, stretch) end
+
+---@param size any
+---@return HLayout
+function HLayout:addSpacing(size) end
+
+---@param stretch? any
+---@return HLayout
+function HLayout:addStretch(stretch) end
+
+--- Remove and delete every item in the layout.
+---@return HLayout
+function HLayout:clear() end
+
+--- 1-indexed, like every Limekit collection accessor.
+---@param index any
+function HLayout:getChildAt(index) end
+
+function HLayout:getCount() end
+
+---@param index any
+function HLayout:getLayoutAt(index) end
+
+--- Combine one or more alignment names, e.g. ("center", "top").
+---@param ... any
+---@return HLayout
+function HLayout:setContentAlignment(...) end
+
+--- Also acts as the layout's padding.
+---@param left any
+---@param top any
+---@param right any
+---@param bottom any
+---@return HLayout
+function HLayout:setMargins(left, top, right, bottom) end
+
 ---@class HLine
 local HLine = {}
+
+--- Creates a HLine.
+---@return HLine
+function HLine() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -1267,8 +2529,49 @@ function HLine:getStyleSheet() end
 ---@return HLine
 function HLine:setStyleSheet(value) end
 
+function HLine:close() end
+
+---@return HLine
+function HLine:hide() end
+
+---@param colour any
+---@return HLine
+function HLine:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return HLine
+function HLine:setFixedSize(width, height) end
+
+---@return HLine
+function HLine:setFocus() end
+
+---@param x any
+---@param y any
+---@return HLine
+function HLine:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return HLine
+function HLine:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return HLine
+function HLine:setSize(width, height) end
+
+---@return HLine
+function HLine:show() end
+
 ---@class Image
 local Image = {}
+
+--- Creates a Image.
+---@param path? any
+---@return Image
+function Image(path) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -1314,8 +2617,69 @@ function Image:getStyleSheet() end
 ---@return Image
 function Image:setStyleSheet(value) end
 
+function Image:close() end
+
+function Image:getImagePath() end
+
+---@return Image
+function Image:hide() end
+
+---@param colour any
+---@return Image
+function Image:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return Image
+function Image:setFixedSize(width, height) end
+
+---@return Image
+function Image:setFocus() end
+
+---@param path any
+---@return Image
+function Image:setImage(path) end
+
+---@param ... any
+---@return Image
+function Image:setImageAlignment(...) end
+
+---@param width any
+---@param height any
+---@return Image
+function Image:setImageSize(width, height) end
+
+---@param x any
+---@param y any
+---@return Image
+function Image:setLocation(x, y) end
+
+---@param handler any
+---@return Image
+function Image:setOnClick(handler) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Image
+function Image:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Image
+function Image:setSize(width, height) end
+
+---@return Image
+function Image:show() end
+
 ---@class KeyboardShortcut
 local KeyboardShortcut = {}
+
+--- Creates a KeyboardShortcut.
+---@param parent any
+---@param sequence any
+---@return KeyboardShortcut
+function KeyboardShortcut(parent, sequence) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -1348,8 +2712,21 @@ function KeyboardShortcut:isAutoRepeat() end
 ---@return KeyboardShortcut
 function KeyboardShortcut:setOnPress(handler) end
 
+function KeyboardShortcut:getSequence() end
+
+---@param handler any
+function KeyboardShortcut:setOnKeyPress(handler) end
+
+---@param sequence any
+---@return KeyboardShortcut
+function KeyboardShortcut:setSequence(sequence) end
+
 ---@class Knob
 local Knob = {}
+
+--- Creates a Knob.
+---@return Knob
+function Knob() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -1422,8 +2799,61 @@ function Knob:isNotchesVisible() end
 ---@return Knob
 function Knob:setOnValueChanged(handler) end
 
+function Knob:close() end
+
+---@return Knob
+function Knob:hide() end
+
+---@param colour any
+---@return Knob
+function Knob:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return Knob
+function Knob:setFixedSize(width, height) end
+
+---@return Knob
+function Knob:setFocus() end
+
+---@param x any
+---@param y any
+---@return Knob
+function Knob:setLocation(x, y) end
+
+---@param maximum any
+---@return Knob
+function Knob:setMaxValue(maximum) end
+
+---@param minimum any
+---@return Knob
+function Knob:setMinValue(minimum) end
+
+---@param minimum any
+---@param maximum any
+---@return Knob
+function Knob:setRange(minimum, maximum) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Knob
+function Knob:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Knob
+function Knob:setSize(width, height) end
+
+---@return Knob
+function Knob:show() end
+
 ---@class LCDNumber
 local LCDNumber = {}
+
+--- Creates a LCDNumber.
+---@return LCDNumber
+function LCDNumber() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -1479,16 +2909,69 @@ function LCDNumber:getDigitCount() end
 function LCDNumber:setDigitCount(value) end
 
 --- Get the segmentStyle property.
----@return any
+---@return "filled"|"flat"|"outline"
 function LCDNumber:getSegmentStyle() end
 
 --- Set the segmentStyle property.
----@param value any
+---@param value "filled"|"flat"|"outline"
 ---@return LCDNumber
 function LCDNumber:setSegmentStyle(value) end
 
+function LCDNumber:close() end
+
+function LCDNumber:getValue() end
+
+---@return LCDNumber
+function LCDNumber:hide() end
+
+---@param colour any
+---@return LCDNumber
+function LCDNumber:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return LCDNumber
+function LCDNumber:setFixedSize(width, height) end
+
+---@return LCDNumber
+function LCDNumber:setFocus() end
+
+---@param x any
+---@param y any
+---@return LCDNumber
+function LCDNumber:setLocation(x, y) end
+
+--- Attaches a stylesheet class, e.g. "danger"/"warning"/"success".
+---@param class_ any
+---@return LCDNumber
+function LCDNumber:setMatProperty(class_) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return LCDNumber
+function LCDNumber:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return LCDNumber
+function LCDNumber:setSize(width, height) end
+
+--- QLCDNumber has no real setValue; `display()` is the Qt native.
+---@param value any
+---@return LCDNumber
+function LCDNumber:setValue(value) end
+
+---@return LCDNumber
+function LCDNumber:show() end
+
 ---@class Label
 local Label = {}
+
+--- Creates a Label.
+---@param text? any
+---@return Label
+function Label(text) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -1557,16 +3040,68 @@ function Label:setWordWrap(value) end
 function Label:isWordWrap() end
 
 --- Get the textAlignment property.
----@return any
+---@return "baseline"|"bottom"|"center"|"hcenter"|"justify"|"leading"|"left"|"right"|"top"|"trailing"|"vcenter"
 function Label:getTextAlignment() end
 
 --- Set the textAlignment property.
----@param value any
+---@param value "baseline"|"bottom"|"center"|"hcenter"|"justify"|"leading"|"left"|"right"|"top"|"trailing"|"vcenter"
 ---@return Label
 function Label:setTextAlignment(value) end
 
+function Label:close() end
+
+function Label:getImagePath() end
+
+---@return Label
+function Label:hide() end
+
+---@param colour any
+---@return Label
+function Label:setBackgroundColor(colour) end
+
+--- Shared cursor map - the old one defined 'openhand' twice and mapped 'wait' to an arrow.
+---@param cursor any
+---@return Label
+function Label:setCursor(cursor) end
+
+---@param width any
+---@param height any
+---@return Label
+function Label:setFixedSize(width, height) end
+
+---@return Label
+function Label:setFocus() end
+
+---@param path any
+---@return Label
+function Label:setImage(path) end
+
+---@param x any
+---@param y any
+---@return Label
+function Label:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Label
+function Label:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Label
+function Label:setSize(width, height) end
+
+---@return Label
+function Label:show() end
+
 ---@class LineEdit
 local LineEdit = {}
+
+--- Creates a LineEdit.
+---@param text? any
+---@return LineEdit
+function LineEdit(text) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -1653,11 +3188,11 @@ function LineEdit:getHint() end
 function LineEdit:setHint(value) end
 
 --- Get one of: normal, password, hideinput, passwordonedit.
----@return any
+---@return "hideinput"|"normal"|"password"|"passwordonedit"
 function LineEdit:getInputMode() end
 
 --- Set one of: normal, password, hideinput, passwordonedit.
----@param value any
+---@param value "hideinput"|"normal"|"password"|"passwordonedit"
 ---@return LineEdit
 function LineEdit:setInputMode(value) end
 
@@ -1676,8 +3211,81 @@ function LineEdit:setOnReturnPress(handler) end
 ---@return LineEdit
 function LineEdit:setOnTextSelection(handler) end
 
+function LineEdit:checkTextSelected() end
+
+---@return LineEdit
+function LineEdit:clear() end
+
+function LineEdit:close() end
+
+function LineEdit:getEndSelection() end
+
+function LineEdit:getSelectedText() end
+
+function LineEdit:getSelectionLength() end
+
+function LineEdit:getStartSelection() end
+
+---@return LineEdit
+function LineEdit:hide() end
+
+---@return LineEdit
+function LineEdit:redo() end
+
+--- Qt native re-exposed so Lua's `field:selectAll()` colon syntax works.
+---@return LineEdit
+function LineEdit:selectAll() end
+
+---@param completer any
+---@return LineEdit
+function LineEdit:setAutoComplete(completer) end
+
+---@param colour any
+---@return LineEdit
+function LineEdit:setBackgroundColor(colour) end
+
+--- Overrides QWidget.setCursor: accepts a Limekit cursor name, not a QCursor.
+---@param cursor any
+---@return LineEdit
+function LineEdit:setCursor(cursor) end
+
+---@param width any
+---@param height any
+---@return LineEdit
+function LineEdit:setFixedSize(width, height) end
+
+---@return LineEdit
+function LineEdit:setFocus() end
+
+---@param x any
+---@param y any
+---@return LineEdit
+function LineEdit:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return LineEdit
+function LineEdit:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return LineEdit
+function LineEdit:setSize(width, height) end
+
+---@return LineEdit
+function LineEdit:show() end
+
+---@return LineEdit
+function LineEdit:undo() end
+
 ---@class ListBox
 local ListBox = {}
+
+--- Creates a ListBox.
+---@param items? any
+---@return ListBox
+function ListBox(items) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -1733,8 +3341,85 @@ function ListBox:setOnItemSelect(handler) end
 ---@return ListBox
 function ListBox:setOnItemDoubleClick(handler) end
 
+---@param label any
+---@param image any
+---@return ListBox
+function ListBox:addImageItem(label, image) end
+
+--- Qt native re-exposed so Lua's `box:clear()` colon syntax works.
+---@return ListBox
+function ListBox:clear() end
+
+function ListBox:close() end
+
+--- 1-indexed. Returns 0 when nothing is selected. Qt's currentRow() is 0-based and returns -1 for "no selection"; exposing that directly would break the 1-indexed contract every other Limekit collection accessor keeps.
+function ListBox:getCurrentRow() end
+
+--- 1-indexed, like every other Limekit collection accessor.
+---@param index any
+function ListBox:getItemAt(index) end
+
+function ListBox:getItemsCount() end
+
+---@return ListBox
+function ListBox:hide() end
+
+---@param row any
+---@param item any
+---@return ListBox
+function ListBox:insertItemAt(row, item) end
+
+---@param row any
+---@return ListBox
+function ListBox:removeItemAt(row) end
+
+---@param colour any
+---@return ListBox
+function ListBox:setBackgroundColor(colour) end
+
+---@param row any
+---@return ListBox
+function ListBox:setCurrentRow(row) end
+
+---@param width any
+---@param height any
+---@return ListBox
+function ListBox:setFixedSize(width, height) end
+
+---@return ListBox
+function ListBox:setFocus() end
+
+--- Accepts a Lua table OR a Python sequence. The old implementation called .values() unconditionally and crashed on a Python list, unlike ComboBox.
+---@param items any
+---@return ListBox
+function ListBox:setItems(items) end
+
+---@param x any
+---@param y any
+---@return ListBox
+function ListBox:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return ListBox
+function ListBox:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return ListBox
+function ListBox:setSize(width, height) end
+
+---@return ListBox
+function ListBox:show() end
+
 ---@class Menu
 local Menu = {}
+
+--- Creates a Menu.
+---@param title? any
+---@return Menu
+function Menu(title) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -1803,8 +3488,61 @@ function Menu:setIcon(value) end
 ---@return Menu
 function Menu:setOnClick(handler) end
 
+---@param menu any
+---@return Menu
+function Menu:addMenu(menu) end
+
+--- Qt native (`addAction`) re-exposed so it chains like every other Limekit builder method.
+---@param item any
+---@return Menu
+function Menu:addMenuItem(item) end
+
+---@return Menu
+function Menu:addSeparator() end
+
+function Menu:close() end
+
+---@return Menu
+function Menu:hide() end
+
+---@param colour any
+---@return Menu
+function Menu:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return Menu
+function Menu:setFixedSize(width, height) end
+
+---@return Menu
+function Menu:setFocus() end
+
+---@param x any
+---@param y any
+---@return Menu
+function Menu:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Menu
+function Menu:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Menu
+function Menu:setSize(width, height) end
+
+---@return Menu
+function Menu:show() end
+
 ---@class MenuItem
 local MenuItem = {}
+
+--- Creates a MenuItem.
+---@param text? any
+---@return MenuItem
+function MenuItem(text) end
 
 --- Get the action's caption.
 ---@return string
@@ -1921,6 +3659,13 @@ function MenuItem:setShortcut(value) end
 ---@return MenuItem
 function MenuItem:setOnClick(handler) end
 
+--- Qt native re-exposed so Lua's `item:toggle()` colon syntax works.
+---@return MenuItem
+function MenuItem:toggle() end
+
+---@return MenuItem
+function MenuItem:trigger() end
+
 ---@class Menubar
 local Menubar = {}
 
@@ -1968,8 +3713,58 @@ function Menubar:getStyleSheet() end
 ---@return Menubar
 function Menubar:setStyleSheet(value) end
 
+---@param menu any
+---@return Menubar
+function Menubar:addMenu(menu) end
+
+---@param item any
+---@return Menubar
+function Menubar:addMenuItem(item) end
+
+function Menubar:close() end
+
+---@return Menubar
+function Menubar:hide() end
+
+---@param colour any
+---@return Menubar
+function Menubar:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return Menubar
+function Menubar:setFixedSize(width, height) end
+
+---@return Menubar
+function Menubar:setFocus() end
+
+---@param x any
+---@param y any
+---@return Menubar
+function Menubar:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Menubar
+function Menubar:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Menubar
+function Menubar:setSize(width, height) end
+
+---@return Menubar
+function Menubar:show() end
+
 ---@class Modal
 local Modal = {}
+
+--- Creates a Modal.
+---@param title? any
+---@param parent? any
+---@return Modal
+function Modal(title, parent) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -2055,6 +3850,60 @@ function Modal:getLayout() end
 ---@return Modal
 function Modal:setLayout(value) end
 
+function Modal:close() end
+
+---@return Modal
+function Modal:dismiss() end
+
+---@return Modal
+function Modal:hide() end
+
+--- Blocking modal loop -- what 1.x's `show()` actually did.
+function Modal:open() end
+
+---@param colour any
+---@return Modal
+function Modal:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return Modal
+function Modal:setFixedSize(width, height) end
+
+---@return Modal
+function Modal:setFocus() end
+
+---@param x any
+---@param y any
+---@return Modal
+function Modal:setLocation(x, y) end
+
+---@param handler any
+---@return Modal
+function Modal:setOnClose(handler) end
+
+---@param handler any
+---@return Modal
+function Modal:setOnResize(handler) end
+
+---@param handler any
+---@return Modal
+function Modal:setOnShown(handler) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Modal
+function Modal:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Modal
+function Modal:setSize(width, height) end
+
+---@return Modal
+function Modal:show() end
+
 ---@class ProgressBar
 local ProgressBar = {}
 
@@ -2112,16 +3961,63 @@ function ProgressBar:getValue() end
 function ProgressBar:setValue(value) end
 
 --- Get the orientation property.
----@return any
+---@return "horizontal"|"vertical"
 function ProgressBar:getOrientation() end
 
 --- Set the orientation property.
----@param value any
+---@param value "horizontal"|"vertical"
 ---@return ProgressBar
 function ProgressBar:setOrientation(value) end
 
+function ProgressBar:close() end
+
+---@return ProgressBar
+function ProgressBar:hide() end
+
+---@param colour any
+---@return ProgressBar
+function ProgressBar:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return ProgressBar
+function ProgressBar:setFixedSize(width, height) end
+
+---@return ProgressBar
+function ProgressBar:setFocus() end
+
+---@param x any
+---@param y any
+---@return ProgressBar
+function ProgressBar:setLocation(x, y) end
+
+--- Setting the range to (0, 0) makes the bar indeterminate.
+---@param start any
+---@param end any
+---@return ProgressBar
+function ProgressBar:setRange(start, end) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return ProgressBar
+function ProgressBar:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return ProgressBar
+function ProgressBar:setSize(width, height) end
+
+---@return ProgressBar
+function ProgressBar:show() end
+
 ---@class RadioButton
 local RadioButton = {}
+
+--- Creates a RadioButton.
+---@param text? any
+---@return RadioButton
+function RadioButton(text) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -2212,8 +4108,48 @@ function RadioButton:setIconSize(value) end
 ---@return RadioButton
 function RadioButton:setOnClick(handler) end
 
+function RadioButton:close() end
+
+---@return RadioButton
+function RadioButton:hide() end
+
+---@param colour any
+---@return RadioButton
+function RadioButton:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return RadioButton
+function RadioButton:setFixedSize(width, height) end
+
+---@return RadioButton
+function RadioButton:setFocus() end
+
+---@param x any
+---@param y any
+---@return RadioButton
+function RadioButton:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return RadioButton
+function RadioButton:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return RadioButton
+function RadioButton:setSize(width, height) end
+
+---@return RadioButton
+function RadioButton:show() end
+
 ---@class Scroller
 local Scroller = {}
+
+--- Creates a Scroller.
+---@return Scroller
+function Scroller() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -2272,8 +4208,81 @@ function Scroller:setResizable(value) end
 ---@return boolean
 function Scroller:isResizable() end
 
+function Scroller:close() end
+
+function Scroller:getChild() end
+
+function Scroller:getLayout() end
+
+---@return Scroller
+function Scroller:hide() end
+
+function Scroller:maxHorizontalScroll() end
+
+function Scroller:maxVerticalScroll() end
+
+function Scroller:minHorizontalScroll() end
+
+function Scroller:minVerticalScroll() end
+
+---@param colour any
+---@return Scroller
+function Scroller:setBackgroundColor(colour) end
+
+---@param child any
+---@return Scroller
+function Scroller:setChild(child) end
+
+---@param width any
+---@param height any
+---@return Scroller
+function Scroller:setFixedSize(width, height) end
+
+---@return Scroller
+function Scroller:setFocus() end
+
+---@param behavior any
+---@return Scroller
+function Scroller:setHorizontalScrollBarBehavior(behavior) end
+
+---@param layout any
+---@return Scroller
+function Scroller:setLayout(layout) end
+
+---@param x any
+---@param y any
+---@return Scroller
+function Scroller:setLocation(x, y) end
+
+---@param handler any
+---@return Scroller
+function Scroller:setOnScroll(handler) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Scroller
+function Scroller:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Scroller
+function Scroller:setSize(width, height) end
+
+---@param behavior any
+---@return Scroller
+function Scroller:setVerticalScrollBarBehavior(behavior) end
+
+---@return Scroller
+function Scroller:show() end
+
 ---@class Separator
 local Separator = {}
+
+--- Creates a Separator.
+---@param orientation? any
+---@return Separator
+function Separator(orientation) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -2319,8 +4328,48 @@ function Separator:getStyleSheet() end
 ---@return Separator
 function Separator:setStyleSheet(value) end
 
+function Separator:close() end
+
+---@return Separator
+function Separator:hide() end
+
+---@param colour any
+---@return Separator
+function Separator:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return Separator
+function Separator:setFixedSize(width, height) end
+
+---@return Separator
+function Separator:setFocus() end
+
+---@param x any
+---@param y any
+---@return Separator
+function Separator:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Separator
+function Separator:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Separator
+function Separator:setSize(width, height) end
+
+---@return Separator
+function Separator:show() end
+
 ---@class Slider
 local Slider = {}
+
+--- Creates a Slider.
+---@return Slider
+function Slider() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -2376,20 +4425,20 @@ function Slider:getValue() end
 function Slider:setValue(value) end
 
 --- Get the orientation property.
----@return any
+---@return "horizontal"|"vertical"
 function Slider:getOrientation() end
 
 --- Set the orientation property.
----@param value any
+---@param value "horizontal"|"vertical"
 ---@return Slider
 function Slider:setOrientation(value) end
 
 --- Get the tickPosition property.
----@return any
+---@return "above"|"below"|"bothsides"|"left"|"none"|"right"
 function Slider:getTickPosition() end
 
 --- Set the tickPosition property.
----@param value any
+---@param value "above"|"below"|"bothsides"|"left"|"none"|"right"
 ---@return Slider
 function Slider:setTickPosition(value) end
 
@@ -2398,8 +4447,53 @@ function Slider:setTickPosition(value) end
 ---@return Slider
 function Slider:setOnValueChange(handler) end
 
+function Slider:close() end
+
+---@return Slider
+function Slider:hide() end
+
+---@param colour any
+---@return Slider
+function Slider:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return Slider
+function Slider:setFixedSize(width, height) end
+
+---@return Slider
+function Slider:setFocus() end
+
+---@param x any
+---@param y any
+---@return Slider
+function Slider:setLocation(x, y) end
+
+---@param start any
+---@param end any
+---@return Slider
+function Slider:setRange(start, end) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Slider
+function Slider:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Slider
+function Slider:setSize(width, height) end
+
+---@return Slider
+function Slider:show() end
+
 ---@class SlidingStackedWidget
 local SlidingStackedWidget = {}
+
+--- Creates a SlidingStackedWidget.
+---@return SlidingStackedWidget
+function SlidingStackedWidget() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -2445,8 +4539,109 @@ function SlidingStackedWidget:getStyleSheet() end
 ---@return SlidingStackedWidget
 function SlidingStackedWidget:setStyleSheet(value) end
 
+---@param child any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:addChild(child) end
+
+---@param layout any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:addLayout(layout) end
+
+---@param msec? any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:autoStart(msec) end
+
+---@return SlidingStackedWidget
+function SlidingStackedWidget:autoStop() end
+
+function SlidingStackedWidget:close() end
+
+function SlidingStackedWidget:getAnimations() end
+
+function SlidingStackedWidget:getCount() end
+
+function SlidingStackedWidget:getCurrentIndex() end
+
+---@return SlidingStackedWidget
+function SlidingStackedWidget:hide() end
+
+---@param animation any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setAnimation(animation) end
+
+---@param colour any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setBackgroundColor(colour) end
+
+---@param index any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setCurrentIndex(index) end
+
+---@param widget any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setCurrentWidget(widget) end
+
+---@param easing any
+function SlidingStackedWidget:setEasing(easing) end
+
+---@param width any
+---@param height any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setFixedSize(width, height) end
+
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setFocus() end
+
+---@param x any
+---@param y any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setLocation(x, y) end
+
+---@param orientation any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setOrientation(orientation) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setSize(width, height) end
+
+---@param speed? any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setSpeed(speed) end
+
+---@return SlidingStackedWidget
+function SlidingStackedWidget:show() end
+
+---@param idx any
+---@param direction? any
+---@return SlidingStackedWidget
+function SlidingStackedWidget:slideInIdx(idx, direction) end
+
+---@param widget any
+---@param direction any
+function SlidingStackedWidget:slideInWgt(widget, direction) end
+
+---@return SlidingStackedWidget
+function SlidingStackedWidget:slideNext() end
+
+---@return SlidingStackedWidget
+function SlidingStackedWidget:slidePrev() end
+
 ---@class Spacer
 local Spacer = {}
+
+--- Creates a Spacer.
+---@param width any
+---@param height any
+---@return Spacer
+function Spacer(width, height) end
 
 ---@class Spinner
 local Spinner = {}
@@ -2527,8 +4722,54 @@ function Spinner:setSuffix(value) end
 ---@return Spinner
 function Spinner:setOnValueChange(handler) end
 
+function Spinner:close() end
+
+---@return Spinner
+function Spinner:hide() end
+
+---@param colour any
+---@return Spinner
+function Spinner:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return Spinner
+function Spinner:setFixedSize(width, height) end
+
+---@return Spinner
+function Spinner:setFocus() end
+
+---@param x any
+---@param y any
+---@return Spinner
+function Spinner:setLocation(x, y) end
+
+---@param start any
+---@param end any
+---@return Spinner
+function Spinner:setRange(start, end) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Spinner
+function Spinner:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Spinner
+function Spinner:setSize(width, height) end
+
+---@return Spinner
+function Spinner:show() end
+
 ---@class Splitter
 local Splitter = {}
+
+--- Creates a Splitter.
+---@param orientation? any
+---@return Splitter
+function Splitter(orientation) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -2584,11 +4825,11 @@ function Splitter:getHandleWidth() end
 function Splitter:setHandleWidth(value) end
 
 --- Get the orientation property.
----@return any
+---@return "horizontal"|"vertical"
 function Splitter:getOrientation() end
 
 --- Set the orientation property.
----@param value any
+---@param value "horizontal"|"vertical"
 ---@return Splitter
 function Splitter:setOrientation(value) end
 
@@ -2601,8 +4842,56 @@ function Splitter:getSizes() end
 ---@return Splitter
 function Splitter:setSizes(value) end
 
+---@param child any
+---@return Splitter
+function Splitter:addChild(child) end
+
+---@param layout any
+---@return Splitter
+function Splitter:addLayout(layout) end
+
+function Splitter:close() end
+
+---@return Splitter
+function Splitter:hide() end
+
+---@param colour any
+---@return Splitter
+function Splitter:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return Splitter
+function Splitter:setFixedSize(width, height) end
+
+---@return Splitter
+function Splitter:setFocus() end
+
+---@param x any
+---@param y any
+---@return Splitter
+function Splitter:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Splitter
+function Splitter:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Splitter
+function Splitter:setSize(width, height) end
+
+---@return Splitter
+function Splitter:show() end
+
 ---@class StackedLayout
 local StackedLayout = {}
+
+--- Creates a StackedLayout.
+---@return StackedLayout
+function StackedLayout() end
 
 --- Get the spacing property.
 ---@return integer
@@ -2612,6 +4901,46 @@ function StackedLayout:getSpacing() end
 ---@param value integer
 ---@return StackedLayout
 function StackedLayout:setSpacing(value) end
+
+---@param child any
+---@return StackedLayout
+function StackedLayout:addChild(child) end
+
+---@param layout any
+---@return StackedLayout
+function StackedLayout:addLayout(layout) end
+
+--- Remove and delete every item in the layout.
+---@return StackedLayout
+function StackedLayout:clear() end
+
+--- 1-indexed, like every Limekit collection accessor.
+---@param index any
+function StackedLayout:getChildAt(index) end
+
+function StackedLayout:getCount() end
+
+function StackedLayout:getCurrentIndex() end
+
+---@param index any
+function StackedLayout:getLayoutAt(index) end
+
+--- Combine one or more alignment names, e.g. ("center", "top").
+---@param ... any
+---@return StackedLayout
+function StackedLayout:setContentAlignment(...) end
+
+---@param index any
+---@return StackedLayout
+function StackedLayout:setCurrentIndex(index) end
+
+--- Also acts as the layout's padding.
+---@param left any
+---@param top any
+---@param right any
+---@param bottom any
+---@return StackedLayout
+function StackedLayout:setMargins(left, top, right, bottom) end
 
 ---@class StatusBar
 local StatusBar = {}
@@ -2673,8 +5002,68 @@ function StatusBar:setSizeGripEnabled(value) end
 ---@return boolean
 function StatusBar:isSizeGripEnabled() end
 
+---@param child any
+---@param stretch? any
+---@return StatusBar
+function StatusBar:addChild(child, stretch) end
+
+---@param child any
+---@param stretch? any
+---@return StatusBar
+function StatusBar:addPermanentChild(child, stretch) end
+
+---@return StatusBar
+function StatusBar:clear() end
+
+function StatusBar:close() end
+
+---@return StatusBar
+function StatusBar:hide() end
+
+---@param colour any
+---@return StatusBar
+function StatusBar:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return StatusBar
+function StatusBar:setFixedSize(width, height) end
+
+---@return StatusBar
+function StatusBar:setFocus() end
+
+---@param x any
+---@param y any
+---@return StatusBar
+function StatusBar:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return StatusBar
+function StatusBar:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return StatusBar
+function StatusBar:setSize(width, height) end
+
+--- 1.x's `setText` was really `showMessage`; named to match how every other Limekit widget exposes its caption.
+---@param text any
+---@param timeout? any
+---@return StatusBar
+function StatusBar:setText(text, timeout) end
+
+---@return StatusBar
+function StatusBar:show() end
+
 ---@class SysNotification
 local SysNotification = {}
+
+--- Creates a SysNotification.
+---@param icon? any
+---@return SysNotification
+function SysNotification(icon) end
 
 --- Get the notification's icon.
 ---@return any
@@ -2690,8 +5079,21 @@ function SysNotification:setIcon(value) end
 ---@return SysNotification
 function SysNotification:setOnClick(handler) end
 
+--- Pop a balloon notification. `icon` is one of "none", "information", "warning", "critical"; `duration` is in milliseconds, matching Qt's own unit.
+---@param title any
+---@param message any
+---@param icon? any
+---@param duration? any
+---@return SysNotification
+function SysNotification:showMessage(title, message, icon, duration) end
+
 ---@class SysTray
 local SysTray = {}
+
+--- Creates a SysTray.
+---@param icon? any
+---@return SysTray
+function SysTray(icon) end
 
 --- Get the tray icon's image.
 ---@return any
@@ -2738,8 +5140,18 @@ function SysTray:setMenu(value) end
 ---@return SysTray
 function SysTray:setOnActivated(handler) end
 
+---@return SysTray
+function SysTray:hide() end
+
+---@return SysTray
+function SysTray:show() end
+
 ---@class Tab
 local Tab = {}
+
+--- Creates a Tab.
+---@return Tab
+function Tab() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -2820,8 +5232,117 @@ function Tab:getTabPosition() end
 ---@return Tab
 function Tab:setTabPosition(value) end
 
+--- Qt native re-exposed: 1.x returned the new 0-indexed position, this returns `self` like every other Limekit builder method.
+---@param child any
+---@param title any
+---@param icon? any
+---@return Tab
+function Tab:addTab(child, title, icon) end
+
+function Tab:close() end
+
+---@param index any
+function Tab:getChildAt(index) end
+
+function Tab:getCount() end
+
+function Tab:getCurrentIndex() end
+
+---@param child any
+function Tab:getIndexOf(child) end
+
+---@param index any
+function Tab:getTabText(index) end
+
+---@return Tab
+function Tab:hide() end
+
+---@param index any
+---@return Tab
+function Tab:removeTab(index) end
+
+---@param colour any
+---@return Tab
+function Tab:setBackgroundColor(colour) end
+
+---@param child any
+---@return Tab
+function Tab:setCornerChild(child) end
+
+---@param child any
+---@return Tab
+function Tab:setCurrentChild(child) end
+
+---@param index any
+---@return Tab
+function Tab:setCurrentIndex(index) end
+
+---@param width any
+---@param height any
+---@return Tab
+function Tab:setFixedSize(width, height) end
+
+---@return Tab
+function Tab:setFocus() end
+
+---@param x any
+---@param y any
+---@return Tab
+function Tab:setLocation(x, y) end
+
+---@param handler any
+---@return Tab
+function Tab:setOnTabChange(handler) end
+
+---@param handler any
+---@return Tab
+function Tab:setOnTabClose(handler) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Tab
+function Tab:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Tab
+function Tab:setSize(width, height) end
+
+---@param index any
+---@param enabled any
+---@return Tab
+function Tab:setTabEnabled(index, enabled) end
+
+---@param index any
+---@param icon any
+---@return Tab
+function Tab:setTabIcon(index, icon) end
+
+---@param index any
+---@param text any
+---@return Tab
+function Tab:setTabText(index, text) end
+
+---@param index any
+---@param tip any
+---@return Tab
+function Tab:setTabToolTip(index, tip) end
+
+---@param index any
+---@param visible any
+---@return Tab
+function Tab:setTabVisible(index, visible) end
+
+---@return Tab
+function Tab:show() end
+
 ---@class TabItem
 local TabItem = {}
+
+--- Creates a TabItem.
+---@return TabItem
+function TabItem() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -2876,8 +5397,50 @@ function TabItem:getLayout() end
 ---@return TabItem
 function TabItem:setLayout(value) end
 
+function TabItem:close() end
+
+---@return TabItem
+function TabItem:hide() end
+
+---@param colour any
+---@return TabItem
+function TabItem:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return TabItem
+function TabItem:setFixedSize(width, height) end
+
+---@return TabItem
+function TabItem:setFocus() end
+
+---@param x any
+---@param y any
+---@return TabItem
+function TabItem:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return TabItem
+function TabItem:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return TabItem
+function TabItem:setSize(width, height) end
+
+---@return TabItem
+function TabItem:show() end
+
 ---@class Table
 local Table = {}
+
+--- Creates a Table.
+---@param rows? any
+---@param columns? any
+---@return Table
+function Table(rows, columns) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -2977,8 +5540,141 @@ function Table:setOnCellDoubleClick(handler) end
 ---@return Table
 function Table:setOnCellChange(handler) end
 
+--- Append a row at the end; returns its 1-indexed position.
+function Table:addRow() end
+
+---@return Table
+function Table:clear() end
+
+---@return Table
+function Table:clearContent() end
+
+function Table:close() end
+
+---@param row any
+---@param column any
+function Table:getCellChild(row, column) end
+
+---@param row any
+---@param column any
+function Table:getCellItem(row, column) end
+
+function Table:getColumnCount() end
+
+---@param column any
+function Table:getColumnHeaderText(column) end
+
+function Table:getCurrentColumn() end
+
+function Table:getCurrentItem() end
+
+function Table:getCurrentRow() end
+
+function Table:getRowCount() end
+
+---@return Table
+function Table:hide() end
+
+---@param column any
+---@return Table
+function Table:insertColumnAt(column) end
+
+---@param row any
+---@return Table
+function Table:insertRowAt(row) end
+
+---@param column any
+---@return Table
+function Table:removeColumnAt(column) end
+
+---@param row any
+---@return Table
+function Table:removeRowAt(row) end
+
+---@param colour any
+---@return Table
+function Table:setBackgroundColor(colour) end
+
+---@param row any
+---@param column any
+---@param child any
+---@return Table
+function Table:setCellChild(row, column, child) end
+
+---@param row any
+---@param column any
+---@param text any
+---@return Table
+function Table:setCellText(row, column, text) end
+
+---@param editable any
+---@return Table
+function Table:setCellsEditable(editable) end
+
+---@param columns any
+---@return Table
+function Table:setColumnCount(columns) end
+
+---@param headers any
+---@return Table
+function Table:setColumnHeaders(headers) end
+
+---@param column any
+---@param width any
+---@return Table
+function Table:setColumnWidth(column, width) end
+
+---@param row any
+---@param column any
+---@return Table
+function Table:setCurrentCell(row, column) end
+
+---@param width any
+---@param height any
+---@return Table
+function Table:setFixedSize(width, height) end
+
+---@return Table
+function Table:setFocus() end
+
+---@param x any
+---@param y any
+---@return Table
+function Table:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Table
+function Table:setResizeRule(horizontal, vertical) end
+
+---@param rows any
+---@return Table
+function Table:setRowCount(rows) end
+
+---@param headers any
+---@return Table
+function Table:setRowHeaders(headers) end
+
+---@param behavior any
+---@return Table
+function Table:setSelectionBehavior(behavior) end
+
+---@param width any
+---@param height any
+---@return Table
+function Table:setSize(width, height) end
+
+---@return Table
+function Table:show() end
+
 ---@class TableItem
 local TableItem = {}
+
+--- Creates a TableItem.
+---@param text? any
+---@return TableItem
+function TableItem(text) end
 
 --- Get the text property.
 ---@return string
@@ -2989,8 +5685,21 @@ function TableItem:getText() end
 ---@return TableItem
 function TableItem:setText(value) end
 
+---@param colour any
+---@return TableItem
+function TableItem:setBackgroundColour(colour) end
+
+---@param colour any
+---@return TableItem
+function TableItem:setTextColour(colour) end
+
 ---@class TextField
 local TextField = {}
+
+--- Creates a TextField.
+---@param text? any
+---@return TextField
+function TextField(text) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -3086,11 +5795,98 @@ function TextField:setOnTextChange(handler) end
 ---@return TextField
 function TextField:setOnCursorMove(handler) end
 
+---@param text any
+---@return TextField
+function TextField:appendText(text) end
+
+---@return TextField
+function TextField:clear() end
+
+function TextField:close() end
+
+function TextField:getLineCount() end
+
+function TextField:getText() end
+
+---@return TextField
+function TextField:hide() end
+
+---@return TextField
+function TextField:scrollToEnd() end
+
+---@param colour any
+---@return TextField
+function TextField:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return TextField
+function TextField:setFixedSize(width, height) end
+
+---@return TextField
+function TextField:setFocus() end
+
+---@param x any
+---@param y any
+---@return TextField
+function TextField:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return TextField
+function TextField:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return TextField
+function TextField:setSize(width, height) end
+
+--- Always plain text. QTextEdit.setText would guess HTML.
+---@param text any
+---@return TextField
+function TextField:setText(text) end
+
+---@param ... any
+---@return TextField
+function TextField:setTextAlignment(...) end
+
+---@param colour any
+---@return TextField
+function TextField:setTextColor(colour) end
+
+---@param size any
+---@return TextField
+function TextField:setTextSize(size) end
+
+---@param mode any
+---@return TextField
+function TextField:setWrapMode(mode) end
+
+---@return TextField
+function TextField:show() end
+
 ---@class Theme
 local Theme = {}
 
+function Theme.getStyles() end
+
+---@param family any
+function Theme.getThemes(family) end
+
+---@param name any
+function Theme.setStyle(name) end
+
+---@param family any
+---@param name any
+function Theme.setTheme(family, name) end
+
 ---@class TimePicker
 local TimePicker = {}
+
+--- Creates a TimePicker.
+---@return TimePicker
+function TimePicker() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -3136,8 +5932,63 @@ function TimePicker:getStyleSheet() end
 ---@return TimePicker
 function TimePicker:setStyleSheet(value) end
 
+function TimePicker:close() end
+
+function TimePicker:getTime() end
+
+---@return TimePicker
+function TimePicker:hide() end
+
+---@param colour any
+---@return TimePicker
+function TimePicker:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return TimePicker
+function TimePicker:setFixedSize(width, height) end
+
+---@return TimePicker
+function TimePicker:setFocus() end
+
+---@param x any
+---@param y any
+---@return TimePicker
+function TimePicker:setLocation(x, y) end
+
+--- Fires on Enter (Qt's `editingFinished`), matching the 1.x comment.
+---@param handler any
+---@return TimePicker
+function TimePicker:setOnTimePicked(handler) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return TimePicker
+function TimePicker:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return TimePicker
+function TimePicker:setSize(width, height) end
+
+--- Overrides QTimeEdit.setTime(QTime) directly -- same name, a friendlier Lua-facing signature, exactly how TextField.setText overrides QTextEdit.setText.
+---@param hour any
+---@param minute any
+---@param second? any
+---@return TimePicker
+function TimePicker:setTime(hour, minute, second) end
+
+---@return TimePicker
+function TimePicker:show() end
+
 ---@class Toolbar
 local Toolbar = {}
+
+--- Creates a Toolbar.
+---@param title? any
+---@return Toolbar
+function Toolbar(title) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -3219,16 +6070,69 @@ function Toolbar:getIconSize() end
 function Toolbar:setIconSize(value) end
 
 --- Get how buttons show icon/text: icononly, textonly, textbesideicon, textundericon, followstyle.
----@return any
+---@return "followstyle"|"icononly"|"textbesideicon"|"textonly"|"textundericon"
 function Toolbar:getToolButtonStyle() end
 
 --- Set how buttons show icon/text: icononly, textonly, textbesideicon, textundericon, followstyle.
----@param value any
+---@param value "followstyle"|"icononly"|"textbesideicon"|"textonly"|"textundericon"
 ---@return Toolbar
 function Toolbar:setToolButtonStyle(value) end
 
+--- Qt native (`addAction`) re-exposed so it chains.
+---@param button any
+---@return Toolbar
+function Toolbar:addButton(button) end
+
+---@param child any
+---@return Toolbar
+function Toolbar:addChild(child) end
+
+---@return Toolbar
+function Toolbar:addSeparator() end
+
+function Toolbar:close() end
+
+---@return Toolbar
+function Toolbar:hide() end
+
+---@param colour any
+---@return Toolbar
+function Toolbar:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return Toolbar
+function Toolbar:setFixedSize(width, height) end
+
+---@return Toolbar
+function Toolbar:setFocus() end
+
+---@param x any
+---@param y any
+---@return Toolbar
+function Toolbar:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Toolbar
+function Toolbar:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Toolbar
+function Toolbar:setSize(width, height) end
+
+---@return Toolbar
+function Toolbar:show() end
+
 ---@class ToolbarButton
 local ToolbarButton = {}
+
+--- Creates a ToolbarButton.
+---@param text? any
+---@return ToolbarButton
+function ToolbarButton(text) end
 
 --- Get the action's caption.
 ---@return string
@@ -3345,8 +6249,23 @@ function ToolbarButton:setShortcut(value) end
 ---@return ToolbarButton
 function ToolbarButton:setOnClick(handler) end
 
+---@param menu any
+---@return ToolbarButton
+function ToolbarButton:setMenu(menu) end
+
+--- Qt native re-exposed so Lua's `item:toggle()` colon syntax works.
+---@return ToolbarButton
+function ToolbarButton:toggle() end
+
+---@return ToolbarButton
+function ToolbarButton:trigger() end
+
 ---@class TreeView
 local TreeView = {}
+
+--- Creates a TreeView.
+---@return TreeView
+function TreeView() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -3415,8 +6334,79 @@ function TreeView:setOnItemClick(handler) end
 ---@return TreeView
 function TreeView:setOnItemDoubleClick(handler) end
 
+--- Qt native (`addTopLevelItem`) re-exposed so it chains.
+---@param item any
+---@return TreeView
+function TreeView:addTopItem(item) end
+
+---@return TreeView
+function TreeView:clear() end
+
+function TreeView:close() end
+
+---@return TreeView
+function TreeView:collapseAll() end
+
+---@return TreeView
+function TreeView:expandAll() end
+
+function TreeView:getCurrentItem() end
+
+---@param index any
+function TreeView:getTopItemAt(index) end
+
+function TreeView:getTopItemCount() end
+
+---@return TreeView
+function TreeView:hide() end
+
+---@param colour any
+---@return TreeView
+function TreeView:setBackgroundColor(colour) end
+
+---@param column any
+---@param width any
+---@return TreeView
+function TreeView:setColumnWidth(column, width) end
+
+---@param width any
+---@param height any
+---@return TreeView
+function TreeView:setFixedSize(width, height) end
+
+---@return TreeView
+function TreeView:setFocus() end
+
+---@param labels any
+---@return TreeView
+function TreeView:setHeaderLabels(labels) end
+
+---@param x any
+---@param y any
+---@return TreeView
+function TreeView:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return TreeView
+function TreeView:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return TreeView
+function TreeView:setSize(width, height) end
+
+---@return TreeView
+function TreeView:show() end
+
 ---@class TreeViewItem
 local TreeViewItem = {}
+
+--- Creates a TreeViewItem.
+---@param texts? any
+---@return TreeViewItem
+function TreeViewItem(texts) end
 
 --- Get the expanded property.
 ---@return boolean
@@ -3431,8 +6421,36 @@ function TreeViewItem:setExpanded(value) end
 ---@return boolean
 function TreeViewItem:isExpanded() end
 
+---@param child any
+---@return TreeViewItem
+function TreeViewItem:addChild(child) end
+
+---@param index any
+function TreeViewItem:getChildAt(index) end
+
+function TreeViewItem:getChildCount() end
+
+function TreeViewItem:getParent() end
+
+---@param column any
+function TreeViewItem:getText(column) end
+
+---@param column any
+---@param icon any
+---@return TreeViewItem
+function TreeViewItem:setIcon(column, icon) end
+
+---@param column any
+---@param text any
+---@return TreeViewItem
+function TreeViewItem:setText(column, text) end
+
 ---@class TreeWidget
 local TreeWidget = {}
+
+--- Creates a TreeWidget.
+---@return TreeWidget
+function TreeWidget() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -3501,8 +6519,79 @@ function TreeWidget:setOnItemClick(handler) end
 ---@return TreeWidget
 function TreeWidget:setOnItemDoubleClick(handler) end
 
+--- Qt native (`addTopLevelItem`) re-exposed so it chains.
+---@param item any
+---@return TreeWidget
+function TreeWidget:addTopItem(item) end
+
+---@return TreeWidget
+function TreeWidget:clear() end
+
+function TreeWidget:close() end
+
+---@return TreeWidget
+function TreeWidget:collapseAll() end
+
+---@return TreeWidget
+function TreeWidget:expandAll() end
+
+function TreeWidget:getCurrentItem() end
+
+---@param index any
+function TreeWidget:getTopItemAt(index) end
+
+function TreeWidget:getTopItemCount() end
+
+---@return TreeWidget
+function TreeWidget:hide() end
+
+---@param colour any
+---@return TreeWidget
+function TreeWidget:setBackgroundColor(colour) end
+
+---@param column any
+---@param width any
+---@return TreeWidget
+function TreeWidget:setColumnWidth(column, width) end
+
+---@param width any
+---@param height any
+---@return TreeWidget
+function TreeWidget:setFixedSize(width, height) end
+
+---@return TreeWidget
+function TreeWidget:setFocus() end
+
+---@param labels any
+---@return TreeWidget
+function TreeWidget:setHeaderLabels(labels) end
+
+---@param x any
+---@param y any
+---@return TreeWidget
+function TreeWidget:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return TreeWidget
+function TreeWidget:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return TreeWidget
+function TreeWidget:setSize(width, height) end
+
+---@return TreeWidget
+function TreeWidget:show() end
+
 ---@class VLayout
 local VLayout = {}
+
+--- Creates a VLayout.
+---@param parent? any
+---@return VLayout
+function VLayout(parent) end
 
 --- Get the spacing property.
 ---@return integer
@@ -3513,8 +6602,56 @@ function VLayout:getSpacing() end
 ---@return VLayout
 function VLayout:setSpacing(value) end
 
+---@param child any
+---@param stretch? any
+---@return VLayout
+function VLayout:addChild(child, stretch) end
+
+---@param layout any
+---@param stretch? any
+---@return VLayout
+function VLayout:addLayout(layout, stretch) end
+
+---@param size any
+---@return VLayout
+function VLayout:addSpacing(size) end
+
+---@param stretch? any
+---@return VLayout
+function VLayout:addStretch(stretch) end
+
+--- Remove and delete every item in the layout.
+---@return VLayout
+function VLayout:clear() end
+
+--- 1-indexed, like every Limekit collection accessor.
+---@param index any
+function VLayout:getChildAt(index) end
+
+function VLayout:getCount() end
+
+---@param index any
+function VLayout:getLayoutAt(index) end
+
+--- Combine one or more alignment names, e.g. ("center", "top").
+---@param ... any
+---@return VLayout
+function VLayout:setContentAlignment(...) end
+
+--- Also acts as the layout's padding.
+---@param left any
+---@param top any
+---@param right any
+---@param bottom any
+---@return VLayout
+function VLayout:setMargins(left, top, right, bottom) end
+
 ---@class VLine
 local VLine = {}
+
+--- Creates a VLine.
+---@return VLine
+function VLine() end
 
 --- Get the enabled property.
 ---@return boolean
@@ -3560,8 +6697,49 @@ function VLine:getStyleSheet() end
 ---@return VLine
 function VLine:setStyleSheet(value) end
 
+function VLine:close() end
+
+---@return VLine
+function VLine:hide() end
+
+---@param colour any
+---@return VLine
+function VLine:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return VLine
+function VLine:setFixedSize(width, height) end
+
+---@return VLine
+function VLine:setFocus() end
+
+---@param x any
+---@param y any
+---@return VLine
+function VLine:setLocation(x, y) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return VLine
+function VLine:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return VLine
+function VLine:setSize(width, height) end
+
+---@return VLine
+function VLine:show() end
+
 ---@class Window
 local Window = {}
+
+--- Accepts Lua's `Window{title=..., size={w, h}}` table-call sugar. `Window{...}` is just `Window({...})` -- a single positional table -- so no `unpacks_lua_table` decorator is needed, and avoiding it keeps the constructor callable from Python with plain keywords, which the tests depend on.
+---@param options? any
+---@return Window
+function Window(options) end
 
 --- Get the enabled property.
 ---@return boolean
@@ -3624,6 +6802,108 @@ function Window:getIcon() end
 ---@param value any
 ---@return Window
 function Window:setIcon(value) end
+
+---@param dock any
+---@param area? any
+---@return Window
+function Window:addDockable(dock, area) end
+
+---@param toolbar any
+---@param position? any
+---@return Window
+function Window:addToolbar(toolbar, position) end
+
+---@return Window
+function Window:center() end
+
+function Window:close() end
+
+function Window:getSize() end
+
+---@return Window
+function Window:hide() end
+
+---@return Window
+function Window:maximize() end
+
+---@return Window
+function Window:minimize() end
+
+---@param ontop? any
+---@return Window
+function Window:setAlwaysOnTop(ontop) end
+
+---@param colour any
+---@return Window
+function Window:setBackgroundColor(colour) end
+
+---@param cursor any
+---@return Window
+function Window:setCustomCursor(cursor) end
+
+---@param width any
+---@param height any
+---@return Window
+function Window:setFixedSize(width, height) end
+
+---@return Window
+function Window:setFocus() end
+
+--- QMainWindow cannot take a layout directly; it goes on the central widget.
+---@param layout any
+---@return Window
+function Window:setLayout(layout) end
+
+---@param x any
+---@param y any
+---@return Window
+function Window:setLocation(x, y) end
+
+---@param child any
+---@return Window
+function Window:setMainChild(child) end
+
+---@param menu any
+---@return Window
+function Window:setMenubar(menu) end
+
+---@param handler any
+function Window:setOnClose(handler) end
+
+---@param handler any
+function Window:setOnContextMenu(handler) end
+
+---@param handler any
+function Window:setOnMouseDoubleClick(handler) end
+
+---@param handler any
+function Window:setOnMouseMove(handler) end
+
+---@param handler any
+function Window:setOnMousePress(handler) end
+
+---@param handler any
+function Window:setOnMouseRelease(handler) end
+
+---@param handler any
+function Window:setOnResize(handler) end
+
+---@param handler any
+function Window:setOnShown(handler) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return Window
+function Window:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return Window
+function Window:setSize(width, height) end
+
+---@return Window
+function Window:show() end
 
 local ui = {}
 ui.Accordion = Accordion

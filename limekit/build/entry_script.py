@@ -5,7 +5,7 @@ Creates the entry point script for frozen Limekit applications
 
 import os
 
-from limekit.core.bootstrap.subprocess_runner import detect_api_version
+from limekit.launcher import detect_api_version
 
 
 class EntryScriptGenerator:

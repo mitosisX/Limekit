@@ -4,6 +4,18 @@
 ---@class Resources
 local Resources = {}
 
+---@param name any
+function Resources.images(name) end
+
+---@param name any
+function Resources.misc(name) end
+
+---@param key any
+function Resources.route(key) end
+
+---@param name any
+function Resources.scripts(name) end
+
 local res = {}
 res.Resources = Resources
 return res
