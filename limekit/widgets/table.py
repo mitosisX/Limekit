@@ -62,13 +62,16 @@ class Table(LimeWidget, QTableWidget):
 
     onCellClick = Event("cellClicked", passes_self=True,
                         params=(("row", "integer"), ("column", "integer")),
-                        doc="Fired when a cell is clicked. NOTE: row and column are the raw Qt 0-based positions, not 1-based like the rest of the API.")
+                        indices=("row", "column"),
+                        doc="Fired when a cell is clicked. row and column are 1-based.")
     onCellDoubleClick = Event("cellDoubleClicked", passes_self=True,
                               params=(("row", "integer"), ("column", "integer")),
-                              doc="Fired when a cell is double-clicked. NOTE: row and column are the raw Qt 0-based positions, not 1-based like the rest of the API.")
+                              indices=("row", "column"),
+                              doc="Fired when a cell is double-clicked. row and column are 1-based.")
     onCellChange = Event("cellChanged", passes_self=True,
                          params=(("row", "integer"), ("column", "integer")),
-                         doc="Fired when a cell's contents change. NOTE: row and column are the raw Qt 0-based positions, not 1-based like the rest of the API.")
+                         indices=("row", "column"),
+                         doc="Fired when a cell's contents change. row and column are 1-based.")
 
     def __init__(self, rows=0, columns=0):
         super().__init__(_to_int(rows, "rows"), _to_int(columns, "columns"))

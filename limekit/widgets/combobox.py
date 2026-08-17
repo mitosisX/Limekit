@@ -13,8 +13,9 @@ class ComboBox(LimeWidget, QComboBox):
 
     onItemSelect = Event("currentIndexChanged", passes_self=True,
                           params=(("index", "integer"),),
-                          doc="Fired when the selection changes. NOTE: index is the raw Qt "
-                              "0-based position, not 1-based like the rest of the API.")
+                          indices=("index",),
+                          doc="Fired when the selection changes. index is 1-based; "
+                              "0 means nothing is selected.")
 
     def __init__(self, items=None):
         super().__init__()

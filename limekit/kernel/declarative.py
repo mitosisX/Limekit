@@ -148,9 +148,10 @@ def _install_event(cls, event):
     setter_name = event.setter_name()
     signal_name, passes_self, label = event.qt_signal, event.passes_self, event.name
     slot_attr = f"_lime_slot_{event.name}"
+    index_positions = event.index_positions()
 
     def attach(self, handler, _sig=signal_name, _self=passes_self,
-               _ev=label, _slot=slot_attr):
+               _ev=label, _slot=slot_attr, _idx=index_positions):
         signal = getattr(self, _sig)
 
         previous = getattr(self, _slot, None)
@@ -158,12 +159,29 @@ def _install_event(cls, event):
             signal.disconnect(previous)
 
         widget_name = type(self).__name__
+
+        def shift(args):
+            """Qt counts positions from 0; every Lua-facing index counts from 1.
+
+            A signal reporting "no selection" as -1 lands on 0, which is
+            exactly what "nothing" means in 1-based counting -- and 0 is
+            already rejected everywhere else as an out-of-range index.
+            """
+            if not _idx:
+                return args
+            shifted = list(args)
+            for offset in _idx:
+                value = shifted[offset] if offset < len(shifted) else None
+                if isinstance(value, int) and not isinstance(value, bool):
+                    shifted[offset] = value + 1
+            return tuple(shifted)
+
         if _self:
             def call(*args, _h=handler, _w=self):
-                return _h(_w, *args)
+                return _h(_w, *shift(args))
         else:
             def call(*args, _h=handler):
-                return _h(*args)
+                return _h(*shift(args))
 
         slot = guard(call, widget=widget_name, event=_ev)
         setattr(self, _slot, slot)

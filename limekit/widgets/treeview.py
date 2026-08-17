@@ -62,13 +62,12 @@ class TreeView(LimeWidget, QTreeWidget):
 
     onItemClick = Event("itemClicked", passes_self=True,
                         params=(("item", "any"), ("column", "integer")),
-                        doc="Fired when an item is clicked. NOTE: column is the raw "
-                            "Qt 0-based position, not 1-based like the rest of the API.")
+                        indices=("column",),
+                        doc="Fired when an item is clicked. column is 1-based.")
     onItemDoubleClick = Event("itemDoubleClicked", passes_self=True,
                               params=(("item", "any"), ("column", "integer")),
-                              doc="Fired when an item is double-clicked. NOTE: column is "
-                                  "the raw Qt 0-based position, not 1-based like the rest "
-                                  "of the API.")
+                              indices=("column",),
+                              doc="Fired when an item is double-clicked. column is 1-based.")
 
     def __init__(self):
         super().__init__()

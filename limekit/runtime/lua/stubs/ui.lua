@@ -824,7 +824,7 @@ function ComboBox:setEditable(value) end
 ---@return boolean
 function ComboBox:isEditable() end
 
---- Fired when the selection changes. NOTE: index is the raw Qt 0-based position, not 1-based like the rest of the API.
+--- Fired when the selection changes. index is 1-based; 0 means nothing is selected.
 ---@param handler fun(widget: ComboBox, index: integer)
 ---@return ComboBox
 function ComboBox:setOnItemSelect(handler) end
@@ -5551,17 +5551,17 @@ function Table:setAlternatingRowColors(value) end
 ---@return boolean
 function Table:isAlternatingRowColors() end
 
---- Fired when a cell is clicked. NOTE: row and column are the raw Qt 0-based positions, not 1-based like the rest of the API.
+--- Fired when a cell is clicked. row and column are 1-based.
 ---@param handler fun(widget: Table, row: integer, column: integer)
 ---@return Table
 function Table:setOnCellClick(handler) end
 
---- Fired when a cell is double-clicked. NOTE: row and column are the raw Qt 0-based positions, not 1-based like the rest of the API.
+--- Fired when a cell is double-clicked. row and column are 1-based.
 ---@param handler fun(widget: Table, row: integer, column: integer)
 ---@return Table
 function Table:setOnCellDoubleClick(handler) end
 
---- Fired when a cell's contents change. NOTE: row and column are the raw Qt 0-based positions, not 1-based like the rest of the API.
+--- Fired when a cell's contents change. row and column are 1-based.
 ---@param handler fun(widget: Table, row: integer, column: integer)
 ---@return Table
 function Table:setOnCellChange(handler) end
@@ -6350,12 +6350,12 @@ function TreeView:setHeaderHidden(value) end
 ---@return boolean
 function TreeView:isHeaderHidden() end
 
---- Fired when an item is clicked. NOTE: column is the raw Qt 0-based position, not 1-based like the rest of the API.
+--- Fired when an item is clicked. column is 1-based.
 ---@param handler fun(widget: TreeView, item: any, column: integer)
 ---@return TreeView
 function TreeView:setOnItemClick(handler) end
 
---- Fired when an item is double-clicked. NOTE: column is the raw Qt 0-based position, not 1-based like the rest of the API.
+--- Fired when an item is double-clicked. column is 1-based.
 ---@param handler fun(widget: TreeView, item: any, column: integer)
 ---@return TreeView
 function TreeView:setOnItemDoubleClick(handler) end
@@ -6535,12 +6535,12 @@ function TreeWidget:setHeaderHidden(value) end
 ---@return boolean
 function TreeWidget:isHeaderHidden() end
 
---- Fired when an item is clicked. NOTE: column is the raw Qt 0-based position, not 1-based like the rest of the API.
+--- Fired when an item is clicked. column is 1-based.
 ---@param handler fun(widget: TreeWidget, item: any, column: integer)
 ---@return TreeWidget
 function TreeWidget:setOnItemClick(handler) end
 
---- Fired when an item is double-clicked. NOTE: column is the raw Qt 0-based position, not 1-based like the rest of the API.
+--- Fired when an item is double-clicked. column is 1-based.
 ---@param handler fun(widget: TreeWidget, item: any, column: integer)
 ---@return TreeWidget
 function TreeWidget:setOnItemDoubleClick(handler) end

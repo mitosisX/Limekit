@@ -50,7 +50,8 @@ class Prop(_Spec):
 class Event(_Spec):
     """A Qt signal exposed to Lua as a `setOn<Name>` handler slot."""
 
-    def __init__(self, qt_signal, *, passes_self=True, doc="", params=None):
+    def __init__(self, qt_signal, *, passes_self=True, doc="", params=None,
+                 indices=()):
         self.qt_signal = qt_signal
         self.passes_self = passes_self
         self.doc = doc
@@ -60,6 +61,21 @@ class Event(_Spec):
         # every handler as fun(widget) -- silently wrong for the ~20 events
         # that carry a value, an index or an item.
         self.params = tuple(params or ())
+        # Which of those parameters are Qt positions, and so need translating
+        # from Qt's 0-based counting to the 1-based counting the rest of the
+        # API uses. Without this, Table.onCellClick reported the top-left cell
+        # as (0, 0) while setCellText(1, 1) addressed it -- the framework
+        # contradicting its own contract. Tab does the same translation by
+        # hand, for exactly this reason; declaring it here means every event
+        # gets it, consistently.
+        self.indices = tuple(indices)
+
+    def index_positions(self):
+        """Argument offsets (after the widget) that need 0 -> 1 translation."""
+        return tuple(
+            offset for offset, (name, _type) in enumerate(self.params)
+            if name in self.indices
+        )
 
     def setter_name(self):
         return f"set{_capitalise(self.name)}"
