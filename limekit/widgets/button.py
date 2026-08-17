@@ -15,7 +15,8 @@ class Button(LimeWidget, QPushButton):
     checkable = Prop(bool, qt=("isCheckable", "setCheckable"))
     checked = Prop(bool, qt=("isChecked", "setChecked"))
 
-    onClick = Event("clicked", passes_self=True, doc="Fired when clicked.")
+    onClick = Event("clicked", passes_self=True, doc="Fired when clicked.",
+                     params=(("checked", "boolean"),))
 
     def __init__(self, text="Button"):
         super().__init__()

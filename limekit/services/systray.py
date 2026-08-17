@@ -24,6 +24,7 @@ class SysTray(LimeObject, QSystemTrayIcon):
                 doc="the tray icon's right-click context menu")
 
     onActivated = Event("activated", passes_self=True,
+                         params=(("reason", "any"),),
                          doc="Fired when the user clicks or double-clicks the tray icon.")
 
     def __init__(self, icon=None):

@@ -11,7 +11,10 @@ class ComboBox(LimeWidget, QComboBox):
 
     editable = Prop(bool, qt=("isEditable", "setEditable"))
 
-    onItemSelect = Event("currentIndexChanged", passes_self=True)
+    onItemSelect = Event("currentIndexChanged", passes_self=True,
+                          params=(("index", "integer"),),
+                          doc="Fired when the selection changes. NOTE: index is the raw Qt "
+                              "0-based position, not 1-based like the rest of the API.")
 
     def __init__(self, items=None):
         super().__init__()

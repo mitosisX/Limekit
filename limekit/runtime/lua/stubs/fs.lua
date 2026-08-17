@@ -4,85 +4,123 @@
 ---@class FileSystem
 local FileSystem = {}
 
----@param path any
----@param content any
----@param encoding? any
+--- Adds content to the end of the file.
+---@param path string
+---@param content string
+---@param encoding? string
 function FileSystem.appendFile(path, content, encoding) end
 
----@param source any
----@param destination any
+--- Copies a file.
+---@param source string
+---@param destination string
 function FileSystem.copyFile(source, destination) end
 
----@param path any
+--- Creates an empty file.
+---@param path string
 function FileSystem.createFile(path) end
 
----@param path any
+--- Creates a folder, including any missing parents.
+---@param path string
 function FileSystem.createFolder(path) end
 
----@param path any
+--- Deletes a file.
+---@param path string
 function FileSystem.deleteFile(path) end
 
----@param path any
+--- Whether a file or folder exists.
+---@param path string
+---@return boolean
 function FileSystem.exists(path) end
 
----@param text any
----@param indent? any
+--- Pretty-prints a JSON string without touching a file.
+---@param text string
+---@param indent? integer
+---@return string
 function FileSystem.formatJSON(text, indent) end
 
----@param path any
+--- The folder containing the path.
+---@param path string
+---@return string
 function FileSystem.getDirName(path) end
 
----@param path any
+--- The file extension.
+---@param path string
+---@return string
 function FileSystem.getFileExt(path) end
 
----@param path any
+--- The filename portion of a path.
+---@param path string
+---@return string
 function FileSystem.getFileName(path) end
 
----@param path any
+--- Size in bytes.
+---@param path string
+---@return integer
 function FileSystem.getFileSize(path) end
 
----@param path any
+--- Whether the file has no content.
+---@param path string
+---@return boolean
 function FileSystem.isFileEmpty(path) end
 
----@param path any
+--- Whether the path is a folder.
+---@param path string
+---@return boolean
 function FileSystem.isFolder(path) end
 
+--- Joins path segments with the right separator for the platform.
 ---@param ... any
+---@return string
 function FileSystem.joinPaths(...) end
 
----@param path any
+--- The names directly inside a folder.
+---@param path string
+---@return string[]
 function FileSystem.listFolder(path) end
 
----@param path any
+--- Normalises a path.
+---@param path string
+---@return string
 function FileSystem.normalPath(path) end
 
----@param path any
----@param encoding? any
+--- The whole file as a string.
+---@param path string
+---@param encoding? string
+---@return string
 function FileSystem.readFile(path, encoding) end
 
----@param path any
----@param encoding? any
+--- The file as a table of lines.
+---@param path string
+---@param encoding? string
+---@return string[]
 function FileSystem.readFileLines(path, encoding) end
 
----@param path any
+--- Reads a JSON file and returns it as a lua table.
+---@param path string
+---@return table
 function FileSystem.readJSON(path) end
 
----@param path any
----@param new_path any
+--- Renames or moves a file.
+---@param path string
+---@param new_path string
 function FileSystem.renameFile(path, new_path) end
 
----@param path any
----@param show_hidden? any
+--- Walks a folder recursively.
+---@param path string
+---@param show_hidden? boolean
+---@return string[]
 function FileSystem.walkDir(path, show_hidden) end
 
----@param path any
----@param content any
----@param encoding? any
+--- Writes content, replacing whatever was there.
+---@param path string
+---@param content string
+---@param encoding? string
 function FileSystem.writeFile(path, content, encoding) end
 
----@param path any
----@param data any
----@param indent? any
+--- Writes a lua table as JSON.
+---@param path string
+---@param data table
+---@param indent? integer
 function FileSystem.writeJSON(path, data, indent) end
 
 local fs = {}

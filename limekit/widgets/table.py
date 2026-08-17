@@ -60,9 +60,15 @@ class Table(LimeWidget, QTableWidget):
     sortingEnabled = Prop(bool, qt=("isSortingEnabled", "setSortingEnabled"))
     alternatingRowColors = Prop(bool, qt=("alternatingRowColors", "setAlternatingRowColors"))
 
-    onCellClick = Event("cellClicked", passes_self=True)
-    onCellDoubleClick = Event("cellDoubleClicked", passes_self=True)
-    onCellChange = Event("cellChanged", passes_self=True)
+    onCellClick = Event("cellClicked", passes_self=True,
+                        params=(("row", "integer"), ("column", "integer")),
+                        doc="Fired when a cell is clicked. NOTE: row and column are the raw Qt 0-based positions, not 1-based like the rest of the API.")
+    onCellDoubleClick = Event("cellDoubleClicked", passes_self=True,
+                              params=(("row", "integer"), ("column", "integer")),
+                              doc="Fired when a cell is double-clicked. NOTE: row and column are the raw Qt 0-based positions, not 1-based like the rest of the API.")
+    onCellChange = Event("cellChanged", passes_self=True,
+                         params=(("row", "integer"), ("column", "integer")),
+                         doc="Fired when a cell's contents change. NOTE: row and column are the raw Qt 0-based positions, not 1-based like the rest of the API.")
 
     def __init__(self, rows=0, columns=0):
         super().__init__(_to_int(rows, "rows"), _to_int(columns, "columns"))

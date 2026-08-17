@@ -33,8 +33,10 @@ class Dock(LimeWidget, QDockWidget):
     icon = Prop(object, qt=("windowIcon", "setWindowIcon"), coerce=Icon)
     floating = Prop(bool, qt=("isFloating", "setFloating"))
 
-    onLocationChange = Event("dockLocationChanged", passes_self=True)
-    onVisibilityChange = Event("visibilityChanged", passes_self=True)
+    onLocationChange = Event("dockLocationChanged", passes_self=True,
+                              params=(("area", "any"),))
+    onVisibilityChange = Event("visibilityChanged", passes_self=True,
+                                params=(("visible", "boolean"),))
 
     def __init__(self, title="Dockable"):
         super().__init__(str(title))

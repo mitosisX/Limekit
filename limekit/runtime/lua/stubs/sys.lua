@@ -118,56 +118,87 @@ function Signal:setOnSignal(handler) end
 ---@class System
 local System = {}
 
----@param size any
+--- Turns a byte count into a readable size such as 1.4 MB.
+---@param size integer
+---@return string
 function System.bytesToReadableSize(size) end
 
----@param name any
+--- Looks up an emoji by name.
+---@param name string
+---@return string
 function System.emoji(name) end
 
---- Run a shell command and return (stdout, stderr, returncode). Bounded by a timeout so a hung child process cannot block the GUI thread forever -- 1.x's equivalent had no timeout at all.
----@param cmd any
+--- Runs an external command and returns its output. Bounded at 30 seconds.
+---@param cmd string
+---@return string
 function System.execute(cmd) end
 
----@param code? any
+--- Quits the application.
+---@param code? integer
 function System.exit(code) end
 
----@param text any
+--- Decodes a base64 string.
+---@param text string
+---@return string
 function System.fromBase64(text) end
 
+--- How many CPU cores are available.
+---@return integer
 function System.getCPUCount() end
 
+--- The text currently on the clipboard.
+---@return string
 function System.getClipboardText() end
 
+--- The operating system name.
+---@return string
 function System.getOSName() end
 
+--- The operating system version.
+---@return string
 function System.getOSVersion() end
 
+--- The platform identifier.
+---@return string
 function System.getPlatformName() end
 
+--- The CPU model name.
+---@return string
 function System.getProcessorName() end
 
---- A named QStandardPaths location, e.g. 'documents', 'home'.
----@param name any
+--- A well-known folder such as desktop, documents, downloads or temp.
+---@param name string
+---@return string
 function System.getStandardPath(name) end
 
----@param kind any
----@param text any
+--- Hashes a string: md5, sha1, sha224, sha256, sha384 or sha512.
+---@param kind string
+---@param text string
+---@return string
 function System.makeHash(kind, text) end
 
----@param items any
+--- Picks one item from a table at random.
+---@param items any[]
+---@return any
 function System.randomChoice(items) end
 
----@param text any
+--- Puts text on the clipboard.
+---@param text string
 function System.setClipboardText(text) end
 
----@param seconds any
+--- Pauses for a number of seconds. Blocks the interface -- prefer sys.Thread.
+---@param seconds number
 function System.sleep(seconds) end
 
----@param text any
----@param sep? any
+--- Splits a string into a table.
+---@param text string
+---@param sep? string
+---@return string[]
 function System.splitString(text, sep) end
 
----@param text any
+--- Encodes a string as base64.
+---@param text string
+---@return string
 function System.toBase64(text) end
 
 ---@class Thread

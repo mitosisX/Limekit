@@ -27,7 +27,7 @@ from limekit.widgets.base import LimeWidget
 class MenuItem(LimeAction, QAction):
     __lime__ = "ui.MenuItem"
 
-    onClick = Event("triggered", passes_self=True)
+    onClick = Event("triggered", passes_self=True, params=(("item", "any"),))
 
     def __init__(self, text=""):
         super().__init__()
@@ -41,7 +41,9 @@ class Menu(LimeWidget, QMenu):
     title = Prop(str, qt=("title", "setTitle"), coerce=str)
     icon = Prop(object, qt=("icon", "setIcon"), coerce=Icon)
 
-    onClick = Event("triggered", passes_self=True)
+    onClick = Event("triggered", passes_self=True, params=(("item", "any"),),
+                    doc="Fired when any item in the menu is chosen. The handler "
+                        "receives the MenuItem that was clicked.")
 
     def __init__(self, title=""):
         super().__init__()

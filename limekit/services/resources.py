@@ -12,6 +12,7 @@ from pathlib import Path
 
 from limekit.kernel.declarative import LimeObject
 from limekit.kernel.errors import BridgeError, ProjectError, RouteError
+from limekit.kernel.spec import method
 
 _project_root = None
 
@@ -108,24 +109,28 @@ class Resources(LimeObject):
     __lime__ = "res.Resources"
 
     @staticmethod
+    @method({"name": "string"}, returns="string", doc="The full path to a file in the project's images folder.")
     def images(name):
         if not isinstance(name, str):
             raise BridgeError(f"expected a string resource name, got {name!r}")
         return _resource_path("images", name)
 
     @staticmethod
+    @method({"name": "string"}, returns="string", doc="The full path to a file in the project's scripts folder.")
     def scripts(name):
         if not isinstance(name, str):
             raise BridgeError(f"expected a string resource name, got {name!r}")
         return _resource_path("scripts", name)
 
     @staticmethod
+    @method({"name": "string"}, returns="string", doc="The full path to a file in the project's misc folder.")
     def misc(name):
         if not isinstance(name, str):
             raise BridgeError(f"expected a string resource name, got {name!r}")
         return _resource_path("misc", name)
 
     @staticmethod
+    @method({"key": "string"}, returns="string", doc="Resolves a named route declared in app.json.")
     def route(key):
         if not isinstance(key, str):
             raise BridgeError(f"expected a string route key, got {key!r}")

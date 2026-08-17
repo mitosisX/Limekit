@@ -16,6 +16,7 @@ import time
 from limekit.kernel.bridge.convert import to_lua
 from limekit.kernel.declarative import LimeObject
 from limekit.kernel.errors import BridgeError
+from limekit.kernel.spec import method
 
 _EXECUTE_TIMEOUT_SECONDS = 30
 
@@ -30,6 +31,7 @@ class System(LimeObject):
     # -- processes ----------------------------------------------------------
 
     @staticmethod
+    @method({"cmd": "string"}, returns="string", doc="Runs an external command and returns its output. Bounded at 30 seconds.")
     def execute(cmd):
         """Run a shell command and return (stdout, stderr, returncode).
 
@@ -55,28 +57,34 @@ class System(LimeObject):
         })
 
     @staticmethod
+    @method({"code": "integer"}, doc="Quits the application.")
     def exit(code=0):
         sys.exit(int(code))
 
     # -- system info ----------------------------------------------------
 
     @staticmethod
+    @method(returns="string", doc="The operating system name.")
     def getOSName():
         return platform.system()
 
     @staticmethod
+    @method(returns="string", doc="The operating system version.")
     def getOSVersion():
         return platform.version()
 
     @staticmethod
+    @method(returns="string", doc="The platform identifier.")
     def getPlatformName():
         return platform.platform()
 
     @staticmethod
+    @method(returns="string", doc="The CPU model name.")
     def getProcessorName():
         return platform.processor()
 
     @staticmethod
+    @method(returns="integer", doc="How many CPU cores are available.")
     def getCPUCount():
         count = os.cpu_count()
         if count is None:
@@ -84,6 +92,7 @@ class System(LimeObject):
         return count
 
     @staticmethod
+    @method({"name": "string"}, returns="string", doc="A well-known folder such as desktop, documents, downloads or temp.")
     def getStandardPath(name):
         """A named QStandardPaths location, e.g. 'documents', 'home'."""
         from PySide6.QtCore import QStandardPaths
@@ -97,6 +106,7 @@ class System(LimeObject):
         return QStandardPaths.writableLocation(location)
 
     @staticmethod
+    @method({"seconds": "number"}, doc="Pauses for a number of seconds. Blocks the interface -- prefer sys.Thread.")
     def sleep(seconds):
         try:
             duration = float(seconds)
@@ -110,6 +120,7 @@ class System(LimeObject):
     # -- clipboard --------------------------------------------------------
 
     @staticmethod
+    @method(returns="string", doc="The text currently on the clipboard.")
     def getClipboardText():
         from PySide6.QtWidgets import QApplication
         clipboard = QApplication.clipboard()
@@ -118,6 +129,7 @@ class System(LimeObject):
         return clipboard.text()
 
     @staticmethod
+    @method({"text": "string"}, doc="Puts text on the clipboard.")
     def setClipboardText(text):
         from PySide6.QtWidgets import QApplication
         if not isinstance(text, str):
@@ -131,12 +143,14 @@ class System(LimeObject):
     # -- misc ---------------------------------------------------------------
 
     @staticmethod
+    @method({"text": "string", "sep": "string"}, returns="string[]", doc="Splits a string into a table.")
     def splitString(text, sep=" "):
         if not isinstance(text, str):
             raise BridgeError(f"expected a string, got {text!r}")
         return to_lua(text.split(sep))
 
     @staticmethod
+    @method({"items": "any[]"}, returns="any", doc="Picks one item from a table at random.")
     def randomChoice(items):
         from limekit.kernel.bridge.convert import as_sequence
         options = as_sequence(items)
@@ -145,6 +159,7 @@ class System(LimeObject):
         return random.choice(options)
 
     @staticmethod
+    @method({"name": "string"}, returns="string", doc="Looks up an emoji by name.")
     def emoji(name):
         try:
             import emoji as emoji_pkg
@@ -158,6 +173,7 @@ class System(LimeObject):
         return emoji_pkg.emojize(name, language="alias")
 
     @staticmethod
+    @method({"kind": "string", "text": "string"}, returns="string", doc="Hashes a string: md5, sha1, sha224, sha256, sha384 or sha512.")
     def makeHash(kind, text):
         if not isinstance(kind, str) or kind.lower() not in _HASH_ALGORITHMS:
             raise BridgeError(
@@ -169,12 +185,14 @@ class System(LimeObject):
         return hashlib.new(kind.lower(), text.encode("utf-8")).hexdigest()
 
     @staticmethod
+    @method({"text": "string"}, returns="string", doc="Encodes a string as base64.")
     def toBase64(text):
         if not isinstance(text, str):
             raise BridgeError(f"expected a string, got {text!r}")
         return base64.b64encode(text.encode("utf-8")).decode("ascii")
 
     @staticmethod
+    @method({"text": "string"}, returns="string", doc="Decodes a base64 string.")
     def fromBase64(text):
         if not isinstance(text, str):
             raise BridgeError(f"expected a string, got {text!r}")
@@ -184,6 +202,7 @@ class System(LimeObject):
             raise BridgeError(f"could not decode base64 {text!r}: {exc}") from exc
 
     @staticmethod
+    @method({"size": "integer"}, returns="string", doc="Turns a byte count into a readable size such as 1.4 MB.")
     def bytesToReadableSize(size):
         try:
             value = float(size)

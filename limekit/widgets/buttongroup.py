@@ -16,7 +16,8 @@ class ButtonGroup(LimeObject, QButtonGroup):
 
     exclusive = Prop(bool, qt=("exclusive", "setExclusive"))
 
-    onClick = Event("buttonClicked", passes_self=True)
+    onClick = Event("buttonClicked", passes_self=True,
+                     params=(("button", "any"),))
 
     def addButton(self, button):
         """Qt native re-exposed so Lua's `group:addButton(b)` colon syntax works."""

@@ -32,7 +32,7 @@ class LineEdit(LimeWidget, QLineEdit):
     inputMode = Prop(object, qt=("echoMode", "setEchoMode"), coerce=_echo_mode,
                       doc="one of: normal, password, hideinput, passwordonedit")
 
-    onTextChange = Event("textChanged", passes_self=True)
+    onTextChange = Event("textChanged", passes_self=True, params=(("text", "string"),))
     onReturnPress = Event("returnPressed", passes_self=True)
     onTextSelection = Event("selectionChanged", passes_self=True)
 

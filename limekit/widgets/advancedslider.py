@@ -25,7 +25,8 @@ class AdvancedSlider(LimeWidget, QWidget):
 
     # object, not int/float, so both int and float values can pass through.
     valueChanged = Signal(object)
-    onValueChanged = Event("valueChanged", passes_self=True)
+    onValueChanged = Event("valueChanged", passes_self=True,
+                             params=(("value", "number"),))
 
     def __init__(self):
         super().__init__()

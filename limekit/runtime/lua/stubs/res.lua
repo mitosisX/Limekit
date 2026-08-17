@@ -4,16 +4,24 @@
 ---@class Resources
 local Resources = {}
 
----@param name any
+--- The full path to a file in the project's images folder.
+---@param name string
+---@return string
 function Resources.images(name) end
 
----@param name any
+--- The full path to a file in the project's misc folder.
+---@param name string
+---@return string
 function Resources.misc(name) end
 
----@param key any
+--- Resolves a named route declared in app.json.
+---@param key string
+---@return string
 function Resources.route(key) end
 
----@param name any
+--- The full path to a file in the project's scripts folder.
+---@param name string
+---@return string
 function Resources.scripts(name) end
 
 local res = {}

@@ -12,7 +12,7 @@ class Knob(LimeWidget, QDial):
     value = Prop(int, qt=("value", "setValue"))
     notchesVisible = Prop(bool, qt=("notchesVisible", "setNotchesVisible"))
 
-    onValueChanged = Event("valueChanged", passes_self=True)
+    onValueChanged = Event("valueChanged", passes_self=True, params=(("value", "integer"),))
 
     def __init__(self):
         super().__init__()

@@ -50,13 +50,25 @@ class Prop(_Spec):
 class Event(_Spec):
     """A Qt signal exposed to Lua as a `setOn<Name>` handler slot."""
 
-    def __init__(self, qt_signal, *, passes_self=True, doc=""):
+    def __init__(self, qt_signal, *, passes_self=True, doc="", params=None):
         self.qt_signal = qt_signal
         self.passes_self = passes_self
         self.doc = doc
+        # What the Qt signal delivers *after* the widget, as
+        # ((name, lua_type), ...). The generated attach() passes the signal's
+        # arguments straight through, so without this the stubs described
+        # every handler as fun(widget) -- silently wrong for the ~20 events
+        # that carry a value, an index or an item.
+        self.params = tuple(params or ())
 
     def setter_name(self):
         return f"set{_capitalise(self.name)}"
+
+    def handler_signature(self, owner):
+        """The Lua type of the handler, e.g. `fun(widget: Table, row: integer)`."""
+        parts = [f"widget: {owner}"] if self.passes_self else []
+        parts.extend(f"{name}: {typename}" for name, typename in self.params)
+        return f"fun({', '.join(parts)})"
 
 
 class Method:

@@ -35,6 +35,22 @@ def prop_type(prop):
     return lua_type(prop.type)
 
 
+# Lua's reserved words. A Python parameter is free to be called `end`
+# -- `setRange(self, start, end)` -- but emitting that verbatim produces
+# `function Slider:setRange(start, end) end`, which is a syntax error, and the
+# language server rejects the whole file rather than just that line. Suffixed
+# with an underscore, matching how the prose docs already write it.
+LUA_KEYWORDS = frozenset({
+    "and", "break", "do", "else", "elseif", "end", "false", "for", "function",
+    "goto", "if", "in", "local", "nil", "not", "or", "repeat", "return",
+    "then", "true", "until", "while",
+})
+
+
+def lua_name(name):
+    return f"{name}_" if name in LUA_KEYWORDS else name
+
+
 def _escape(text):
     """One-line a docstring for a Lua `---` comment."""
     return " ".join(text.split())
@@ -49,6 +65,7 @@ def render_params(info):
     """Lua parameter list plus the `---@param` annotations for it."""
     names, annotations = [], []
     for pname, declared, has_default in info.params:
+        pname = lua_name(pname)
         names.append(pname)
         typename = declared or "any"
         suffix = "?" if has_default else ""
@@ -126,8 +143,8 @@ def render_class(name, cls):
 
     for event in cls.__events__:
         doc = event.doc or f"Attach a handler for {event.name}."
-        lines.append(f"--- {doc}")
-        lines.append(f"---@param handler fun(widget: {name})")
+        lines.append(f"--- {_escape(doc)}")
+        lines.append(f"---@param handler {event.handler_signature(name)}")
         lines.append(f"---@return {name}")
         lines.append(f"function {name}:{event.setter_name()}(handler) end")
         lines.append("")

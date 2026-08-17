@@ -14,7 +14,7 @@ class RadioButton(LimeWidget, QRadioButton):
     iconSize = Prop(object, qt=("iconSize", "setIconSize"), coerce=Size,
                      doc="a {width, height} pair")
 
-    onClick = Event("clicked", passes_self=True)
+    onClick = Event("clicked", passes_self=True, params=(("checked", "boolean"),))
 
     def __init__(self, text=""):
         super().__init__()

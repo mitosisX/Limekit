@@ -167,7 +167,7 @@ function AdvancedSlider:getStyleSheet() end
 function AdvancedSlider:setStyleSheet(value) end
 
 --- Attach a handler for onValueChanged.
----@param handler fun(widget: AdvancedSlider)
+---@param handler fun(widget: AdvancedSlider, value: number)
 ---@return AdvancedSlider
 function AdvancedSlider:setOnValueChanged(handler) end
 
@@ -461,7 +461,7 @@ function Button:setChecked(value) end
 function Button:isChecked() end
 
 --- Fired when clicked.
----@param handler fun(widget: Button)
+---@param handler fun(widget: Button, checked: boolean)
 ---@return Button
 function Button:setOnClick(handler) end
 
@@ -525,7 +525,7 @@ function ButtonGroup:setExclusive(value) end
 function ButtonGroup:isExclusive() end
 
 --- Attach a handler for onClick.
----@param handler fun(widget: ButtonGroup)
+---@param handler fun(widget: ButtonGroup, button: any)
 ---@return ButtonGroup
 function ButtonGroup:setOnClick(handler) end
 
@@ -719,7 +719,7 @@ function CheckBox:setChecked(value) end
 function CheckBox:isChecked() end
 
 --- Attach a handler for onCheck.
----@param handler fun(widget: CheckBox)
+---@param handler fun(widget: CheckBox, checked: boolean)
 ---@return CheckBox
 function CheckBox:setOnCheck(handler) end
 
@@ -824,8 +824,8 @@ function ComboBox:setEditable(value) end
 ---@return boolean
 function ComboBox:isEditable() end
 
---- Attach a handler for onItemSelect.
----@param handler fun(widget: ComboBox)
+--- Fired when the selection changes. NOTE: index is the raw Qt 0-based position, not 1-based like the rest of the API.
+---@param handler fun(widget: ComboBox, index: integer)
 ---@return ComboBox
 function ComboBox:setOnItemSelect(handler) end
 
@@ -958,7 +958,7 @@ function CommandButton:getIcon() end
 function CommandButton:setIcon(value) end
 
 --- Attach a handler for onClick.
----@param handler fun(widget: CommandButton)
+---@param handler fun(widget: CommandButton, checked: boolean)
 ---@return CommandButton
 function CommandButton:setOnClick(handler) end
 
@@ -1207,90 +1207,116 @@ function DatePicker:show() end
 ---@class Dialogs
 local Dialogs = {}
 
+--- A plain message with no icon. Returns nil when dismissed.
 ---@param parent any
----@param title any
----@param message any
+---@param title string
+---@param message string
 function Dialogs.alert(parent, title, message) end
 
+--- Asks the user to pick from a list. index is 1-based. Returns nil if cancelled.
 ---@param parent any
----@param title any
----@param label any
----@param items any
----@param index? any
+---@param title string
+---@param label string
+---@param items string[]
+---@param index? integer
+---@return string
 function Dialogs.comboBoxInput(parent, title, label, items, index) end
 
+--- An error message.
 ---@param parent any
----@param title any
----@param message any
+---@param title string
+---@param message string
 function Dialogs.critical(parent, title, message) end
 
+--- Asks for a decimal number. Returns nil if cancelled.
 ---@param parent any
----@param title any
----@param label any
----@param value? any
----@param min_value? any
----@param max_value? any
----@param decimals? any
+---@param title string
+---@param label string
+---@param value? number
+---@param min_value? number
+---@param max_value? number
+---@param decimals? integer
+---@return number
 function Dialogs.doubleInput(parent, title, label, value, min_value, max_value, decimals) end
 
+--- An information message.
 ---@param parent any
----@param title any
----@param message any
+---@param title string
+---@param message string
 function Dialogs.info(parent, title, message) end
 
+--- Asks for a whole number. Returns nil if cancelled.
 ---@param parent any
----@param title any
----@param label any
----@param value? any
----@param min_value? any
----@param max_value? any
----@param step? any
+---@param title string
+---@param label string
+---@param value? integer
+---@param min_value? integer
+---@param max_value? integer
+---@param step? integer
+---@return integer
 function Dialogs.integerInput(parent, title, label, value, min_value, max_value, step) end
 
+--- Asks for several lines of text. Returns nil if cancelled.
 ---@param parent any
----@param title any
----@param label any
----@param text? any
+---@param title string
+---@param label string
+---@param text? string
+---@return string
 function Dialogs.multilineInput(parent, title, label, text) end
 
+--- Asks for a file to open. filters maps a description to its extensions. Returns nil if cancelled.
 ---@param parent any
----@param title? any
----@param directory? any
----@param filters? any
+---@param title? string
+---@param directory? string
+---@param filters? table<string, string[]>
+---@return string
 function Dialogs.openFile(parent, title, directory, filters) end
 
+--- Opens the colour picker. Returns nil if cancelled.
 ---@param parent? any
 ---@param initial? any
+---@return any
 function Dialogs.pickColour(parent, initial) end
 
+--- Asks the user to choose a folder. Returns nil if cancelled.
 ---@param parent any
----@param title? any
----@param directory? any
+---@param title? string
+---@param directory? string
+---@return string
 function Dialogs.pickFolder(parent, title, directory) end
 
+--- Opens the font picker. Returns nil if cancelled.
 ---@param parent? any
+---@return any
 function Dialogs.pickFont(parent) end
 
+--- Asks a yes/no question.
 ---@param parent any
----@param title any
----@param message any
+---@param title string
+---@param message string
+---@return boolean
 function Dialogs.question(parent, title, message) end
 
+--- Asks where to save a file. Returns nil if cancelled.
 ---@param parent any
----@param title? any
----@param directory? any
----@param filters? any
+---@param title? string
+---@param directory? string
+---@param filters? table<string, string[]>
+---@return string
 function Dialogs.saveFile(parent, title, directory, filters) end
 
+--- Asks for a single line of text. Returns nil if cancelled.
 ---@param parent any
----@param title any
----@param label any
----@param text? any
+---@param title string
+---@param label string
+---@param text? string
+---@return string
 function Dialogs.textInput(parent, title, label, text) end
 
+--- A warning message.
 ---@param parent any
----@param title any
----@param message any
+---@param title string
+---@param message string
 function Dialogs.warning(parent, title, message) end
 
 ---@class Dock
@@ -1377,12 +1403,12 @@ function Dock:setFloating(value) end
 function Dock:isFloating() end
 
 --- Attach a handler for onLocationChange.
----@param handler fun(widget: Dock)
+---@param handler fun(widget: Dock, area: any)
 ---@return Dock
 function Dock:setOnLocationChange(handler) end
 
 --- Attach a handler for onVisibilityChange.
----@param handler fun(widget: Dock)
+---@param handler fun(widget: Dock, visible: boolean)
 ---@return Dock
 function Dock:setOnVisibilityChange(handler) end
 
@@ -1532,12 +1558,12 @@ function Dockable:setFloating(value) end
 function Dockable:isFloating() end
 
 --- Attach a handler for onLocationChange.
----@param handler fun(widget: Dockable)
+---@param handler fun(widget: Dockable, area: any)
 ---@return Dockable
 function Dockable:setOnLocationChange(handler) end
 
 --- Attach a handler for onVisibilityChange.
----@param handler fun(widget: Dockable)
+---@param handler fun(widget: Dockable, visible: boolean)
 ---@return Dockable
 function Dockable:setOnVisibilityChange(handler) end
 
@@ -1678,7 +1704,7 @@ function DoubleSpinner:getSuffix() end
 function DoubleSpinner:setSuffix(value) end
 
 --- Attach a handler for onValueChange.
----@param handler fun(widget: DoubleSpinner)
+---@param handler fun(widget: DoubleSpinner, value: number)
 ---@return DoubleSpinner
 function DoubleSpinner:setOnValueChange(handler) end
 
@@ -1705,9 +1731,9 @@ function DoubleSpinner:setFocus() end
 function DoubleSpinner:setLocation(x, y) end
 
 ---@param start any
----@param end any
+---@param end_ any
 ---@return DoubleSpinner
-function DoubleSpinner:setRange(start, end) end
+function DoubleSpinner:setRange(start, end_) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -1793,8 +1819,8 @@ function DropMenu:getIcon() end
 ---@return DropMenu
 function DropMenu:setIcon(value) end
 
---- Attach a handler for onClick.
----@param handler fun(widget: DropMenu)
+--- Fired when any item in the menu is chosen. The handler receives the MenuItem that was clicked.
+---@param handler fun(widget: DropMenu, item: any)
 ---@return DropMenu
 function DropMenu:setOnClick(handler) end
 
@@ -2795,7 +2821,7 @@ function Knob:setNotchesVisible(value) end
 function Knob:isNotchesVisible() end
 
 --- Attach a handler for onValueChanged.
----@param handler fun(widget: Knob)
+---@param handler fun(widget: Knob, value: integer)
 ---@return Knob
 function Knob:setOnValueChanged(handler) end
 
@@ -3197,7 +3223,7 @@ function LineEdit:getInputMode() end
 function LineEdit:setInputMode(value) end
 
 --- Attach a handler for onTextChange.
----@param handler fun(widget: LineEdit)
+---@param handler fun(widget: LineEdit, text: string)
 ---@return LineEdit
 function LineEdit:setOnTextChange(handler) end
 
@@ -3332,12 +3358,12 @@ function ListBox:getStyleSheet() end
 function ListBox:setStyleSheet(value) end
 
 --- Attach a handler for onItemSelect.
----@param handler fun(widget: ListBox)
+---@param handler fun(widget: ListBox, current: any, previous: any)
 ---@return ListBox
 function ListBox:setOnItemSelect(handler) end
 
 --- Attach a handler for onItemDoubleClick.
----@param handler fun(widget: ListBox)
+---@param handler fun(widget: ListBox, item: any)
 ---@return ListBox
 function ListBox:setOnItemDoubleClick(handler) end
 
@@ -3483,8 +3509,8 @@ function Menu:getIcon() end
 ---@return Menu
 function Menu:setIcon(value) end
 
---- Attach a handler for onClick.
----@param handler fun(widget: Menu)
+--- Fired when any item in the menu is chosen. The handler receives the MenuItem that was clicked.
+---@param handler fun(widget: Menu, item: any)
 ---@return Menu
 function Menu:setOnClick(handler) end
 
@@ -3655,7 +3681,7 @@ function MenuItem:getShortcut() end
 function MenuItem:setShortcut(value) end
 
 --- Attach a handler for onClick.
----@param handler fun(widget: MenuItem)
+---@param handler fun(widget: MenuItem, item: any)
 ---@return MenuItem
 function MenuItem:setOnClick(handler) end
 
@@ -3993,9 +4019,9 @@ function ProgressBar:setLocation(x, y) end
 
 --- Setting the range to (0, 0) makes the bar indeterminate.
 ---@param start any
----@param end any
+---@param end_ any
 ---@return ProgressBar
-function ProgressBar:setRange(start, end) end
+function ProgressBar:setRange(start, end_) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -4104,7 +4130,7 @@ function RadioButton:getIconSize() end
 function RadioButton:setIconSize(value) end
 
 --- Attach a handler for onClick.
----@param handler fun(widget: RadioButton)
+---@param handler fun(widget: RadioButton, checked: boolean)
 ---@return RadioButton
 function RadioButton:setOnClick(handler) end
 
@@ -4443,7 +4469,7 @@ function Slider:getTickPosition() end
 function Slider:setTickPosition(value) end
 
 --- Attach a handler for onValueChange.
----@param handler fun(widget: Slider)
+---@param handler fun(widget: Slider, value: integer)
 ---@return Slider
 function Slider:setOnValueChange(handler) end
 
@@ -4470,9 +4496,9 @@ function Slider:setFocus() end
 function Slider:setLocation(x, y) end
 
 ---@param start any
----@param end any
+---@param end_ any
 ---@return Slider
-function Slider:setRange(start, end) end
+function Slider:setRange(start, end_) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -4718,7 +4744,7 @@ function Spinner:getSuffix() end
 function Spinner:setSuffix(value) end
 
 --- Attach a handler for onValueChange.
----@param handler fun(widget: Spinner)
+---@param handler fun(widget: Spinner, value: integer)
 ---@return Spinner
 function Spinner:setOnValueChange(handler) end
 
@@ -4745,9 +4771,9 @@ function Spinner:setFocus() end
 function Spinner:setLocation(x, y) end
 
 ---@param start any
----@param end any
+---@param end_ any
 ---@return Spinner
-function Spinner:setRange(start, end) end
+function Spinner:setRange(start, end_) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -5136,7 +5162,7 @@ function SysTray:getMenu() end
 function SysTray:setMenu(value) end
 
 --- Fired when the user clicks or double-clicks the tray icon.
----@param handler fun(widget: SysTray)
+---@param handler fun(widget: SysTray, reason: any)
 ---@return SysTray
 function SysTray:setOnActivated(handler) end
 
@@ -5525,18 +5551,18 @@ function Table:setAlternatingRowColors(value) end
 ---@return boolean
 function Table:isAlternatingRowColors() end
 
---- Attach a handler for onCellClick.
----@param handler fun(widget: Table)
+--- Fired when a cell is clicked. NOTE: row and column are the raw Qt 0-based positions, not 1-based like the rest of the API.
+---@param handler fun(widget: Table, row: integer, column: integer)
 ---@return Table
 function Table:setOnCellClick(handler) end
 
---- Attach a handler for onCellDoubleClick.
----@param handler fun(widget: Table)
+--- Fired when a cell is double-clicked. NOTE: row and column are the raw Qt 0-based positions, not 1-based like the rest of the API.
+---@param handler fun(widget: Table, row: integer, column: integer)
 ---@return Table
 function Table:setOnCellDoubleClick(handler) end
 
---- Attach a handler for onCellChange.
----@param handler fun(widget: Table)
+--- Fired when a cell's contents change. NOTE: row and column are the raw Qt 0-based positions, not 1-based like the rest of the API.
+---@param handler fun(widget: Table, row: integer, column: integer)
 ---@return Table
 function Table:setOnCellChange(handler) end
 
@@ -5785,7 +5811,7 @@ function TextField:getHint() end
 ---@return TextField
 function TextField:setHint(value) end
 
---- Attach a handler for onTextChange.
+--- Fired whenever the text changes. Unlike LineEdit's, this Qt signal carries no text -- read it with getText().
 ---@param handler fun(widget: TextField)
 ---@return TextField
 function TextField:setOnTextChange(handler) end
@@ -6245,7 +6271,7 @@ function ToolbarButton:getShortcut() end
 function ToolbarButton:setShortcut(value) end
 
 --- Attach a handler for onClick.
----@param handler fun(widget: ToolbarButton)
+---@param handler fun(widget: ToolbarButton, button: any)
 ---@return ToolbarButton
 function ToolbarButton:setOnClick(handler) end
 
@@ -6324,13 +6350,13 @@ function TreeView:setHeaderHidden(value) end
 ---@return boolean
 function TreeView:isHeaderHidden() end
 
---- Attach a handler for onItemClick.
----@param handler fun(widget: TreeView)
+--- Fired when an item is clicked. NOTE: column is the raw Qt 0-based position, not 1-based like the rest of the API.
+---@param handler fun(widget: TreeView, item: any, column: integer)
 ---@return TreeView
 function TreeView:setOnItemClick(handler) end
 
---- Attach a handler for onItemDoubleClick.
----@param handler fun(widget: TreeView)
+--- Fired when an item is double-clicked. NOTE: column is the raw Qt 0-based position, not 1-based like the rest of the API.
+---@param handler fun(widget: TreeView, item: any, column: integer)
 ---@return TreeView
 function TreeView:setOnItemDoubleClick(handler) end
 
@@ -6509,13 +6535,13 @@ function TreeWidget:setHeaderHidden(value) end
 ---@return boolean
 function TreeWidget:isHeaderHidden() end
 
---- Attach a handler for onItemClick.
----@param handler fun(widget: TreeWidget)
+--- Fired when an item is clicked. NOTE: column is the raw Qt 0-based position, not 1-based like the rest of the API.
+---@param handler fun(widget: TreeWidget, item: any, column: integer)
 ---@return TreeWidget
 function TreeWidget:setOnItemClick(handler) end
 
---- Attach a handler for onItemDoubleClick.
----@param handler fun(widget: TreeWidget)
+--- Fired when an item is double-clicked. NOTE: column is the raw Qt 0-based position, not 1-based like the rest of the API.
+---@param handler fun(widget: TreeWidget, item: any, column: integer)
 ---@return TreeWidget
 function TreeWidget:setOnItemDoubleClick(handler) end
 

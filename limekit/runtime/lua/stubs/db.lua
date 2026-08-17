@@ -9,60 +9,82 @@ local Sqlite3 = {}
 ---@return Sqlite3
 function Sqlite3(path) end
 
----@param target any
+--- Copies the whole database to another file.
+---@param target string
 ---@return Sqlite3
 function Sqlite3:backup(target) end
 
+--- Starts a transaction.
 ---@return Sqlite3
 function Sqlite3:beginTransaction() end
 
+--- Closes the connection.
 ---@return Sqlite3
 function Sqlite3:close() end
 
+--- Commits the current transaction.
 ---@return Sqlite3
 function Sqlite3:commit() end
 
----@param table_name any
----@param columns any
----@param if_not_exists? any
+--- Creates a table from column names mapped to SQL type definitions.
+---@param table_name string
+---@param columns table<string, string>
+---@param if_not_exists? boolean
 ---@return Sqlite3
 function Sqlite3:createTable(table_name, columns, if_not_exists) end
 
----@param query any
----@param params? any
+--- Runs a single SQL statement. Pass params rather than building the SQL by hand.
+---@param query string
+---@param params? any[]
 ---@return Sqlite3
 function Sqlite3:execute(query, params) end
 
----@param query any
----@param data any
+--- Runs the same statement once per row in data.
+---@param query string
+---@param data any[][]
 ---@return Sqlite3
 function Sqlite3:executeMany(query, data) end
 
----@param as_dict? any
+--- Every remaining row. Pass true to key rows by column name.
+---@param as_dict? boolean
+---@return any[]
 function Sqlite3:fetchAll(as_dict) end
 
----@param as_dict? any
+--- The next row only, or nil if there are none left.
+---@param as_dict? boolean
+---@return any
 function Sqlite3:fetchOne(as_dict) end
 
+--- Every table name in the database.
+---@return string[]
 function Sqlite3:fetchTables() end
 
----@param table_name any
+--- The column definitions of a table.
+---@param table_name string
+---@return any[]
 function Sqlite3:getTableInfo(table_name) end
 
----@param table_name any
----@param data any
----@param replace? any
+--- Inserts a row from column names mapped to values.
+---@param table_name string
+---@param data table<string, any>
+---@param replace? boolean
+---@return Sqlite3
 function Sqlite3:insert(table_name, data, replace) end
 
+--- Abandons the current transaction.
 ---@return Sqlite3
 function Sqlite3:rollback() end
 
---- Alias for commit().
+--- Commits pending changes to disk. Without this, nothing persists.
+---@return Sqlite3
 function Sqlite3:save() end
 
----@param table_name any
+--- Whether the table exists.
+---@param table_name string
+---@return boolean
 function Sqlite3:tableExists(table_name) end
 
+--- Compacts the database file.
 ---@return Sqlite3
 function Sqlite3:vacuum() end
 

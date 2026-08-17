@@ -17,6 +17,7 @@ import sqlite3
 from limekit.kernel.bridge.convert import as_mapping, as_sequence, to_lua
 from limekit.kernel.declarative import LimeObject
 from limekit.kernel.errors import BridgeError
+from limekit.kernel.spec import method
 
 
 def _params(params):
@@ -57,6 +58,7 @@ class Sqlite3(LimeObject):
 
     # -- transactions -----------------------------------------------------
 
+    @method(returns="self", doc="Starts a transaction.")
     def beginTransaction(self):
         if not self._in_transaction:
             try:
@@ -66,6 +68,7 @@ class Sqlite3(LimeObject):
             self._in_transaction = True
         return self
 
+    @method(returns="self", doc="Commits the current transaction.")
     def commit(self):
         if self._in_transaction:
             try:
@@ -75,6 +78,7 @@ class Sqlite3(LimeObject):
             self._in_transaction = False
         return self
 
+    @method(returns="self", doc="Abandons the current transaction.")
     def rollback(self):
         if self._in_transaction:
             try:
@@ -84,12 +88,14 @@ class Sqlite3(LimeObject):
             self._in_transaction = False
         return self
 
+    @method(returns="self", doc="Commits pending changes to disk. Without this, nothing persists.")
     def save(self):
         """Alias for commit()."""
         return self.commit()
 
     # -- queries ------------------------------------------------------------
 
+    @method({"query": "string", "params": "any[]"}, returns="self", doc="Runs a single SQL statement. Pass params rather than building the SQL by hand.")
     def execute(self, query, params=None):
         if not isinstance(query, str) or not query:
             raise BridgeError(f"expected a non-empty SQL string, got {query!r}")
@@ -103,6 +109,7 @@ class Sqlite3(LimeObject):
             raise BridgeError(f"failed to execute query: {exc}") from exc
         return self
 
+    @method({"query": "string", "data": "any[][]"}, returns="self", doc="Runs the same statement once per row in data.")
     def executeMany(self, query, data):
         if not isinstance(query, str) or not query:
             raise BridgeError(f"expected a non-empty SQL string, got {query!r}")
@@ -113,6 +120,7 @@ class Sqlite3(LimeObject):
             raise BridgeError(f"failed to execute multiple queries: {exc}") from exc
         return self
 
+    @method({"as_dict": "boolean"}, returns="any[]", doc="Every remaining row. Pass true to key rows by column name.")
     def fetchAll(self, as_dict=False):
         try:
             rows = self._cursor.fetchall()
@@ -122,6 +130,7 @@ class Sqlite3(LimeObject):
             return to_lua(_rows_to_dicts(self._cursor, rows))
         return to_lua([list(row) for row in rows])
 
+    @method({"as_dict": "boolean"}, returns="any", doc="The next row only, or nil if there are none left.")
     def fetchOne(self, as_dict=False):
         try:
             row = self._cursor.fetchone()
@@ -134,6 +143,7 @@ class Sqlite3(LimeObject):
             return to_lua(dict(zip(columns, row)))
         return to_lua(row[0] if len(row) == 1 else list(row))
 
+    @method(returns="string[]", doc="Every table name in the database.")
     def fetchTables(self):
         try:
             self._cursor.execute(
@@ -145,6 +155,7 @@ class Sqlite3(LimeObject):
             raise BridgeError(f"could not list tables: {exc}") from exc
         return to_lua(tables)
 
+    @method({"table_name": "string"}, returns="boolean", doc="Whether the table exists.")
     def tableExists(self, table_name):
         if not isinstance(table_name, str) or not table_name:
             raise BridgeError(f"expected a table name, got {table_name!r}")
@@ -157,6 +168,7 @@ class Sqlite3(LimeObject):
         except sqlite3.Error as exc:
             raise BridgeError(f"could not check table {table_name!r}: {exc}") from exc
 
+    @method({"table_name": "string"}, returns="any[]", doc="The column definitions of a table.")
     def getTableInfo(self, table_name):
         if not isinstance(table_name, str) or not table_name:
             raise BridgeError(f"expected a table name, got {table_name!r}")
@@ -167,6 +179,7 @@ class Sqlite3(LimeObject):
             raise BridgeError(f"could not inspect table {table_name!r}: {exc}") from exc
         return to_lua(_rows_to_dicts(self._cursor, rows))
 
+    @method({"table_name": "string", "columns": "table<string, string>", "if_not_exists": "boolean"}, returns="self", doc="Creates a table from column names mapped to SQL type definitions.")
     def createTable(self, table_name, columns, if_not_exists=True):
         if not isinstance(table_name, str) or not table_name:
             raise BridgeError(f"expected a table name, got {table_name!r}")
@@ -179,6 +192,7 @@ class Sqlite3(LimeObject):
         self.execute(f"CREATE TABLE {clause}{table_name} ({columns_sql});")
         return self
 
+    @method({"table_name": "string", "data": "table<string, any>", "replace": "boolean"}, returns="self", doc="Inserts a row from column names mapped to values.")
     def insert(self, table_name, data, replace=False):
         if not isinstance(table_name, str) or not table_name:
             raise BridgeError(f"expected a table name, got {table_name!r}")
@@ -195,10 +209,12 @@ class Sqlite3(LimeObject):
         self.execute(query, values)
         return self._cursor.lastrowid
 
+    @method(returns="self", doc="Compacts the database file.")
     def vacuum(self):
         self.execute("VACUUM")
         return self
 
+    @method({"target": "string"}, returns="self", doc="Copies the whole database to another file.")
     def backup(self, target):
         if not isinstance(target, Sqlite3):
             raise BridgeError(f"expected another db.Sqlite3, got {target!r}")
@@ -208,6 +224,7 @@ class Sqlite3(LimeObject):
             raise BridgeError(f"backup failed: {exc}") from exc
         return self
 
+    @method(returns="self", doc="Closes the connection.")
     def close(self):
         if self._in_transaction:
             self.rollback()

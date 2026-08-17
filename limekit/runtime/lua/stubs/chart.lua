@@ -360,9 +360,9 @@ function ValueAxis:setTitleText(value) end
 
 --- Qt native re-exposed so it chains like every builder method.
 ---@param start any
----@param end any
+---@param end_ any
 ---@return ValueAxis
-function ValueAxis:setRange(start, end) end
+function ValueAxis:setRange(start, end_) end
 
 local chart = {}
 chart.AreaChart = AreaChart

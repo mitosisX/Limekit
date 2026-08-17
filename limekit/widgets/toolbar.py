@@ -31,7 +31,7 @@ _toolbutton_style = Enum(_TOOLBUTTON_STYLES, "toolbar icon style")
 class ToolbarButton(LimeAction, QAction):
     __lime__ = "ui.ToolbarButton"
 
-    onClick = Event("triggered", passes_self=True)
+    onClick = Event("triggered", passes_self=True, params=(("button", "any"),))
 
     def __init__(self, text=""):
         super().__init__()

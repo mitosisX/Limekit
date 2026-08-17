@@ -11,7 +11,7 @@ class Spinner(LimeWidget, QSpinBox):
     prefix = Prop(str, qt=("prefix", "setPrefix"), coerce=str)
     suffix = Prop(str, qt=("suffix", "setSuffix"), coerce=str)
 
-    onValueChange = Event("valueChanged", passes_self=True)
+    onValueChange = Event("valueChanged", passes_self=True, params=(("value", "integer"),))
 
     def setRange(self, start, end):
         super().setRange(_to_int(start, "start"), _to_int(end, "end"))

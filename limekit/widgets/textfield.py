@@ -39,7 +39,9 @@ class TextField(LimeWidget, QTextEdit):
     hint = Prop(str, qt=("placeholderText", "setPlaceholderText"), coerce=str,
                 doc="placeholder shown while empty")
 
-    onTextChange = Event("textChanged", passes_self=True)
+    onTextChange = Event("textChanged", passes_self=True,
+                         doc="Fired whenever the text changes. Unlike LineEdit's, this "
+                             "Qt signal carries no text -- read it with getText().")
     onCursorMove = Event("cursorPositionChanged", passes_self=True)
 
     def __init__(self, text=""):

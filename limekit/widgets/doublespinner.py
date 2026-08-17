@@ -19,7 +19,7 @@ class DoubleSpinner(LimeWidget, QDoubleSpinBox):
     prefix = Prop(str, qt=("prefix", "setPrefix"), coerce=str)
     suffix = Prop(str, qt=("suffix", "setSuffix"), coerce=str)
 
-    onValueChange = Event("valueChanged", passes_self=True)
+    onValueChange = Event("valueChanged", passes_self=True, params=(("value", "number"),))
 
     def setRange(self, start, end):
         super().setRange(_to_float(start, "start"), _to_float(end, "end"))

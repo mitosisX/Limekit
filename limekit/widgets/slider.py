@@ -25,7 +25,7 @@ class Slider(LimeWidget, QSlider):
     orientation = Prop(object, qt=("orientation", "setOrientation"), coerce=_orientation)
     tickPosition = Prop(object, qt=("tickPosition", "setTickPosition"), coerce=_tick_position)
 
-    onValueChange = Event("valueChanged", passes_self=True)
+    onValueChange = Event("valueChanged", passes_self=True, params=(("value", "integer"),))
 
     def __init__(self):
         super().__init__(Qt.Orientation.Horizontal)

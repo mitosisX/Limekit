@@ -10,7 +10,7 @@ class CheckBox(LimeWidget, QCheckBox):
     text = Prop(str, qt=("text", "setText"), coerce=str)
     checked = Prop(bool, qt=("isChecked", "setChecked"))
 
-    onCheck = Event("clicked", passes_self=True)
+    onCheck = Event("clicked", passes_self=True, params=(("checked", "boolean"),))
 
     def __init__(self, text=""):
         super().__init__()

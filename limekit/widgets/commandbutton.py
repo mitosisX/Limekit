@@ -15,7 +15,7 @@ class CommandButton(LimeWidget, QCommandLinkButton):
     description = Prop(str, qt=("description", "setDescription"), coerce=str)
     icon = Prop(object, qt=("icon", "setIcon"), coerce=Icon)
 
-    onClick = Event("clicked", passes_self=True)
+    onClick = Event("clicked", passes_self=True, params=(("checked", "boolean"),))
 
     def __init__(self, text="Button"):
         super().__init__()

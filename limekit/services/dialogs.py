@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
 from limekit.kernel.bridge.convert import as_mapping, as_sequence, to_lua
 from limekit.kernel.declarative import LimeObject
 from limekit.kernel.errors import BridgeError
+from limekit.kernel.spec import method
 
 _ICONS = {
     "none": QMessageBox.Icon.NoIcon,
@@ -58,26 +59,31 @@ class Dialogs(LimeObject):
     # -- message boxes --------------------------------------------------
 
     @staticmethod
+    @method({"parent": "any", "title": "string", "message": "string"}, doc="A plain message with no icon. Returns nil when dismissed.")
     def alert(parent, title, message):
         _message(parent, title, message, "none")
         return None
 
     @staticmethod
+    @method({"parent": "any", "title": "string", "message": "string"}, doc="An information message.")
     def info(parent, title, message):
         _message(parent, title, message, "information")
         return None
 
     @staticmethod
+    @method({"parent": "any", "title": "string", "message": "string"}, doc="A warning message.")
     def warning(parent, title, message):
         _message(parent, title, message, "warning")
         return None
 
     @staticmethod
+    @method({"parent": "any", "title": "string", "message": "string"}, doc="An error message.")
     def critical(parent, title, message):
         _message(parent, title, message, "critical")
         return None
 
     @staticmethod
+    @method({"parent": "any", "title": "string", "message": "string"}, returns="boolean", doc="Asks a yes/no question.")
     def question(parent, title, message):
         result = _message(
             parent, title, message, "question",
@@ -88,11 +94,13 @@ class Dialogs(LimeObject):
     # -- text/number input ------------------------------------------------
 
     @staticmethod
+    @method({"parent": "any", "title": "string", "label": "string", "text": "string"}, returns="string", doc="Asks for a single line of text. Returns nil if cancelled.")
     def textInput(parent, title, label, text=""):
         value, ok = QInputDialog.getText(parent, str(title), str(label), text=str(text))
         return value if ok else None
 
     @staticmethod
+    @method({"parent": "any", "title": "string", "label": "string", "text": "string"}, returns="string", doc="Asks for several lines of text. Returns nil if cancelled.")
     def multilineInput(parent, title, label, text=""):
         value, ok = QInputDialog.getMultiLineText(
             parent, str(title), str(label), str(text)
@@ -100,6 +108,7 @@ class Dialogs(LimeObject):
         return value if ok else None
 
     @staticmethod
+    @method({"parent": "any", "title": "string", "label": "string", "items": "string[]", "index": "integer"}, returns="string", doc="Asks the user to pick from a list. index is 1-based. Returns nil if cancelled.")
     def comboBoxInput(parent, title, label, items, index=1):
         options = as_sequence(items)
         if not options:
@@ -117,6 +126,7 @@ class Dialogs(LimeObject):
         return value if ok else None
 
     @staticmethod
+    @method({"parent": "any", "title": "string", "label": "string", "value": "integer", "min_value": "integer", "max_value": "integer", "step": "integer"}, returns="integer", doc="Asks for a whole number. Returns nil if cancelled.")
     def integerInput(parent, title, label, value=0, min_value=-2147483647,
                       max_value=2147483647, step=1):
         result, ok = QInputDialog.getInt(
@@ -126,6 +136,7 @@ class Dialogs(LimeObject):
         return result if ok else None
 
     @staticmethod
+    @method({"parent": "any", "title": "string", "label": "string", "value": "number", "min_value": "number", "max_value": "number", "decimals": "integer"}, returns="number", doc="Asks for a decimal number. Returns nil if cancelled.")
     def doubleInput(parent, title, label, value=0.0, min_value=-2147483647.0,
                      max_value=2147483647.0, decimals=2):
         result, ok = QInputDialog.getDouble(
@@ -137,6 +148,7 @@ class Dialogs(LimeObject):
     # -- file / folder pickers --------------------------------------------
 
     @staticmethod
+    @method({"parent": "any", "title": "string", "directory": "string", "filters": "table<string, string[]>"}, returns="string", doc="Asks for a file to open. filters maps a description to its extensions. Returns nil if cancelled.")
     def openFile(parent, title="", directory="", filters=None):
         path, _ = QFileDialog.getOpenFileName(
             parent, str(title), str(directory), _filters_to_qt(filters)
@@ -144,6 +156,7 @@ class Dialogs(LimeObject):
         return path or None
 
     @staticmethod
+    @method({"parent": "any", "title": "string", "directory": "string", "filters": "table<string, string[]>"}, returns="string", doc="Asks where to save a file. Returns nil if cancelled.")
     def saveFile(parent, title="", directory="", filters=None):
         path, _ = QFileDialog.getSaveFileName(
             parent, str(title), str(directory), _filters_to_qt(filters)
@@ -151,6 +164,7 @@ class Dialogs(LimeObject):
         return path or None
 
     @staticmethod
+    @method({"parent": "any", "title": "string", "directory": "string"}, returns="string", doc="Asks the user to choose a folder. Returns nil if cancelled.")
     def pickFolder(parent, title="", directory=""):
         path = QFileDialog.getExistingDirectory(
             parent, str(title), str(directory),
@@ -161,6 +175,7 @@ class Dialogs(LimeObject):
     # -- color / font -----------------------------------------------------
 
     @staticmethod
+    @method({"parent": "any", "initial": "any"}, returns="any", doc="Opens the colour picker. Returns nil if cancelled.")
     def pickColour(parent=None, initial=None):
         from limekit.kernel.coerce import Colour
         start = Colour(initial) if initial is not None else None
@@ -176,6 +191,7 @@ class Dialogs(LimeObject):
         })
 
     @staticmethod
+    @method({"parent": "any"}, returns="any", doc="Opens the font picker. Returns nil if cancelled.")
     def pickFont(parent=None):
         font, ok = QFontDialog.getFont(parent)
         if not ok:

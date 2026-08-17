@@ -11,8 +11,9 @@ from limekit.widgets.base import LimeWidget
 class ListBox(LimeWidget, QListWidget):
     __lime__ = "ui.ListBox"
 
-    onItemSelect = Event("currentItemChanged", passes_self=True)
-    onItemDoubleClick = Event("itemDoubleClicked", passes_self=True)
+    onItemSelect = Event("currentItemChanged", passes_self=True,
+                          params=(("current", "any"), ("previous", "any")))
+    onItemDoubleClick = Event("itemDoubleClicked", passes_self=True, params=(("item", "any"),))
 
     def __init__(self, items=None):
         super().__init__()
