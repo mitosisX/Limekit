@@ -56,7 +56,14 @@ class QtThemes:
     def __init__(self):
         self.app = App.app
         self.dir_path = os.path.abspath(os.path.dirname(__file__))
-        self.themes_path = os.path.join(self.dir_path, "themes")
+        # Assets moved to limekit/assets/themes/qtthemes/, shared with the 2.0
+        # engine. Four levels up from limekit/core/theming/themes/qtthemes/ is
+        # the limekit package root.
+        self.themes_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.dirname(
+                os.path.dirname(self.dir_path)))),
+            "assets", "themes", "qtthemes",
+        )
         self.all_themes = os.listdir(self.themes_path)
 
     def getTheme(self, name: str | None = None) -> Theme | None:

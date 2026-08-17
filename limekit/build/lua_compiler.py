@@ -6,7 +6,10 @@ Compiles Lua scripts to bytecode for source code protection
 import os
 import shutil
 import subprocess
+import logging
 from typing import Optional
+
+logger = logging.getLogger(__name__)
 
 
 class LuaCompiler:
@@ -72,8 +75,7 @@ class LuaCompiler:
             return True
 
         except Exception as e:
-            from limekit.core.error_handler import warn
-            warn(f"Error compiling Lua scripts: {e}", "LuaCompiler")
+            logger.warning("LuaCompiler: Error compiling Lua scripts: %s", e)
             return False
 
     def _compile_file(self, src: str, dest: str) -> bool:
@@ -122,8 +124,7 @@ class LuaCompiler:
                 return True
 
         except Exception as e:
-            from limekit.core.error_handler import warn
-            warn(f"Error compiling {src}: {e}", "LuaCompiler")
+            logger.warning("LuaCompiler: Error compiling %s: %s", src, e)
             return False
 
 

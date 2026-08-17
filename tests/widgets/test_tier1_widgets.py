@@ -123,6 +123,43 @@ def test_container_layout_prop_and_onkeypress(qapp, sink):
     assert len(sink) == 1
 
 
+def test_container_onkeypress_does_not_swallow_default_handling(qapp, sink):
+    """Attaching a key handler must not switch off Qt's own key processing.
+
+    The handler used to run *instead of* super().keyPressEvent(), so a
+    Container with an onKeyPress handler consumed every key press: nothing
+    inside it -- a LineEdit especially -- saw input again.
+
+    QWidget.keyPressEvent ignores the event so it can propagate onwards, so
+    "super() ran" is observable as the event no longer being accepted. With
+    super() skipped, the event stays accepted and propagation stops dead.
+    """
+    from PySide6.QtCore import QEvent, Qt
+    from PySide6.QtGui import QKeyEvent
+
+    from limekit.widgets.container import Container
+
+    def press(box):
+        event = QKeyEvent(QEvent.Type.KeyPress, Qt.Key.Key_A,
+                          Qt.KeyboardModifier.NoModifier)
+        assert event.isAccepted()        # a fresh QKeyEvent starts accepted
+        box.keyPressEvent(event)
+        return event
+
+    seen = []
+    handled = Container()
+    handled.setOnKeyPress(lambda *a: seen.append("handler"))
+
+    event = press(handled)
+
+    assert seen == ["handler"]           # the handler still runs
+    assert not sink                      # and did not raise
+    assert not event.isAccepted()        # and Qt still got its turn
+
+    # Identical to a Container with no handler attached at all.
+    assert press(Container()).isAccepted() is False
+
+
 # -- Image -------------------------------------------------------------------
 
 def test_image_alignment_and_click_guarded(qapp, sink):

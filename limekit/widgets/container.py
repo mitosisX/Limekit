@@ -26,7 +26,15 @@ class Container(LimeWidget, QWidget):
         return self
 
     def keyPressEvent(self, event):
+        """Notify the handler, then let Qt process the key as normal.
+
+        This used to call `super()` only in the `else` branch, so attaching an
+        `onKeyPress` handler silently switched off default key handling for
+        everything inside the Container -- most visibly, text widgets stopped
+        receiving input. Observing a key is not the same as consuming it, so
+        the handler runs and Qt still gets its turn. `Window` already does it
+        in this order.
+        """
         if self._onKeyPress:
             self._onKeyPress(self, event)
-        else:
-            super().keyPressEvent(event)
+        super().keyPressEvent(event)

@@ -20,14 +20,17 @@ from limekit.kernel.bridge.convert import to_lua
 from limekit.kernel.declarative import LimeObject
 from limekit.kernel.errors import BridgeError
 
-_QTTHEMES_DIR = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-    "limekit", "core", "theming", "themes", "qtthemes", "themes",
+# Theme assets live in limekit/assets/themes/, shared by both engines, rather
+# than inside limekit/core/ -- services/ must not depend on the legacy tree for
+# data any more than it does for code. The old path also walked three levels up
+# and back down through "limekit", which only resolved correctly when the
+# package sat at a particular depth.
+_ASSETS_DIR = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "assets", "themes",
 )
-_MISC_DIR = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-    "limekit", "core", "theming", "themes", "misc", "themes",
-)
+_QTTHEMES_DIR = os.path.join(_ASSETS_DIR, "qtthemes")
+_MISC_DIR = os.path.join(_ASSETS_DIR, "misc")
 
 _QTTHEMES_COLOR_KEYS = (
     "primary", "secondary", "magenta", "red", "orange", "yellow", "green",

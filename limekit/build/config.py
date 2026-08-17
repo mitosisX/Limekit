@@ -5,8 +5,11 @@ Handles loading and managing build configuration from app.json and options
 
 import os
 import json
+import logging
 from dataclasses import dataclass, field
 from typing import Optional, Dict, Any
+
+logger = logging.getLogger(__name__)
 
 from limekit.build.constants import (
     DEFAULT_APP_NAME,
@@ -90,8 +93,10 @@ class ConfigLoader:
             return True
 
         except Exception as e:
-            from limekit.core.error_handler import warn
-            warn(f"Error loading app.json: {e}", "BuildConfig")
+            # Was `from limekit.core.error_handler import warn` -- the only
+            # thing left in the 2.0 tree reaching into the legacy engine, and
+            # for a two-line logging wrapper. Log directly instead.
+            logger.warning("BuildConfig: Error loading app.json: %s", e)
             return False
 
     def _apply_options(self, config: BuildConfig, options: Dict[str, Any]) -> None:

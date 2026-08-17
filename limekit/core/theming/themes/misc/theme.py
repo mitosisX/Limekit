@@ -10,7 +10,14 @@ class MiscellaneousStyle:
         self.app = App.app
 
         self.dir_path = os.path.abspath(os.path.dirname(__file__))
-        self.themes_path = os.path.join(self.dir_path, "themes")
+        # Assets moved to limekit/assets/themes/misc/, shared with the 2.0
+        # engine, so neither engine owns the other's data. Four levels up from
+        # limekit/core/theming/themes/misc/ is the limekit package root.
+        self.themes_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.dirname(
+                os.path.dirname(self.dir_path)))),
+            "assets", "themes", "misc",
+        )
 
     def setTheme(self, theme):
         theme_name = os.path.join(self.themes_path, f"{theme.lower()}.qss")

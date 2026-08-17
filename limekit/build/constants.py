@@ -3,9 +3,35 @@ Build Constants
 Shared constants used across the build module
 """
 
-# Hidden imports required for PyInstaller to bundle correctly
+# Hidden imports required for PyInstaller to bundle correctly.
+#
+# Both engines are listed, because a build targets whichever one the project
+# declares (see build/entry_script.py) and the spec is shared.
+#
+# The 2.0 entries matter more than they look: limekit/kernel/manifest.py
+# reaches every widget module through importlib.import_module() over a list of
+# strings, which PyInstaller's static analysis cannot follow. Without these,
+# a frozen 2.0 app can start and then fail at boot() with ModuleNotFoundError.
+# Keep this list in step with manifest.MODULES -- or rather, with the packages
+# containing them; PyInstaller pulls in submodules of a named package.
 HIDDEN_IMPORTS = [
-    # Limekit core
+    # Limekit 2.0 engine
+    "limekit.kernel",
+    "limekit.kernel.app",
+    "limekit.kernel.manifest",
+    "limekit.kernel.registry",
+    "limekit.kernel.bridge",
+    "limekit.kernel.bridge.runtime",
+    "limekit.kernel.bridge.convert",
+    "limekit.kernel.bridge.guard",
+    "limekit.widgets",
+    "limekit.layouts",
+    "limekit.services",
+    "limekit.charts",
+    "limekit.toolkit",
+    "limekit.runtime",
+    "limekit.assets",
+    # Limekit 1.x engine
     "limekit",
     "limekit.runner",
     "limekit.core",
@@ -47,10 +73,7 @@ HIDDEN_IMPORTS = [
     "qt_material",
     "qdarkstyle",
     "qdarktheme",
-    "qtmodern",
-    "psutil",
     "emoji",
-    "playsound",
 ]
 
 # Default app configuration values
