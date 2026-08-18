@@ -154,3 +154,66 @@ def test_diamond_inheritance_collects_props_from_all_branches(qapp):
     assert w.getText() == "hi"
     assert w.isFlat() is True
     assert w.isCheckable() is True
+
+
+# -- generated accessors must not expose their own internals ------------------
+
+def test_extra_argument_does_not_overwrite_the_qt_method(qapp):
+    """The generated setter used to bind its internals as default arguments.
+
+    `def setter(self, value, _s=qt_set, ...)` puts the framework's own
+    plumbing in the *public* signature, so one argument too many from Lua
+    silently replaced the Qt method with the caller's value:
+
+        label:setTextAlignment("hcenter", "bottom")
+
+    bound _s to the string "bottom" and died as "'str' object is not
+    callable", naming nothing useful. Found by porting Limer.
+    """
+    from limekit.widgets.label import Label
+
+    label = Label("x")
+    with pytest.raises(TypeError) as excinfo:
+        label.setTextAlignment("hcenter", "bottom")
+    # An honest complaint about argument count, not a mangled internal.
+    assert "positional argument" in str(excinfo.value)
+
+    # ...and the accessor still works afterwards; nothing was corrupted.
+    assert label.setTextAlignment("center") is label
+
+
+def test_extra_argument_to_an_event_setter_is_refused(qapp):
+    """Same shape on the generated event attacher."""
+    from limekit.widgets.button import Button
+
+    button = Button("x")
+    with pytest.raises(TypeError):
+        button.setOnClick(lambda *a: None, "surplus")
+
+
+def test_alignment_accepts_several_flags(qapp):
+    """Qt alignments combine; a Prop taking exactly one could not say
+    "horizontally centred, at the bottom"."""
+    from PySide6.QtCore import Qt
+
+    from limekit.widgets.label import Label
+
+    label = Label("x")
+    label.setTextAlignment({"hcenter", "bottom"})
+    alignment = label.alignment()
+    assert alignment & Qt.AlignmentFlag.AlignHCenter
+    assert alignment & Qt.AlignmentFlag.AlignBottom
+
+
+def test_alignment_still_takes_a_single_name(qapp):
+    from limekit.widgets.label import Label
+    assert Label("x").setTextAlignment("center").getTextAlignment() is not None
+
+
+def test_unknown_alignment_names_the_options(qapp):
+    from limekit.kernel.errors import BridgeError
+    from limekit.widgets.label import Label
+
+    with pytest.raises(BridgeError) as excinfo:
+        Label("x").setTextAlignment({"hcenter", "nope"})
+    assert "nope" in str(excinfo.value)

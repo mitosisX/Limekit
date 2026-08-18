@@ -11,10 +11,10 @@ string-accepting version, the same shape as `TextField.setText` overriding
 from PySide6.QtGui import QFont, QIcon
 from PySide6.QtWidgets import QFontComboBox
 
-from limekit.kernel.bridge.convert import as_sequence
+from limekit.kernel.bridge.convert import as_mapping, as_sequence
 from limekit.kernel.bridge.guard import guard
 from limekit.kernel.coerce import LuaIndex
-from limekit.kernel.spec import Prop
+from limekit.kernel.spec import Prop, method
 from limekit.widgets.base import LimeWidget
 
 
@@ -66,3 +66,11 @@ class FontComboBox(LimeWidget, QFontComboBox):
     def _handleCurrentIndexChange(self, index):
         if self._onItemSelect:
             self._onItemSelect(self, self.currentText(), index + 1)
+
+    @method({"items": "table<string, string>"}, returns="self",
+            doc="Adds several icon+label entries at once, from a table of "
+                "label -> image path.")
+    def addImageItems(self, items):
+        for label, image in as_mapping(items).items():
+            self.addImageItem(label, image)
+        return self

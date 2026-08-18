@@ -81,6 +81,10 @@ function ProjectRunner:getPath() end
 ---@return boolean
 function ProjectRunner:isRunning() end
 
+--- Starts the project.
+---@return ProjectRunner
+function ProjectRunner:run() end
+
 --- Runs when the project exits, however it exits.
 ---@param handler fun()
 ---@return ProjectRunner

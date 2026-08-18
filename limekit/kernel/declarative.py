@@ -105,18 +105,26 @@ def _install_prop(cls, prop):
 
     coerce, validate, label = prop.coerce, prop.validate, prop.name
 
-    def getter(self, _g=qt_get, _out=convert.outbound):
-        return _out(_g(self))
+    # These close over qt_get/qt_set/coerce/... rather than binding them as
+    # default arguments. The default-argument form is a common micro-optimisation,
+    # but it puts the framework's internals in the *public* signature: a Lua
+    # caller passing one argument too many silently overwrote the Qt method with
+    # their own value. `label:setTextAlignment("hcenter", "bottom")` replaced
+    # setAlignment with the string "bottom" and failed as "'str' object is not
+    # callable", naming nothing useful. Now an extra argument is a plain,
+    # honest TypeError about argument count.
+    def getter(self):
+        return convert.outbound(qt_get(self))
 
-    def setter(self, value, _s=qt_set, _c=coerce, _v=validate, _n=label):
+    def setter(self, value):
         # Mutating a widget off the GUI thread is undefined behaviour in Qt.
         # This is a bool test until a sys.Thread has actually been started.
-        affinity.require_gui_thread(_n, type(self).__name__)
-        if _c is not None:
-            value = _c(value)
-        if _v is not None and not _v(value):
-            raise BridgeError(f"invalid value for {_n!r}: {value!r}")
-        _s(self, value)
+        affinity.require_gui_thread(label, type(self).__name__)
+        if coerce is not None:
+            value = coerce(value)
+        if validate is not None and not validate(value):
+            raise BridgeError(f"invalid value for {label!r}: {value!r}")
+        qt_set(self, value)
         return self          # allow chaining from Lua
 
     getter.__name__ = getter_name
@@ -150,8 +158,10 @@ def _install_event(cls, event):
     slot_attr = f"_lime_slot_{event.name}"
     index_positions = event.index_positions()
 
-    def attach(self, handler, _sig=signal_name, _self=passes_self,
-               _ev=label, _slot=slot_attr, _idx=index_positions):
+    def attach(self, handler):
+        # Closures, not default arguments -- see the note in _install_prop.
+        _sig, _self, _ev = signal_name, passes_self, label
+        _slot, _idx = slot_attr, index_positions
         signal = getattr(self, _sig)
 
         previous = getattr(self, _slot, None)

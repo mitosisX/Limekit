@@ -1,10 +1,10 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QListWidget, QListWidgetItem
 
-from limekit.kernel.bridge.convert import as_sequence
+from limekit.kernel.bridge.convert import as_mapping, as_sequence
 from limekit.kernel.coerce import LuaIndex
 from limekit.kernel.errors import BridgeError
-from limekit.kernel.spec import Event
+from limekit.kernel.spec import Event, method
 from limekit.widgets.base import LimeWidget
 
 
@@ -73,4 +73,27 @@ class ListBox(LimeWidget, QListWidget):
     def clear(self):
         """Qt native re-exposed so Lua's `box:clear()` colon syntax works."""
         super().clear()
+        return self
+
+    @method({"items": "table<string, string>"}, returns="self",
+            doc="Adds several icon+label entries at once, from a table of "
+                "label -> image path.")
+    def addImageItems(self, items):
+        for label, image in as_mapping(items).items():
+            self.addImageItem(label, image)
+        return self
+
+    @method({"text": "string"}, returns="self",
+            doc="Appends one item to the end of the list.")
+    def addItem(self, text):
+        """setItems replaces everything; there was no way to append a single
+        item, which is what a list being filled incrementally actually needs."""
+        QListWidget.addItem(self, str(text))
+        return self
+
+    @method({"items": "string[]"}, returns="self",
+            doc="Appends several items, from a table of strings.")
+    def addItems(self, items):
+        for item in as_sequence(items):
+            self.addItem(item)
         return self

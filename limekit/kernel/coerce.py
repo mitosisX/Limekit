@@ -84,6 +84,38 @@ def Enum(mapping, label):
     return coerce
 
 
+def Alignment(value):
+    """One alignment name, or several to combine.
+
+    Qt alignments are flags, and combining them is ordinary usage --
+    "horizontally centred, at the bottom". `setContentAlignment(...)` on the
+    layouts already took several; the Label/Image alignment Props took exactly
+    one, so a caller wanting both had no way to say it.
+
+    Accepts "center", or {"hcenter", "bottom"}.
+    """
+    from limekit.kernel.bridge.convert import as_sequence
+
+    names = [value] if isinstance(value, str) else as_sequence(value)
+    if not names:
+        raise BridgeError("expected at least one alignment")
+
+    combined = None
+    for name in names:
+        if not isinstance(name, str):
+            combined = name if combined is None else combined | name
+            continue
+        try:
+            flag = ALIGNMENTS[name.lower()]
+        except KeyError:
+            options = ", ".join(sorted(ALIGNMENTS))
+            raise BridgeError(
+                f"unknown alignment {name!r}; expected one of: {options}"
+            ) from None
+        combined = flag if combined is None else combined | flag
+    return combined
+
+
 ALIGNMENTS = {
     "left": Qt.AlignmentFlag.AlignLeft,
     "right": Qt.AlignmentFlag.AlignRight,
@@ -154,3 +186,5 @@ SIZE_POLICIES = {
     "minimumexpanding": QSizePolicy.Policy.MinimumExpanding,
     "preferred": QSizePolicy.Policy.Preferred,
 }
+
+Alignment.options = tuple(sorted(ALIGNMENTS))

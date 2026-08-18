@@ -27,8 +27,23 @@ _QT_VIRTUALS = frozenset({
     "wheelEvent", "showEvent", "hideEvent", "closeEvent", "resizeEvent",
     "contextMenuEvent", "focusInEvent", "focusOutEvent", "enterEvent",
     "leaveEvent", "dragEnterEvent", "dragMoveEvent", "dropEvent",
-    "changeEvent", "moveEvent", "event", "eventFilter", "run",
+    "changeEvent", "moveEvent", "event", "eventFilter",
 })
+
+# `run` is QThread's virtual entry point, so it is not API on sys.Thread --
+# Qt calls it. But it *is* the public verb on sys.ProjectRunner, which is not
+# a QThread at all. Filtering it globally hid ProjectRunner.run from the stubs
+# entirely, which the Limer port surfaced. Filter it only where it really is
+# Qt's to call.
+_QT_VIRTUALS_ON_THREADS = frozenset({"run"})
+
+
+def _is_qthread(cls):
+    try:
+        from PySide6.QtCore import QThread
+    except ImportError:                                     # pragma: no cover
+        return False
+    return isinstance(cls, type) and issubclass(cls, QThread)
 
 
 class MethodInfo:
@@ -151,6 +166,8 @@ def public_methods(cls):
             continue
         for name, raw in vars(klass).items():
             if name.startswith("_") or name in found or name in _QT_VIRTUALS:
+                continue
+            if name in _QT_VIRTUALS_ON_THREADS and _is_qthread(cls):
                 continue
             fn, is_static = _unwrap(raw)
             if fn is None or getattr(fn, "_lime_generated", False):

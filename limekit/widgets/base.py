@@ -10,7 +10,7 @@ from PySide6.QtWidgets import QSizePolicy
 from limekit.kernel.coerce import SIZE_POLICIES, Enum
 from limekit.kernel.declarative import LimeObject
 from limekit.kernel.errors import BridgeError
-from limekit.kernel.spec import Prop
+from limekit.kernel.spec import Prop, method
 
 _size_policy = Enum(SIZE_POLICIES, "size policy")
 
@@ -53,6 +53,71 @@ class LimeWidget(LimeObject):
 
     def setLocation(self, x, y):
         self.move(_to_int(x, "x"), _to_int(y, "y"))
+        return self
+
+    @method({"width": "integer"}, returns="self",
+            doc="Resizes the width, leaving the height alone.")
+    def setWidth(self, width):
+        self.resize(_to_int(width, "width"), self.height())
+        return self
+
+    @method({"height": "integer"}, returns="self",
+            doc="Resizes the height, leaving the width alone.")
+    def setHeight(self, height):
+        self.resize(self.width(), _to_int(height, "height"))
+        return self
+
+    @method({"left": "integer", "top": "integer", "right": "integer",
+             "bottom": "integer"}, returns="self",
+            doc="The space between the widget's edge and its contents.")
+    def setMargins(self, left, top, right, bottom):
+        self.setContentsMargins(
+            _to_int(left, "left"), _to_int(top, "top"),
+            _to_int(right, "right"), _to_int(bottom, "bottom"),
+        )
+        return self
+
+    # -- size bounds -------------------------------------------------------
+    #
+    # 1.x carried these on individual widgets (widget_base, Window, Dockable,
+    # ...), which is why porting Limer hit them immediately. Declared once
+    # here instead: they apply to every QWidget, and `setSize`/`setFixedSize`
+    # alone cannot express "at least this wide, but free to grow".
+
+    @method({"width": "integer"}, returns="self",
+            doc="The smallest width the widget may shrink to.")
+    def setMinWidth(self, width):
+        self.setMinimumWidth(_to_int(width, "width"))
+        return self
+
+    @method({"width": "integer"}, returns="self",
+            doc="The largest width the widget may grow to.")
+    def setMaxWidth(self, width):
+        self.setMaximumWidth(_to_int(width, "width"))
+        return self
+
+    @method({"height": "integer"}, returns="self",
+            doc="The smallest height the widget may shrink to.")
+    def setMinHeight(self, height):
+        self.setMinimumHeight(_to_int(height, "height"))
+        return self
+
+    @method({"height": "integer"}, returns="self",
+            doc="The largest height the widget may grow to.")
+    def setMaxHeight(self, height):
+        self.setMaximumHeight(_to_int(height, "height"))
+        return self
+
+    @method({"width": "integer", "height": "integer"}, returns="self",
+            doc="The smallest size the widget may shrink to.")
+    def setMinSize(self, width, height):
+        self.setMinimumSize(_to_int(width, "width"), _to_int(height, "height"))
+        return self
+
+    @method({"width": "integer", "height": "integer"}, returns="self",
+            doc="The largest size the widget may grow to.")
+    def setMaxSize(self, width, height):
+        self.setMaximumSize(_to_int(width, "width"), _to_int(height, "height"))
         return self
 
     def setBackgroundColor(self, colour):

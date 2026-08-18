@@ -24,7 +24,7 @@ from limekit.kernel.bridge.convert import as_mapping
 from limekit.kernel.bridge.guard import guard
 from limekit.kernel.coerce import DOCK_AREAS, TOOLBAR_AREAS, Enum, Icon
 from limekit.kernel.errors import BridgeError
-from limekit.kernel.spec import Prop
+from limekit.kernel.spec import Prop, method
 from limekit.widgets.base import LimeWidget, _to_int
 
 _dock_area = Enum(DOCK_AREAS, "dock area")
@@ -106,6 +106,26 @@ class Window(LimeWidget, QMainWindow):
         self.setCentralWidget(child)
         self._central = child
         return self
+
+    @method({"name": "string"}, returns="any",
+            doc="One of Qt's built-in icons, by name, e.g. \"SP_DirIcon\".")
+    def getStandardIcon(self, name):
+        from PySide6.QtWidgets import QStyle
+        icon = getattr(QStyle.StandardPixmap, str(name), None)
+        if icon is None:
+            raise BridgeError(
+                f"unknown standard icon {name!r}; getStandardIcons() lists "
+                f"the valid names"
+            )
+        return self.style().standardIcon(icon)
+
+    @method(returns="string[]", doc="Every standard icon name this platform offers.")
+    def getStandardIcons(self):
+        from PySide6.QtWidgets import QStyle
+        from limekit.kernel.bridge.convert import outbound
+        return outbound(sorted(
+            n for n in dir(QStyle.StandardPixmap) if n.startswith("SP_")
+        ))
 
     def center(self):
         from PySide6.QtWidgets import QApplication

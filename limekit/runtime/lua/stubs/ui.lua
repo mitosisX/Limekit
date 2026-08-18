@@ -92,10 +92,55 @@ function Accordion:setFixedSize(width, height) end
 ---@return Accordion
 function Accordion:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Accordion
+function Accordion:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Accordion
 function Accordion:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Accordion
+function Accordion:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Accordion
+function Accordion:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Accordion
+function Accordion:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Accordion
+function Accordion:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Accordion
+function Accordion:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Accordion
+function Accordion:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Accordion
+function Accordion:setMinWidth(width) end
 
 ---@param handler any
 ---@return Accordion
@@ -111,6 +156,11 @@ function Accordion:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Accordion
 function Accordion:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Accordion
+function Accordion:setWidth(width) end
 
 ---@return Accordion
 function Accordion:show() end
@@ -264,6 +314,11 @@ function AdvancedSlider:setFocus() end
 ---@return AdvancedSlider
 function AdvancedSlider:setFont(font) end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return AdvancedSlider
+function AdvancedSlider:setHeight(height) end
+
 ---@param enabled any
 ---@return AdvancedSlider
 function AdvancedSlider:setKeyboardInputEnabled(enabled) end
@@ -273,9 +328,49 @@ function AdvancedSlider:setKeyboardInputEnabled(enabled) end
 ---@return AdvancedSlider
 function AdvancedSlider:setLocation(x, y) end
 
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return AdvancedSlider
+function AdvancedSlider:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return AdvancedSlider
+function AdvancedSlider:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return AdvancedSlider
+function AdvancedSlider:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return AdvancedSlider
+function AdvancedSlider:setMaxWidth(width) end
+
 ---@param maximum any
 ---@return AdvancedSlider
 function AdvancedSlider:setMaximum(maximum) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return AdvancedSlider
+function AdvancedSlider:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return AdvancedSlider
+function AdvancedSlider:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return AdvancedSlider
+function AdvancedSlider:setMinWidth(width) end
 
 ---@param minimum any
 ---@return AdvancedSlider
@@ -328,6 +423,11 @@ function AdvancedSlider:setThousandsSeparator(separator) end
 ---@param value any
 ---@return AdvancedSlider
 function AdvancedSlider:setValue(value) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return AdvancedSlider
+function AdvancedSlider:setWidth(width) end
 
 ---@return AdvancedSlider
 function AdvancedSlider:show() end
@@ -486,10 +586,55 @@ function Button:setFixedSize(width, height) end
 ---@return Button
 function Button:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Button
+function Button:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Button
 function Button:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Button
+function Button:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Button
+function Button:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Button
+function Button:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Button
+function Button:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Button
+function Button:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Button
+function Button:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Button
+function Button:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -501,6 +646,11 @@ function Button:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Button
 function Button:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Button
+function Button:setWidth(width) end
 
 ---@return Button
 function Button:show() end
@@ -621,10 +771,55 @@ function Calendar:setFocus() end
 ---@return Calendar
 function Calendar:setGridVisible(visible) end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Calendar
+function Calendar:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Calendar
 function Calendar:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Calendar
+function Calendar:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Calendar
+function Calendar:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Calendar
+function Calendar:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Calendar
+function Calendar:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Calendar
+function Calendar:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Calendar
+function Calendar:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Calendar
+function Calendar:setMinWidth(width) end
 
 ---@param handler any
 ---@return Calendar
@@ -640,6 +835,11 @@ function Calendar:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Calendar
 function Calendar:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Calendar
+function Calendar:setWidth(width) end
 
 ---@return Calendar
 function Calendar:show() end
@@ -740,10 +940,55 @@ function CheckBox:setFixedSize(width, height) end
 ---@return CheckBox
 function CheckBox:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return CheckBox
+function CheckBox:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return CheckBox
 function CheckBox:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return CheckBox
+function CheckBox:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return CheckBox
+function CheckBox:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return CheckBox
+function CheckBox:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return CheckBox
+function CheckBox:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return CheckBox
+function CheckBox:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return CheckBox
+function CheckBox:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return CheckBox
+function CheckBox:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -755,6 +1000,11 @@ function CheckBox:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return CheckBox
 function CheckBox:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return CheckBox
+function CheckBox:setWidth(width) end
 
 ---@return CheckBox
 function CheckBox:show() end
@@ -829,6 +1079,16 @@ function ComboBox:isEditable() end
 ---@return ComboBox
 function ComboBox:setOnItemSelect(handler) end
 
+--- Appends one item to the end of the list.
+---@param text string
+---@return ComboBox
+function ComboBox:addItem(text) end
+
+--- Appends several items, from a table of strings.
+---@param items string[]
+---@return ComboBox
+function ComboBox:addItems(items) end
+
 --- Qt native re-exposed so Lua's `box:clear()` colon syntax works.
 ---@return ComboBox
 function ComboBox:clear() end
@@ -855,6 +1115,11 @@ function ComboBox:setFixedSize(width, height) end
 ---@return ComboBox
 function ComboBox:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return ComboBox
+function ComboBox:setHeight(height) end
+
 ---@param items any
 ---@return ComboBox
 function ComboBox:setItems(items) end
@@ -863,6 +1128,46 @@ function ComboBox:setItems(items) end
 ---@param y any
 ---@return ComboBox
 function ComboBox:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return ComboBox
+function ComboBox:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return ComboBox
+function ComboBox:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return ComboBox
+function ComboBox:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return ComboBox
+function ComboBox:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return ComboBox
+function ComboBox:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return ComboBox
+function ComboBox:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return ComboBox
+function ComboBox:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -874,6 +1179,11 @@ function ComboBox:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return ComboBox
 function ComboBox:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return ComboBox
+function ComboBox:setWidth(width) end
 
 ---@return ComboBox
 function ComboBox:show() end
@@ -979,6 +1289,11 @@ function CommandButton:setFixedSize(width, height) end
 ---@return CommandButton
 function CommandButton:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return CommandButton
+function CommandButton:setHeight(height) end
+
 ---@param width any
 ---@param height any
 ---@return CommandButton
@@ -988,6 +1303,46 @@ function CommandButton:setIconSize(width, height) end
 ---@param y any
 ---@return CommandButton
 function CommandButton:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return CommandButton
+function CommandButton:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return CommandButton
+function CommandButton:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return CommandButton
+function CommandButton:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return CommandButton
+function CommandButton:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return CommandButton
+function CommandButton:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return CommandButton
+function CommandButton:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return CommandButton
+function CommandButton:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -999,6 +1354,11 @@ function CommandButton:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return CommandButton
 function CommandButton:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return CommandButton
+function CommandButton:setWidth(width) end
 
 ---@return CommandButton
 function CommandButton:show() end
@@ -1081,10 +1441,55 @@ function Container:setFixedSize(width, height) end
 ---@return Container
 function Container:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Container
+function Container:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Container
 function Container:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Container
+function Container:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Container
+function Container:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Container
+function Container:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Container
+function Container:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Container
+function Container:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Container
+function Container:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Container
+function Container:setMinWidth(width) end
 
 ---@param handler any
 ---@return Container
@@ -1100,6 +1505,11 @@ function Container:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Container
 function Container:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Container
+function Container:setWidth(width) end
 
 ---@return Container
 function Container:show() end
@@ -1181,10 +1591,55 @@ function DatePicker:setFixedSize(width, height) end
 ---@return DatePicker
 function DatePicker:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return DatePicker
+function DatePicker:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return DatePicker
 function DatePicker:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return DatePicker
+function DatePicker:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return DatePicker
+function DatePicker:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return DatePicker
+function DatePicker:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return DatePicker
+function DatePicker:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return DatePicker
+function DatePicker:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return DatePicker
+function DatePicker:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return DatePicker
+function DatePicker:setMinWidth(width) end
 
 ---@param handler any
 ---@return DatePicker
@@ -1200,6 +1655,11 @@ function DatePicker:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return DatePicker
 function DatePicker:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return DatePicker
+function DatePicker:setWidth(width) end
 
 ---@return DatePicker
 function DatePicker:show() end
@@ -1447,6 +1907,11 @@ function Dock:setFixedSize(width, height) end
 ---@return Dock
 function Dock:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Dock
+function Dock:setHeight(height) end
+
 ---@param layout any
 ---@return Dock
 function Dock:setLayout(layout) end
@@ -1455,6 +1920,46 @@ function Dock:setLayout(layout) end
 ---@param y any
 ---@return Dock
 function Dock:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Dock
+function Dock:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Dock
+function Dock:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Dock
+function Dock:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Dock
+function Dock:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Dock
+function Dock:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Dock
+function Dock:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Dock
+function Dock:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -1470,6 +1975,11 @@ function Dock:setSize(width, height) end
 ---@param child any
 ---@return Dock
 function Dock:setTitleBarChild(child) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Dock
+function Dock:setWidth(width) end
 
 ---@return Dock
 function Dock:show() end
@@ -1602,6 +2112,11 @@ function Dockable:setFixedSize(width, height) end
 ---@return Dockable
 function Dockable:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Dockable
+function Dockable:setHeight(height) end
+
 ---@param layout any
 ---@return Dockable
 function Dockable:setLayout(layout) end
@@ -1610,6 +2125,46 @@ function Dockable:setLayout(layout) end
 ---@param y any
 ---@return Dockable
 function Dockable:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Dockable
+function Dockable:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Dockable
+function Dockable:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Dockable
+function Dockable:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Dockable
+function Dockable:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Dockable
+function Dockable:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Dockable
+function Dockable:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Dockable
+function Dockable:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -1625,6 +2180,11 @@ function Dockable:setSize(width, height) end
 ---@param child any
 ---@return Dockable
 function Dockable:setTitleBarChild(child) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Dockable
+function Dockable:setWidth(width) end
 
 ---@return Dockable
 function Dockable:show() end
@@ -1725,10 +2285,55 @@ function DoubleSpinner:setFixedSize(width, height) end
 ---@return DoubleSpinner
 function DoubleSpinner:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return DoubleSpinner
+function DoubleSpinner:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return DoubleSpinner
 function DoubleSpinner:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return DoubleSpinner
+function DoubleSpinner:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return DoubleSpinner
+function DoubleSpinner:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return DoubleSpinner
+function DoubleSpinner:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return DoubleSpinner
+function DoubleSpinner:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return DoubleSpinner
+function DoubleSpinner:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return DoubleSpinner
+function DoubleSpinner:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return DoubleSpinner
+function DoubleSpinner:setMinWidth(width) end
 
 ---@param start any
 ---@param end_ any
@@ -1745,6 +2350,11 @@ function DoubleSpinner:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return DoubleSpinner
 function DoubleSpinner:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return DoubleSpinner
+function DoubleSpinner:setWidth(width) end
 
 ---@return DoubleSpinner
 function DoubleSpinner:show() end
@@ -1853,10 +2463,55 @@ function DropMenu:setFixedSize(width, height) end
 ---@return DropMenu
 function DropMenu:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return DropMenu
+function DropMenu:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return DropMenu
 function DropMenu:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return DropMenu
+function DropMenu:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return DropMenu
+function DropMenu:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return DropMenu
+function DropMenu:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return DropMenu
+function DropMenu:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return DropMenu
+function DropMenu:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return DropMenu
+function DropMenu:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return DropMenu
+function DropMenu:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -1868,6 +2523,11 @@ function DropMenu:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return DropMenu
 function DropMenu:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return DropMenu
+function DropMenu:setWidth(width) end
 
 ---@return DropMenu
 function DropMenu:show() end
@@ -1991,6 +2651,11 @@ function FontComboBox:setCurrentFont(value) end
 ---@return FontComboBox
 function FontComboBox:addImageItem(icon, text) end
 
+--- Adds several icon+label entries at once, from a table of label -> image path.
+---@param items table<string, string>
+---@return FontComboBox
+function FontComboBox:addImageItems(items) end
+
 --- Qt native re-exposed so it chains like every builder method.
 ---@param text any
 ---@return FontComboBox
@@ -2030,10 +2695,55 @@ function FontComboBox:setFocus() end
 ---@return FontComboBox
 function FontComboBox:setFont(font_string) end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return FontComboBox
+function FontComboBox:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return FontComboBox
 function FontComboBox:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return FontComboBox
+function FontComboBox:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return FontComboBox
+function FontComboBox:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return FontComboBox
+function FontComboBox:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return FontComboBox
+function FontComboBox:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return FontComboBox
+function FontComboBox:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return FontComboBox
+function FontComboBox:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return FontComboBox
+function FontComboBox:setMinWidth(width) end
 
 ---@param handler any
 ---@return FontComboBox
@@ -2049,6 +2759,11 @@ function FontComboBox:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return FontComboBox
 function FontComboBox:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return FontComboBox
+function FontComboBox:setWidth(width) end
 
 ---@return FontComboBox
 function FontComboBox:show() end
@@ -2199,10 +2914,55 @@ function GifPlayer:setFixedSize(width, height) end
 ---@return GifPlayer
 function GifPlayer:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return GifPlayer
+function GifPlayer:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return GifPlayer
 function GifPlayer:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return GifPlayer
+function GifPlayer:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return GifPlayer
+function GifPlayer:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return GifPlayer
+function GifPlayer:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return GifPlayer
+function GifPlayer:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return GifPlayer
+function GifPlayer:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return GifPlayer
+function GifPlayer:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return GifPlayer
+function GifPlayer:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -2219,6 +2979,11 @@ function GifPlayer:setSize(width, height) end
 ---@param speed any
 ---@return GifPlayer
 function GifPlayer:setSpeed(speed) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return GifPlayer
+function GifPlayer:setWidth(width) end
 
 ---@return GifPlayer
 function GifPlayer:show() end
@@ -2424,10 +3189,55 @@ function GroupBox:setFixedSize(width, height) end
 ---@return GroupBox
 function GroupBox:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return GroupBox
+function GroupBox:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return GroupBox
 function GroupBox:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return GroupBox
+function GroupBox:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return GroupBox
+function GroupBox:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return GroupBox
+function GroupBox:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return GroupBox
+function GroupBox:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return GroupBox
+function GroupBox:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return GroupBox
+function GroupBox:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return GroupBox
+function GroupBox:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -2439,6 +3249,11 @@ function GroupBox:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return GroupBox
 function GroupBox:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return GroupBox
+function GroupBox:setWidth(width) end
 
 ---@return GroupBox
 function GroupBox:show() end
@@ -2572,10 +3387,55 @@ function HLine:setFixedSize(width, height) end
 ---@return HLine
 function HLine:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return HLine
+function HLine:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return HLine
 function HLine:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return HLine
+function HLine:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return HLine
+function HLine:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return HLine
+function HLine:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return HLine
+function HLine:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return HLine
+function HLine:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return HLine
+function HLine:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return HLine
+function HLine:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -2587,6 +3447,11 @@ function HLine:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return HLine
 function HLine:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return HLine
+function HLine:setWidth(width) end
 
 ---@return HLine
 function HLine:show() end
@@ -2662,6 +3527,11 @@ function Image:setFixedSize(width, height) end
 ---@return Image
 function Image:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Image
+function Image:setHeight(height) end
+
 ---@param path any
 ---@return Image
 function Image:setImage(path) end
@@ -2680,6 +3550,46 @@ function Image:setImageSize(width, height) end
 ---@return Image
 function Image:setLocation(x, y) end
 
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Image
+function Image:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Image
+function Image:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Image
+function Image:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Image
+function Image:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Image
+function Image:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Image
+function Image:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Image
+function Image:setMinWidth(width) end
+
 ---@param handler any
 ---@return Image
 function Image:setOnClick(handler) end
@@ -2694,6 +3604,11 @@ function Image:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Image
 function Image:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Image
+function Image:setWidth(width) end
 
 ---@return Image
 function Image:show() end
@@ -2842,18 +3757,63 @@ function Knob:setFixedSize(width, height) end
 ---@return Knob
 function Knob:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Knob
+function Knob:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Knob
 function Knob:setLocation(x, y) end
 
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Knob
+function Knob:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Knob
+function Knob:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Knob
+function Knob:setMaxSize(width, height) end
+
 ---@param maximum any
 ---@return Knob
 function Knob:setMaxValue(maximum) end
 
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Knob
+function Knob:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Knob
+function Knob:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Knob
+function Knob:setMinSize(width, height) end
+
 ---@param minimum any
 ---@return Knob
 function Knob:setMinValue(minimum) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Knob
+function Knob:setMinWidth(width) end
 
 ---@param minimum any
 ---@param maximum any
@@ -2870,6 +3830,11 @@ function Knob:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Knob
 function Knob:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Knob
+function Knob:setWidth(width) end
 
 ---@return Knob
 function Knob:show() end
@@ -2962,15 +3927,60 @@ function LCDNumber:setFixedSize(width, height) end
 ---@return LCDNumber
 function LCDNumber:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return LCDNumber
+function LCDNumber:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return LCDNumber
 function LCDNumber:setLocation(x, y) end
 
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return LCDNumber
+function LCDNumber:setMargins(left, top, right, bottom) end
+
 --- Attaches a stylesheet class, e.g. "danger"/"warning"/"success".
 ---@param class_ any
 ---@return LCDNumber
 function LCDNumber:setMatProperty(class_) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return LCDNumber
+function LCDNumber:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return LCDNumber
+function LCDNumber:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return LCDNumber
+function LCDNumber:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return LCDNumber
+function LCDNumber:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return LCDNumber
+function LCDNumber:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return LCDNumber
+function LCDNumber:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -2987,6 +3997,11 @@ function LCDNumber:setSize(width, height) end
 ---@param value any
 ---@return LCDNumber
 function LCDNumber:setValue(value) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return LCDNumber
+function LCDNumber:setWidth(width) end
 
 ---@return LCDNumber
 function LCDNumber:show() end
@@ -3085,6 +4100,11 @@ function Label:hide() end
 ---@return Label
 function Label:setBackgroundColor(colour) end
 
+--- Draws the label's text bold, leaving the rest of the font alone.
+---@param bold boolean
+---@return Label
+function Label:setBold(bold) end
+
 --- Shared cursor map - the old one defined 'openhand' twice and mapped 'wait' to an arrow.
 ---@param cursor any
 ---@return Label
@@ -3098,14 +4118,71 @@ function Label:setFixedSize(width, height) end
 ---@return Label
 function Label:setFocus() end
 
+--- Sets the typeface, and optionally the point size.
+---@param font string
+---@param size? integer
+---@return Label
+function Label:setFont(font, size) end
+
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Label
+function Label:setHeight(height) end
+
 ---@param path any
 ---@return Label
 function Label:setImage(path) end
+
+--- Scales the image. Call setImage first.
+---@param width integer
+---@param height integer
+---@return Label
+function Label:setImageSize(width, height) end
 
 ---@param x any
 ---@param y any
 ---@return Label
 function Label:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Label
+function Label:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Label
+function Label:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Label
+function Label:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Label
+function Label:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Label
+function Label:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Label
+function Label:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Label
+function Label:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -3117,6 +4194,21 @@ function Label:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Label
 function Label:setSize(width, height) end
+
+--- The text colour.
+---@param colour string
+---@return Label
+function Label:setTextColor(colour) end
+
+--- The text size, in points.
+---@param size integer
+---@return Label
+function Label:setTextSize(size) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Label
+function Label:setWidth(width) end
 
 ---@return Label
 function Label:show() end
@@ -3283,10 +4375,55 @@ function LineEdit:setFixedSize(width, height) end
 ---@return LineEdit
 function LineEdit:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return LineEdit
+function LineEdit:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return LineEdit
 function LineEdit:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return LineEdit
+function LineEdit:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return LineEdit
+function LineEdit:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return LineEdit
+function LineEdit:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return LineEdit
+function LineEdit:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return LineEdit
+function LineEdit:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return LineEdit
+function LineEdit:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return LineEdit
+function LineEdit:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -3298,6 +4435,11 @@ function LineEdit:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return LineEdit
 function LineEdit:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return LineEdit
+function LineEdit:setWidth(width) end
 
 ---@return LineEdit
 function LineEdit:show() end
@@ -3372,6 +4514,21 @@ function ListBox:setOnItemDoubleClick(handler) end
 ---@return ListBox
 function ListBox:addImageItem(label, image) end
 
+--- Adds several icon+label entries at once, from a table of label -> image path.
+---@param items table<string, string>
+---@return ListBox
+function ListBox:addImageItems(items) end
+
+--- Appends one item to the end of the list.
+---@param text string
+---@return ListBox
+function ListBox:addItem(text) end
+
+--- Appends several items, from a table of strings.
+---@param items string[]
+---@return ListBox
+function ListBox:addItems(items) end
+
 --- Qt native re-exposed so Lua's `box:clear()` colon syntax works.
 ---@return ListBox
 function ListBox:clear() end
@@ -3415,6 +4572,11 @@ function ListBox:setFixedSize(width, height) end
 ---@return ListBox
 function ListBox:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return ListBox
+function ListBox:setHeight(height) end
+
 --- Accepts a Lua table OR a Python sequence. The old implementation called .values() unconditionally and crashed on a Python list, unlike ComboBox.
 ---@param items any
 ---@return ListBox
@@ -3424,6 +4586,46 @@ function ListBox:setItems(items) end
 ---@param y any
 ---@return ListBox
 function ListBox:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return ListBox
+function ListBox:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return ListBox
+function ListBox:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return ListBox
+function ListBox:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return ListBox
+function ListBox:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return ListBox
+function ListBox:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return ListBox
+function ListBox:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return ListBox
+function ListBox:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -3435,6 +4637,11 @@ function ListBox:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return ListBox
 function ListBox:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return ListBox
+function ListBox:setWidth(width) end
 
 ---@return ListBox
 function ListBox:show() end
@@ -3543,10 +4750,55 @@ function Menu:setFixedSize(width, height) end
 ---@return Menu
 function Menu:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Menu
+function Menu:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Menu
 function Menu:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Menu
+function Menu:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Menu
+function Menu:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Menu
+function Menu:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Menu
+function Menu:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Menu
+function Menu:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Menu
+function Menu:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Menu
+function Menu:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -3558,6 +4810,11 @@ function Menu:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Menu
 function Menu:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Menu
+function Menu:setWidth(width) end
 
 ---@return Menu
 function Menu:show() end
@@ -3764,10 +5021,55 @@ function Menubar:setFixedSize(width, height) end
 ---@return Menubar
 function Menubar:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Menubar
+function Menubar:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Menubar
 function Menubar:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Menubar
+function Menubar:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Menubar
+function Menubar:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Menubar
+function Menubar:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Menubar
+function Menubar:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Menubar
+function Menubar:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Menubar
+function Menubar:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Menubar
+function Menubar:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -3779,6 +5081,11 @@ function Menubar:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Menubar
 function Menubar:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Menubar
+function Menubar:setWidth(width) end
 
 ---@return Menubar
 function Menubar:show() end
@@ -3899,10 +5206,55 @@ function Modal:setFixedSize(width, height) end
 ---@return Modal
 function Modal:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Modal
+function Modal:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Modal
 function Modal:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Modal
+function Modal:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Modal
+function Modal:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Modal
+function Modal:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Modal
+function Modal:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Modal
+function Modal:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Modal
+function Modal:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Modal
+function Modal:setMinWidth(width) end
 
 ---@param handler any
 ---@return Modal
@@ -3926,6 +5278,11 @@ function Modal:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Modal
 function Modal:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Modal
+function Modal:setWidth(width) end
 
 ---@return Modal
 function Modal:show() end
@@ -4012,10 +5369,55 @@ function ProgressBar:setFixedSize(width, height) end
 ---@return ProgressBar
 function ProgressBar:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return ProgressBar
+function ProgressBar:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return ProgressBar
 function ProgressBar:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return ProgressBar
+function ProgressBar:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return ProgressBar
+function ProgressBar:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return ProgressBar
+function ProgressBar:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return ProgressBar
+function ProgressBar:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return ProgressBar
+function ProgressBar:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return ProgressBar
+function ProgressBar:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return ProgressBar
+function ProgressBar:setMinWidth(width) end
 
 --- Setting the range to (0, 0) makes the bar indeterminate.
 ---@param start any
@@ -4033,6 +5435,11 @@ function ProgressBar:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return ProgressBar
 function ProgressBar:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return ProgressBar
+function ProgressBar:setWidth(width) end
 
 ---@return ProgressBar
 function ProgressBar:show() end
@@ -4151,10 +5558,55 @@ function RadioButton:setFixedSize(width, height) end
 ---@return RadioButton
 function RadioButton:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return RadioButton
+function RadioButton:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return RadioButton
 function RadioButton:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return RadioButton
+function RadioButton:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return RadioButton
+function RadioButton:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return RadioButton
+function RadioButton:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return RadioButton
+function RadioButton:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return RadioButton
+function RadioButton:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return RadioButton
+function RadioButton:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return RadioButton
+function RadioButton:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -4166,6 +5618,11 @@ function RadioButton:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return RadioButton
 function RadioButton:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return RadioButton
+function RadioButton:setWidth(width) end
 
 ---@return RadioButton
 function RadioButton:show() end
@@ -4267,6 +5724,11 @@ function Scroller:setFixedSize(width, height) end
 ---@return Scroller
 function Scroller:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Scroller
+function Scroller:setHeight(height) end
+
 ---@param behavior any
 ---@return Scroller
 function Scroller:setHorizontalScrollBarBehavior(behavior) end
@@ -4279,6 +5741,46 @@ function Scroller:setLayout(layout) end
 ---@param y any
 ---@return Scroller
 function Scroller:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Scroller
+function Scroller:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Scroller
+function Scroller:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Scroller
+function Scroller:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Scroller
+function Scroller:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Scroller
+function Scroller:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Scroller
+function Scroller:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Scroller
+function Scroller:setMinWidth(width) end
 
 ---@param handler any
 ---@return Scroller
@@ -4298,6 +5800,11 @@ function Scroller:setSize(width, height) end
 ---@param behavior any
 ---@return Scroller
 function Scroller:setVerticalScrollBarBehavior(behavior) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Scroller
+function Scroller:setWidth(width) end
 
 ---@return Scroller
 function Scroller:show() end
@@ -4371,10 +5878,55 @@ function Separator:setFixedSize(width, height) end
 ---@return Separator
 function Separator:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Separator
+function Separator:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Separator
 function Separator:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Separator
+function Separator:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Separator
+function Separator:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Separator
+function Separator:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Separator
+function Separator:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Separator
+function Separator:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Separator
+function Separator:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Separator
+function Separator:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -4386,6 +5938,11 @@ function Separator:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Separator
 function Separator:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Separator
+function Separator:setWidth(width) end
 
 ---@return Separator
 function Separator:show() end
@@ -4490,10 +6047,55 @@ function Slider:setFixedSize(width, height) end
 ---@return Slider
 function Slider:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Slider
+function Slider:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Slider
 function Slider:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Slider
+function Slider:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Slider
+function Slider:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Slider
+function Slider:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Slider
+function Slider:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Slider
+function Slider:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Slider
+function Slider:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Slider
+function Slider:setMinWidth(width) end
 
 ---@param start any
 ---@param end_ any
@@ -4510,6 +6112,11 @@ function Slider:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Slider
 function Slider:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Slider
+function Slider:setWidth(width) end
 
 ---@return Slider
 function Slider:show() end
@@ -4618,10 +6225,55 @@ function SlidingStackedWidget:setFixedSize(width, height) end
 ---@return SlidingStackedWidget
 function SlidingStackedWidget:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return SlidingStackedWidget
 function SlidingStackedWidget:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setMinWidth(width) end
 
 ---@param orientation any
 ---@return SlidingStackedWidget
@@ -4641,6 +6293,11 @@ function SlidingStackedWidget:setSize(width, height) end
 ---@param speed? any
 ---@return SlidingStackedWidget
 function SlidingStackedWidget:setSpeed(speed) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return SlidingStackedWidget
+function SlidingStackedWidget:setWidth(width) end
 
 ---@return SlidingStackedWidget
 function SlidingStackedWidget:show() end
@@ -4765,10 +6422,55 @@ function Spinner:setFixedSize(width, height) end
 ---@return Spinner
 function Spinner:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Spinner
+function Spinner:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Spinner
 function Spinner:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Spinner
+function Spinner:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Spinner
+function Spinner:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Spinner
+function Spinner:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Spinner
+function Spinner:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Spinner
+function Spinner:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Spinner
+function Spinner:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Spinner
+function Spinner:setMinWidth(width) end
 
 ---@param start any
 ---@param end_ any
@@ -4785,6 +6487,11 @@ function Spinner:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Spinner
 function Spinner:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Spinner
+function Spinner:setWidth(width) end
 
 ---@return Spinner
 function Spinner:show() end
@@ -4893,10 +6600,55 @@ function Splitter:setFixedSize(width, height) end
 ---@return Splitter
 function Splitter:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Splitter
+function Splitter:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Splitter
 function Splitter:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Splitter
+function Splitter:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Splitter
+function Splitter:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Splitter
+function Splitter:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Splitter
+function Splitter:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Splitter
+function Splitter:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Splitter
+function Splitter:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Splitter
+function Splitter:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -4908,6 +6660,11 @@ function Splitter:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Splitter
 function Splitter:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Splitter
+function Splitter:setWidth(width) end
 
 ---@return Splitter
 function Splitter:show() end
@@ -5058,10 +6815,55 @@ function StatusBar:setFixedSize(width, height) end
 ---@return StatusBar
 function StatusBar:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return StatusBar
+function StatusBar:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return StatusBar
 function StatusBar:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return StatusBar
+function StatusBar:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return StatusBar
+function StatusBar:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return StatusBar
+function StatusBar:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return StatusBar
+function StatusBar:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return StatusBar
+function StatusBar:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return StatusBar
+function StatusBar:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return StatusBar
+function StatusBar:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -5079,6 +6881,11 @@ function StatusBar:setSize(width, height) end
 ---@param timeout? any
 ---@return StatusBar
 function StatusBar:setText(text, timeout) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return StatusBar
+function StatusBar:setWidth(width) end
 
 ---@return StatusBar
 function StatusBar:show() end
@@ -5311,10 +7118,55 @@ function Tab:setFixedSize(width, height) end
 ---@return Tab
 function Tab:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Tab
+function Tab:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Tab
 function Tab:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Tab
+function Tab:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Tab
+function Tab:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Tab
+function Tab:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Tab
+function Tab:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Tab
+function Tab:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Tab
+function Tab:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Tab
+function Tab:setMinWidth(width) end
 
 ---@param handler any
 ---@return Tab
@@ -5359,6 +7211,11 @@ function Tab:setTabToolTip(index, tip) end
 ---@param visible any
 ---@return Tab
 function Tab:setTabVisible(index, visible) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Tab
+function Tab:setWidth(width) end
 
 ---@return Tab
 function Tab:show() end
@@ -5440,10 +7297,55 @@ function TabItem:setFixedSize(width, height) end
 ---@return TabItem
 function TabItem:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return TabItem
+function TabItem:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return TabItem
 function TabItem:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return TabItem
+function TabItem:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return TabItem
+function TabItem:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return TabItem
+function TabItem:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return TabItem
+function TabItem:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return TabItem
+function TabItem:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return TabItem
+function TabItem:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return TabItem
+function TabItem:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -5455,6 +7357,11 @@ function TabItem:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return TabItem
 function TabItem:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return TabItem
+function TabItem:setWidth(width) end
 
 ---@return TabItem
 function TabItem:show() end
@@ -5663,10 +7570,55 @@ function Table:setFixedSize(width, height) end
 ---@return Table
 function Table:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Table
+function Table:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Table
 function Table:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Table
+function Table:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Table
+function Table:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Table
+function Table:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Table
+function Table:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Table
+function Table:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Table
+function Table:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Table
+function Table:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -5690,6 +7642,11 @@ function Table:setSelectionBehavior(behavior) end
 ---@param height any
 ---@return Table
 function Table:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Table
+function Table:setWidth(width) end
 
 ---@return Table
 function Table:show() end
@@ -5852,10 +7809,55 @@ function TextField:setFixedSize(width, height) end
 ---@return TextField
 function TextField:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return TextField
+function TextField:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return TextField
 function TextField:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return TextField
+function TextField:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return TextField
+function TextField:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return TextField
+function TextField:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return TextField
+function TextField:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return TextField
+function TextField:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return TextField
+function TextField:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return TextField
+function TextField:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -5884,6 +7886,11 @@ function TextField:setTextColor(colour) end
 ---@param size any
 ---@return TextField
 function TextField:setTextSize(size) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return TextField
+function TextField:setWidth(width) end
 
 ---@param mode any
 ---@return TextField
@@ -5977,10 +7984,55 @@ function TimePicker:setFixedSize(width, height) end
 ---@return TimePicker
 function TimePicker:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return TimePicker
+function TimePicker:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return TimePicker
 function TimePicker:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return TimePicker
+function TimePicker:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return TimePicker
+function TimePicker:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return TimePicker
+function TimePicker:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return TimePicker
+function TimePicker:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return TimePicker
+function TimePicker:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return TimePicker
+function TimePicker:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return TimePicker
+function TimePicker:setMinWidth(width) end
 
 --- Fires on Enter (Qt's `editingFinished`), matching the 1.x comment.
 ---@param handler any
@@ -6004,6 +8056,11 @@ function TimePicker:setSize(width, height) end
 ---@param second? any
 ---@return TimePicker
 function TimePicker:setTime(hour, minute, second) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return TimePicker
+function TimePicker:setWidth(width) end
 
 ---@return TimePicker
 function TimePicker:show() end
@@ -6133,10 +8190,55 @@ function Toolbar:setFixedSize(width, height) end
 ---@return Toolbar
 function Toolbar:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Toolbar
+function Toolbar:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return Toolbar
 function Toolbar:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Toolbar
+function Toolbar:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Toolbar
+function Toolbar:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Toolbar
+function Toolbar:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Toolbar
+function Toolbar:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Toolbar
+function Toolbar:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Toolbar
+function Toolbar:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Toolbar
+function Toolbar:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -6148,6 +8250,11 @@ function Toolbar:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Toolbar
 function Toolbar:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Toolbar
+function Toolbar:setWidth(width) end
 
 ---@return Toolbar
 function Toolbar:show() end
@@ -6407,10 +8514,55 @@ function TreeView:setFocus() end
 ---@return TreeView
 function TreeView:setHeaderLabels(labels) end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return TreeView
+function TreeView:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return TreeView
 function TreeView:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return TreeView
+function TreeView:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return TreeView
+function TreeView:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return TreeView
+function TreeView:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return TreeView
+function TreeView:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return TreeView
+function TreeView:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return TreeView
+function TreeView:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return TreeView
+function TreeView:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -6422,6 +8574,11 @@ function TreeView:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return TreeView
 function TreeView:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return TreeView
+function TreeView:setWidth(width) end
 
 ---@return TreeView
 function TreeView:show() end
@@ -6592,10 +8749,55 @@ function TreeWidget:setFocus() end
 ---@return TreeWidget
 function TreeWidget:setHeaderLabels(labels) end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return TreeWidget
+function TreeWidget:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return TreeWidget
 function TreeWidget:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return TreeWidget
+function TreeWidget:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return TreeWidget
+function TreeWidget:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return TreeWidget
+function TreeWidget:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return TreeWidget
+function TreeWidget:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return TreeWidget
+function TreeWidget:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return TreeWidget
+function TreeWidget:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return TreeWidget
+function TreeWidget:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -6607,6 +8809,11 @@ function TreeWidget:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return TreeWidget
 function TreeWidget:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return TreeWidget
+function TreeWidget:setWidth(width) end
 
 ---@return TreeWidget
 function TreeWidget:show() end
@@ -6740,10 +8947,55 @@ function VLine:setFixedSize(width, height) end
 ---@return VLine
 function VLine:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return VLine
+function VLine:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return VLine
 function VLine:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return VLine
+function VLine:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return VLine
+function VLine:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return VLine
+function VLine:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return VLine
+function VLine:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return VLine
+function VLine:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return VLine
+function VLine:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return VLine
+function VLine:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -6755,6 +9007,11 @@ function VLine:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return VLine
 function VLine:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return VLine
+function VLine:setWidth(width) end
 
 ---@return VLine
 function VLine:show() end
@@ -6846,6 +9103,15 @@ function Window:close() end
 
 function Window:getSize() end
 
+--- One of Qt's built-in icons, by name, e.g. "SP_DirIcon".
+---@param name string
+---@return any
+function Window:getStandardIcon(name) end
+
+--- Every standard icon name this platform offers.
+---@return string[]
+function Window:getStandardIcons() end
+
 ---@return Window
 function Window:hide() end
 
@@ -6875,6 +9141,11 @@ function Window:setFixedSize(width, height) end
 ---@return Window
 function Window:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return Window
+function Window:setHeight(height) end
+
 --- QMainWindow cannot take a layout directly; it goes on the central widget.
 ---@param layout any
 ---@return Window
@@ -6889,9 +9160,49 @@ function Window:setLocation(x, y) end
 ---@return Window
 function Window:setMainChild(child) end
 
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return Window
+function Window:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return Window
+function Window:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return Window
+function Window:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return Window
+function Window:setMaxWidth(width) end
+
 ---@param menu any
 ---@return Window
 function Window:setMenubar(menu) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return Window
+function Window:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return Window
+function Window:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return Window
+function Window:setMinWidth(width) end
 
 ---@param handler any
 function Window:setOnClose(handler) end
@@ -6927,6 +9238,11 @@ function Window:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Window
 function Window:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return Window
+function Window:setWidth(width) end
 
 ---@return Window
 function Window:show() end

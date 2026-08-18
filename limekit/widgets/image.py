@@ -9,11 +9,11 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QLabel
 
 from limekit.kernel.bridge.guard import guard
-from limekit.kernel.coerce import ALIGNMENTS, Enum
+from limekit.kernel.coerce import ALIGNMENTS, Alignment, Enum
 from limekit.kernel.errors import BridgeError
 from limekit.widgets.base import LimeWidget, _to_int
 
-_alignment = Enum(ALIGNMENTS, "alignment")
+_alignment = Alignment
 
 
 class Image(LimeWidget, QLabel):

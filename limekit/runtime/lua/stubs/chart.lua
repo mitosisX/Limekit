@@ -189,10 +189,55 @@ function ChartCanvas:setFixedSize(width, height) end
 ---@return ChartCanvas
 function ChartCanvas:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return ChartCanvas
+function ChartCanvas:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return ChartCanvas
 function ChartCanvas:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return ChartCanvas
+function ChartCanvas:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return ChartCanvas
+function ChartCanvas:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return ChartCanvas
+function ChartCanvas:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return ChartCanvas
+function ChartCanvas:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return ChartCanvas
+function ChartCanvas:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return ChartCanvas
+function ChartCanvas:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return ChartCanvas
+function ChartCanvas:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -208,6 +253,11 @@ function ChartCanvas:setSize(width, height) end
 ---@param theme any
 ---@return ChartCanvas
 function ChartCanvas:setTheme(theme) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return ChartCanvas
+function ChartCanvas:setWidth(width) end
 
 ---@return ChartCanvas
 function ChartCanvas:show() end
@@ -292,10 +342,55 @@ function ChartView:setFixedSize(width, height) end
 ---@return ChartView
 function ChartView:setFocus() end
 
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return ChartView
+function ChartView:setHeight(height) end
+
 ---@param x any
 ---@param y any
 ---@return ChartView
 function ChartView:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return ChartView
+function ChartView:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return ChartView
+function ChartView:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return ChartView
+function ChartView:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return ChartView
+function ChartView:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return ChartView
+function ChartView:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return ChartView
+function ChartView:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return ChartView
+function ChartView:setMinWidth(width) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -311,6 +406,11 @@ function ChartView:setSize(width, height) end
 ---@param theme any
 ---@return ChartView
 function ChartView:setTheme(theme) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return ChartView
+function ChartView:setWidth(width) end
 
 ---@return ChartView
 function ChartView:show() end
