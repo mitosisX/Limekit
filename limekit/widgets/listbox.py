@@ -4,19 +4,26 @@ from PySide6.QtWidgets import QListWidget, QListWidgetItem
 from limekit.kernel.bridge.convert import as_mapping, as_sequence
 from limekit.kernel.coerce import LuaIndex
 from limekit.kernel.errors import BridgeError
-from limekit.kernel.spec import Event, method
+from limekit.kernel.bridge.guard import guard
+from limekit.kernel.spec import method
 from limekit.widgets.base import LimeWidget
 
 
 class ListBox(LimeWidget, QListWidget):
     __lime__ = "ui.ListBox"
 
-    onItemSelect = Event("currentItemChanged", passes_self=True,
-                          params=(("current", "any"), ("previous", "any")))
-    onItemDoubleClick = Event("itemDoubleClicked", passes_self=True, params=(("item", "any"),))
+    # Hand-written rather than declarative: the Qt signals carry
+    # QListWidgetItem objects, which are useless to a Lua caller -- there is
+    # nothing it can do with one. 1.x passed (widget, text, row) and that is
+    # what these pass, the same reasoning that makes Tab's attachers
+    # hand-written. Rows are 1-based, like every other index.
 
     def __init__(self, items=None):
         super().__init__()
+        self._onItemSelect = None
+        self._onItemDoubleClick = None
+        self.currentItemChanged.connect(self._handleItemSelect)
+        self.itemDoubleClicked.connect(self._handleItemDoubleClick)
         self.setAlternatingRowColors(True)
         if items is not None:
             self.setItems(items)
@@ -29,13 +36,17 @@ class ListBox(LimeWidget, QListWidget):
         """
         self.clear()
         for item in as_sequence(items):
-            self.addItem(QListWidgetItem(str(item)))
+            QListWidget.addItem(self, QListWidgetItem(str(item)))
         return self
 
     def addImageItem(self, label, image):
         item = QListWidgetItem(str(label))
         item.setIcon(QIcon(image))
-        self.addItem(item)
+        # QListWidget.addItem, not self.addItem: the Lua-facing addItem takes
+        # a string and str()s whatever it is given, which turned an item
+        # object into its repr and printed
+        # "<PySide6.QtWidgets.QListWidgetItem object at 0x...>" in the list.
+        QListWidget.addItem(self, item)
         return self
 
     def getItemsCount(self):
@@ -87,7 +98,11 @@ class ListBox(LimeWidget, QListWidget):
             doc="Appends one item to the end of the list.")
     def addItem(self, text):
         """setItems replaces everything; there was no way to append a single
-        item, which is what a list being filled incrementally actually needs."""
+        item, which is what a list being filled incrementally actually needs.
+
+        Takes a string. Code inside this class that already holds a
+        QListWidgetItem calls QListWidget.addItem directly.
+        """
         QListWidget.addItem(self, str(text))
         return self
 
@@ -97,3 +112,31 @@ class ListBox(LimeWidget, QListWidget):
         for item in as_sequence(items):
             self.addItem(item)
         return self
+
+    # -- events ------------------------------------------------------------
+
+    @method({"handler": "fun(widget: ListBox, text: string, row: integer)"},
+            returns="self",
+            doc="Runs when the selected item changes. The handler receives the "
+                "list, the selected text, and its 1-based row.")
+    def setOnItemSelect(self, handler):
+        self._onItemSelect = guard(handler, widget="ListBox", event="onItemSelect")
+        return self
+
+    @method({"handler": "fun(widget: ListBox, text: string, row: integer)"},
+            returns="self",
+            doc="Runs when an item is double-clicked. The handler receives the "
+                "list, the item's text, and its 1-based row.")
+    def setOnItemDoubleClick(self, handler):
+        self._onItemDoubleClick = guard(
+            handler, widget="ListBox", event="onItemDoubleClick"
+        )
+        return self
+
+    def _handleItemSelect(self, current, previous):
+        if self._onItemSelect and current is not None:
+            self._onItemSelect(self, current.text(), self.getCurrentRow())
+
+    def _handleItemDoubleClick(self, item):
+        if self._onItemDoubleClick:
+            self._onItemDoubleClick(self, item.text(), self.getCurrentRow())

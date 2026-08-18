@@ -17,7 +17,7 @@ from PySide6.QtWidgets import QTreeWidget, QTreeWidgetItem
 from limekit.kernel.bridge.convert import as_sequence
 from limekit.kernel.coerce import Icon, LuaIndex
 from limekit.kernel.declarative import LimeObject
-from limekit.kernel.spec import Event, Prop
+from limekit.kernel.spec import Event, Prop, method
 from limekit.widgets.base import LimeWidget, _to_int
 from limekit.kernel.registry import registry
 
@@ -40,6 +40,24 @@ class TreeViewItem(LimeObject, QTreeWidgetItem):
     def setIcon(self, column, icon):
         super().setIcon(LuaIndex(column), Icon(icon))
         return self
+
+    @method({"editable": "boolean"}, returns="self",
+            doc="Whether the user can rename this item in place. Items are "
+                "editable by default, which is rarely what a read-only tree "
+                "wants.")
+    def setEditable(self, editable):
+        from PySide6.QtCore import Qt
+        flags = self.flags()
+        if editable:
+            self.setFlags(flags | Qt.ItemFlag.ItemIsEditable)
+        else:
+            self.setFlags(flags & ~Qt.ItemFlag.ItemIsEditable)
+        return self
+
+    @method(returns="boolean", doc="Whether this item can be renamed in place.")
+    def isEditable(self):
+        from PySide6.QtCore import Qt
+        return bool(self.flags() & Qt.ItemFlag.ItemIsEditable)
 
     def addChild(self, child):
         super().addChild(child)

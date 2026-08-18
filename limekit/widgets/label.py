@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QLabel
 
 from limekit.kernel.coerce import ALIGNMENTS, Alignment, CURSORS, Enum
 from limekit.kernel.coerce import Colour
+from limekit.kernel.bridge.guard import guard
 from limekit.kernel.errors import BridgeError
 from limekit.kernel.spec import Prop, method
 from limekit.widgets.base import LimeWidget
@@ -21,7 +22,21 @@ class Label(LimeWidget, QLabel):
     def __init__(self, text=""):
         super().__init__()
         self._image_path = ""
+        self._onClick = None
         self.setText(text)
+
+    # A Label is regularly used as a clickable thing -- an icon that opens a
+    # file picker, a link-styled line of text. 1.x supported it and 2.0 did
+    # not, so those turned into "'Label' object has no attribute 'setOnClick'"
+    # at the moment of the click. Same shape as Image.setOnClick.
+    def setOnClick(self, handler):
+        self._onClick = guard(handler, widget="Label", event="onClick")
+        return self
+
+    def mousePressEvent(self, event):
+        if self._onClick:
+            self._onClick(self)
+        super().mousePressEvent(event)
 
     def setCursor(self, cursor):
         """Shared cursor map - the old one defined 'openhand' twice and

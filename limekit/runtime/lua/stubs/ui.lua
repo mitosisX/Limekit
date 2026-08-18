@@ -4184,6 +4184,10 @@ function Label:setMinSize(width, height) end
 ---@return Label
 function Label:setMinWidth(width) end
 
+---@param handler any
+---@return Label
+function Label:setOnClick(handler) end
+
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
 ---@param vertical any
@@ -4499,16 +4503,6 @@ function ListBox:getStyleSheet() end
 ---@return ListBox
 function ListBox:setStyleSheet(value) end
 
---- Attach a handler for onItemSelect.
----@param handler fun(widget: ListBox, current: any, previous: any)
----@return ListBox
-function ListBox:setOnItemSelect(handler) end
-
---- Attach a handler for onItemDoubleClick.
----@param handler fun(widget: ListBox, item: any)
----@return ListBox
-function ListBox:setOnItemDoubleClick(handler) end
-
 ---@param label any
 ---@param image any
 ---@return ListBox
@@ -4626,6 +4620,16 @@ function ListBox:setMinSize(width, height) end
 ---@param width integer
 ---@return ListBox
 function ListBox:setMinWidth(width) end
+
+--- Runs when an item is double-clicked. The handler receives the list, the item's text, and its 1-based row.
+---@param handler fun(widget: ListBox, text: string, row: integer)
+---@return ListBox
+function ListBox:setOnItemDoubleClick(handler) end
+
+--- Runs when the selected item changes. The handler receives the list, the selected text, and its 1-based row.
+---@param handler fun(widget: ListBox, text: string, row: integer)
+---@return ListBox
+function ListBox:setOnItemSelect(handler) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -8617,6 +8621,15 @@ function TreeViewItem:getParent() end
 
 ---@param column any
 function TreeViewItem:getText(column) end
+
+--- Whether this item can be renamed in place.
+---@return boolean
+function TreeViewItem:isEditable() end
+
+--- Whether the user can rename this item in place. Items are editable by default, which is rarely what a read-only tree wants.
+---@param editable boolean
+---@return TreeViewItem
+function TreeViewItem:setEditable(editable) end
 
 ---@param column any
 ---@param icon any
