@@ -28,3 +28,12 @@ class AreaChart(LimeObject, QAreaSeries if HAS_QTCHARTS else QObject):
             super().__init__(upper, lower)
         else:
             super().__init__(upper)
+
+    def attachAxis(self, axis):
+        """Binds the series to an axis you added to the Chart.
+
+        Qt-native, so it needs the same wrapper `LineChart.attachAxis` does
+        -- see the note there.
+        """
+        super().attachAxis(axis)
+        return self

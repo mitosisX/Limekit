@@ -93,3 +93,13 @@ class BoxLayout(LimeLayout):
     def addSpacing(self, size):
         super().addSpacing(_to_int(size, "size"))
         return self
+
+    def addSpacer(self, spacer):
+        """Adds a `ui.Spacer`.
+
+        A QSpacerItem is not a QWidget, so `addChild` cannot take one -- it
+        calls addWidget and Qt rejects it. 1.x had this method; 2.0 dropped
+        it, which left `ui.Spacer` registered but impossible to place.
+        """
+        self.addSpacerItem(spacer)
+        return self

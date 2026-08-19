@@ -3,6 +3,7 @@
 import sys
 
 from limekit.kernel.app import LimekitApp
+from limekit.kernel.errors import LimekitError
 
 
 def main(argv=None):
@@ -13,7 +14,17 @@ def main(argv=None):
 
     app = LimekitApp(argv[0], argv=argv)
     app.boot()
-    app.load_project()
+
+    try:
+        app.load_project()
+    except LimekitError as error:
+        # A mistake in someone's Lua is not a bug in the interpreter, and
+        # showing them a Python traceback through lupa says otherwise -- the
+        # one line that names their file and line was buried at the bottom of
+        # forty. LuaError already carries source and line structurally.
+        print(f"{error}", file=sys.stderr)
+        return 1
+
     return app.run()
 
 

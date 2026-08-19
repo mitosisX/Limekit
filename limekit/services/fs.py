@@ -175,7 +175,11 @@ class FileSystem(LimeObject):
         return to_lua(entries)
 
     @staticmethod
-    @method({"path": "string", "show_hidden": "boolean"}, returns="string[]", doc="Walks a folder recursively.")
+    @method({"path": "string", "show_hidden": "boolean"},
+            returns="table[]",
+            doc="One level of a folder, folders first. Each entry is a table "
+                "with name, path and is_dir. Not recursive, despite the name -- "
+                "call it again on any entry whose is_dir is true.")
     def walkDir(path, show_hidden=False):
         path = _path(path)
         if not os.path.isdir(path):

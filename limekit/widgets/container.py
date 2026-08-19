@@ -5,6 +5,7 @@ it cannot use the declarative `Event` spec (which wraps `connect`) - the same
 situation as Window's events. It is hand-written but still crosses `guard()`.
 """
 
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget
 
 from limekit.kernel.bridge.guard import guard
@@ -25,6 +26,22 @@ class Container(LimeWidget, QWidget):
         self._onKeyPress = guard(handler, widget="Container", event="onKeyPress")
         return self
 
+    @staticmethod
+    def _key_name(code):
+        """"Escape", "Return", "A" -- not Qt's "Key_Escape" and not an int.
+
+        Handing the raw QKeyEvent to Lua looked reasonable but was useless
+        there: its accessors are Qt-native, so `event:text()` passes the
+        event twice and raises, and `tostring(event)` prints a Shiboken
+        repr. Window's mouse events already pass plain x and y for the same
+        reason.
+        """
+        try:
+            name = Qt.Key(code).name
+        except ValueError:
+            return str(code)
+        return name[4:] if name.startswith("Key_") else name
+
     def keyPressEvent(self, event):
         """Notify the handler, then let Qt process the key as normal.
 
@@ -36,5 +53,5 @@ class Container(LimeWidget, QWidget):
         in this order.
         """
         if self._onKeyPress:
-            self._onKeyPress(self, event)
+            self._onKeyPress(self, self._key_name(event.key()), event.text())
         super().keyPressEvent(event)

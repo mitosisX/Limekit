@@ -66,10 +66,36 @@ class LimekitApp:
         return self.qt_app.exec()
 
     def shutdown(self):
+        self._stop_timers()
+        self._stop_threads()
         reset_error_sink()
         affinity.reset()
         self.runtime = None
         self.qt_app = None
+
+    @staticmethod
+    def _stop_timers():
+        """Stop any sys.Timer still ticking before the runtime goes away.
+
+        Its callback lives in Lua; once the runtime is dropped, a timer that
+        keeps firing reports "Internal C++ object already deleted" from
+        somewhere the author has no way to connect back to their code.
+        """
+        for timer in affinity.live_timers():
+            timer.stop()
+
+    @staticmethod
+    def _stop_threads(msecs=5000):
+        """Wait for any sys.Thread still running before tearing down.
+
+        Qt aborts the process outright if a QThread is destroyed while it is
+        still running, so an app that shut down with a worker in flight died
+        with a crash rather than an exit code. Waiting here means the last
+        thing a project does cannot be to fall over.
+        """
+        for thread in affinity.live_workers():
+            thread.quit()
+            thread.wait(msecs)
 
     # -- internals ---------------------------------------------------------
 

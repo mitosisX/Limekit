@@ -20,7 +20,10 @@ try:
         QBarSet,
         QChart,
         QChartView,
+        QHorizontalBarSeries,
         QLineSeries,
+        QPercentBarSeries,
+        QStackedBarSeries,
         QValueAxis,
     )
     HAS_QTCHARTS = True
@@ -28,6 +31,7 @@ except ImportError:
     HAS_QTCHARTS = False
     QAreaSeries = QBarCategoryAxis = QBarSeries = QBarSet = None
     QChart = QChartView = QLineSeries = QValueAxis = None
+    QHorizontalBarSeries = QPercentBarSeries = QStackedBarSeries = None
 
 
 def require_charts():

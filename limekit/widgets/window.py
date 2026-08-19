@@ -20,6 +20,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QCursor, QIcon, QPixmap
 from PySide6.QtWidgets import QMainWindow, QWidget
 
+from limekit.kernel import affinity
 from limekit.kernel.bridge.convert import as_mapping
 from limekit.kernel.bridge.guard import guard
 from limekit.kernel.coerce import DOCK_AREAS, TOOLBAR_AREAS, Enum, Icon
@@ -166,6 +167,19 @@ class Window(LimeWidget, QMainWindow):
         self.setMenuBar(menu)
         return self
 
+    def setStatusbar(self, bar):
+        """Puts a StatusBar along the bottom.
+
+        QMainWindow.setStatusBar is Qt-native, so calling it with Lua's
+        colon syntax passed the window twice and raised. Without this
+        wrapper `ui.StatusBar` was registered but unreachable.
+        """
+        self.setStatusBar(bar)
+        return self
+
+    def getStatusbar(self):
+        return self.statusBar()
+
     def getSize(self):
         size = self.size()
         return size.width(), size.height()
@@ -203,6 +217,10 @@ class Window(LimeWidget, QMainWindow):
     # -- Qt overrides ------------------------------------------------------
 
     def showEvent(self, event):
+        # A shown window has to outlive the Lua chunk that made it: after
+        # main.lua returns, its locals are collectable, and a Lua collection
+        # would otherwise take the whole application down with the window.
+        affinity.register_window(self)
         super().showEvent(event)
         if not self._just_shown:        # centre once, not on every show
             self._just_shown = True
@@ -214,6 +232,9 @@ class Window(LimeWidget, QMainWindow):
         if self._onClose:
             self._onClose(self, event)
         if event.isAccepted():
+            # Closed for good, so stop holding it open -- otherwise the
+            # framework would leak every window an app ever showed.
+            affinity.forget_window(self)
             super().closeEvent(event)
 
     def resizeEvent(self, event):

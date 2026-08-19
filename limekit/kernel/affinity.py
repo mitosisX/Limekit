@@ -1,4 +1,8 @@
-"""Catching widget access from a worker thread.
+"""Catching widget access from a worker thread, and process-level lifetimes.
+
+Two jobs, both about things the runtime must know of rather than any one
+widget: which thread owns the widgets, and which objects have to outlive the
+Lua chunk that created them.
 
 Qt widgets belong to the thread that created them -- the GUI thread -- and
 touching one from anywhere else is undefined behaviour. Not an exception: a
@@ -32,6 +36,19 @@ from limekit.kernel.errors import BridgeError
 _gui_thread = None
 _workers_started = False
 
+# Every worker that has been created. A QThread built from Lua has no Qt
+# parent, so QApplication.findChildren cannot see it -- and Qt aborts the
+# whole process if a QThread is destroyed while it is still running. The
+# registry lives here rather than in services/ so that kernel/app.py can wait
+# for them at shutdown without importing upwards.
+_workers = set()
+
+# Timers, for the same reason: see register_timer.
+_timers = set()
+
+# Shown top-level windows. See register_window.
+_windows = set()
+
 
 def set_gui_thread(thread=None):
     """Record the thread widgets belong to. Called by `LimekitApp.boot()`."""
@@ -49,11 +66,61 @@ def note_worker_started():
     _workers_started = True
 
 
+def register_worker(thread):
+    """Called by `sys.Thread.__init__`, so shutdown can wait for it."""
+    _workers.add(thread)
+
+
+def live_workers():
+    """Every registered worker still running."""
+    return tuple(t for t in _workers if t.isRunning())
+
+
+def register_timer(timer):
+    """Called by `sys.Timer.__init__`, so shutdown can stop it.
+
+    A QTimer outlives the Lua runtime that owns its callback. Left running,
+    it fires into a torn-down runtime and reports "Internal C++ object
+    already deleted" -- the same shape of problem as a worker thread
+    surviving shutdown.
+    """
+    _timers.add(timer)
+
+
+def live_timers():
+    """Every registered timer still ticking."""
+    return tuple(t for t in _timers if t.isActive())
+
+
+def register_window(window):
+    """Called by `Window.show()`, to keep the window alive.
+
+    A Lua script's top-level variables die with the chunk. `main.lua` ends
+    with `window:show()` and then returns, so the only reference to the
+    window is a local in a finished chunk -- and the next Lua collection
+    frees it, taking the entire application with it. One
+    `collectgarbage("collect")` was enough to leave a booted app with no
+    top-level widgets at all.
+
+    Nothing in the Lua is wrong; it reads exactly as the documentation says
+    it should. So the framework holds the reference instead.
+    """
+    _windows.add(window)
+
+
+def forget_window(window):
+    """Called when a window closes, so a closed window can be collected."""
+    _windows.discard(window)
+
+
 def reset():
-    """Forget both, for `LimekitApp.shutdown()` and between tests."""
+    """Forget all three, for `LimekitApp.shutdown()` and between tests."""
     global _gui_thread, _workers_started
     _gui_thread = None
     _workers_started = False
+    _workers.clear()
+    _timers.clear()
+    _windows.clear()
 
 
 def is_armed():

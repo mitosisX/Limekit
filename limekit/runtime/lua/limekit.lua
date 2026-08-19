@@ -20,7 +20,10 @@ limekit.chart = require("limekit.chart")
 --   chart.Chart
 --   chart.ChartCanvas
 --   chart.ChartView
+--   chart.HorizontalBarChart
 --   chart.LineChart
+--   chart.PercentBarChart
+--   chart.StackedBarChart
 --   chart.ValueAxis
 
 -- db

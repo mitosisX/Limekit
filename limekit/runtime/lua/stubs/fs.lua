@@ -105,10 +105,10 @@ function FileSystem.readJSON(path) end
 ---@param new_path string
 function FileSystem.renameFile(path, new_path) end
 
---- Walks a folder recursively.
+--- One level of a folder, folders first. Each entry is a table with name, path and is_dir. Not recursive, despite the name -- call it again on any entry whose is_dir is true.
 ---@param path string
 ---@param show_hidden? boolean
----@return string[]
+---@return table[]
 function FileSystem.walkDir(path, show_hidden) end
 
 --- Writes content, replacing whatever was there.

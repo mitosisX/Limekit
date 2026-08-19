@@ -73,9 +73,17 @@ function ProjectRunner(project_path) end
 ---@return string
 function ProjectRunner:getApiVersion() end
 
+--- The command this runner spawns, as a table of arguments.
+---@return string[]
+function ProjectRunner:getCommand() end
+
 --- The project folder this runner was created for.
 ---@return string
 function ProjectRunner:getPath() end
+
+--- The operating system's id for the running process, or 0 if it is not running.
+---@return integer
+function ProjectRunner:getProcessId() end
 
 --- Whether the project is currently running.
 ---@return boolean
@@ -85,8 +93,8 @@ function ProjectRunner:isRunning() end
 ---@return ProjectRunner
 function ProjectRunner:run() end
 
---- Runs when the project exits, however it exits.
----@param handler fun()
+--- Runs when the project exits, however it exits. The handler receives the exit code and whether it crashed -- pressing Stop is not a crash.
+---@param handler fun(exit_code: integer, crashed: boolean)
 ---@return ProjectRunner
 function ProjectRunner:setOnProcessFinished(handler) end
 
@@ -103,6 +111,10 @@ function ProjectRunner:setOnProcessStarted(handler) end
 --- Stops the project.
 ---@return ProjectRunner
 function ProjectRunner:stop() end
+
+--- Whether the last exit followed a stop() rather than the project finishing on its own.
+---@return boolean
+function ProjectRunner:wasStopped() end
 
 ---@class Signal
 local Signal = {}
@@ -218,7 +230,7 @@ function Thread:isRunning() end
 ---@return Thread
 function Thread:setOnThreadRun(handler) end
 
---- Pauses the calling thread for `seconds` -- QThread.sleep is a static method in Qt; exposed here as an instance method so Lua's `thread:sleep(2)` colon syntax works.
+--- Pauses the calling thread for `seconds`, fractions included. QThread.sleep is a static method in Qt; it is exposed here as an instance method so Lua's `thread:sleep(2)` colon syntax works. It goes through msleep rather than sleep because Qt's `sleep` takes whole seconds: rounding first meant `thread:sleep(0.2)` became `sleep(0)` and did not pause at all, so a worker written with a sub-second delay ran flat out and the interface saw its updates arrive in one burst at the end.
 ---@param seconds any
 ---@return Thread
 function Thread:sleep(seconds) end
@@ -226,8 +238,10 @@ function Thread:sleep(seconds) end
 ---@return Thread
 function Thread:start() end
 
+--- Asks the thread to finish, then waits for it. `quit()` alone only ends a thread that is running Qt's own event loop; a `setOnThreadRun` worker is a `run()` override, so `quit()` does nothing to it and `stop()` returned with the thread still going. If the app then exited -- the usual reason for calling stop, from an onClose handler -- Qt destroyed a live QThread and aborted the process rather than shutting down. So this waits as well, bounded so a wedged worker cannot hang the close. A worker cannot be interrupted part-way through its body: check a flag inside your loop if you need it to give up early.
+---@param msecs? any
 ---@return Thread
-function Thread:stop() end
+function Thread:stop(msecs) end
 
 ---@param msecs? any
 ---@return Thread
@@ -270,7 +284,7 @@ function Timer:isActive() end
 ---@param callback any
 function Timer.singleShot(msec, callback) end
 
---- Qt native re-exposed so Lua's `timer:start()` colon syntax works. Accepts an optional one-shot interval override, matching `QTimer.start(msec)`'s overload, on top of 1.x's no-argument form.
+--- Qt native re-exposed so Lua's `timer:start()` colon syntax works. Accepts an optional one-shot interval override, matching `QTimer.start(msec)`'s overload, on top of 1.x's no-argument form. Registers the timer so shutdown can stop it: a QTimer outlives the Lua runtime holding its callback, and one still ticking after teardown fires into a dead runtime.
 ---@param msec? any
 ---@return Timer
 function Timer:start(msec) end

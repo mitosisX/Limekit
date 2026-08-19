@@ -60,8 +60,10 @@ class ProjectRunner(LimeObject, QObject):
         )
         return self
 
-    @method({"handler": "fun()"}, returns="self",
-            doc="Runs when the project exits, however it exits.")
+    @method({"handler": "fun(exit_code: integer, crashed: boolean)"}, returns="self",
+            doc="Runs when the project exits, however it exits. The handler "
+                "receives the exit code and whether it crashed -- pressing "
+                "Stop is not a crash.")
     def setOnProcessFinished(self, handler):
         self._process.setOnProcessFinished(
             guard(handler, widget="ProjectRunner", event="onProcessFinished")
@@ -91,6 +93,23 @@ class ProjectRunner(LimeObject, QObject):
     @method(returns="string", doc="The project folder this runner was created for.")
     def getPath(self):
         return self._path
+
+    @method(returns="string[]",
+            doc="The command this runner spawns, as a table of arguments.")
+    def getCommand(self):
+        return to_lua(self._process.command())
+
+    @method(returns="integer",
+            doc="The operating system's id for the running process, or 0 if "
+                "it is not running.")
+    def getProcessId(self):
+        return int(self._process.processId())
+
+    @method(returns="boolean",
+            doc="Whether the last exit followed a stop() rather than the "
+                "project finishing on its own.")
+    def wasStopped(self):
+        return self._process.wasStopped()
 
 
 class ProjectBuilder(LimeObject, QObject):

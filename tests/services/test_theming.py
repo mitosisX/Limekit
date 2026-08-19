@@ -63,7 +63,17 @@ def test_qtthemes_unknown_theme_raises_bridge_error():
 
 
 def test_darklight_get_themes(lua):
-    assert convert.to_py(Theme.getThemes("darklight")) == ["light", "dark", "auto"]
+    assert convert.to_py(Theme.getThemes("darklight")) == ["light", "dark"]
+
+
+def test_darklight_advertises_only_appliable_themes(lua):
+    """Every name getThemes reports must be one setTheme accepts.
+
+    "auto" was listed and qdarktheme's load_stylesheet rejects it, so a
+    ComboBox filled from getThemes raised on that one entry.
+    """
+    for name in convert.to_py(Theme.getThemes("darklight")):
+        assert Theme.setTheme("darklight", name) is True
 
 
 def test_material_missing_package_raises_bridge_error(monkeypatch):

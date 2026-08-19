@@ -28,6 +28,18 @@ class LineChart(LimeObject, QLineSeries if HAS_QTCHARTS else QObject):
         super().append(x, y)
         return self
 
+    def attachAxis(self, axis):
+        """Binds the series to an axis you added to the Chart.
+
+        Qt-native, so without this wrapper Lua's `series:attachAxis(axis)`
+        passed the series twice and raised. `BarChart` had it and the line
+        and area series did not, which meant a line chart could never be
+        bound to its axes -- it drew against Qt's own default axis instead,
+        quietly ignoring the ranges and titles the author had set.
+        """
+        super().attachAxis(axis)
+        return self
+
     def setData(self, points):
         """Accepts a Lua table or Python sequence of {x, y} pairs."""
         for point in as_sequence(points):

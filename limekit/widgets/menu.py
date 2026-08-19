@@ -15,13 +15,14 @@ is reproduced here: build the tree from Lua with `addMenuItem`/`addMenu`
 directly, which is what the templating code bottomed out in anyway.
 """
 
+from PySide6.QtCore import QPoint
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMenu, QMenuBar
 
 from limekit.kernel.coerce import Icon
 from limekit.kernel.spec import Event, Prop
 from limekit.widgets.action_base import LimeAction
-from limekit.widgets.base import LimeWidget
+from limekit.widgets.base import LimeWidget, _to_int
 
 
 class MenuItem(LimeAction, QAction):
@@ -62,6 +63,17 @@ class Menu(LimeWidget, QMenu):
 
     def addSeparator(self):
         super().addSeparator()
+        return self
+
+    def popupAt(self, widget, x, y):
+        """Shows the menu at (x, y) in `widget`'s coordinates.
+
+        QMenu.popup wants a screen position and a QPoint, neither of which a
+        Lua caller has. `setOnContextMenu` hands you widget-local x and y, so
+        this is the method that closes the loop between them -- without it
+        the context-menu event had nowhere to go.
+        """
+        self.popup(widget.mapToGlobal(QPoint(_to_int(x, "x"), _to_int(y, "y"))))
         return self
 
 

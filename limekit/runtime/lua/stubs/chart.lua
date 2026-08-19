@@ -19,6 +19,11 @@ function AreaChart:getName() end
 ---@return AreaChart
 function AreaChart:setName(value) end
 
+--- Binds the series to an axis you added to the Chart. Qt-native, so it needs the same wrapper `LineChart.attachAxis` does -- see the note there.
+---@param axis any
+---@return AreaChart
+function AreaChart:attachAxis(axis) end
+
 ---@class BarChart
 local BarChart = {}
 
@@ -34,6 +39,26 @@ function BarChart:append(barset) end
 ---@param axis any
 ---@return BarChart
 function BarChart:attachAxis(axis) end
+
+--- How much of each category slot the bars fill, from 0 to 1.
+---@param width any
+---@return BarChart
+function BarChart:setBarWidth(width) end
+
+--- A format string for those labels, where @value is the number.
+---@param text any
+---@return BarChart
+function BarChart:setLabelsFormat(text) end
+
+--- One of: center, insideend, insidebase, outsideend.
+---@param position any
+---@return BarChart
+function BarChart:setLabelsPosition(position) end
+
+--- Draws each bar's value on it -- the point of a percentage chart.
+---@param visible? any
+---@return BarChart
+function BarChart:setLabelsVisible(visible) end
 
 ---@class BarSet
 local BarSet = {}
@@ -415,6 +440,42 @@ function ChartView:setWidth(width) end
 ---@return ChartView
 function ChartView:show() end
 
+---@class HorizontalBarChart
+local HorizontalBarChart = {}
+
+--- Creates a HorizontalBarChart.
+---@return HorizontalBarChart
+function HorizontalBarChart() end
+
+--- Qt native re-exposed so it chains like every builder method.
+---@param barset any
+---@return HorizontalBarChart
+function HorizontalBarChart:append(barset) end
+
+---@param axis any
+---@return HorizontalBarChart
+function HorizontalBarChart:attachAxis(axis) end
+
+--- How much of each category slot the bars fill, from 0 to 1.
+---@param width any
+---@return HorizontalBarChart
+function HorizontalBarChart:setBarWidth(width) end
+
+--- A format string for those labels, where @value is the number.
+---@param text any
+---@return HorizontalBarChart
+function HorizontalBarChart:setLabelsFormat(text) end
+
+--- One of: center, insideend, insidebase, outsideend.
+---@param position any
+---@return HorizontalBarChart
+function HorizontalBarChart:setLabelsPosition(position) end
+
+--- Draws each bar's value on it -- the point of a percentage chart.
+---@param visible? any
+---@return HorizontalBarChart
+function HorizontalBarChart:setLabelsVisible(visible) end
+
 ---@class LineChart
 local LineChart = {}
 
@@ -437,10 +498,87 @@ function LineChart:setName(value) end
 ---@return LineChart
 function LineChart:append(x, y) end
 
+--- Binds the series to an axis you added to the Chart. Qt-native, so without this wrapper Lua's `series:attachAxis(axis)` passed the series twice and raised. `BarChart` had it and the line and area series did not, which meant a line chart could never be bound to its axes -- it drew against Qt's own default axis instead, quietly ignoring the ranges and titles the author had set.
+---@param axis any
+---@return LineChart
+function LineChart:attachAxis(axis) end
+
 --- Accepts a Lua table or Python sequence of {x, y} pairs.
 ---@param points any
 ---@return LineChart
 function LineChart:setData(points) end
+
+---@class PercentBarChart
+local PercentBarChart = {}
+
+--- Creates a PercentBarChart.
+---@return PercentBarChart
+function PercentBarChart() end
+
+--- Qt native re-exposed so it chains like every builder method.
+---@param barset any
+---@return PercentBarChart
+function PercentBarChart:append(barset) end
+
+---@param axis any
+---@return PercentBarChart
+function PercentBarChart:attachAxis(axis) end
+
+--- How much of each category slot the bars fill, from 0 to 1.
+---@param width any
+---@return PercentBarChart
+function PercentBarChart:setBarWidth(width) end
+
+--- A format string for those labels, where @value is the number.
+---@param text any
+---@return PercentBarChart
+function PercentBarChart:setLabelsFormat(text) end
+
+--- One of: center, insideend, insidebase, outsideend.
+---@param position any
+---@return PercentBarChart
+function PercentBarChart:setLabelsPosition(position) end
+
+--- Draws each bar's value on it -- the point of a percentage chart.
+---@param visible? any
+---@return PercentBarChart
+function PercentBarChart:setLabelsVisible(visible) end
+
+---@class StackedBarChart
+local StackedBarChart = {}
+
+--- Creates a StackedBarChart.
+---@return StackedBarChart
+function StackedBarChart() end
+
+--- Qt native re-exposed so it chains like every builder method.
+---@param barset any
+---@return StackedBarChart
+function StackedBarChart:append(barset) end
+
+---@param axis any
+---@return StackedBarChart
+function StackedBarChart:attachAxis(axis) end
+
+--- How much of each category slot the bars fill, from 0 to 1.
+---@param width any
+---@return StackedBarChart
+function StackedBarChart:setBarWidth(width) end
+
+--- A format string for those labels, where @value is the number.
+---@param text any
+---@return StackedBarChart
+function StackedBarChart:setLabelsFormat(text) end
+
+--- One of: center, insideend, insidebase, outsideend.
+---@param position any
+---@return StackedBarChart
+function StackedBarChart:setLabelsPosition(position) end
+
+--- Draws each bar's value on it -- the point of a percentage chart.
+---@param visible? any
+---@return StackedBarChart
+function StackedBarChart:setLabelsVisible(visible) end
 
 ---@class ValueAxis
 local ValueAxis = {}
@@ -472,6 +610,9 @@ chart.CategoryAxis = CategoryAxis
 chart.Chart = Chart
 chart.ChartCanvas = ChartCanvas
 chart.ChartView = ChartView
+chart.HorizontalBarChart = HorizontalBarChart
 chart.LineChart = LineChart
+chart.PercentBarChart = PercentBarChart
+chart.StackedBarChart = StackedBarChart
 chart.ValueAxis = ValueAxis
 return chart

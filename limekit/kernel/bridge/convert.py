@@ -9,26 +9,78 @@ import lupa
 from limekit.kernel.errors import BridgeError
 
 _runtime = None
+_packer = None
+_pairs_packer = None
 
 
 def set_runtime(lua):
     """Called by LimeRuntime once the LuaRuntime exists."""
-    global _runtime
+    global _runtime, _packer, _pairs_packer
     _runtime = lua
+    _packer = None
+    _pairs_packer = None
 
 
 def _is_lua_table(value):
     return lupa.lua_type(value) == "table"
 
 
+def _pack():
+    """`function(...) return {...} end` -- builds a Lua table in one call.
+
+    Deliberately not `LuaRuntime.table_from`. That call corrupts the Lua
+    state when it runs *inside* a Lua callback, which is where nearly every
+    conversion happens: a Qt signal calls a guarded Lua handler, the handler
+    calls a framework method, and the method converts its result on the way
+    back out.
+
+    The damage does not show at the call site. It surfaces later as
+    mis-bound calls -- a method invoked with arguments missing, an attribute
+    lookup returning a different object's method, a class reported as "not
+    callable". Measured on the `file-explorer` example, which rebuilds a
+    listing from disk on every navigation: with `table_from` it failed on
+    the 8th round trip.
+
+    Every crossing of the boundary is exposure, so a table is built in a
+    single call with the values as varargs rather than by creating an empty
+    table and assigning into it element by element.
+    """
+    global _packer
+    if _packer is None:
+        _packer = _runtime.eval("function(...) return {...} end")
+    return _packer
+
+
+def _pack_pairs():
+    """The same, for string-keyed tables: alternating key, value, ..."""
+    global _pairs_packer
+    if _pairs_packer is None:
+        _pairs_packer = _runtime.eval("""
+            function(...)
+                local t, n = {}, select("#", ...)
+                for i = 1, n, 2 do t[select(i, ...)] = select(i + 1, ...) end
+                return t
+            end
+        """)
+    return _pairs_packer
+
+
 def to_lua(value):
     """Python -> Lua. Sequences become 1-indexed tables."""
     if _runtime is None:
         raise BridgeError("no Lua runtime is bound; call set_runtime() first")
+    # Children are converted first, then the whole table is built in one
+    # call. Doing it the obvious way -- create an empty table, then assign
+    # into it -- costs one boundary crossing per element, and every crossing
+    # is a chance to trip the fault described in `_pack`.
     if isinstance(value, dict):
-        return _runtime.table_from({k: to_lua(v) for k, v in value.items()})
+        flat = []
+        for key, item in value.items():
+            flat.append(key)
+            flat.append(to_lua(item))
+        return _pack_pairs()(*flat)
     if isinstance(value, (list, tuple, set)):
-        return _runtime.table_from([to_lua(v) for v in value])
+        return _pack()(*[to_lua(item) for item in value])
     return value
 
 

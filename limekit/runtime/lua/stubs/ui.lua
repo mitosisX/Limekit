@@ -2451,6 +2451,13 @@ function DropMenu:close() end
 ---@return DropMenu
 function DropMenu:hide() end
 
+--- Shows the menu at (x, y) in `widget`'s coordinates. QMenu.popup wants a screen position and a QPoint, neither of which a Lua caller has. `setOnContextMenu` hands you widget-local x and y, so this is the method that closes the loop between them -- without it the context-menu event had nowhere to go.
+---@param widget any
+---@param x any
+---@param y any
+---@return DropMenu
+function DropMenu:popupAt(widget, x, y) end
+
 ---@param colour any
 ---@return DropMenu
 function DropMenu:setBackgroundColor(colour) end
@@ -3284,6 +3291,11 @@ function HLayout:addChild(child, stretch) end
 ---@param stretch? any
 ---@return HLayout
 function HLayout:addLayout(layout, stretch) end
+
+--- Adds a `ui.Spacer`. A QSpacerItem is not a QWidget, so `addChild` cannot take one -- it calls addWidget and Qt rejects it. 1.x had this method; 2.0 dropped it, which left `ui.Spacer` registered but impossible to place.
+---@param spacer any
+---@return HLayout
+function HLayout:addSpacer(spacer) end
 
 ---@param size any
 ---@return HLayout
@@ -4741,6 +4753,13 @@ function Menu:close() end
 
 ---@return Menu
 function Menu:hide() end
+
+--- Shows the menu at (x, y) in `widget`'s coordinates. QMenu.popup wants a screen position and a QPoint, neither of which a Lua caller has. `setOnContextMenu` hands you widget-local x and y, so this is the method that closes the loop between them -- without it the context-menu event had nowhere to go.
+---@param widget any
+---@param x any
+---@param y any
+---@return Menu
+function Menu:popupAt(widget, x, y) end
 
 ---@param colour any
 ---@return Menu
@@ -8858,6 +8877,11 @@ function VLayout:addChild(child, stretch) end
 ---@return VLayout
 function VLayout:addLayout(layout, stretch) end
 
+--- Adds a `ui.Spacer`. A QSpacerItem is not a QWidget, so `addChild` cannot take one -- it calls addWidget and Qt rejects it. 1.x had this method; 2.0 dropped it, which left `ui.Spacer` registered but impossible to place.
+---@param spacer any
+---@return VLayout
+function VLayout:addSpacer(spacer) end
+
 ---@param size any
 ---@return VLayout
 function VLayout:addSpacing(size) end
@@ -9125,6 +9149,8 @@ function Window:getStandardIcon(name) end
 ---@return string[]
 function Window:getStandardIcons() end
 
+function Window:getStatusbar() end
+
 ---@return Window
 function Window:hide() end
 
@@ -9251,6 +9277,11 @@ function Window:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Window
 function Window:setSize(width, height) end
+
+--- Puts a StatusBar along the bottom. QMainWindow.setStatusBar is Qt-native, so calling it with Lua's colon syntax passed the window twice and raised. Without this wrapper `ui.StatusBar` was registered but unreachable.
+---@param bar any
+---@return Window
+function Window:setStatusbar(bar) end
 
 --- Resizes the width, leaving the height alone.
 ---@param width integer

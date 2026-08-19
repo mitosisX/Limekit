@@ -14,7 +14,7 @@ import json
 import os
 from pathlib import Path
 
-from PySide6.QtCore import QProcess
+from PySide6.QtCore import QProcess, QTimer
 
 # The two engines need different entry points, and a project run under the
 # wrong one fails confusingly: a 2.0 project launched by the 1.x runner dies
@@ -22,6 +22,13 @@ from PySide6.QtCore import QProcess
 # globals and never populates package.preload.
 LEGACY_ENTRY = ("-c", "from limekit import runner")
 MODERN_ENTRY = ("-m", "limekit")
+
+
+def _to_int(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 2000
 
 
 def python_command():
@@ -88,20 +95,51 @@ class ProjectRunner(QProcess):
         super().__init__(parent=None)
 
         self.project_path = project_path  # The path to the user's project
+        self._stopping = False
+
+        # Errors go to stderr, and a console reading only stdout showed a
+        # project exiting with code 1 and no reason -- the traceback naming
+        # the file and line was thrown away. Merge the channels so the
+        # output a user sees is the output the project produced.
+        self.setProcessChannelMode(QProcess.ProcessChannelMode.MergedChannels)
 
         self.readyRead.connect(self._handleReadOutput)
         self.started.connect(self._handleProcessStarted)
         self.finished.connect(self._handleProcessFinished)
 
-    def run(self):
-        # -u for capture stdout
-        self.start(
-            python_command(),
-            ["-u", *entry_for(self.project_path), self.project_path],
-        )
+    def command(self):
+        """The argument list this runner will spawn. Worth showing a user:
+        which engine a project runs on is decided per project, so seeing the
+        command answers "why did it run like that?" without guesswork."""
+        return [python_command(), "-u", *entry_for(self.project_path),
+                self.project_path]
 
-    def stop(self):
-        self.kill()
+    def run(self):
+        self._stopping = False
+        # -u so the child does not buffer its output; a console that only
+        # fills in at exit is no use while the app is running.
+        self.start(self.command()[0], self.command()[1:])
+
+    def stop(self, grace_msecs=2000):
+        """Ask the project to close, and insist only if it will not.
+
+        `kill()` alone gave the project no chance to run its onClose
+        handler, and reported the shutdown as a crash afterwards -- pressing
+        Stop looked identical to the app falling over.
+        """
+        self._stopping = True
+        self.terminate()
+
+        def insist():
+            if self.state() != QProcess.ProcessState.NotRunning:
+                self.kill()
+
+        QTimer.singleShot(_to_int(grace_msecs), insist)
+
+    def wasStopped(self):
+        """Whether the last exit followed a `stop()` rather than the project
+        finishing on its own."""
+        return self._stopping
 
     def setOnProcessReadyRead(self, onProcessReadyRead):
         self.onProcessReadyRead = onProcessReadyRead
@@ -118,9 +156,12 @@ class ProjectRunner(QProcess):
         if self.onProcessReadyRead:
             self.onProcessReadyRead(progressText)
 
-    def _handleProcessFinished(self):
-        if self.onProcessFinished:
-            self.onProcessFinished()
+    def _handleProcessFinished(self, exit_code=0, exit_status=None):
+        if not self.onProcessFinished:
+            return
+        crashed = (exit_status == QProcess.ExitStatus.CrashExit
+                   and not self._stopping)
+        self.onProcessFinished(int(exit_code), bool(crashed))
 
     def _handleProcessStarted(self):
         if self.onProcessStarted:

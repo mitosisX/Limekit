@@ -38,6 +38,7 @@ class Thread(LimeObject, QThread):
     def __init__(self):
         super().__init__()
         self._onThreadRun = None
+        affinity.register_worker(self)
 
     def setOnThreadRun(self, handler):
         self._onThreadRun = guard(handler, widget="Thread", event="onThreadRun")
@@ -58,8 +59,22 @@ class Thread(LimeObject, QThread):
         super().start()
         return self
 
-    def stop(self):
+    def stop(self, msecs=5000):
+        """Asks the thread to finish, then waits for it.
+
+        `quit()` alone only ends a thread that is running Qt's own event
+        loop; a `setOnThreadRun` worker is a `run()` override, so `quit()`
+        does nothing to it and `stop()` returned with the thread still
+        going. If the app then exited -- the usual reason for calling stop,
+        from an onClose handler -- Qt destroyed a live QThread and aborted
+        the process rather than shutting down.
+
+        So this waits as well, bounded so a wedged worker cannot hang the
+        close. A worker cannot be interrupted part-way through its body:
+        check a flag inside your loop if you need it to give up early.
+        """
         self.quit()
+        super().wait(_to_int(msecs, "msecs"))
         return self
 
     def wait(self, msecs=None):
@@ -73,10 +88,26 @@ class Thread(LimeObject, QThread):
         return super().isRunning()
 
     def sleep(self, seconds):
-        """Pauses the calling thread for `seconds` -- QThread.sleep is a
-        static method in Qt; exposed here as an instance method so Lua's
-        `thread:sleep(2)` colon syntax works."""
-        QThread.sleep(_to_int(seconds, "seconds"))
+        """Pauses the calling thread for `seconds`, fractions included.
+
+        QThread.sleep is a static method in Qt; it is exposed here as an
+        instance method so Lua's `thread:sleep(2)` colon syntax works.
+
+        It goes through msleep rather than sleep because Qt's `sleep` takes
+        whole seconds: rounding first meant `thread:sleep(0.2)` became
+        `sleep(0)` and did not pause at all, so a worker written with a
+        sub-second delay ran flat out and the interface saw its updates
+        arrive in one burst at the end.
+        """
+        try:
+            value = float(seconds)
+        except (TypeError, ValueError) as exc:
+            raise BridgeError(
+                f"expected a number of seconds, got {seconds!r}"
+            ) from exc
+        if value < 0:
+            raise BridgeError(f"cannot sleep for {value} seconds")
+        QThread.msleep(int(value * 1000))
         return self
 
 

@@ -110,7 +110,15 @@ def _set_darklight(name):
 
 
 def _themes_darklight():
-    return ["light", "dark", "auto"]
+    """Only what `_set_darklight` can actually apply.
+
+    "auto" used to be listed here, and qdarktheme's `load_stylesheet`
+    rejects it -- "the argument [theme] can only be specified as 'dark' or
+    'light'". So the family advertised a third theme that raised on every
+    attempt to select it, which a ComboBox driven from `getThemes` walks
+    straight into.
+    """
+    return ["light", "dark"]
 
 
 # -- darkstyle (qdarkstyle) ------------------------------------------------

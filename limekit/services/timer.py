@@ -11,6 +11,7 @@ seconds here would break every demo that builds a timer.
 
 from PySide6.QtCore import QTimer
 
+from limekit.kernel import affinity
 from limekit.kernel.bridge.guard import guard
 from limekit.kernel.declarative import LimeObject
 from limekit.kernel.errors import BridgeError
@@ -50,7 +51,12 @@ class Timer(LimeObject, QTimer):
 
         Accepts an optional one-shot interval override, matching
         `QTimer.start(msec)`'s overload, on top of 1.x's no-argument form.
+
+        Registers the timer so shutdown can stop it: a QTimer outlives the
+        Lua runtime holding its callback, and one still ticking after
+        teardown fires into a dead runtime.
         """
+        affinity.register_timer(self)
         if msec is None:
             super().start()
         else:
