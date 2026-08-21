@@ -119,6 +119,19 @@ class ProjectRunner(LimeObject, QObject):
     def wasStopped(self):
         return self._process.wasStopped()
 
+    @method({"name": "string", "value": "string"}, returns="self",
+            doc="Sets one environment variable for the project, before run().")
+    def setEnvironmentValue(self, name, value):
+        """Add to the project's environment.
+
+        `sys.Inspector` needs this: the way a launcher asks a project to open
+        an inspection channel is by naming the socket in LIMEKIT_INSPECT
+        before starting it, so that a project can never switch it on for
+        itself.
+        """
+        self._process.setEnvironmentValue(name, value)
+        return self
+
 
 class ProjectBuilder(LimeObject, QObject):
     """Builds a Limekit project into a standalone executable.

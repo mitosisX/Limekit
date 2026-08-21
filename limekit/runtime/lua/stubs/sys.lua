@@ -137,6 +137,12 @@ function ProjectRunner:isRunning() end
 ---@return ProjectRunner
 function ProjectRunner:run() end
 
+--- Sets one environment variable for the project, before run().
+---@param name string
+---@param value string
+---@return ProjectRunner
+function ProjectRunner:setEnvironmentValue(name, value) end
+
 --- Runs when the project exits, however it exits. The handler receives the exit code and whether it crashed -- pressing Stop is not a crash.
 ---@param handler fun(exit_code: integer, crashed: boolean)
 ---@return ProjectRunner

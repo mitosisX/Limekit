@@ -8510,6 +8510,10 @@ function TreeView:collapseAll() end
 ---@return TreeView
 function TreeView:expandAll() end
 
+--- How many columns the tree has.
+---@return integer
+function TreeView:getColumnCount() end
+
 function TreeView:getCurrentItem() end
 
 ---@param index any
@@ -8523,6 +8527,11 @@ function TreeView:hide() end
 ---@param colour any
 ---@return TreeView
 function TreeView:setBackgroundColor(colour) end
+
+--- How many columns the tree has.
+---@param columns integer
+---@return TreeView
+function TreeView:setColumnCount(columns) end
 
 ---@param column any
 ---@param width any
@@ -8754,6 +8763,10 @@ function TreeWidget:collapseAll() end
 ---@return TreeWidget
 function TreeWidget:expandAll() end
 
+--- How many columns the tree has.
+---@return integer
+function TreeWidget:getColumnCount() end
+
 function TreeWidget:getCurrentItem() end
 
 ---@param index any
@@ -8767,6 +8780,11 @@ function TreeWidget:hide() end
 ---@param colour any
 ---@return TreeWidget
 function TreeWidget:setBackgroundColor(colour) end
+
+--- How many columns the tree has.
+---@param columns integer
+---@return TreeWidget
+function TreeWidget:setColumnCount(columns) end
 
 ---@param column any
 ---@param width any

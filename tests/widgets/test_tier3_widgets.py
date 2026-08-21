@@ -285,3 +285,18 @@ def test_separator_unknown_orientation_raises_bridge_error(qapp):
     from limekit.widgets.separator import Separator
     with pytest.raises(BridgeError):
         Separator("diagonal")
+
+
+def test_tree_view_column_count_survives_lua_colon_syntax(qapp):
+    """`tree:setColumnCount(2)` passes the tree as an argument.
+
+    Qt's own method takes none, so without a wrapper the call fails with
+    "takes exactly one argument (2 given)" -- a message that names Qt rather
+    than anything the author can see. This is the same defect class as every
+    other unwrapped Qt-native method on a Limekit widget.
+    """
+    from limekit.widgets.treeview import TreeView
+
+    tree = TreeView()
+    assert tree.setColumnCount(3) is tree
+    assert tree.getColumnCount() == 3

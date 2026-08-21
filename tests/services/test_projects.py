@@ -206,3 +206,20 @@ def test_legacy_subprocess_runner_shim_still_exports(qapp):
     assert shim.ProjectRunner is launcher.ProjectRunner
     assert shim.LEGACY_ENTRY == ("-c", "from limekit import runner")
     assert shim.MODERN_ENTRY == ("-m", "limekit")
+
+
+def test_setting_an_environment_value_adds_rather_than_replaces(qapp, tmp_path):
+    """A project started with a bare environment loses PATH, and on Windows
+    loses the interpreter with it -- so this must inherit first."""
+    from PySide6.QtCore import QProcessEnvironment
+    from limekit.launcher import ProjectRunner as Process
+
+    process = Process(str(tmp_path))
+    process.setEnvironmentValue("LIMEKIT_INSPECT", "some-socket")
+
+    environment = process.processEnvironment()
+    assert environment.value("LIMEKIT_INSPECT") == "some-socket"
+    # Whatever else the system had is still there.
+    system = QProcessEnvironment.systemEnvironment()
+    for key in list(system.keys())[:3]:
+        assert environment.contains(key)

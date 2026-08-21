@@ -96,6 +96,23 @@ class TreeView(LimeWidget, QTreeWidget):
         super().setHeaderLabels(header_list)
         return self
 
+    @method({"columns": "integer"}, returns="self",
+            doc="How many columns the tree has.")
+    def setColumnCount(self, columns):
+        """Qt native re-exposed so Lua's colon syntax works.
+
+        `tree:setColumnCount(2)` passes the tree as the first argument and
+        Qt's own method takes none, so without this the call fails with
+        "takes exactly one argument (2 given)" -- pointing at Qt rather than
+        at anything the author can see.
+        """
+        super().setColumnCount(_to_int(columns, "columns"))
+        return self
+
+    @method(returns="integer", doc="How many columns the tree has.")
+    def getColumnCount(self):
+        return int(self.columnCount())
+
     def setColumnWidth(self, column, width):
         super().setColumnWidth(LuaIndex(column), _to_int(width, "width"))
         return self

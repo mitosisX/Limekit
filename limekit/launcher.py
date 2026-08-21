@@ -15,7 +15,7 @@ import os
 import sys
 from pathlib import Path
 
-from PySide6.QtCore import QProcess, QTimer
+from PySide6.QtCore import QProcess, QProcessEnvironment, QTimer
 
 # The two engines need different entry points, and a project run under the
 # wrong one fails confusingly: a 2.0 project launched by the 1.x runner dies
@@ -136,6 +136,20 @@ class ProjectRunner(QProcess):
         command answers "why did it run like that?" without guesswork."""
         return [python_command(), "-u", *entry_for(self.project_path),
                 self.project_path]
+
+    def setEnvironmentValue(self, name, value):
+        """Add one variable to the child's environment.
+
+        Inherits the parent's first, so this adds to the environment rather
+        than replacing it -- a project started with a bare environment loses
+        PATH, and on Windows loses its interpreter with it.
+        """
+        environment = self.processEnvironment()
+        if environment.isEmpty():
+            environment = QProcessEnvironment.systemEnvironment()
+        environment.insert(str(name), str(value))
+        self.setProcessEnvironment(environment)
+        return self
 
     def run(self):
         self._stopping = False
