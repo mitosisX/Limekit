@@ -20,7 +20,7 @@ from limekit.kernel.declarative import LimeObject
 from limekit.kernel.errors import BridgeError
 from limekit.kernel.spec import method
 from limekit.launcher import ProjectRunner as _ProjectRunner
-from limekit.launcher import detect_api_version
+from limekit.launcher import can_spawn_projects, detect_api_version
 
 
 def _require_path(value, label):
@@ -93,6 +93,14 @@ class ProjectRunner(LimeObject, QObject):
     @method(returns="string", doc="The project folder this runner was created for.")
     def getPath(self):
         return self._path
+
+    @staticmethod
+    @method(returns="boolean",
+            doc="Whether this build can run a project at all. False in a "
+                "launcher that has been built into an executable: there is "
+                "no interpreter left to start a child process with.")
+    def canSpawnProjects():
+        return can_spawn_projects()
 
     @method(returns="string[]",
             doc="The command this runner spawns, as a table of arguments.")

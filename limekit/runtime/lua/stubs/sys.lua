@@ -69,6 +69,10 @@ local ProjectRunner = {}
 ---@return ProjectRunner
 function ProjectRunner(project_path) end
 
+--- Whether this build can run a project at all. False in a launcher that has been built into an executable: there is no interpreter left to start a child process with.
+---@return boolean
+function ProjectRunner.canSpawnProjects() end
+
 --- The engine this project will run on: "1.0" or "2.0".
 ---@return string
 function ProjectRunner:getApiVersion() end

@@ -12,6 +12,7 @@ import it from here instead.
 
 import json
 import os
+import sys
 from pathlib import Path
 
 from PySide6.QtCore import QProcess, QTimer
@@ -32,8 +33,30 @@ def _to_int(value):
 
 
 def python_command():
-    """The interpreter name to spawn. Windows uses `python`, POSIX `python3`."""
-    return "python" if os.name == "nt" else "python3"
+    """The interpreter to spawn a project with.
+
+    `sys.executable`, not the bare name "python": the name resolves through
+    PATH, which is not necessarily the interpreter this process is running
+    under. Inside a virtualenv, or on a machine with several Pythons, the
+    one PATH finds may have no limekit installed, and Run failed with
+    "No module named limekit" while the launcher itself was working fine.
+
+    When the launcher has been frozen, `sys.executable` is the launcher's
+    own executable rather than an interpreter, so there is nothing here that
+    can run a project as a child process -- see `can_spawn_projects`.
+    """
+    return sys.executable or ("python" if os.name == "nt" else "python3")
+
+
+def can_spawn_projects():
+    """Whether this process can start a project in a child process.
+
+    False in a frozen launcher: there is no Python interpreter to invoke,
+    only the bundled application. A launcher that has been built into an
+    executable needs another way to run the projects it opens, and should
+    say so rather than spawning something that cannot work.
+    """
+    return not getattr(sys, "frozen", False)
 
 
 def detect_api_version(project_path):
