@@ -136,3 +136,40 @@ def test_get_standard_path_unknown_name_raises_bridge_error():
 
 def test_get_standard_path_documents_returns_a_string():
     assert isinstance(System.getStandardPath("documents"), str)
+
+
+def test_open_path_rejects_empty():
+    with pytest.raises(BridgeError):
+        System.openPath("")
+
+
+def test_open_path_rejects_non_string():
+    with pytest.raises(BridgeError):
+        System.openPath(None)
+
+
+def test_open_path_hands_an_existing_file_to_the_desktop_as_a_local_url(tmp_path, monkeypatch):
+    target = tmp_path / "main.lua"
+    target.write_text("-- hi", encoding="utf-8")
+
+    seen = []
+    monkeypatch.setattr(
+        "PySide6.QtGui.QDesktopServices.openUrl",
+        lambda url: seen.append(url) or True,
+    )
+
+    assert System.openPath(str(target)) is True
+    assert seen[0].isLocalFile()
+    assert seen[0].toLocalFile().endswith("main.lua")
+
+
+def test_open_path_treats_a_non_existent_path_as_a_url(monkeypatch):
+    seen = []
+    monkeypatch.setattr(
+        "PySide6.QtGui.QDesktopServices.openUrl",
+        lambda url: seen.append(url) or True,
+    )
+
+    System.openPath("https://limekit.dev")
+    assert seen[0].isLocalFile() is False
+    assert seen[0].toString() == "https://limekit.dev"

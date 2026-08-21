@@ -197,6 +197,11 @@ function System.getStandardPath(name) end
 ---@return string
 function System.makeHash(kind, text) end
 
+--- Opens a file, folder or URL with whatever the desktop has registered for it.
+---@param path string
+---@return boolean
+function System.openPath(path) end
+
 --- Picks one item from a table at random.
 ---@param items any[]
 ---@return any

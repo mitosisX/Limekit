@@ -57,6 +57,31 @@ class System(LimeObject):
         })
 
     @staticmethod
+    @method({"path": "string"}, returns="boolean", doc="Opens a file, folder or URL with whatever the desktop has registered for it.")
+    def openPath(path):
+        """Hand a path to the desktop and let it choose the application.
+
+        `execute()` is the wrong tool for this: it is synchronous and capped
+        at 30 seconds, so launching an editor would freeze the interface
+        until the user closed it again. QDesktopServices returns as soon as
+        the child is handed off.
+
+        A path that exists is opened as a local file; anything else is
+        treated as a URL, so both openPath("/home/me/main.lua") and
+        openPath("https://limekit.dev") do the expected thing.
+        """
+        from PySide6.QtCore import QUrl
+        from PySide6.QtGui import QDesktopServices
+
+        if not isinstance(path, str) or not path:
+            raise BridgeError(f"expected a non-empty path string, got {path!r}")
+        if os.path.exists(path):
+            url = QUrl.fromLocalFile(os.path.abspath(path))
+        else:
+            url = QUrl(path)
+        return bool(QDesktopServices.openUrl(url))
+
+    @staticmethod
     @method({"code": "integer"}, doc="Quits the application.")
     def exit(code=0):
         sys.exit(int(code))
