@@ -204,8 +204,20 @@ class Inspector(LimeObject, QObject):
         self._onDisconnect = None
 
     @method(returns="string",
-            doc="Starts listening and returns the name to give the project.")
+            doc="Starts listening and returns the name to give the project. "
+                "Safe to call again: an open channel keeps its name.")
     def listen(self):
+        """Open the channel, or hand back the one already open.
+
+        A launcher asks for this every time it starts a project, and a
+        QLocalServer that is already listening refuses to listen again --
+        so a first version of this worked once per session and then failed
+        silently on every subsequent run. Being idempotent is not a
+        convenience here; the obvious caller cannot work without it.
+        """
+        if self._server.isListening():
+            return self._server.serverName()
+
         # A previous run that died without closing leaves the name taken on
         # unix; Qt will not reuse it until it is removed.
         name = f"limekit-inspect-{os.getpid()}-{id(self) & 0xffff:x}"

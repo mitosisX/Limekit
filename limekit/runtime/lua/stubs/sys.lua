@@ -27,7 +27,7 @@ function Inspector:getName() end
 ---@return boolean
 function Inspector:isConnected() end
 
---- Starts listening and returns the name to give the project.
+--- Starts listening and returns the name to give the project. Safe to call again: an open channel keeps its name.
 ---@return string
 function Inspector:listen() end
 

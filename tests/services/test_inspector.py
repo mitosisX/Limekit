@@ -123,3 +123,25 @@ def test_listen_returns_the_name_to_hand_the_project(qapp):
     name = server.listen()
     assert name and server.getName() == name
     server.close()
+
+
+def test_listen_can_be_called_again_and_keeps_its_name(qapp):
+    """The obvious caller asks on every run, and cannot work otherwise.
+
+    A QLocalServer that is already listening refuses to listen again, so a
+    version of this that was not idempotent opened the channel for the first
+    project of a session and then failed silently for every one after it.
+    """
+    server = inspector.Inspector()
+    first = server.listen()
+    assert server.listen() == first
+    assert server.listen() == first
+    server.close()
+
+
+def test_a_closed_channel_can_be_opened_again(qapp):
+    server = inspector.Inspector()
+    server.listen()
+    server.close()
+    assert server.listen()
+    server.close()
