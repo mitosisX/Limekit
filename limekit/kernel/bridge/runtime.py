@@ -1,19 +1,10 @@
 """Owns the LuaRuntime and exposes the registry as requirable modules."""
 
-import re
-
 import lupa
 from lupa import LuaRuntime
 
 from limekit.kernel.bridge import convert
-from limekit.kernel.errors import LuaError
-
-# Lua reports errors as [string "name"]:LINE: message. Runtime errors start
-# with that directly; compile/syntax errors are prefixed with
-# "error loading code: " first, so this must SEARCH the text, not anchor to
-# its start.
-_LOCATION = re.compile(r'\[string "(?P<source>[^"]*)"\]:(?P<line>\d+):\s*(?P<msg>.*)',
-                       re.DOTALL)
+from limekit.kernel.errors import LuaError, parse_lua_error
 
 # Empirically, a fresh lupa.LuaRuntime() injects no Python builtins into Lua
 # globals at all -- eval/str/int/dict/tuple/len were never present. 1.x's
@@ -95,20 +86,11 @@ class LimeRuntime:
         """Turn a raw lupa error into a LuaError carrying source and line.
 
         This replaces the rfind('>"]') string-surgery that used to live in
-        both runner.py and error_handler.py.
-
-        Lua's message body is followed by a "stack traceback:" section; we
-        keep only the first line for LuaError's message (the source/line
-        are already captured structurally in .source/.line), so callers
-        printing the exception don't get a multi-line traceback dump.
+        both runner.py and error_handler.py. The parsing itself lives in
+        kernel/errors so that `guard` splits a failing handler's error the
+        same way -- there were two copies of this and they disagreed about
+        whether the stack traceback belonged in the message.
         """
-        text = str(exc)
-        match = _LOCATION.search(text)
-        if match:
-            msg = match.group("msg").strip().splitlines()[0]
-            return LuaError(
-                msg,
-                source=match.group("source") or chunkname,
-                line=int(match.group("line")),
-            )
-        return LuaError(text.splitlines()[0], source=chunkname)
+        message, source, line, _ = parse_lua_error(str(exc),
+                                                   fallback_source=chunkname)
+        return LuaError(message, source=source, line=line)

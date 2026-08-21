@@ -10,7 +10,11 @@ from limekit.kernel.errors import WidgetCallbackError
 
 
 def _print_sink(error):
-    print(f"\n{error}")
+    print(error)
+
+    details = getattr(error, "details", "")
+    if details:
+        print(details)
     traceback.print_exception(type(error), error, error.__traceback__)
 
 
@@ -35,7 +39,8 @@ def guard(fn, *, widget, event):
         try:
             return fn(*args, **kwargs)
         except Exception as exc:                       # noqa: BLE001
-            error = WidgetCallbackError(str(exc), widget=widget, event=event)
+            error = WidgetCallbackError.from_exception(
+                exc, widget=widget, event=event)
             error.__cause__ = exc
             _sink(error)
             return None

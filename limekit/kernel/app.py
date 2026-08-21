@@ -118,7 +118,15 @@ class LimekitApp:
 
     def _on_error(self, error):
         self._errors.append(error)
-        print(f"\n{error}", file=sys.stderr)
+        # The leading newline this used to print left a launcher console
+        # showing an empty prompt line above every message. The Lua
+        # traceback follows when there is one, so it is available without
+        # being the first thing read.
+        print(error, file=sys.stderr)
+
+        details = getattr(error, "details", "")
+        if details:
+            print(details, file=sys.stderr)
 
     @property
     def errors(self):
