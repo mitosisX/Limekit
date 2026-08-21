@@ -6221,6 +6221,10 @@ function SlidingStackedWidget:getCurrentIndex() end
 ---@return SlidingStackedWidget
 function SlidingStackedWidget:hide() end
 
+--- Whether a slide is still animating.
+---@return boolean
+function SlidingStackedWidget:isSliding() end
+
 ---@param animation any
 ---@return SlidingStackedWidget
 function SlidingStackedWidget:setAnimation(animation) end

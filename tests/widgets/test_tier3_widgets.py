@@ -168,6 +168,33 @@ def test_sliding_stacked_widget_add_and_count(qapp):
     assert stack.getCount() == 2
 
 
+def test_sliding_stacked_widget_reports_whether_a_slide_is_in_flight(qapp):
+    """The state that makes slideNext/slidePrev drop a request.
+
+    While a slide animates, slideInWgt ignores anything new and Qt's
+    currentIndex has not moved yet, so a caller toggling on getCurrentIndex
+    -- which already reports the destination -- would believe it moved when
+    nothing did. isSliding is how it can tell.
+    """
+    from limekit.widgets.slidingstackedwidget import SlidingStackedWidget
+    from limekit.widgets.button import Button
+
+    stack = SlidingStackedWidget()
+    stack.addChild(Button("a"))
+    stack.addChild(Button("b"))
+
+    assert stack.isSliding() is False
+
+    stack.slideNext()
+    assert stack.isSliding() is True
+    assert stack.getCurrentIndex() == 2          # the destination, mid-flight
+    assert stack.currentIndex() == 0             # Qt has not moved yet
+
+    # A second request while the first is in flight is dropped.
+    stack.slidePrev()
+    assert stack.getCurrentIndex() == 2
+
+
 def test_sliding_stacked_widget_unknown_animation_raises_bridge_error(qapp):
     from limekit.widgets.slidingstackedwidget import SlidingStackedWidget
     stack = SlidingStackedWidget()

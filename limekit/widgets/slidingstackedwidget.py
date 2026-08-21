@@ -26,6 +26,7 @@ from PySide6.QtWidgets import QStackedWidget, QWidget
 from limekit.kernel.bridge.convert import to_lua
 from limekit.kernel.coerce import ORIENTATIONS, Enum, LuaIndex
 from limekit.kernel.errors import BridgeError
+from limekit.kernel.spec import method
 from limekit.widgets.base import LimeWidget, _to_int
 
 _orientation = Enum(ORIENTATIONS, "orientation")
@@ -60,6 +61,19 @@ class SlidingStackedWidget(LimeWidget, QStackedWidget):
 
     def getCount(self):
         return self.count()
+
+    @method(returns="boolean", doc="Whether a slide is still animating.")
+    def isSliding(self):
+        """Whether a slide is in flight.
+
+        `slideInWgt` drops a request that arrives mid-animation, and
+        `slideNext`/`slidePrev` read Qt's current index, which does not
+        advance until the animation lands -- so a caller that toggles on
+        `getCurrentIndex` (which reports the destination while active) can
+        believe it moved when nothing happened. Callers that need the two to
+        agree can ask first.
+        """
+        return bool(self._active)
 
     def slideNext(self):
         now = self.currentIndex()
