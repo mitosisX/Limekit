@@ -37,6 +37,7 @@ MODULES = (
     "limekit.services.systray",
     "limekit.services.theming",
     "limekit.services.timer",
+    "limekit.services.watching",
     "limekit.toolkit.text",
     "limekit.widgets.accordion",
     "limekit.widgets.advancedslider",

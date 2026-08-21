@@ -8,6 +8,46 @@ local Expr = {}
 ---@param expression any
 function Expr.evalExpression(expression) end
 
+---@class FileWatcher
+local FileWatcher = {}
+
+--- Creates a FileWatcher.
+---@param parent? any
+---@return FileWatcher
+function FileWatcher(parent) end
+
+--- Stops watching everything.
+---@return FileWatcher
+function FileWatcher:clear() end
+
+--- How many paths are being watched.
+---@return integer
+function FileWatcher:getCount() end
+
+--- Every path currently being watched.
+---@return string[]
+function FileWatcher:getPaths() end
+
+--- Called once, shortly after a change, with the paths that changed.
+---@param handler fun(paths: string[])
+---@return FileWatcher
+function FileWatcher:setOnChange(handler) end
+
+--- Stops watching one path.
+---@param path string
+---@return boolean
+function FileWatcher:unwatch(path) end
+
+--- Watches one file or folder. Returns whether it was added.
+---@param path string
+---@return boolean
+function FileWatcher:watch(path) end
+
+--- Watches a folder and every folder beneath it. Returns how many were added.
+---@param root string
+---@return integer
+function FileWatcher:watchTree(root) end
+
 ---@class Inspector
 local Inspector = {}
 
@@ -379,6 +419,7 @@ function Timer:stop() end
 
 local sys = {}
 sys.Expr = Expr
+sys.FileWatcher = FileWatcher
 sys.Inspector = Inspector
 sys.Introspect = Introspect
 sys.ProjectBuilder = ProjectBuilder
