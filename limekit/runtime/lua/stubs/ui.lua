@@ -1664,6 +1664,170 @@ function DatePicker:setWidth(width) end
 ---@return DatePicker
 function DatePicker:show() end
 
+---@class DesignSurface
+local DesignSurface = {}
+
+--- Creates a DesignSurface.
+---@return DesignSurface
+function DesignSurface() end
+
+--- Get the enabled property.
+---@return boolean
+function DesignSurface:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return DesignSurface
+function DesignSurface:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function DesignSurface:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function DesignSurface:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return DesignSurface
+function DesignSurface:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function DesignSurface:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function DesignSurface:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return DesignSurface
+function DesignSurface:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function DesignSurface:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return DesignSurface
+function DesignSurface:setStyleSheet(value) end
+
+function DesignSurface:close() end
+
+--- The widget being designed, or nil.
+---@return any
+function DesignSurface:getDesignChild() end
+
+--- The selected widget, or nil.
+---@return any
+function DesignSurface:getSelected() end
+
+---@return DesignSurface
+function DesignSurface:hide() end
+
+--- Re-applies design mode after the tree has been added to.
+---@return DesignSurface
+function DesignSurface:refresh() end
+
+---@param colour any
+---@return DesignSurface
+function DesignSurface:setBackgroundColor(colour) end
+
+--- The widget being designed. Replaces whatever was there.
+---@param child any
+---@return DesignSurface
+function DesignSurface:setDesignChild(child) end
+
+---@param width any
+---@param height any
+---@return DesignSurface
+function DesignSurface:setFixedSize(width, height) end
+
+---@return DesignSurface
+function DesignSurface:setFocus() end
+
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return DesignSurface
+function DesignSurface:setHeight(height) end
+
+---@param x any
+---@param y any
+---@return DesignSurface
+function DesignSurface:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return DesignSurface
+function DesignSurface:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return DesignSurface
+function DesignSurface:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return DesignSurface
+function DesignSurface:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return DesignSurface
+function DesignSurface:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return DesignSurface
+function DesignSurface:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return DesignSurface
+function DesignSurface:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return DesignSurface
+function DesignSurface:setMinWidth(width) end
+
+--- Called with the widget under a click, or nil for empty space.
+---@param handler fun(widget: any)
+---@return DesignSurface
+function DesignSurface:setOnSelect(handler) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return DesignSurface
+function DesignSurface:setResizeRule(horizontal, vertical) end
+
+--- Draws the selection outline around a widget.
+---@param widget any
+---@return DesignSurface
+function DesignSurface:setSelected(widget) end
+
+---@param width any
+---@param height any
+---@return DesignSurface
+function DesignSurface:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return DesignSurface
+function DesignSurface:setWidth(width) end
+
+---@return DesignSurface
+function DesignSurface:show() end
+
 ---@class Dialogs
 local Dialogs = {}
 
@@ -9325,6 +9489,7 @@ ui.ComboBox = ComboBox
 ui.CommandButton = CommandButton
 ui.Container = Container
 ui.DatePicker = DatePicker
+ui.DesignSurface = DesignSurface
 ui.Dialogs = Dialogs
 ui.Dock = Dock
 ui.Dockable = Dockable

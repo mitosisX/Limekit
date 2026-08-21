@@ -21,7 +21,10 @@ only a launcher can, by setting LIMEKIT_INSPECT before starting it.
 
 from PySide6.QtWidgets import QApplication, QWidget
 
-from limekit.kernel import affinity
+from limekit.kernel.bridge.convert import to_lua
+from limekit.kernel.declarative import LimeObject
+from limekit.kernel.errors import BridgeError
+from limekit.kernel.spec import method
 
 # What a property value may be without being flattened to a string. Anything
 # else -- a QFont, a widget, a colour object -- is reported by repr, because
@@ -230,3 +233,68 @@ def set_property(widget, name, value):
             return _readable(_as_option_name(prop, getattr(widget, getter)()))[0]
 
     raise AttributeError(f"no property named {name!r} on {lime_name(widget)}")
+
+
+class Introspect(LimeObject):
+    """The same reading, offered to Lua directly: `sys.Introspect`.
+
+    The inspector reaches a *running* project over a socket. A designer
+    building widgets in its own process needs the identical questions
+    answered about objects it already holds, and going out through a socket
+    to ask about something in the same address space would be absurd.
+
+    So the walking and reading live in this module, and both callers use
+    them: `services/inspector.py` over the wire, this class in process.
+    """
+
+    __lime__ = "sys.Introspect"
+
+    @staticmethod
+    @method({"widget": "any"}, returns="table[]",
+            doc="Every declared property of a widget: name, value, type, "
+                "options and whether it can be set.")
+    def properties(widget):
+        return to_lua(properties(widget))
+
+    @staticmethod
+    @method({"widget": "any", "name": "string"}, returns="any",
+            doc="One property's current value.")
+    def getProperty(widget, name):
+        for entry in properties(widget):
+            if entry["name"] == name:
+                return entry["value"]
+        raise BridgeError(f"no property named {name!r} on {lime_name(widget)}")
+
+    @staticmethod
+    @method({"widget": "any", "name": "string", "value": "any"}, returns="any",
+            doc="Sets one property, returning what it reads back as.")
+    def setProperty(widget, name, value):
+        return set_property(widget, name, value)
+
+    @staticmethod
+    @method({"widget": "any"}, returns="string",
+            doc="The name Lua knows a widget by, such as ui.Button.")
+    def className(widget):
+        return lime_name(widget)
+
+    @staticmethod
+    @method(returns="string[]",
+            doc="Every widget class that can be built with no arguments.")
+    def buildableClasses():
+        """What a palette can offer.
+
+        A designer has to be able to make one of whatever it lists, and
+        three classes -- GifPlayer, KeyboardShortcut, Spacer -- cannot be
+        made without being told something first. Listing them anyway would
+        put items in a palette that fail when dropped.
+        """
+        from limekit.kernel import introspect as reflection
+        from limekit.kernel.registry import registry
+
+        names = []
+        for name, cls in registry.modules().get("ui", {}).items():
+            ctor = reflection.constructor(cls)
+            if ctor is None or any(not has_default for _, _, has_default in ctor.params):
+                continue
+            names.append(name)
+        return to_lua(sorted(names))

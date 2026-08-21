@@ -42,6 +42,7 @@ limekit.res = require("limekit.res")
 limekit.sys = require("limekit.sys")
 --   sys.Expr
 --   sys.Inspector
+--   sys.Introspect
 --   sys.ProjectBuilder
 --   sys.ProjectRunner
 --   sys.Signal
@@ -62,6 +63,7 @@ limekit.ui = require("limekit.ui")
 --   ui.CommandButton
 --   ui.Container
 --   ui.DatePicker
+--   ui.DesignSurface
 --   ui.Dialogs
 --   ui.Dock
 --   ui.Dockable

@@ -48,6 +48,36 @@ function Inspector:setOnConnect(handler) end
 ---@return Inspector
 function Inspector:setOnDisconnect(handler) end
 
+---@class Introspect
+local Introspect = {}
+
+--- Every widget class that can be built with no arguments.
+---@return string[]
+function Introspect.buildableClasses() end
+
+--- The name Lua knows a widget by, such as ui.Button.
+---@param widget any
+---@return string
+function Introspect.className(widget) end
+
+--- One property's current value.
+---@param widget any
+---@param name string
+---@return any
+function Introspect.getProperty(widget, name) end
+
+--- Every declared property of a widget: name, value, type, options and whether it can be set.
+---@param widget any
+---@return table[]
+function Introspect.properties(widget) end
+
+--- Sets one property, returning what it reads back as.
+---@param widget any
+---@param name string
+---@param value any
+---@return any
+function Introspect.setProperty(widget, name, value) end
+
 ---@class ProjectBuilder
 local ProjectBuilder = {}
 
@@ -350,6 +380,7 @@ function Timer:stop() end
 local sys = {}
 sys.Expr = Expr
 sys.Inspector = Inspector
+sys.Introspect = Introspect
 sys.ProjectBuilder = ProjectBuilder
 sys.ProjectRunner = ProjectRunner
 sys.Signal = Signal
