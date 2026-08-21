@@ -25,6 +25,13 @@ def main(argv=None):
         print(f"{error}", file=sys.stderr)
         return 1
 
+    # Connected after the project has built its widgets, so the first tree a
+    # launcher asks for is the real one. Held in a local for the lifetime of
+    # run(): a QObject with no parent and no reference is collected, and
+    # would take the socket with it.
+    from limekit.services import inspector
+    channel = inspector.start_if_requested(app.runtime)      # noqa: F841
+
     return app.run()
 
 

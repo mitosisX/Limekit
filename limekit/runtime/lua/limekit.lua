@@ -41,6 +41,7 @@ limekit.res = require("limekit.res")
 -- sys
 limekit.sys = require("limekit.sys")
 --   sys.Expr
+--   sys.Inspector
 --   sys.ProjectBuilder
 --   sys.ProjectRunner
 --   sys.Signal

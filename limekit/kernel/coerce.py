@@ -81,6 +81,11 @@ def Enum(mapping, label):
 
     coerce.__name__ = f"coerce_{label}"
     coerce.options = tuple(sorted(mapping))
+    # Kept so the coercion can be run backwards. A getter returns Qt's own
+    # enum member, and anything reporting a property to a human wants the
+    # name the author would have written -- "vertical", not
+    # "<Orientation.Vertical: 2>".
+    coerce.mapping = dict(mapping)
     return coerce
 
 

@@ -8,6 +8,46 @@ local Expr = {}
 ---@param expression any
 function Expr.evalExpression(expression) end
 
+---@class Inspector
+local Inspector = {}
+
+--- Creates a Inspector.
+---@param parent? any
+---@return Inspector
+function Inspector(parent) end
+
+--- Stops listening and drops any connected project.
+function Inspector:close() end
+
+--- The name being listened on, or an empty string.
+---@return string
+function Inspector:getName() end
+
+--- Whether a project is currently connected.
+---@return boolean
+function Inspector:isConnected() end
+
+--- Starts listening and returns the name to give the project.
+---@return string
+function Inspector:listen() end
+
+--- Asks the running project something. The handler receives (ok, result).
+---@param op string
+---@param args? table
+---@param handler? fun(ok: boolean, result: any)
+---@return boolean
+function Inspector:request(op, args, handler) end
+
+--- Called when the running project connects back.
+---@param handler fun()
+---@return Inspector
+function Inspector:setOnConnect(handler) end
+
+--- Called when the running project goes away.
+---@param handler fun()
+---@return Inspector
+function Inspector:setOnDisconnect(handler) end
+
 ---@class ProjectBuilder
 local ProjectBuilder = {}
 
@@ -303,6 +343,7 @@ function Timer:stop() end
 
 local sys = {}
 sys.Expr = Expr
+sys.Inspector = Inspector
 sys.ProjectBuilder = ProjectBuilder
 sys.ProjectRunner = ProjectRunner
 sys.Signal = Signal
