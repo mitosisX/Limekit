@@ -25,7 +25,7 @@ from PySide6.QtWidgets import QAbstractItemView, QTableWidget, QTableWidgetItem
 from limekit.kernel.bridge.convert import as_sequence
 from limekit.kernel.coerce import Colour, Enum, LuaIndex
 from limekit.kernel.declarative import LimeObject
-from limekit.kernel.spec import Event, Prop
+from limekit.kernel.spec import method, Event, Prop
 from limekit.widgets.base import LimeWidget, _to_int
 
 _SELECTION_BEHAVIORS = {
@@ -107,6 +107,12 @@ class Table(LimeWidget, QTableWidget):
     def getColumnHeaderText(self, column):
         item = self.horizontalHeaderItem(LuaIndex(column))
         return item.text() if item else None
+
+    @method({"stretch": "boolean"}, returns="self",
+            doc="Whether the last column grows to fill the table's width.")
+    def setStretchLastColumn(self, stretch):
+        self.horizontalHeader().setStretchLastSection(bool(stretch))
+        return self
 
     def setColumnWidth(self, column, width):
         super().setColumnWidth(LuaIndex(column), _to_int(width, "width"))

@@ -7866,6 +7866,11 @@ function Table:setSelectionBehavior(behavior) end
 ---@return Table
 function Table:setSize(width, height) end
 
+--- Whether the last column grows to fill the table's width.
+---@param stretch boolean
+---@return Table
+function Table:setStretchLastColumn(stretch) end
+
 --- Resizes the width, leaving the height alone.
 ---@param width integer
 ---@return Table
