@@ -235,3 +235,18 @@ def test_the_indicator_is_a_bar_at_the_slot_boundary(vbox):
     boundary = buttons[1].mapTo(surface, buttons[1].rect().topLeft()).y()
     assert abs(rect.center().y() - boundary) <= 4
     assert rect.width() >= buttons[1].width()
+
+
+def test_a_right_click_selects_and_offers_a_menu(vbox):
+    from PySide6.QtCore import QEvent
+    from PySide6.QtGui import QMouseEvent
+    surface, box, buttons = vbox
+    asked = []
+    surface.setOnContextMenu(lambda widget, x, y: asked.append((widget, x, y)))
+    point = centre_of(buttons[1], surface)
+    event = QMouseEvent(QEvent.Type.MouseButtonPress, QPointF(point),
+                        Qt.MouseButton.RightButton, Qt.MouseButton.RightButton,
+                        Qt.KeyboardModifier.NoModifier)
+    surface.mousePressEvent(event)
+    assert surface.getSelected() is buttons[1]
+    assert asked == [(buttons[1], point.x(), point.y())]

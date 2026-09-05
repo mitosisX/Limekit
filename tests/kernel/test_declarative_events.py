@@ -76,7 +76,7 @@ def test_combobox_index_event_is_one_based(qapp):
     seen = []
     combo.setOnItemSelect(lambda sender, index: seen.append(index))
 
-    combo.setCurrentIndex(2)              # Qt's third item
+    combo.setCurrentIndex(3)              # 1-based, like the event
     assert seen[-1] == 3
     assert combo.getItemAt(seen[-1]) == "c"
 

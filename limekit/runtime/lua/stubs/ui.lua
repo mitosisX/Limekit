@@ -1095,6 +1095,10 @@ function ComboBox:clear() end
 
 function ComboBox:close() end
 
+--- The 1-based index of the selected item; 0 when none is.
+---@return integer
+function ComboBox:getCurrentIndex() end
+
 ---@param index any
 function ComboBox:getItemAt(index) end
 
@@ -1106,6 +1110,11 @@ function ComboBox:hide() end
 ---@param colour any
 ---@return ComboBox
 function ComboBox:setBackgroundColor(colour) end
+
+--- Selects an item by 1-based index; 0 selects nothing.
+---@param index integer
+---@return ComboBox
+function ComboBox:setCurrentIndex(index) end
 
 ---@param width any
 ---@param height any
@@ -1806,6 +1815,11 @@ function DesignSurface:setMinSize(width, height) end
 ---@param width integer
 ---@return DesignSurface
 function DesignSurface:setMinWidth(width) end
+
+--- Called on a right-click with the widget under it (or nil) and the position in the surface, for popping a menu up at.
+---@param handler fun(widget: any, x: integer, y: integer)
+---@return DesignSurface
+function DesignSurface:setOnContextMenu(handler) end
 
 --- Called when a class from the palette, or a placed widget, is dropped. drop = {kind = 'class'|'move', class|widget, target, layout = 'vbox'|'hbox'|'grid'|'form', index | row, column}. The surface changes nothing itself.
 ---@param handler fun(drop: table)
@@ -3846,6 +3860,11 @@ function KeyboardShortcut:getSequence() end
 
 ---@param handler any
 function KeyboardShortcut:setOnKeyPress(handler) end
+
+--- Where the shortcut listens: the whole window (default), only while its parent widget or a child has focus, or everywhere.
+---@param scope "window"|"widget"|"application"
+---@return KeyboardShortcut
+function KeyboardShortcut:setScope(scope) end
 
 ---@param sequence any
 ---@return KeyboardShortcut

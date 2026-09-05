@@ -246,6 +246,7 @@ class DesignSurface(LimeWidget, QWidget):
         super().__init__()
         self._onSelect = None
         self._onDrop = None
+        self._onContextMenu = None
         self._selected = None
         self._child = None
         self._dropEnabled = True
@@ -319,6 +320,13 @@ class DesignSurface(LimeWidget, QWidget):
         self._onDrop = guard(handler, widget="DesignSurface", event="onDrop")
         return self
 
+    @method({"handler": "fun(widget: any, x: integer, y: integer)"}, returns="self",
+            doc="Called on a right-click with the widget under it (or nil) and "
+                "the position in the surface, for popping a menu up at.")
+    def setOnContextMenu(self, handler):
+        self._onContextMenu = guard(handler, widget="DesignSurface", event="onContextMenu")
+        return self
+
     @method({"enabled": "boolean"}, returns="self",
             doc="Whether drops are accepted. On by default.")
     def setDropEnabled(self, enabled):
@@ -340,6 +348,9 @@ class DesignSurface(LimeWidget, QWidget):
 
         if self._onSelect is not None:
             self._onSelect(hit)
+        if event.button() == Qt.MouseButton.RightButton and self._onContextMenu is not None:
+            self._press = None
+            self._onContextMenu(hit, position.x(), position.y())
         super().mousePressEvent(event)
 
     def mouseMoveEvent(self, event):

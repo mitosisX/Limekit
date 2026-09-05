@@ -7,11 +7,24 @@ of them assigned over it, and called it unguarded -- an error in a shortcut
 handler escaped into the Qt event loop.
 """
 
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QKeySequence, QShortcut
 
+from limekit.kernel.coerce import Enum
 from limekit.kernel.declarative import LimeObject
 from limekit.kernel.errors import BridgeError
-from limekit.kernel.spec import Event, Prop
+from limekit.kernel.spec import Event, Prop, method
+
+# Where a shortcut listens. "window" is Qt's default: anywhere in the window
+# the parent belongs to. "widget" means only while the parent, or something
+# inside it, has focus -- what a Delete key inside one tab of a window needs,
+# or every text field in every other tab loses its Delete.
+_SCOPES = {
+    "window": Qt.ShortcutContext.WindowShortcut,
+    "widget": Qt.ShortcutContext.WidgetWithChildrenShortcut,
+    "application": Qt.ShortcutContext.ApplicationShortcut,
+}
+_scope = Enum(_SCOPES, "shortcut scope")
 
 
 class KeyboardShortcut(LimeObject, QShortcut):
@@ -30,6 +43,13 @@ class KeyboardShortcut(LimeObject, QShortcut):
                 "pass the window it belongs to"
             )
         super().__init__(QKeySequence(str(sequence)), parent)
+
+    @method({"scope": '"window"|"widget"|"application"'}, returns="self",
+            doc="Where the shortcut listens: the whole window (default), only "
+                "while its parent widget or a child has focus, or everywhere.")
+    def setScope(self, scope):
+        self.setContext(_scope(scope))
+        return self
 
     def getSequence(self):
         return self.key().toString()

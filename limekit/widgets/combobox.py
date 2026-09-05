@@ -34,6 +34,17 @@ class ComboBox(LimeWidget, QComboBox):
     def getItemAt(self, index):
         return self.itemText(LuaIndex(index))
 
+    @method({"index": "integer"}, returns="self",
+            doc="Selects an item by 1-based index; 0 selects nothing.")
+    def setCurrentIndex(self, index):
+        QComboBox.setCurrentIndex(self, int(index) - 1)
+        return self
+
+    @method(returns="integer",
+            doc="The 1-based index of the selected item; 0 when none is.")
+    def getCurrentIndex(self):
+        return self.currentIndex() + 1
+
     def clear(self):
         """Qt native re-exposed so Lua's `box:clear()` colon syntax works."""
         super().clear()
