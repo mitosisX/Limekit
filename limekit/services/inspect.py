@@ -235,6 +235,22 @@ def set_property(widget, name, value):
     raise AttributeError(f"no property named {name!r} on {lime_name(widget)}")
 
 
+def buildable_classes():
+    """Bare names ("Button") of every ui class constructible with no
+    arguments, sorted. The palette and `Introspect.buildableClasses` both
+    read this, so they cannot disagree."""
+    from limekit.kernel import introspect as reflection
+    from limekit.kernel.registry import registry
+
+    names = []
+    for name, cls in registry.modules().get("ui", {}).items():
+        ctor = reflection.constructor(cls)
+        if ctor is None or any(not has_default for _, _, has_default in ctor.params):
+            continue
+        names.append(name)
+    return sorted(names)
+
+
 class Introspect(LimeObject):
     """The same reading, offered to Lua directly: `sys.Introspect`.
 
@@ -288,13 +304,4 @@ class Introspect(LimeObject):
         made without being told something first. Listing them anyway would
         put items in a palette that fail when dropped.
         """
-        from limekit.kernel import introspect as reflection
-        from limekit.kernel.registry import registry
-
-        names = []
-        for name, cls in registry.modules().get("ui", {}).items():
-            ctor = reflection.constructor(cls)
-            if ctor is None or any(not has_default for _, _, has_default in ctor.params):
-                continue
-            names.append(name)
-        return to_lua(sorted(names))
+        return to_lua(buildable_classes())

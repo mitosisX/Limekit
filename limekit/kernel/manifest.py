@@ -82,6 +82,7 @@ MODULES = (
     "limekit.widgets.toolbar",
     "limekit.widgets.treeview",
     "limekit.widgets.vertical_line",
+    "limekit.widgets.widgetpalette",
     "limekit.widgets.window",
 )
 

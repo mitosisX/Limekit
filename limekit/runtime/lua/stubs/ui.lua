@@ -1717,6 +1717,9 @@ function DesignSurface:setStyleSheet(value) end
 
 function DesignSurface:close() end
 
+---@param event any
+function DesignSurface:dragLeaveEvent(event) end
+
 --- The widget being designed, or nil.
 ---@return any
 function DesignSurface:getDesignChild() end
@@ -1740,6 +1743,11 @@ function DesignSurface:setBackgroundColor(colour) end
 ---@param child any
 ---@return DesignSurface
 function DesignSurface:setDesignChild(child) end
+
+--- Whether drops are accepted. On by default.
+---@param enabled boolean
+---@return DesignSurface
+function DesignSurface:setDropEnabled(enabled) end
 
 ---@param width any
 ---@param height any
@@ -1798,6 +1806,11 @@ function DesignSurface:setMinSize(width, height) end
 ---@param width integer
 ---@return DesignSurface
 function DesignSurface:setMinWidth(width) end
+
+--- Called when a class from the palette, or a placed widget, is dropped. drop = {kind = 'class'|'move', class|widget, target, layout = 'vbox'|'hbox'|'grid'|'form', index | row, column}. The surface changes nothing itself.
+---@param handler fun(drop: table)
+---@return DesignSurface
+function DesignSurface:setOnDrop(handler) end
 
 --- Called with the widget under a click, or nil for empty space.
 ---@param handler fun(widget: any)
@@ -9239,6 +9252,161 @@ function VLine:setWidth(width) end
 ---@return VLine
 function VLine:show() end
 
+---@class WidgetPalette
+local WidgetPalette = {}
+
+--- Creates a WidgetPalette.
+---@return WidgetPalette
+function WidgetPalette() end
+
+--- Get the enabled property.
+---@return boolean
+function WidgetPalette:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return WidgetPalette
+function WidgetPalette:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function WidgetPalette:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function WidgetPalette:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return WidgetPalette
+function WidgetPalette:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function WidgetPalette:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function WidgetPalette:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return WidgetPalette
+function WidgetPalette:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function WidgetPalette:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return WidgetPalette
+function WidgetPalette:setStyleSheet(value) end
+
+function WidgetPalette:close() end
+
+--- Every class the palette offers.
+---@return string[]
+function WidgetPalette:getClasses() end
+
+--- The class of the selected item, or nil.
+---@return string
+function WidgetPalette:getSelectedClass() end
+
+---@return WidgetPalette
+function WidgetPalette:hide() end
+
+---@param colour any
+---@return WidgetPalette
+function WidgetPalette:setBackgroundColor(colour) end
+
+--- Hides items whose name does not contain the text. A group header hides when its whole group does.
+---@param text string
+---@return WidgetPalette
+function WidgetPalette:setFilter(text) end
+
+---@param width any
+---@param height any
+---@return WidgetPalette
+function WidgetPalette:setFixedSize(width, height) end
+
+---@return WidgetPalette
+function WidgetPalette:setFocus() end
+
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return WidgetPalette
+function WidgetPalette:setHeight(height) end
+
+---@param x any
+---@param y any
+---@return WidgetPalette
+function WidgetPalette:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return WidgetPalette
+function WidgetPalette:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return WidgetPalette
+function WidgetPalette:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return WidgetPalette
+function WidgetPalette:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return WidgetPalette
+function WidgetPalette:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return WidgetPalette
+function WidgetPalette:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return WidgetPalette
+function WidgetPalette:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return WidgetPalette
+function WidgetPalette:setMinWidth(width) end
+
+--- Called with the class name, e.g. 'ui.Button', when an item is double-clicked.
+---@param handler fun(class: string)
+---@return WidgetPalette
+function WidgetPalette:setOnPick(handler) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return WidgetPalette
+function WidgetPalette:setResizeRule(horizontal, vertical) end
+
+---@param width any
+---@param height any
+---@return WidgetPalette
+function WidgetPalette:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return WidgetPalette
+function WidgetPalette:setWidth(width) end
+
+---@return WidgetPalette
+function WidgetPalette:show() end
+
 ---@class Window
 local Window = {}
 
@@ -9541,5 +9709,6 @@ ui.TreeViewItem = TreeViewItem
 ui.TreeWidget = TreeWidget
 ui.VLayout = VLayout
 ui.VLine = VLine
+ui.WidgetPalette = WidgetPalette
 ui.Window = Window
 return ui

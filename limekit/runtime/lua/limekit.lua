@@ -116,6 +116,7 @@ limekit.ui = require("limekit.ui")
 --   ui.TreeWidget
 --   ui.VLayout
 --   ui.VLine
+--   ui.WidgetPalette
 --   ui.Window
 
 
