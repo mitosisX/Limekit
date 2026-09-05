@@ -1729,6 +1729,11 @@ function DesignSurface:close() end
 ---@param event any
 function DesignSurface:dragLeaveEvent(event) end
 
+--- Lights a widget up briefly -- the one just added, moved or changed, or the container something was just removed from.
+---@param widget any
+---@return DesignSurface
+function DesignSurface:flash(widget) end
+
 --- The widget being designed, or nil.
 ---@return any
 function DesignSurface:getDesignChild() end
@@ -1739,6 +1744,8 @@ function DesignSurface:getSelected() end
 
 ---@return DesignSurface
 function DesignSurface:hide() end
+
+function DesignSurface:isFlashing() end
 
 --- Re-applies design mode after the tree has been added to.
 ---@return DesignSurface
@@ -6883,6 +6890,11 @@ function Splitter:setResizeRule(horizontal, vertical) end
 ---@param height any
 ---@return Splitter
 function Splitter:setSize(width, height) end
+
+--- How extra room is shared out, one integer per child: a child with 0 keeps its size when the splitter grows; the others grow in proportion. setSizes is in pixels; this is the ratio.
+---@param factors integer[]
+---@return Splitter
+function Splitter:setStretchFactors(factors) end
 
 --- Resizes the width, leaving the height alone.
 ---@param width integer

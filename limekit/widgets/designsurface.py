@@ -23,7 +23,7 @@ the designer's model does that and rebuilds, so the tree on screen can never
 drift from the tree that will be written out.
 """
 
-from PySide6.QtCore import QMimeData, QPoint, QRect, Qt
+from PySide6.QtCore import QElapsedTimer, QMimeData, QPoint, QRect, Qt, QTimer
 from PySide6.QtGui import QColor, QDrag, QPainter, QPen
 from PySide6.QtWidgets import (QApplication, QBoxLayout, QFormLayout,
                                QGridLayout, QVBoxLayout, QWidget)
@@ -37,6 +37,8 @@ from limekit.widgets.base import LimeWidget
 
 _SELECTION_COLOUR = "#2979FF"
 _INDICATOR_COLOUR = "#FF6D00"
+_CONTAINER_COLOUR = "#9E9E9E"
+_FLASH_MS = 700
 
 #: A class name from the palette: "ui.Button".
 CLASS_MIME = "application/x-limekit-class"
@@ -159,6 +161,23 @@ def _form_slot(layout, local):
     return layout.rowCount() + 1
 
 
+def container_frames(surface):
+    """(widget, rect) for every container in the design, in surface coords.
+
+    Drawn as dashed outlines so that a container -- which has no look of
+    its own, and an empty one has no size to speak of -- can be seen, and
+    seen to be the thing a drop will land in.
+    """
+    child = surface.getDesignChild()
+    if child is None:
+        return []
+    out = []
+    for widget in [child] + child.findChildren(QWidget):
+        if _layout_kind(widget.layout()) is not None and widget.isVisible():
+            out.append((widget, QRect(widget.mapTo(surface, QPoint(0, 0)), widget.size())))
+    return out
+
+
 def resolve_drop(surface, position, dragging=None):
     """The container and slot a drop at `position` (surface coords) means.
 
@@ -253,6 +272,10 @@ class DesignSurface(LimeWidget, QWidget):
         self._pending = None        # slot under the cursor during a drag
         self._dragging = None       # widget being moved, while it is
         self._press = None          # (widget, QPoint) of the last press
+        self._flash = None          # (widget, QElapsedTimer) while lit
+        self._flashTimer = QTimer(self)
+        self._flashTimer.setInterval(30)
+        self._flashTimer.timeout.connect(self._flash_tick)
         self.setAcceptDrops(True)
 
         layout = QVBoxLayout(self)
@@ -332,6 +355,28 @@ class DesignSurface(LimeWidget, QWidget):
     def setDropEnabled(self, enabled):
         self._dropEnabled = bool(enabled)
         return self
+
+    @method({"widget": "any"}, returns="self",
+            doc="Lights a widget up briefly -- the one just added, moved or "
+                "changed, or the container something was just removed from.")
+    def flash(self, widget):
+        if widget is None:
+            return self
+        clock = QElapsedTimer()
+        clock.start()
+        self._flash = (widget, clock)
+        self._flashTimer.start()
+        self.update()
+        return self
+
+    def _flash_tick(self):
+        if self._flash is None or self._flash[1].elapsed() >= _FLASH_MS:
+            self._flash = None
+            self._flashTimer.stop()
+        self.update()
+
+    def isFlashing(self):
+        return self._flash is not None
 
     # -- input: selecting, and starting a move -------------------------------
 
@@ -442,10 +487,33 @@ class DesignSurface(LimeWidget, QWidget):
 
     def paintEvent(self, event):
         super().paintEvent(event)
-        if self._selected is None and self._pending is None:
+        if self._child is None:
             return
 
         painter = QPainter(self)
+        pen = QPen(QColor(_CONTAINER_COLOUR))
+        pen.setStyle(Qt.PenStyle.DashLine)
+        painter.setPen(pen)
+        for widget, frame in container_frames(self):
+            if widget is not self._selected:
+                painter.drawRect(frame.adjusted(0, 0, -1, -1))
+
+        if self._flash is not None:
+            widget, clock = self._flash
+            try:
+                frame = QRect(widget.mapTo(self, QPoint(0, 0)), widget.size())
+            except RuntimeError:            # deleted under us
+                frame = None
+            if frame is not None:
+                fade = max(0.0, 1.0 - clock.elapsed() / _FLASH_MS)
+                fill = QColor(_INDICATOR_COLOUR)
+                fill.setAlpha(int(110 * fade))
+                painter.fillRect(frame, fill)
+                pen = QPen(QColor(_INDICATOR_COLOUR))
+                pen.setWidth(3)
+                painter.setPen(pen)
+                painter.drawRect(frame.adjusted(1, 1, -2, -2))
+
         if self._selected is not None:
             pen = QPen(QColor(_SELECTION_COLOUR))
             pen.setWidth(2)

@@ -250,3 +250,36 @@ def test_a_right_click_selects_and_offers_a_menu(vbox):
     surface.mousePressEvent(event)
     assert surface.getSelected() is buttons[1]
     assert asked == [(buttons[1], point.x(), point.y())]
+
+
+def test_containers_are_outlined_even_when_empty(qapp):
+    from limekit.layouts.vlayout import VLayout
+    from limekit.widgets.container import Container
+    from limekit.widgets.designsurface import DesignSurface, container_frames
+    surface, outer, inner = DesignSurface(), Container(), Container()
+    layout = VLayout()
+    inner.setLayout(VLayout())
+    layout.addChild(inner)
+    outer.setLayout(layout)
+    surface.setDesignChild(outer)
+    show(surface)
+    widgets = [w for w, _ in container_frames(surface)]
+    assert outer in widgets and inner in widgets
+
+
+def test_flash_lights_a_widget_then_goes_out(vbox):
+    surface, box, buttons = vbox
+    surface.flash(buttons[0])
+    assert surface.isFlashing()
+    surface.repaint()                       # paints while lit without error
+    surface._flash[1].restart()
+    import time
+    time.sleep(0.75)
+    surface._flash_tick()
+    assert not surface.isFlashing()
+
+
+def test_flash_of_nothing_is_ignored(vbox):
+    surface, box, buttons = vbox
+    surface.flash(None)
+    assert not surface.isFlashing()

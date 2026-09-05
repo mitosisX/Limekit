@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QSplitter, QWidget
 
 from limekit.kernel.bridge.convert import as_sequence
 from limekit.kernel.coerce import ORIENTATIONS, Enum
-from limekit.kernel.spec import Prop
+from limekit.kernel.spec import Prop, method
 from limekit.widgets.base import LimeWidget, _to_int
 
 _orientation = Enum(ORIENTATIONS, "orientation")
@@ -31,4 +31,13 @@ class Splitter(LimeWidget, QSplitter):
         widget = QWidget()
         widget.setLayout(layout)
         self.addChild(widget)
+        return self
+
+    @method({"factors": "integer[]"}, returns="self",
+            doc="How extra room is shared out, one integer per child: a child "
+                "with 0 keeps its size when the splitter grows; the others "
+                "grow in proportion. setSizes is in pixels; this is the ratio.")
+    def setStretchFactors(self, factors):
+        for index, factor in enumerate(as_sequence(factors)):
+            self.setStretchFactor(index, int(factor))
         return self
