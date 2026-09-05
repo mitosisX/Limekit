@@ -1828,10 +1828,20 @@ function DesignSurface:setMinWidth(width) end
 ---@return DesignSurface
 function DesignSurface:setOnContextMenu(handler) end
 
+--- Called on a double-click with the widget under it, or nil.
+---@param handler fun(widget: any, x: integer, y: integer)
+---@return DesignSurface
+function DesignSurface:setOnDoubleClick(handler) end
+
 --- Called when a class from the palette, or a placed widget, is dropped. drop = {kind = 'class'|'move', class|widget, target, layout = 'vbox'|'hbox'|'grid'|'form', index | row, column}. The surface changes nothing itself.
 ---@param handler fun(drop: table)
 ---@return DesignSurface
 function DesignSurface:setOnDrop(handler) end
+
+--- Called when a selection handle is dragged and released, with the size the widget was pulled to. The surface changes nothing.
+---@param handler fun(widget: any, width: integer, height: integer)
+---@return DesignSurface
+function DesignSurface:setOnResize(handler) end
 
 --- Called with the widget under a click, or nil for empty space.
 ---@param handler fun(widget: any)

@@ -26,7 +26,8 @@ drift from the tree that will be written out.
 from PySide6.QtCore import QElapsedTimer, QMimeData, QPoint, QRect, Qt, QTimer
 from PySide6.QtGui import QColor, QDrag, QPainter, QPen
 from PySide6.QtWidgets import (QApplication, QBoxLayout, QFormLayout,
-                               QGridLayout, QVBoxLayout, QWidget)
+                               QGridLayout, QScrollArea, QSplitter,
+                               QTabWidget, QVBoxLayout, QWidget)
 
 from limekit.kernel.bridge.convert import to_lua
 from limekit.kernel.bridge.guard import guard
@@ -39,6 +40,7 @@ _SELECTION_COLOUR = "#2979FF"
 _INDICATOR_COLOUR = "#FF6D00"
 _CONTAINER_COLOUR = "#9E9E9E"
 _FLASH_MS = 700
+_HANDLE = 7          # px, the little squares on a selection's edges
 
 #: A class name from the palette: "ui.Button".
 CLASS_MIME = "application/x-limekit-class"
@@ -92,20 +94,63 @@ def _layout_kind(layout):
     return None
 
 
-def _container_for(surface, hit):
-    """The nearest widget at or above `hit` that lays children out.
+def _holder_kind(widget):
+    """Widgets that hold children without a QLayout: "tab", "splitter",
+    "scroller", or None. A drop on one of these means a new page, pane or
+    content rather than a slot in a layout."""
+    if isinstance(widget, QTabWidget):
+        return "tab"
+    if isinstance(widget, QSplitter):
+        return "splitter"
+    if isinstance(widget, QScrollArea):
+        return "scroller"
+    return None
 
-    Stops at the design child: the surface's own QVBoxLayout must never be
-    a target, or a drop beside the design would land outside it.
+
+def _container_for(surface, hit):
+    """The nearest widget at or above `hit` that holds children, and how.
+
+    Returns (widget, kind). Stops at the design child: the surface's own
+    QVBoxLayout must never be a target, or a drop beside the design would
+    land outside it.
     """
     widget = hit
     while widget is not None and widget is not surface:
-        if _layout_kind(widget.layout()) is not None:
-            return widget, widget.layout()
+        kind = _layout_kind(widget.layout()) or _holder_kind(widget)
+        if kind is not None:
+            return widget, kind
         if widget is surface.getDesignChild():
             break
         widget = widget.parentWidget()
     return None, None
+
+
+def _tab_slot(tab, local):
+    """1-based page index. Over the tab bar, the tab under the cursor;
+    anywhere else, a new page at the end."""
+    bar = tab.tabBar()
+    if bar.geometry().contains(local):
+        at = bar.mapFrom(tab, local)
+        horizontal = tab.tabPosition() in (QTabWidget.TabPosition.North,
+                                           QTabWidget.TabPosition.South)
+        for i in range(bar.count()):
+            rect = bar.tabRect(i)
+            if horizontal and at.x() < rect.center().x():
+                return i + 1
+            if not horizontal and at.y() < rect.center().y():
+                return i + 1
+    return tab.count() + 1
+
+
+def _splitter_slot(splitter, local):
+    vertical = splitter.orientation() == Qt.Orientation.Vertical
+    coordinate = local.y() if vertical else local.x()
+    for i in range(splitter.count()):
+        rect = splitter.widget(i).geometry()
+        middle = rect.center().y() if vertical else rect.center().x()
+        if coordinate < middle:
+            return i + 1
+    return splitter.count() + 1
 
 
 def _is_or_descends_from(widget, ancestor):
@@ -173,7 +218,7 @@ def container_frames(surface):
         return []
     out = []
     for widget in [child] + child.findChildren(QWidget):
-        if _layout_kind(widget.layout()) is not None and widget.isVisible():
+        if widget.isVisible() and (_layout_kind(widget.layout()) or _holder_kind(widget)):
             out.append((widget, QRect(widget.mapTo(surface, QPoint(0, 0)), widget.size())))
     return out
 
@@ -188,21 +233,27 @@ def resolve_drop(surface, position, dragging=None):
     hit = _deepest_at(surface, position) or surface.getDesignChild()
     if hit is None:
         return None
-    container, layout = _container_for(surface, hit)
+    container, kind = _container_for(surface, hit)
     if container is None:
         return None
     if dragging is not None and _is_or_descends_from(container, dragging):
         return None
 
-    kind = _layout_kind(layout)
+    layout = container.layout()
     local = container.mapFrom(surface, position)
     slot = {"target": container, "layout": kind}
     if kind in ("vbox", "hbox"):
         slot["index"] = _box_slot(layout, kind, local)
     elif kind == "grid":
         slot["row"], slot["column"] = _grid_slot(layout, local)
-    else:
+    elif kind == "form":
         slot["index"] = _form_slot(layout, local)
+    elif kind == "tab":
+        slot["index"] = _tab_slot(container, local)
+    elif kind == "splitter":
+        slot["index"] = _splitter_slot(container, local)
+    else:
+        slot["index"] = 1
     return slot
 
 
@@ -213,6 +264,28 @@ def indicator_rect(surface, slot):
     origin = target.mapTo(surface, QPoint(0, 0))
     kind = slot["layout"]
     contents = target.contentsRect()
+
+    if kind in ("tab", "scroller"):
+        return QRect(origin, target.size()).adjusted(1, 1, -2, -2)
+
+    if kind == "splitter":
+        index, count = slot["index"], target.count()
+        vertical = target.orientation() == Qt.Orientation.Vertical
+        if count == 0:
+            if vertical:
+                return QRect(origin.x() + contents.left(), origin.y() + contents.top(),
+                             contents.width(), 3)
+            return QRect(origin.x() + contents.left(), origin.y() + contents.top(),
+                         3, contents.height())
+        if index <= count:
+            rect, before = target.widget(index - 1).geometry(), True
+        else:
+            rect, before = target.widget(count - 1).geometry(), False
+        if vertical:
+            y = rect.top() if before else rect.bottom()
+            return QRect(origin.x() + rect.left(), origin.y() + y - 1, rect.width(), 3)
+        x = rect.left() if before else rect.right()
+        return QRect(origin.x() + x - 1, origin.y() + rect.top(), 3, rect.height())
 
     if kind in ("vbox", "hbox"):
         index, count = slot["index"], layout.count()
@@ -272,6 +345,10 @@ class DesignSurface(LimeWidget, QWidget):
         self._pending = None        # slot under the cursor during a drag
         self._dragging = None       # widget being moved, while it is
         self._press = None          # (widget, QPoint) of the last press
+        self._onResize = None
+        self._onDoubleClick = None
+        self._resizing = None       # (widget, handle, start QPoint, start QSize)
+        self._resizeRect = None     # live outline while resizing
         self._flash = None          # (widget, QElapsedTimer) while lit
         self._flashTimer = QTimer(self)
         self._flashTimer.setInterval(30)
@@ -356,6 +433,43 @@ class DesignSurface(LimeWidget, QWidget):
         self._dropEnabled = bool(enabled)
         return self
 
+    @method({"handler": "fun(widget: any, width: integer, height: integer)"}, returns="self",
+            doc="Called when a selection handle is dragged and released, with "
+                "the size the widget was pulled to. The surface changes nothing.")
+    def setOnResize(self, handler):
+        self._onResize = guard(handler, widget="DesignSurface", event="onResize")
+        return self
+
+    @method({"handler": "fun(widget: any, x: integer, y: integer)"}, returns="self",
+            doc="Called on a double-click with the widget under it, or nil.")
+    def setOnDoubleClick(self, handler):
+        self._onDoubleClick = guard(handler, widget="DesignSurface", event="onDoubleClick")
+        return self
+
+    def _selection_frame(self):
+        if self._selected is None or self._selected is self._child:
+            return None
+        return QRect(self._selected.mapTo(self, QPoint(0, 0)), self._selected.size())
+
+    def _handles(self):
+        """{name: QRect} for the three handles that make sense in a layout:
+        a widget's minimum width, its minimum height, or both."""
+        frame = self._selection_frame()
+        if frame is None:
+            return {}
+        h = _HANDLE
+        return {
+            "right": QRect(frame.right() - h // 2, frame.center().y() - h // 2, h, h),
+            "bottom": QRect(frame.center().x() - h // 2, frame.bottom() - h // 2, h, h),
+            "corner": QRect(frame.right() - h // 2, frame.bottom() - h // 2, h, h),
+        }
+
+    def _handle_at(self, position):
+        for name, rect in self._handles().items():
+            if rect.adjusted(-2, -2, 2, 2).contains(position):
+                return name
+        return None
+
     @method({"widget": "any"}, returns="self",
             doc="Lights a widget up briefly -- the one just added, moved or "
                 "changed, or the container something was just removed from.")
@@ -381,9 +495,20 @@ class DesignSurface(LimeWidget, QWidget):
     # -- input: selecting, and starting a move -------------------------------
 
     def mousePressEvent(self, event):
+        position = event.position().toPoint()
+
+        # A press on a handle of the selection starts a resize, not a new
+        # selection -- the handle sits on the widget's edge, where the
+        # hit-test below would as likely pick the neighbour.
+        handle = self._handle_at(position) if event.button() == Qt.MouseButton.LeftButton else None
+        if handle is not None:
+            self._resizing = (self._selected, handle, position, self._selected.size())
+            self._resizeRect = self._selection_frame()
+            self._press = None
+            return
+
         # childAt walks the same geometry Qt drew, so what is reported is
         # what the eye picked -- no hit-testing of our own to disagree with.
-        position = event.position().toPoint()
         hit = _deepest_at(self, position)
 
         self._selected = hit
@@ -398,7 +523,25 @@ class DesignSurface(LimeWidget, QWidget):
             self._onContextMenu(hit, position.x(), position.y())
         super().mousePressEvent(event)
 
+    def mouseDoubleClickEvent(self, event):
+        position = event.position().toPoint()
+        if self._onDoubleClick is not None:
+            self._onDoubleClick(_deepest_at(self, position), position.x(), position.y())
+        super().mouseDoubleClickEvent(event)
+
     def mouseMoveEvent(self, event):
+        if self._resizing is not None:
+            widget, handle, start, size = self._resizing
+            delta = event.position().toPoint() - start
+            width = size.width() + (delta.x() if handle in ("right", "corner") else 0)
+            height = size.height() + (delta.y() if handle in ("bottom", "corner") else 0)
+            frame = self._selection_frame()
+            if frame is not None:
+                self._resizeRect = QRect(frame.topLeft(), frame.size())
+                self._resizeRect.setWidth(max(8, width))
+                self._resizeRect.setHeight(max(8, height))
+            self.update()
+            return
         if self._press is None or not (event.buttons() & Qt.MouseButton.LeftButton):
             return
         widget, origin = self._press
@@ -421,6 +564,14 @@ class DesignSurface(LimeWidget, QWidget):
 
     def mouseReleaseEvent(self, event):
         self._press = None
+        if self._resizing is not None:
+            widget, handle, start, size = self._resizing
+            rect = self._resizeRect
+            self._resizing, self._resizeRect = None, None
+            self.update()
+            if rect is not None and self._onResize is not None and rect.size() != size:
+                self._onResize(widget, rect.width(), rect.height())
+            return
         super().mouseReleaseEvent(event)
 
     # -- input: being dropped on ---------------------------------------------
@@ -523,6 +674,16 @@ class DesignSurface(LimeWidget, QWidget):
             top_left = self._selected.mapTo(self, self._selected.rect().topLeft())
             painter.drawRect(top_left.x(), top_left.y(),
                              self._selected.width() - 1, self._selected.height() - 1)
+            for rect in self._handles().values():
+                painter.fillRect(rect, QColor("#FFFFFF"))
+                painter.drawRect(rect.adjusted(0, 0, -1, -1))
+
+        if self._resizeRect is not None:
+            pen = QPen(QColor(_INDICATOR_COLOUR))
+            pen.setWidth(2)
+            pen.setStyle(Qt.PenStyle.DashLine)
+            painter.setPen(pen)
+            painter.drawRect(self._resizeRect.adjusted(0, 0, -1, -1))
 
         if self._pending is not None:
             colour = QColor(_INDICATOR_COLOUR)
