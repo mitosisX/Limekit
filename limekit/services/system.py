@@ -25,6 +25,15 @@ _HASH_ALGORITHMS = {
 }
 
 
+def _open_detached(path):
+    """Opens `path` with its default program from a detached Python, so the
+    program's parent has no console to attach to (Windows only)."""
+    flags = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
+    subprocess.Popen([sys.executable, "-c", "import os, sys; os.startfile(sys.argv[1])", path],
+                     creationflags=flags, close_fds=True, stdin=subprocess.DEVNULL,
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
 class System(LimeObject):
     __lime__ = "sys.System"
 
@@ -76,6 +85,14 @@ class System(LimeObject):
         if not isinstance(path, str) or not path:
             raise BridgeError(f"expected a non-empty path string, got {path!r}")
         if os.path.exists(path):
+            if sys.platform == "win32" and not getattr(sys, "frozen", False):
+                # Opened from here, a program inherits this process as its
+                # parent, and a console app or an Electron one (VS Code)
+                # attaches to the console Limekit was started from and
+                # writes its own logs there. A detached Python opens it
+                # instead, so the program's parent has no console to find.
+                _open_detached(os.path.abspath(path))
+                return True
             url = QUrl.fromLocalFile(os.path.abspath(path))
         else:
             url = QUrl(path)

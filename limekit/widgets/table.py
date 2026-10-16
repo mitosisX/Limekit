@@ -19,6 +19,7 @@ if this were written more naively:
   (`getCellItem`, `getCurrentItem`) rather than colliding on `item`.
 """
 
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QBrush
 from PySide6.QtWidgets import QAbstractItemView, QTableWidget, QTableWidgetItem
 
@@ -50,6 +51,18 @@ class TableItem(LimeObject, QTableWidgetItem):
 
     def setTextColour(self, colour):
         self.setForeground(QBrush(Colour(colour)))
+        return self
+
+    @method({"editable": "boolean"}, returns="self",
+            doc="Whether this one cell can be typed into, whatever "
+                "setCellsEditable says for the table -- for a label column "
+                "beside editable values.")
+    def setEditable(self, editable):
+        flags = self.flags()
+        if editable:
+            self.setFlags(flags | Qt.ItemFlag.ItemIsEditable)
+        else:
+            self.setFlags(flags & ~Qt.ItemFlag.ItemIsEditable)
         return self
 
 

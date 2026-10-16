@@ -1,5 +1,7 @@
 import base64
 
+import sys
+
 import pytest
 from limekit.kernel.bridge.engine import LuaRuntime
 from PySide6.QtWidgets import QApplication
@@ -152,15 +154,21 @@ def test_open_path_hands_an_existing_file_to_the_desktop_as_a_local_url(tmp_path
     target = tmp_path / "main.lua"
     target.write_text("-- hi", encoding="utf-8")
 
-    seen = []
+    seen, detached = [], []
     monkeypatch.setattr(
         "PySide6.QtGui.QDesktopServices.openUrl",
         lambda url: seen.append(url) or True,
     )
+    # Never actually launch anything from a test run.
+    monkeypatch.setattr("limekit.services.system._open_detached", detached.append)
 
     assert System.openPath(str(target)) is True
-    assert seen[0].isLocalFile()
-    assert seen[0].toLocalFile().endswith("main.lua")
+    if sys.platform == "win32":
+        # Detached, so the opened program cannot attach to our console.
+        assert detached and detached[0].endswith("main.lua") and not seen
+    else:
+        assert seen[0].isLocalFile()
+        assert seen[0].toLocalFile().endswith("main.lua")
 
 
 def test_open_path_treats_a_non_existent_path_as_a_url(monkeypatch):

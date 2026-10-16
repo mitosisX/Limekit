@@ -60,6 +60,21 @@ class TextField(LimeWidget, QTextEdit):
         self.append(str(text))
         return self
 
+    def setFont(self, font, size=0):
+        """Overrides QWidget.setFont so Lua can pass a family name and size,
+        as Label:setFont does. Without it, `field:setFont("Consolas", 9)`
+        reached Qt's own setFont and failed with "takes exactly one argument
+        (3 given)" -- the Build dialog's output box did exactly that."""
+        from PySide6.QtGui import QFont
+        if isinstance(font, QFont):
+            QTextEdit.setFont(self, font)
+        else:
+            qfont = QFont(str(font))
+            if int(size or 0) > 0:
+                qfont.setPointSize(int(size))
+            QTextEdit.setFont(self, qfont)
+        return self
+
     def setWrapMode(self, mode):
         self.setLineWrapMode(_wrap_mode(mode))
         return self

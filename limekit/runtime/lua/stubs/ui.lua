@@ -7046,6 +7046,11 @@ function Splitter:getSizes() end
 ---@return Splitter
 function Splitter:setSizes(value) end
 
+--- Fired when the user drags a handle -- not when setSizes moves one -- so a caller can tell a size the user chose from one it set. index is 1-based.
+---@param handler fun(widget: Splitter, position: integer, index: integer)
+---@return Splitter
+function Splitter:setOnMove(handler) end
+
 ---@param child any
 ---@return Splitter
 function Splitter:addChild(child) end
@@ -8159,6 +8164,11 @@ function TableItem:setText(value) end
 ---@return TableItem
 function TableItem:setBackgroundColour(colour) end
 
+--- Whether this one cell can be typed into, whatever setCellsEditable says for the table -- for a label column beside editable values.
+---@param editable boolean
+---@return TableItem
+function TableItem:setEditable(editable) end
+
 ---@param colour any
 ---@return TableItem
 function TableItem:setTextColour(colour) end
@@ -8295,6 +8305,12 @@ function TextField:setFixedSize(width, height) end
 
 ---@return TextField
 function TextField:setFocus() end
+
+--- Overrides QWidget.setFont so Lua can pass a family name and size, as Label:setFont does. Without it, `field:setFont("Consolas", 9)` reached Qt's own setFont and failed with "takes exactly one argument (3 given)" -- the Build dialog's output box did exactly that.
+---@param font any
+---@param size? any
+---@return TextField
+function TextField:setFont(font, size) end
 
 --- Resizes the height, leaving the width alone.
 ---@param height integer

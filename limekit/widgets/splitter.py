@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QSplitter, QWidget
 
 from limekit.kernel.bridge.convert import as_sequence
 from limekit.kernel.coerce import ORIENTATIONS, Enum
-from limekit.kernel.spec import Prop, method
+from limekit.kernel.spec import Event, Prop, method
 from limekit.widgets.base import LimeWidget, _to_int
 
 _orientation = Enum(ORIENTATIONS, "orientation")
@@ -19,6 +19,13 @@ class Splitter(LimeWidget, QSplitter):
     orientation = Prop(object, qt=("orientation", "setOrientation"), coerce=_orientation)
     sizes = Prop(object, qt=("sizes", "setSizes"), coerce=_to_size_list,
                  doc="a list of pane sizes, one per child")
+
+    onMove = Event("splitterMoved", passes_self=True,
+                   params=(("position", "integer"), ("index", "integer")),
+                   indices=("index",),
+                   doc="Fired when the user drags a handle -- not when setSizes "
+                       "moves one -- so a caller can tell a size the user chose "
+                       "from one it set. index is 1-based.")
 
     def __init__(self, orientation="vertical"):
         super().__init__(_orientation(orientation))

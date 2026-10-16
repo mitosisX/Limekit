@@ -247,3 +247,51 @@ def test_table_row_headers_can_be_hidden(qapp):
     table.show()
     assert table.setRowHeadersVisible(False) is table
     assert not table.verticalHeader().isVisible()
+
+
+def test_a_table_cell_can_be_locked_while_others_edit(qapp):
+    from limekit.widgets.table import Table
+    table = Table(1, 2)
+    table.setCellsEditable(True)
+    table.setCellText(1, 1, "label")
+    table.setCellText(1, 2, "value")
+    table.getCellItem(1, 1).setEditable(False)
+    assert not table.getCellItem(1, 1).flags() & Qt.ItemFlag.ItemIsEditable
+    assert table.getCellItem(1, 2).flags() & Qt.ItemFlag.ItemIsEditable
+
+
+def test_textfield_takes_a_family_and_size_like_label(qapp):
+    """The Build dialog's output box did field:setFont("Consolas", 9) and
+    got Qt's one-argument setFont."""
+    from limekit.widgets.textfield import TextField
+    field = TextField()
+    assert field.setFont("Consolas", 9) is field
+    assert field.font().family() == "Consolas" and field.font().pointSize() == 9
+
+
+def test_splitter_reports_user_moves_only(qapp):
+    from limekit.widgets.splitter import Splitter
+    from limekit.widgets.container import Container
+    split = Splitter("vertical")
+    split.addChild(Container())
+    split.addChild(Container())
+    moved = []
+    split.setOnMove(lambda *args: moved.append(args))
+    split.setSizes([100, 50])
+    assert moved == []
+    split.splitterMoved.emit(80, 1)
+    assert len(moved) == 1
+
+
+def test_handles_show_a_resize_cursor(design):
+    surface = design["surface"]
+    surface.setSelected(design["button"])
+    handle = surface._handles()["right"].center()
+    move = QMouseEvent(QEvent.Type.MouseMove, QPointF(handle), Qt.MouseButton.NoButton,
+                       Qt.MouseButton.NoButton, Qt.KeyboardModifier.NoModifier)
+    surface.mouseMoveEvent(move)
+    assert surface.cursor().shape() == Qt.CursorShape.SizeHorCursor
+    away = QMouseEvent(QEvent.Type.MouseMove, QPointF(3, 3), Qt.MouseButton.NoButton,
+                       Qt.MouseButton.NoButton, Qt.KeyboardModifier.NoModifier)
+    surface.mouseMoveEvent(away)
+    assert surface.cursor().shape() == Qt.CursorShape.ArrowCursor

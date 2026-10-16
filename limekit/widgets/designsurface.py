@@ -52,6 +52,10 @@ _KIND_WORDS = {"vbox": "Column", "hbox": "Row", "grid": "Grid", "form": "Form",
 _FLASH_MS = 700
 _HANDLE = 7          # px, the little squares on a selection's edges
 _TITLE_H = 28        # px, the mock title bar drawn above the design
+# The cursor over each selection handle, and while dragging it.
+_HANDLE_CURSORS = {"right": Qt.CursorShape.SizeHorCursor,
+                   "bottom": Qt.CursorShape.SizeVerCursor,
+                   "corner": Qt.CursorShape.SizeFDiagCursor}
 _MARGIN = 36         # px of backdrop around the framed design
 _GRID = 16           # px between backdrop dots
 
@@ -738,6 +742,12 @@ class DesignSurface(LimeWidget, QWidget):
             self._overlay.update()
             return
         if not event.buttons():
+            # Over a selection handle, the cursor says which way it resizes.
+            handle = self._handle_at(event.position().toPoint())
+            if handle is not None:
+                self.setCursor(_HANDLE_CURSORS[handle])
+            else:
+                self.unsetCursor()
             hover = _deepest_at(self, event.position().toPoint())
             if hover is not self._hover:
                 self._hover = hover
@@ -818,6 +828,7 @@ class DesignSurface(LimeWidget, QWidget):
             widget, handle, start, size = self._resizing
             rect = self._resizeRect
             self._resizing, self._resizeRect = None, None
+            self.unsetCursor()
             self._repaint()
             if rect is not None and self._onResize is not None and rect.size() != size:
                 self._onResize(widget, rect.width(), rect.height())
