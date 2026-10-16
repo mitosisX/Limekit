@@ -180,3 +180,19 @@ def test_read_file_missing_raises_bridge_error(tmp_path):
 def test_invalid_path_type_raises_bridge_error(path):
     with pytest.raises(BridgeError):
         FileSystem.readFile(path)
+
+
+def test_base64_round_trips_raw_bytes(tmp_path):
+    """Bytes that are not text -- a PNG header, a 0xFF -- survive the trip
+    that writeFile's text mode could not make."""
+    import base64
+    raw = b"\x89PNG\r\n\x1a\n\x00\xff\xfe"
+    target = tmp_path / "blob.bin"
+    assert FileSystem.writeBase64(str(target), base64.b64encode(raw).decode()) is True
+    assert target.read_bytes() == raw
+    assert base64.b64decode(FileSystem.readBase64(str(target))) == raw
+
+
+def test_write_base64_rejects_bad_input(tmp_path):
+    with pytest.raises(BridgeError):
+        FileSystem.writeBase64(str(tmp_path / "x.bin"), "not base64!!")

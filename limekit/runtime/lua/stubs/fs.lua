@@ -88,6 +88,11 @@ function FileSystem.listFolder(path) end
 ---@return string
 function FileSystem.normalPath(path) end
 
+--- A file's bytes as base64 text; the counterpart of writeBase64.
+---@param path string
+---@return string
+function FileSystem.readBase64(path) end
+
 --- The whole file as a string.
 ---@param path string
 ---@param encoding? string
@@ -115,6 +120,11 @@ function FileSystem.renameFile(path, new_path) end
 ---@param show_hidden? boolean
 ---@return table[]
 function FileSystem.walkDir(path, show_hidden) end
+
+--- Writes binary content given as base64 text -- the way to write an image, or any bytes, from Lua: a Lua string crosses the bridge as text, so raw bytes cannot be passed as one.
+---@param path string
+---@param data string
+function FileSystem.writeBase64(path, data) end
 
 --- Writes content, replacing whatever was there.
 ---@param path string

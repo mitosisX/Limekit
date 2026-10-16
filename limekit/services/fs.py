@@ -43,6 +43,38 @@ class FileSystem(LimeObject):
             raise BridgeError(f"could not read {path!r}: {exc}") from exc
 
     @staticmethod
+    @method({"path": "string", "data": "string"},
+            doc="Writes binary content given as base64 text -- the way to write "
+                "an image, or any bytes, from Lua: a Lua string crosses the "
+                "bridge as text, so raw bytes cannot be passed as one.")
+    def writeBase64(path, data):
+        import base64
+        import binascii
+        path = _path(path)
+        try:
+            payload = base64.b64decode(str(data), validate=True)
+        except (binascii.Error, ValueError) as exc:
+            raise BridgeError(f"not valid base64: {exc}") from exc
+        try:
+            with open(path, "wb") as fh:
+                fh.write(payload)
+        except OSError as exc:
+            raise BridgeError(f"could not write {path!r}: {exc}") from exc
+        return True
+
+    @staticmethod
+    @method({"path": "string"}, returns="string",
+            doc="A file's bytes as base64 text; the counterpart of writeBase64.")
+    def readBase64(path):
+        import base64
+        path = _path(path)
+        try:
+            with open(path, "rb") as fh:
+                return base64.b64encode(fh.read()).decode("ascii")
+        except OSError as exc:
+            raise BridgeError(f"could not read {path!r}: {exc}") from exc
+
+    @staticmethod
     @method({"path": "string", "content": "string", "encoding": "string"}, doc="Writes content, replacing whatever was there.")
     def writeFile(path, content, encoding="utf-8"):
         path = _path(path)
