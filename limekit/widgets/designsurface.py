@@ -24,7 +24,8 @@ drift from the tree that will be written out.
 """
 
 from PySide6.QtCore import QElapsedTimer, QMimeData, QPoint, QRect, Qt, QTimer
-from PySide6.QtGui import QColor, QDrag, QPainter, QPen
+from PySide6.QtGui import (QBrush, QColor, QDrag, QFontMetrics, QPainter,
+                           QPalette, QPen, QPixmap)
 from PySide6.QtWidgets import (QApplication, QBoxLayout, QFormLayout,
                                QGridLayout, QScrollArea, QSplitter,
                                QTabWidget, QVBoxLayout, QWidget)
@@ -35,12 +36,24 @@ from limekit.kernel.declarative import LimeObject
 from limekit.kernel.errors import BridgeError
 from limekit.kernel.spec import method
 from limekit.widgets.base import LimeWidget
+from limekit.widgets.imagebrowser import IMAGE_MIME
 
 _SELECTION_COLOUR = "#2979FF"
 _INDICATOR_COLOUR = "#FF6D00"
-_CONTAINER_COLOUR = "#9E9E9E"
+_REFUSED_COLOUR = "#E5484D"
+_IMAGE_COLOUR = "#16A34A"
+# Container outlines: a muted blue rather than grey, so an empty container
+# on a white window still reads as a place to drop, in either theme.
+_CONTAINER_COLOUR = "#6E8BD8"
+
+# What each way of holding children is called on tags and empty hints.
+_KIND_WORDS = {"vbox": "Column", "hbox": "Row", "grid": "Grid", "form": "Form",
+               "tab": "Tabs", "splitter": "Splitter", "scroller": "Scroller"}
 _FLASH_MS = 700
 _HANDLE = 7          # px, the little squares on a selection's edges
+_TITLE_H = 28        # px, the mock title bar drawn above the design
+_MARGIN = 36         # px of backdrop around the framed design
+_GRID = 16           # px between backdrop dots
 
 #: A class name from the palette: "ui.Button".
 CLASS_MIME = "application/x-limekit-class"
@@ -60,21 +73,84 @@ def _deepest_at(widget, position):
     attribute that hides it from Qt's own hit test.
 
     Later children are drawn over earlier ones, so the search runs backwards
-    and the first hit is the topmost.
+    and the first hit is the topmost. The surface's own overlay covers
+    everything and is skipped: it is paint, not part of the design.
     """
     for child in reversed([c for c in widget.children() if isinstance(c, QWidget)]):
-        if not child.isVisible():
+        if not child.isVisible() or isinstance(child, _Overlay):
             continue
         if child.geometry().contains(position):
             return _deepest_at(child, position - child.pos()) or child
     return None
 
 
+class _Overlay(QWidget):
+    """A transparent sheet over the whole surface that the selection, drop
+    indicator and container outlines are drawn on.
+
+    They used to be drawn in the surface's own paintEvent, which Qt runs
+    *before* painting children -- so an opaque widget such as a LineEdit
+    covered the outline of its own selection. A sibling raised above the
+    design paints after it, and being transparent to the mouse it changes
+    nothing about hit-testing.
+    """
+
+    def __init__(self, surface):
+        super().__init__(surface)
+        self._surface = surface
+        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, True)
+        self.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground, True)
+
+    def paintEvent(self, event):
+        self._surface._paint_overlay(self)
+
+
+def _is_dark(palette):
+    return palette.color(QPalette.ColorRole.Window).lightness() < 128
+
+
+def _chip(painter, anchor, text, fill, ink):
+    """A small rounded tag naming something: above `anchor` if there is room,
+    else just inside its top-left corner. Uses the painter's current font."""
+    metrics = painter.fontMetrics()
+    w, h = metrics.horizontalAdvance(text) + 12, metrics.height() + 4
+    x, y = anchor.left(), anchor.top() - h - 1
+    if y < 0:
+        x, y = anchor.left() + 2, anchor.top() + 2
+    rect = QRect(x, y, w, h)
+    painter.save()
+    painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+    painter.setPen(Qt.PenStyle.NoPen)
+    painter.setBrush(fill)
+    painter.drawRoundedRect(rect, 4, 4)
+    painter.setPen(ink)
+    painter.drawText(rect, Qt.AlignmentFlag.AlignCenter, text)
+    painter.restore()
+    return rect
+
+
+def _holds_nothing(widget, kind):
+    if kind in ("tab", "splitter"):
+        return widget.count() == 0
+    if kind == "scroller":
+        return widget.widget() is None
+    layout = widget.layout()
+    return layout is not None and layout.count() == 0
+
+
 def _make_inert(widget):
-    """Take a widget and everything under it out of the mouse's reach."""
-    widget.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, True)
-    for child in widget.findChildren(QWidget):
-        child.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, True)
+    """Take a widget and everything under it out of the mouse's reach, and
+    the keyboard's.
+
+    Out of the mouse's reach alone is not enough: a LineEdit in the design
+    could still take focus -- when the window is activated, Qt hands focus
+    to the first focusable widget it finds -- and a focused line edit
+    claims Delete, Ctrl+C and the rest as text editing, so the designer's
+    own shortcuts went to a field in the design instead.
+    """
+    for target in [widget] + widget.findChildren(QWidget):
+        target.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, True)
+        target.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
 
 # -- where a drop lands -------------------------------------------------------
@@ -353,27 +429,141 @@ class DesignSurface(LimeWidget, QWidget):
         self._flashTimer = QTimer(self)
         self._flashTimer.setInterval(30)
         self._flashTimer.timeout.connect(self._flash_tick)
+        self._frameTitle = ""
+        self._emptyHint = "Drag widgets here from the palette"
+        self._labels = {}           # widget -> "ok · Button", from setWidgetLabel
+        self._imageTargets = {}     # widget -> slot name, from setImageTarget
+        self._imagePending = None   # (widget, slot, file name) during an image drag
+        self._onImageDrop = None
+        self._hover = None          # widget under the mouse, outside a drag
+        self._cursor = None         # QPoint during a drag over the surface
         self.setAcceptDrops(True)
+        # Hover feedback needs moves without a button held.
+        self.setMouseTracking(True)
+        # Takes focus when clicked, so shortcuts scoped to the canvas --
+        # Delete above all -- work after clicking a widget, and only then.
+        self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
 
+        # Room around the design for the backdrop, and above it for the mock
+        # title bar. The design is centred; when it is larger than the view
+        # the layout's minimum size makes an enclosing Scroller scroll.
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(_MARGIN, _MARGIN + _TITLE_H, _MARGIN, _MARGIN)
         self._layout = layout
 
+        self._overlay = _Overlay(self)
+        self._overlay.raise_()
+
+    def _repaint(self):
+        self.update()
+        self._overlay.update()
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._overlay.setGeometry(self.rect())
+
     @method({"child": "any"}, returns="self",
-            doc="The widget being designed. Replaces whatever was there.")
+            doc="The widget being designed. Replaces whatever was there, and "
+                "deletes it: a designer rebuilds its tree on every change.")
     def setDesignChild(self, child):
-        if self._child is not None:
+        # Replacing the design after an edit made on the canvas must leave
+        # the canvas focused, so the next Delete or Ctrl+Z still reaches it.
+        focus = QApplication.focusWidget()
+        had_focus = focus is not None and (focus is self or self.isAncestorOf(focus))
+        if self._child is not None and self._child is not child:
+            # The old design is deleted, not just detached. Detached, it
+            # became a hidden top-level window -- one more per edit, since a
+            # designer rebuilds on every change -- and Qt could show it
+            # again: the stray window took activation from the designer and
+            # with it every keyboard shortcut.
+            old = self._child
+            self._layout.removeWidget(old)
+            old.hide()
+            old.setParent(None)
+            old.deleteLater()
+        elif self._child is not None:
             self._layout.removeWidget(self._child)
-            self._child.setParent(None)
 
         self._child = child
         self._selected = None
         self._pending = None
+        self._hover = None
+        self._labels = {}
+        self._imageTargets = {}
         if child is not None:
-            self._layout.addWidget(child)
+            self._layout.addWidget(child, 0, Qt.AlignmentFlag.AlignCenter)
             _make_inert(child)
-        self.update()
+        self._overlay.raise_()
+        if had_focus:
+            self.setFocus()
+        self._repaint()
         return self
+
+    @method({"title": "string"}, returns="self",
+            doc="The text in the mock title bar drawn above the design -- "
+                "the title the window will have.")
+    def setFrameTitle(self, title):
+        self._frameTitle = str(title or "")
+        self._repaint()
+        return self
+
+    @method({"widget": "any", "label": "string"}, returns="self",
+            doc="The name shown on a widget's hover, selection and drag tags, "
+                "e.g. 'ok · Button'. Without one the widget's type is shown. "
+                "Forgotten when the design child is replaced.")
+    def setWidgetLabel(self, widget, label):
+        if widget is not None:
+            self._labels[widget] = str(label or "")
+        return self
+
+    def _label(self, widget):
+        return self._labels.get(widget) or type(widget).__name__
+
+    @method({"widget": "any", "slot": "string"}, returns="self",
+            doc="Marks a widget as taking an image dragged from a "
+                "ui.ImageBrowser, into the named slot ('icon', 'image', "
+                "'window icon'). Forgotten when the design child is replaced.")
+    def setImageTarget(self, widget, slot):
+        if widget is not None:
+            self._imageTargets[widget] = str(slot or "image")
+        return self
+
+    @method({"handler": "fun(widget: any, image: string)"}, returns="self",
+            doc="Called when an image from a ui.ImageBrowser is dropped on an "
+                "image target, with the widget and the image's path relative "
+                "to the browser's root. The surface changes nothing itself.")
+    def setOnImageDrop(self, handler):
+        self._onImageDrop = guard(handler, widget="DesignSurface", event="onImageDrop")
+        return self
+
+    def _image_target_at(self, position):
+        """The nearest image target at or above the widget under `position`;
+        the design child itself when over its client area or title bar."""
+        widget = _deepest_at(self, position)
+        title = self._title_rect()
+        if widget is None and title is not None and title.contains(position):
+            widget = self._child
+        while widget is not None and widget is not self:
+            if widget in self._imageTargets:
+                return widget
+            if widget is self._child:
+                break
+            widget = widget.parentWidget()
+        return None
+
+    @method({"text": "string"}, returns="self",
+            doc="What an empty design shows. Empty text shows nothing.")
+    def setEmptyHint(self, text):
+        self._emptyHint = str(text or "")
+        self._repaint()
+        return self
+
+    def _title_rect(self):
+        """The mock title bar, in surface coordinates, or None."""
+        if self._child is None:
+            return None
+        g = self._child.geometry()
+        return QRect(g.left(), g.top() - _TITLE_H, g.width(), _TITLE_H)
 
     @method(returns="any", doc="The widget being designed, or nil.")
     def getDesignChild(self):
@@ -391,14 +581,15 @@ class DesignSurface(LimeWidget, QWidget):
         """
         if self._child is not None:
             _make_inert(self._child)
-        self.update()
+        self._overlay.raise_()
+        self._repaint()
         return self
 
     @method({"widget": "any"}, returns="self",
             doc="Draws the selection outline around a widget.")
     def setSelected(self, widget):
         self._selected = widget
-        self.update()
+        self._repaint()
         return self
 
     @method(returns="any", doc="The selected widget, or nil.")
@@ -480,14 +671,14 @@ class DesignSurface(LimeWidget, QWidget):
         clock.start()
         self._flash = (widget, clock)
         self._flashTimer.start()
-        self.update()
+        self._repaint()
         return self
 
     def _flash_tick(self):
         if self._flash is None or self._flash[1].elapsed() >= _FLASH_MS:
             self._flash = None
             self._flashTimer.stop()
-        self.update()
+        self._overlay.update()
 
     def isFlashing(self):
         return self._flash is not None
@@ -510,11 +701,15 @@ class DesignSurface(LimeWidget, QWidget):
         # childAt walks the same geometry Qt drew, so what is reported is
         # what the eye picked -- no hit-testing of our own to disagree with.
         hit = _deepest_at(self, position)
+        # The title bar stands for the window, which is the design child.
+        title = self._title_rect()
+        if hit is None and title is not None and title.contains(position):
+            hit = self._child
 
         self._selected = hit
         # The design child itself is never moved: it has nowhere else to go.
         self._press = (hit, position) if hit is not None and hit is not self._child else None
-        self.update()
+        self._repaint()
 
         if self._onSelect is not None:
             self._onSelect(hit)
@@ -540,7 +735,13 @@ class DesignSurface(LimeWidget, QWidget):
                 self._resizeRect = QRect(frame.topLeft(), frame.size())
                 self._resizeRect.setWidth(max(8, width))
                 self._resizeRect.setHeight(max(8, height))
-            self.update()
+            self._overlay.update()
+            return
+        if not event.buttons():
+            hover = _deepest_at(self, event.position().toPoint())
+            if hover is not self._hover:
+                self._hover = hover
+                self._overlay.update()
             return
         if self._press is None or not (event.buttons() & Qt.MouseButton.LeftButton):
             return
@@ -550,17 +751,66 @@ class DesignSurface(LimeWidget, QWidget):
             return
 
         self._press = None
+        self._hover = None
         self._dragging = widget
         mime = QMimeData()
         mime.setData(MOVE_MIME, str(id(widget)).encode())
         drag = QDrag(self)
         drag.setMimeData(mime)
-        drag.setPixmap(widget.grab())
-        drag.setHotSpot(event.position().toPoint() - widget.mapTo(self, QPoint(0, 0)))
+        grip = event.position().toPoint() - widget.mapTo(self, QPoint(0, 0))
+        pixmap, hotspot = self._drag_pixmap(widget, grip)
+        drag.setPixmap(pixmap)
+        drag.setHotSpot(hotspot)
+        self._repaint()             # ghost the source before the drag starts
         drag.exec(Qt.DropAction.MoveAction)
         self._dragging = None
         self._pending = None
-        self.update()
+        self._cursor = None
+        self._repaint()
+
+    def leaveEvent(self, event):
+        self._hover = None
+        self._overlay.update()
+        super().leaveEvent(event)
+
+    def _drag_pixmap(self, widget, grip):
+        """What follows the cursor during a move: the widget, faded, framed
+        in the selection colour, with its name on a tag above it.
+
+        A bare grab of a container is a white rectangle on a white window --
+        there is nothing to see moving. The frame and the tag are what make
+        it readable. Returns (pixmap, hotspot).
+        """
+        shot = widget.grab()
+        dpr = shot.devicePixelRatio()
+        size = shot.deviceIndependentSize()
+        scale = min(1.0, 260.0 / max(1.0, size.width()))
+        w, h = max(24, int(size.width() * scale)), max(16, int(size.height() * scale))
+        font = self.font()
+        font.setPointSizeF(font.pointSizeF() * 0.85)
+        metrics = QFontMetrics(font)
+        tag_h = metrics.height() + 6
+        pad = 2
+
+        pixmap = QPixmap(int((max(w, metrics.horizontalAdvance(self._label(widget)) + 16) + pad * 2) * dpr),
+                         int((h + tag_h + pad * 2) * dpr))
+        pixmap.setDevicePixelRatio(dpr)
+        pixmap.fill(Qt.GlobalColor.transparent)
+        body = QRect(pad, tag_h + pad, w, h)
+
+        painter = QPainter(pixmap)
+        painter.setOpacity(0.88)
+        painter.fillRect(body, self.palette().color(QPalette.ColorRole.Window))
+        painter.drawPixmap(body, shot)
+        painter.setOpacity(1.0)
+        painter.setPen(QPen(QColor(_SELECTION_COLOUR), 2))
+        painter.drawRect(body.adjusted(0, 0, -1, -1))
+        painter.setFont(font)
+        _chip(painter, QRect(pad, tag_h + pad, w, h), self._label(widget),
+              QColor(_SELECTION_COLOUR), QColor("#FFFFFF"))
+        painter.end()
+        hotspot = QPoint(int(grip.x() * scale) + pad, int(grip.y() * scale) + tag_h + pad)
+        return pixmap, hotspot
 
     def mouseReleaseEvent(self, event):
         self._press = None
@@ -568,7 +818,7 @@ class DesignSurface(LimeWidget, QWidget):
             widget, handle, start, size = self._resizing
             rect = self._resizeRect
             self._resizing, self._resizeRect = None, None
-            self.update()
+            self._repaint()
             if rect is not None and self._onResize is not None and rect.size() != size:
                 self._onResize(widget, rect.width(), rect.height())
             return
@@ -577,7 +827,25 @@ class DesignSurface(LimeWidget, QWidget):
     # -- input: being dropped on ---------------------------------------------
 
     def _accepts(self, mime):
-        return self._dropEnabled and (mime.hasFormat(CLASS_MIME) or mime.hasFormat(MOVE_MIME))
+        return self._dropEnabled and (mime.hasFormat(CLASS_MIME) or mime.hasFormat(MOVE_MIME)
+                                      or mime.hasFormat(IMAGE_MIME))
+
+    def _image_drag(self, event):
+        """Handles a drag carrying an image. Returns True if it was one."""
+        mime = event.mimeData()
+        if not mime.hasFormat(IMAGE_MIME) or mime.hasFormat(CLASS_MIME) or mime.hasFormat(MOVE_MIME):
+            return False
+        self._cursor = event.position().toPoint()
+        self._pending = None
+        target = self._image_target_at(self._cursor)
+        name = bytes(mime.data(IMAGE_MIME)).decode().rsplit("/", 1)[-1]
+        self._imagePending = (target, self._imageTargets[target], name) if target is not None else None
+        self._overlay.update()
+        if target is None:
+            event.ignore()
+        else:
+            event.acceptProposedAction()
+        return True
 
     def dragEnterEvent(self, event):
         if self._accepts(event.mimeData()):
@@ -588,9 +856,12 @@ class DesignSurface(LimeWidget, QWidget):
         if not self._accepts(event.mimeData()):
             event.ignore()
             return
-        slot = resolve_drop(self, event.position().toPoint(), self._dragging)
+        if self._image_drag(event):
+            return
+        self._cursor = event.position().toPoint()
+        slot = resolve_drop(self, self._cursor, self._dragging)
         self._pending = slot
-        self.update()
+        self._overlay.update()
         if slot is None:
             event.ignore()
         else:
@@ -598,14 +869,27 @@ class DesignSurface(LimeWidget, QWidget):
 
     def dragLeaveEvent(self, event):
         self._pending = None
-        self.update()
+        self._imagePending = None
+        self._cursor = None
+        self._overlay.update()
 
     def dropEvent(self, event):
         mime = event.mimeData()
         self._pending = None
-        self.update()
+        self._imagePending = None
+        self._cursor = None
+        self._overlay.update()
         if not self._accepts(mime):
             event.ignore()
+            return
+        if mime.hasFormat(IMAGE_MIME) and not (mime.hasFormat(CLASS_MIME) or mime.hasFormat(MOVE_MIME)):
+            target = self._image_target_at(event.position().toPoint())
+            if target is None:
+                event.ignore()
+                return
+            event.acceptProposedAction()
+            if self._onImageDrop is not None:
+                self._onImageDrop(target, bytes(mime.data(IMAGE_MIME)).decode())
             return
         slot = resolve_drop(self, event.position().toPoint(), self._dragging)
         if slot is None:
@@ -637,24 +921,125 @@ class DesignSurface(LimeWidget, QWidget):
     # -- painting -------------------------------------------------------------
 
     def paintEvent(self, event):
+        """Under the design: a dotted backdrop, and the window it will be."""
         super().paintEvent(event)
+        palette = self.palette()
+        dark = _is_dark(palette)
+        window = palette.color(QPalette.ColorRole.Window)
+
+        painter = QPainter(self)
+        painter.fillRect(self.rect(), window.darker(135) if dark else window.darker(106))
+        dot = QColor(palette.color(QPalette.ColorRole.WindowText))
+        dot.setAlpha(28 if dark else 34)
+        left, top = event.rect().left(), event.rect().top()
+        for x in range(left - left % _GRID, event.rect().right() + 1, _GRID):
+            for y in range(top - top % _GRID, event.rect().bottom() + 1, _GRID):
+                painter.fillRect(x, y, 1, 1, dot)
+
+        title = self._title_rect()
+        if title is not None:
+            client = self._child.geometry()
+            frame = title.united(client)
+            painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+            # A soft shadow: a few widening, fading outlines.
+            for spread in range(1, 7):
+                shade = QColor(0, 0, 0, (60 if dark else 22) - spread * (8 if dark else 3))
+                painter.setPen(QPen(shade, 1))
+                painter.setBrush(Qt.BrushStyle.NoBrush)
+                painter.drawRoundedRect(frame.adjusted(-spread, -spread + 1, spread, spread + 2),
+                                        6 + spread, 6 + spread)
+            painter.setPen(Qt.PenStyle.NoPen)
+            bar = window.lighter(112) if dark else window.darker(104)
+            painter.setBrush(bar)
+            painter.drawRoundedRect(frame, 6, 6)
+            painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
+            painter.fillRect(client, window)
+
+            text = QColor(palette.color(QPalette.ColorRole.WindowText))
+            painter.setPen(text)
+            painter.drawText(title.adjusted(12, 0, -70, 0),
+                             Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft,
+                             self._frameTitle)
+            # Minimise, maximise, close: drawn as plain glyphs, so the frame
+            # reads as "a window" on every OS without pretending to be one.
+            glyph = QColor(text)
+            glyph.setAlpha(150)
+            painter.setPen(QPen(glyph, 1.2))
+            cy, right = title.center().y(), title.right() - 14
+            painter.drawLine(right - 44, cy, right - 36, cy)
+            painter.drawRect(right - 24, cy - 4, 8, 8)
+            painter.drawLine(right - 4, cy - 4, right + 4, cy + 4)
+            painter.drawLine(right - 4, cy + 4, right + 4, cy - 4)
+        painter.end()
+
+    def _paint_overlay(self, sheet):
+        """Over the design: what can be dropped into, what the mouse is on,
+        what is selected, and -- during a drag -- where the widget is coming
+        from, where it will go, and whether it can go there at all."""
         if self._child is None:
             return
 
-        painter = QPainter(self)
-        pen = QPen(QColor(_CONTAINER_COLOUR))
-        pen.setStyle(Qt.PenStyle.DashLine)
-        painter.setPen(pen)
+        palette = self.palette()
+        ink = QColor(palette.color(QPalette.ColorRole.WindowText))
+        painter = QPainter(sheet)
+        small = self.font()
+        small.setPointSizeF(small.pointSizeF() * 0.85)
+        painter.setFont(small)
+
+        def frame_of(widget):
+            try:
+                return QRect(widget.mapTo(self, QPoint(0, 0)), widget.size())
+            except RuntimeError:            # deleted under us
+                return None
+
+        layout = self._child.layout()
+        if self._emptyHint and layout is not None and layout.count() == 0:
+            hint = QColor(ink)
+            hint.setAlpha(110)
+            painter.setPen(hint)
+            painter.drawText(self._child.geometry(), Qt.AlignmentFlag.AlignCenter, self._emptyHint)
+
+        # Containers: a dashed outline on every one, and an empty one tinted
+        # and labelled, since it has no look of its own to find it by.
+        outline = QColor(_CONTAINER_COLOUR)
+        outline.setAlpha(170)
+        tint = QColor(_CONTAINER_COLOUR)
+        tint.setAlpha(22)
+        label_ink = QColor(_CONTAINER_COLOUR)
         for widget, frame in container_frames(self):
+            if widget is self._child:
+                continue
+            kind = _layout_kind(widget.layout()) or _holder_kind(widget)
+            if _holds_nothing(widget, kind):
+                painter.fillRect(frame, tint)
+                if frame.width() > 60 and frame.height() > 18:
+                    painter.setPen(label_ink)
+                    painter.drawText(frame, Qt.AlignmentFlag.AlignCenter,
+                                     f"{_KIND_WORDS.get(kind, 'Box')} · drop widgets here"
+                                     if frame.width() > 170 else _KIND_WORDS.get(kind, "Box"))
             if widget is not self._selected:
+                pen = QPen(outline)
+                pen.setStyle(Qt.PenStyle.DashLine)
+                painter.setPen(pen)
                 painter.drawRect(frame.adjusted(0, 0, -1, -1))
+
+        # Hover: a quiet outline and the widget's name, before any click.
+        hover = self._hover
+        if (hover is not None and self._dragging is None and hover is not self._selected
+                and hover is not self._child):
+            frame = frame_of(hover)
+            if frame is not None:
+                colour = QColor(_SELECTION_COLOUR)
+                colour.setAlpha(150)
+                painter.setPen(QPen(colour, 1))
+                painter.drawRect(frame.adjusted(0, 0, -1, -1))
+                muted = QColor(_SELECTION_COLOUR)
+                muted.setAlpha(170)
+                _chip(painter, frame, self._label(hover), muted, QColor("#FFFFFF"))
 
         if self._flash is not None:
             widget, clock = self._flash
-            try:
-                frame = QRect(widget.mapTo(self, QPoint(0, 0)), widget.size())
-            except RuntimeError:            # deleted under us
-                frame = None
+            frame = frame_of(widget)
             if frame is not None:
                 fade = max(0.0, 1.0 - clock.elapsed() / _FLASH_MS)
                 fill = QColor(_INDICATOR_COLOUR)
@@ -665,18 +1050,35 @@ class DesignSurface(LimeWidget, QWidget):
                 painter.setPen(pen)
                 painter.drawRect(frame.adjusted(1, 1, -2, -2))
 
-        if self._selected is not None:
-            pen = QPen(QColor(_SELECTION_COLOUR))
-            pen.setWidth(2)
-            painter.setPen(pen)
-            # Mapped through this surface's coordinates, because the selected
-            # widget may be nested several layouts deep.
-            top_left = self._selected.mapTo(self, self._selected.rect().topLeft())
-            painter.drawRect(top_left.x(), top_left.y(),
-                             self._selected.width() - 1, self._selected.height() - 1)
-            for rect in self._handles().values():
-                painter.fillRect(rect, QColor("#FFFFFF"))
-                painter.drawRect(rect.adjusted(0, 0, -1, -1))
+        # The widget being moved: ghosted where it stands, so it is plain
+        # which one is travelling and where from.
+        if self._dragging is not None:
+            frame = frame_of(self._dragging)
+            if frame is not None:
+                veil = QColor(palette.color(QPalette.ColorRole.Window))
+                veil.setAlpha(190)
+                painter.fillRect(frame, veil)
+                hatch = QColor(_SELECTION_COLOUR)
+                hatch.setAlpha(70)
+                painter.fillRect(frame, QBrush(hatch, Qt.BrushStyle.BDiagPattern))
+                pen = QPen(QColor(_SELECTION_COLOUR), 1)
+                pen.setStyle(Qt.PenStyle.DashLine)
+                painter.setPen(pen)
+                painter.drawRect(frame.adjusted(0, 0, -1, -1))
+
+        if self._selected is not None and self._dragging is None:
+            frame = frame_of(self._selected)
+            if frame is not None:
+                pen = QPen(QColor(_SELECTION_COLOUR))
+                pen.setWidth(2)
+                painter.setPen(pen)
+                painter.drawRect(frame.adjusted(0, 0, -1, -1))
+                for rect in self._handles().values():
+                    painter.fillRect(rect, QColor("#FFFFFF"))
+                    painter.drawRect(rect.adjusted(0, 0, -1, -1))
+                if self._selected is not self._child:
+                    _chip(painter, frame, self._label(self._selected),
+                          QColor(_SELECTION_COLOUR), QColor("#FFFFFF"))
 
         if self._resizeRect is not None:
             pen = QPen(QColor(_INDICATOR_COLOUR))
@@ -684,24 +1086,73 @@ class DesignSurface(LimeWidget, QWidget):
             pen.setStyle(Qt.PenStyle.DashLine)
             painter.setPen(pen)
             painter.drawRect(self._resizeRect.adjusted(0, 0, -1, -1))
+            painter.setPen(QColor(_INDICATOR_COLOUR))
+            size = f"{self._resizeRect.width()} × {self._resizeRect.height()}"
+            _chip(painter, self._resizeRect, size, QColor(_INDICATOR_COLOUR), QColor("#FFFFFF"))
 
-        if self._pending is not None:
-            colour = QColor(_INDICATOR_COLOUR)
-            target = self._pending["target"]
-            frame = QRect(target.mapTo(self, QPoint(0, 0)), target.size())
-            pen = QPen(colour)
-            pen.setWidth(1)
-            painter.setPen(pen)
-            painter.drawRect(frame.adjusted(0, 0, -1, -1))
-
-            rect = indicator_rect(self, self._pending)
-            if self._pending["layout"] == "grid":
-                fill = QColor(colour)
+        if self._imagePending is not None:
+            # An image on its way to a widget: the widget lit in green and
+            # told what it will get -- "icon <- save.png".
+            widget, slot, name = self._imagePending
+            frame = frame_of(widget)
+            if frame is not None:
+                green = QColor(_IMAGE_COLOUR)
+                fill = QColor(green)
                 fill.setAlpha(40)
-                painter.fillRect(rect, fill)
-                pen.setWidth(2)
-                painter.setPen(pen)
-                painter.drawRect(rect.adjusted(0, 0, -1, -1))
-            else:
-                painter.fillRect(rect, colour)
+                painter.fillRect(frame, fill)
+                painter.setPen(QPen(green, 2))
+                painter.drawRect(frame.adjusted(1, 1, -2, -2))
+                _chip(painter, frame, f"{slot} ← {name}", green, QColor("#FFFFFF"))
+        elif self._pending is not None:
+            self._paint_drop_target(painter, self._pending)
+        elif self._cursor is not None:
+            # Over the surface, but nowhere this can go -- say so, rather
+            # than leave the user guessing why nothing lights up.
+            spot = QRect(self._cursor + QPoint(14, 14), self._cursor + QPoint(15, 15))
+            _chip(painter, spot.translated(0, 22), "Can't drop here",
+                  QColor(_REFUSED_COLOUR), QColor("#FFFFFF"))
         painter.end()
+
+    def _paint_drop_target(self, painter, slot):
+        """The container a drop goes into, tinted and named, and the exact
+        slot: a bar with end caps between widgets, or a cell in a grid."""
+        colour = QColor(_INDICATOR_COLOUR)
+        target = slot["target"]
+        frame = QRect(target.mapTo(self, QPoint(0, 0)), target.size())
+        fill = QColor(colour)
+        fill.setAlpha(26)
+        painter.fillRect(frame, fill)
+        painter.setPen(QPen(colour, 2))
+        painter.drawRect(frame.adjusted(1, 1, -2, -2))
+
+        word = _KIND_WORDS.get(slot["layout"], "")
+        name = self._label(target) if target is not self._child else "window"
+        _chip(painter, frame, f"into {name}" + (f" · {word}" if word else ""),
+              colour, QColor("#FFFFFF"))
+
+        rect = indicator_rect(self, slot)
+        if slot["layout"] in ("grid", "tab", "scroller"):
+            cell = QColor(colour)
+            cell.setAlpha(60)
+            painter.fillRect(rect, cell)
+            painter.setPen(QPen(colour, 2))
+            painter.drawRect(rect.adjusted(0, 0, -1, -1))
+            return
+
+        # A bar across the gap, thickened to 4px, with a dot at each end so
+        # its extent reads even where it crosses a widget's edge.
+        painter.save()
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        horizontal = rect.width() >= rect.height()
+        if horizontal:
+            bar = QRect(rect.left(), rect.center().y() - 2, rect.width(), 4)
+            ends = (QPoint(bar.left(), bar.center().y()), QPoint(bar.right(), bar.center().y()))
+        else:
+            bar = QRect(rect.center().x() - 2, rect.top(), 4, rect.height())
+            ends = (QPoint(bar.center().x(), bar.top()), QPoint(bar.center().x(), bar.bottom()))
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(colour)
+        painter.drawRoundedRect(bar, 2, 2)
+        for end in ends:
+            painter.drawEllipse(end, 5, 5)
+        painter.restore()

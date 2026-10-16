@@ -131,6 +131,19 @@ class TreeView(LimeWidget, QTreeWidget):
     def getCurrentItem(self):
         return self.currentItem()
 
+    @method({"item": "any"}, returns="self",
+            doc="Selects an item and scrolls it into view; nil clears the "
+                "selection. Does not fire onItemClick.")
+    def setCurrentItem(self, item):
+        if item is None:
+            from PySide6.QtCore import QModelIndex
+            self.setCurrentIndex(QModelIndex())
+            self.clearSelection()
+        else:
+            super().setCurrentItem(item)
+            self.scrollToItem(item)
+        return self
+
     def clear(self):
         super().clear()
         return self

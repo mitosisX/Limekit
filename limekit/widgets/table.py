@@ -114,6 +114,14 @@ class Table(LimeWidget, QTableWidget):
         self.horizontalHeader().setStretchLastSection(bool(stretch))
         return self
 
+    @method({"visible": "boolean"}, returns="self",
+            doc="Whether the row numbers down the left edge are shown. On by "
+                "default; a property list or a form-like table reads better "
+                "without them.")
+    def setRowHeadersVisible(self, visible):
+        self.verticalHeader().setVisible(bool(visible))
+        return self
+
     def setColumnWidth(self, column, width):
         super().setColumnWidth(LuaIndex(column), _to_int(width, "width"))
         return self
@@ -187,5 +195,18 @@ class Table(LimeWidget, QTableWidget):
         return self
 
     def clearContent(self):
+        """Clears every cell, cell widgets included.
+
+        A cell widget is one of the view's editors. Cleared while it has
+        focus, it is gone by the time its focus-out reaches the view, and Qt
+        reports "closeEditor called with an editor that does not belong to
+        this view" -- typically when a ComboBox in a cell is what asked for
+        the table to be refilled. Taking focus first lets the editor close
+        while the view still knows it.
+        """
+        from PySide6.QtWidgets import QApplication
+        focus = QApplication.focusWidget()
+        if focus is not None and focus is not self and self.isAncestorOf(focus):
+            self.setFocus()
         super().clearContents()
         return self

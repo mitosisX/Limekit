@@ -39,6 +39,16 @@ class ListBox(LimeWidget, QListWidget):
             QListWidget.addItem(self, QListWidgetItem(str(item)))
         return self
 
+    @method({"width": "integer", "height": "integer"}, returns="self",
+            doc="The size image items' icons are drawn at. Unset, a list "
+                "draws an icon at whatever size it offers -- an OS folder icon "
+                "can come at 32 or 48px and double every row's height.")
+    def setIconSize(self, width, height):
+        from PySide6.QtCore import QSize
+        from limekit.widgets.base import _to_int
+        super().setIconSize(QSize(_to_int(width, "width"), _to_int(height, "height")))
+        return self
+
     def addImageItem(self, label, image):
         item = QListWidgetItem(str(label))
         item.setIcon(QIcon(image))
