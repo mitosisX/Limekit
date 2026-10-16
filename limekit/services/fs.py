@@ -22,6 +22,11 @@ def _path(value, label="path"):
     return value
 
 
+# One provider for the process: it caches icons per file type.
+_icon_provider = None
+_image_suffixes = None
+
+
 class FileSystem(LimeObject):
     __lime__ = "fs.FileSystem"
 
@@ -203,6 +208,40 @@ class FileSystem(LimeObject):
         dirs.sort(key=lambda item: item["name"].lower())
         files.sort(key=lambda item: item["name"].lower())
         return to_lua(dirs + files)
+
+    # -- icons --------------------------------------------------------------
+
+    @staticmethod
+    @method({"path": "string"}, returns="any",
+            doc="The icon the operating system shows for this file or folder, "
+                "for setIcon. An image file shows a small picture of itself.")
+    def getFileIcon(path):
+        """The desktop's own icon for a path -- Explorer's on Windows,
+        Finder's on macOS, the icon theme's on Linux -- so a file list looks
+        like every other file list on the machine and nobody assigns icons
+        by hand. Images are the exception: a thumbnail of the picture says
+        more than the generic "image" icon does.
+        """
+        from PySide6.QtCore import QFileInfo
+        from PySide6.QtGui import QIcon, QImageReader
+        from PySide6.QtWidgets import QFileIconProvider
+
+        path = _path(path)
+        if os.path.isfile(path):
+            suffix = os.path.splitext(path)[1].lower().lstrip(".")
+            global _image_suffixes
+            if _image_suffixes is None:
+                _image_suffixes = {bytes(f).decode() for f in QImageReader.supportedImageFormats()}
+            # QIcon loads lazily, when the icon is first drawn; the size cap
+            # keeps a huge photo from stalling the first paint of a list.
+            if suffix in _image_suffixes and os.path.getsize(path) <= 4 * 1024 * 1024:
+                icon = QIcon(path)
+                if not icon.isNull():
+                    return icon
+        global _icon_provider
+        if _icon_provider is None:
+            _icon_provider = QFileIconProvider()
+        return _icon_provider.icon(QFileInfo(path))
 
     # -- paths --------------------------------------------------------------
 
