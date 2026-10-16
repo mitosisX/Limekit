@@ -1,9 +1,7 @@
 """Owns the LuaRuntime and exposes the registry as requirable modules."""
 
-import lupa
-from lupa import LuaRuntime
-
 from limekit.kernel.bridge import convert
+from limekit.kernel.bridge.engine import LuaRuntime, lupa
 from limekit.kernel.errors import LuaError, parse_lua_error
 
 # Empirically, a fresh lupa.LuaRuntime() injects no Python builtins into Lua

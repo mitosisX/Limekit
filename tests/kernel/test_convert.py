@@ -1,7 +1,7 @@
 # tests/kernel/test_convert.py
-import lupa
+from limekit.kernel.bridge.engine import lupa
 import pytest
-from lupa import LuaRuntime
+from limekit.kernel.bridge.engine import LuaRuntime
 from limekit.kernel.bridge import convert
 from limekit.kernel.errors import BridgeError
 

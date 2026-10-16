@@ -19,7 +19,7 @@ from limekit.kernel.bridge import convert
 
 @pytest.fixture
 def lua():
-    from lupa import LuaRuntime
+    from limekit.kernel.bridge.engine import LuaRuntime
     runtime = LuaRuntime(unpack_returned_tuples=True)
     convert.set_runtime(runtime)
     yield runtime

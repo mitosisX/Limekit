@@ -1,7 +1,7 @@
 """Watching a project tree: recursion, coalescing, and noise."""
 
 import pytest
-from lupa import LuaRuntime
+from limekit.kernel.bridge.engine import LuaRuntime
 from PySide6.QtCore import QEventLoop, QTimer
 from PySide6.QtWidgets import QApplication
 

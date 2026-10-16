@@ -32,7 +32,7 @@ def sink():
 @pytest.fixture
 def lua():
     """`getOutput` returns a Lua table, so it needs a runtime bound."""
-    from lupa import LuaRuntime
+    from limekit.kernel.bridge.engine import LuaRuntime
     runtime = LuaRuntime(unpack_returned_tuples=True)
     convert.set_runtime(runtime)
     yield runtime

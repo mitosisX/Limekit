@@ -1,5 +1,5 @@
 import pytest
-from lupa import LuaRuntime
+from limekit.kernel.bridge.engine import LuaRuntime
 from PySide6.QtWidgets import (
     QApplication, QColorDialog, QFileDialog, QFontDialog, QInputDialog,
     QMessageBox,

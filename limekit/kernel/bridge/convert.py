@@ -4,8 +4,7 @@ Previously each widget converted its own arguments, which is how ComboBox
 and ListBox ended up disagreeing about whether a Python list was acceptable.
 """
 
-import lupa
-
+from limekit.kernel.bridge.engine import lupa
 from limekit.kernel.errors import BridgeError
 
 _runtime = None

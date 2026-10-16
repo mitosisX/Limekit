@@ -14,7 +14,7 @@ gone, with no symptom anywhere else.
 import pathlib
 
 import pytest
-from lupa import LuaRuntime
+from limekit.kernel.bridge.engine import LuaRuntime
 
 STUBS = sorted((pathlib.Path(__file__).resolve().parent.parent
                 / "limekit" / "runtime" / "lua" / "stubs").glob("*.lua"))
