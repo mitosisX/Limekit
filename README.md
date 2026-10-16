@@ -116,4 +116,4 @@ We welcome any contributions! Be it architectural change, refactoring, anything!
 
 Limekit is licensed under GPLv3
 
-Copyright © 2025 by Rézolu.
+Copyright © 2025 Omega Msiska.

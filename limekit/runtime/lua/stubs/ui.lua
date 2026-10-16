@@ -1755,7 +1755,7 @@ function DesignSurface:refresh() end
 ---@return DesignSurface
 function DesignSurface:setBackgroundColor(colour) end
 
---- The widget being designed. Replaces whatever was there.
+--- The widget being designed. Replaces whatever was there, and deletes it: a designer rebuilds its tree on every change.
 ---@param child any
 ---@return DesignSurface
 function DesignSurface:setDesignChild(child) end
@@ -1765,6 +1765,11 @@ function DesignSurface:setDesignChild(child) end
 ---@return DesignSurface
 function DesignSurface:setDropEnabled(enabled) end
 
+--- What an empty design shows. Empty text shows nothing.
+---@param text string
+---@return DesignSurface
+function DesignSurface:setEmptyHint(text) end
+
 ---@param width any
 ---@param height any
 ---@return DesignSurface
@@ -1773,10 +1778,21 @@ function DesignSurface:setFixedSize(width, height) end
 ---@return DesignSurface
 function DesignSurface:setFocus() end
 
+--- The text in the mock title bar drawn above the design -- the title the window will have.
+---@param title string
+---@return DesignSurface
+function DesignSurface:setFrameTitle(title) end
+
 --- Resizes the height, leaving the width alone.
 ---@param height integer
 ---@return DesignSurface
 function DesignSurface:setHeight(height) end
+
+--- Marks a widget as taking an image dragged from a ui.ImageBrowser, into the named slot ('icon', 'image', 'window icon'). Forgotten when the design child is replaced.
+---@param widget any
+---@param slot string
+---@return DesignSurface
+function DesignSurface:setImageTarget(widget, slot) end
 
 ---@param x any
 ---@param y any
@@ -1838,6 +1854,11 @@ function DesignSurface:setOnDoubleClick(handler) end
 ---@return DesignSurface
 function DesignSurface:setOnDrop(handler) end
 
+--- Called when an image from a ui.ImageBrowser is dropped on an image target, with the widget and the image's path relative to the browser's root. The surface changes nothing itself.
+---@param handler fun(widget: any, image: string)
+---@return DesignSurface
+function DesignSurface:setOnImageDrop(handler) end
+
 --- Called when a selection handle is dragged and released, with the size the widget was pulled to. The surface changes nothing.
 ---@param handler fun(widget: any, width: integer, height: integer)
 ---@return DesignSurface
@@ -1863,6 +1884,12 @@ function DesignSurface:setSelected(widget) end
 ---@param height any
 ---@return DesignSurface
 function DesignSurface:setSize(width, height) end
+
+--- The name shown on a widget's hover, selection and drag tags, e.g. 'ok · Button'. Without one the widget's type is shown. Forgotten when the design child is replaced.
+---@param widget any
+---@param label string
+---@return DesignSurface
+function DesignSurface:setWidgetLabel(widget, label) end
 
 --- Resizes the width, leaving the height alone.
 ---@param width integer
@@ -3833,6 +3860,204 @@ function Image:setWidth(width) end
 ---@return Image
 function Image:show() end
 
+---@class ImageBrowser
+local ImageBrowser = {}
+
+--- Creates a ImageBrowser.
+---@return ImageBrowser
+function ImageBrowser() end
+
+--- Get the enabled property.
+---@return boolean
+function ImageBrowser:getEnabled() end
+
+--- Set the enabled property.
+---@param value boolean
+---@return ImageBrowser
+function ImageBrowser:setEnabled(value) end
+
+--- Get the enabled property.
+---@return boolean
+function ImageBrowser:isEnabled() end
+
+--- Get the visible property.
+---@return boolean
+function ImageBrowser:getVisible() end
+
+--- Set the visible property.
+---@param value boolean
+---@return ImageBrowser
+function ImageBrowser:setVisible(value) end
+
+--- Get the visible property.
+---@return boolean
+function ImageBrowser:isVisible() end
+
+--- Get the toolTip property.
+---@return string
+function ImageBrowser:getToolTip() end
+
+--- Set the toolTip property.
+---@param value string
+---@return ImageBrowser
+function ImageBrowser:setToolTip(value) end
+
+--- Get the styleSheet property.
+---@return string
+function ImageBrowser:getStyleSheet() end
+
+--- Set the styleSheet property.
+---@param value string
+---@return ImageBrowser
+function ImageBrowser:setStyleSheet(value) end
+
+function ImageBrowser:close() end
+
+function ImageBrowser:currentFolderPath() end
+
+--- The folder being shown, relative to the root ('' for the root).
+---@return string
+function ImageBrowser:getCurrentFolder() end
+
+--- The managed folder, or nil.
+---@return string
+function ImageBrowser:getRoot() end
+
+--- The selected image, relative to the root, or nil.
+---@return string
+function ImageBrowser:getSelectedImage() end
+
+---@return ImageBrowser
+function ImageBrowser:hide() end
+
+--- Copies image files into the folder being shown; returns how many came in. Names are made unique across the whole tree.
+---@param paths string[]
+---@return integer
+function ImageBrowser:importFiles(paths) end
+
+--- Makes a folder inside the one being shown and returns its path relative to the root.
+---@param name string
+---@return string
+function ImageBrowser:newFolder(name) end
+
+--- Re-reads the folders.
+---@return ImageBrowser
+function ImageBrowser:refresh() end
+
+---@param path any
+function ImageBrowser:relative(path) end
+
+---@param colour any
+---@return ImageBrowser
+function ImageBrowser:setBackgroundColor(colour) end
+
+---@param width any
+---@param height any
+---@return ImageBrowser
+function ImageBrowser:setFixedSize(width, height) end
+
+---@return ImageBrowser
+function ImageBrowser:setFocus() end
+
+--- Resizes the height, leaving the width alone.
+---@param height integer
+---@return ImageBrowser
+function ImageBrowser:setHeight(height) end
+
+--- The line under the images -- e.g. how the selected image is referred to in code.
+---@param text string
+---@return ImageBrowser
+function ImageBrowser:setInfo(text) end
+
+---@param x any
+---@param y any
+---@return ImageBrowser
+function ImageBrowser:setLocation(x, y) end
+
+--- The space between the widget's edge and its contents.
+---@param left integer
+---@param top integer
+---@param right integer
+---@param bottom integer
+---@return ImageBrowser
+function ImageBrowser:setMargins(left, top, right, bottom) end
+
+--- The largest height the widget may grow to.
+---@param height integer
+---@return ImageBrowser
+function ImageBrowser:setMaxHeight(height) end
+
+--- The largest size the widget may grow to.
+---@param width integer
+---@param height integer
+---@return ImageBrowser
+function ImageBrowser:setMaxSize(width, height) end
+
+--- The largest width the widget may grow to.
+---@param width integer
+---@return ImageBrowser
+function ImageBrowser:setMaxWidth(width) end
+
+--- The smallest height the widget may shrink to.
+---@param height integer
+---@return ImageBrowser
+function ImageBrowser:setMinHeight(height) end
+
+--- The smallest size the widget may shrink to.
+---@param width integer
+---@param height integer
+---@return ImageBrowser
+function ImageBrowser:setMinSize(width, height) end
+
+--- The smallest width the widget may shrink to.
+---@param width integer
+---@return ImageBrowser
+function ImageBrowser:setMinWidth(width) end
+
+--- Called once after images or folders are added, moved, renamed or deleted -- here or, for folders being shown, outside.
+---@param handler fun()
+---@return ImageBrowser
+function ImageBrowser:setOnChange(handler) end
+
+--- Called with an image's path relative to the root when it is double-clicked.
+---@param handler fun(image: string)
+---@return ImageBrowser
+function ImageBrowser:setOnPick(handler) end
+
+--- Called with an image's path relative to the root when it is selected, or nil.
+---@param handler fun(image: string)
+---@return ImageBrowser
+function ImageBrowser:setOnSelect(handler) end
+
+--- Folders above the images (vertical, for a narrow panel) or beside them (horizontal).
+---@param orientation "vertical"|"horizontal"
+---@return ImageBrowser
+function ImageBrowser:setOrientation(orientation) end
+
+--- One definition, seven policies - not three in some widgets.
+---@param horizontal any
+---@param vertical any
+---@return ImageBrowser
+function ImageBrowser:setResizeRule(horizontal, vertical) end
+
+--- The folder whose images are managed -- usually a project's images folder. Made if it does not exist.
+---@param path string
+---@return ImageBrowser
+function ImageBrowser:setRoot(path) end
+
+---@param width any
+---@param height any
+---@return ImageBrowser
+function ImageBrowser:setSize(width, height) end
+
+--- Resizes the width, leaving the height alone.
+---@param width integer
+---@return ImageBrowser
+function ImageBrowser:setWidth(width) end
+
+---@return ImageBrowser
+function ImageBrowser:show() end
+
 ---@class KeyboardShortcut
 local KeyboardShortcut = {}
 
@@ -4795,6 +5020,12 @@ function ListBox:setFocus() end
 ---@param height integer
 ---@return ListBox
 function ListBox:setHeight(height) end
+
+--- The size image items' icons are drawn at. Unset, a list draws an icon at whatever size it offers -- an OS folder icon can come at 32 or 48px and double every row's height.
+---@param width integer
+---@param height integer
+---@return ListBox
+function ListBox:setIconSize(width, height) end
 
 --- Accepts a Lua table OR a Python sequence. The old implementation called .values() unconditionally and crashed on a Python list, unlike ComboBox.
 ---@param items any
@@ -7724,6 +7955,7 @@ function Table:addRow() end
 ---@return Table
 function Table:clear() end
 
+--- Clears every cell, cell widgets included. A cell widget is one of the view's editors. Cleared while it has focus, it is gone by the time its focus-out reaches the view, and Qt reports "closeEditor called with an editor that does not belong to this view" -- typically when a ComboBox in a cell is what asked for the table to be refilled. Taking focus first lets the editor close while the view still knows it.
 ---@return Table
 function Table:clearContent() end
 
@@ -7878,6 +8110,11 @@ function Table:setRowCount(rows) end
 ---@param headers any
 ---@return Table
 function Table:setRowHeaders(headers) end
+
+--- Whether the row numbers down the left edge are shown. On by default; a property list or a form-like table reads better without them.
+---@param visible boolean
+---@return Table
+function Table:setRowHeadersVisible(visible) end
 
 ---@param behavior any
 ---@return Table
@@ -8761,6 +8998,11 @@ function TreeView:setColumnCount(columns) end
 ---@return TreeView
 function TreeView:setColumnWidth(column, width) end
 
+--- Selects an item and scrolls it into view; nil clears the selection. Does not fire onItemClick.
+---@param item any
+---@return TreeView
+function TreeView:setCurrentItem(item) end
+
 ---@param width any
 ---@param height any
 ---@return TreeView
@@ -9013,6 +9255,11 @@ function TreeWidget:setColumnCount(columns) end
 ---@param width any
 ---@return TreeWidget
 function TreeWidget:setColumnWidth(column, width) end
+
+--- Selects an item and scrolls it into view; nil clears the selection. Does not fire onItemClick.
+---@param item any
+---@return TreeWidget
+function TreeWidget:setCurrentItem(item) end
 
 ---@param width any
 ---@param height any
@@ -9349,6 +9596,13 @@ function WidgetPalette:getStyleSheet() end
 ---@return WidgetPalette
 function WidgetPalette:setStyleSheet(value) end
 
+--- Adds a group of entries that are not widget classes -- a layout, a ready-made arrangement. Each entry is {id = 'layout:ui.HLayout', text = 'Row', tip = '...'}; the id is what a drop or a pick reports, exactly as a class would be. atTop puts the group before the widgets.
+---@param title string
+---@param entries table
+---@param atTop? boolean
+---@return WidgetPalette
+function WidgetPalette:addGroup(title, entries, atTop) end
+
 function WidgetPalette:close() end
 
 --- Every class the palette offers.
@@ -9383,6 +9637,11 @@ function WidgetPalette:setFocus() end
 ---@param height integer
 ---@return WidgetPalette
 function WidgetPalette:setHeight(height) end
+
+--- Icons for the items, as {['ui.Button'] = 'path/to/icon.png'}. A class without one keeps a blank space, so names line up.
+---@param icons table<string, string>
+---@return WidgetPalette
+function WidgetPalette:setIcons(icons) end
 
 ---@param x any
 ---@param y any
@@ -9718,6 +9977,7 @@ ui.GroupBox = GroupBox
 ui.HLayout = HLayout
 ui.HLine = HLine
 ui.Image = Image
+ui.ImageBrowser = ImageBrowser
 ui.KeyboardShortcut = KeyboardShortcut
 ui.Knob = Knob
 ui.LCDNumber = LCDNumber

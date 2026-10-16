@@ -57,6 +57,7 @@ MODULES = (
     "limekit.widgets.groupbox",
     "limekit.widgets.horizontal_line",
     "limekit.widgets.image",
+    "limekit.widgets.imagebrowser",
     "limekit.widgets.knob",
     "limekit.widgets.label",
     "limekit.widgets.lcdnumber",

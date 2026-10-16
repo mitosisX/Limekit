@@ -48,6 +48,11 @@ function FileSystem.getDirName(path) end
 ---@return string
 function FileSystem.getFileExt(path) end
 
+--- The icon the operating system shows for this file or folder, for setIcon. An image file shows a small picture of itself.
+---@param path string
+---@return any
+function FileSystem.getFileIcon(path) end
+
 --- The filename portion of a path.
 ---@param path string
 ---@return string
