@@ -74,7 +74,17 @@ HIDDEN_IMPORTS = [
     "qdarkstyle",
     "qdarktheme",
     "emoji",
+    # Imported only by modules the 1.x engine loads by name, so analysis
+    # never reaches them on its own.
+    "psutil",
+    "playsound",
 ]
+
+# The 1.x engine imports its parts by name at runtime; listing them makes
+# PyInstaller bundle them, and follow their imports.
+from limekit.engine.frozen_modules import FROZEN_MODULES  # noqa: E402
+
+HIDDEN_IMPORTS += [m for m in FROZEN_MODULES if m not in HIDDEN_IMPORTS]
 
 # Default app configuration values
 DEFAULT_APP_NAME = "LimekitApp"

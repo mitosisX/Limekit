@@ -34,6 +34,7 @@ setuptools.setup(
         "pyqtdarktheme",
         "qdarkstyle",
         "qt_material",
+        "psutil",
     ],
     extras_require={
         "build": ["PyInstaller"],
