@@ -115,6 +115,46 @@ class LimekitApp:
                 f"package.path = {joined!r} .. package.path",
                 chunkname="<limekit:package.path>",
             )
+        self._install_project_searcher()
+
+    def _install_project_searcher(self):
+        """Load the project's own modules under project-relative names.
+
+        Lua's file searcher names a chunk by its absolute path, and cuts any
+        name past 60 characters to "...tail", so an error in a required file
+        reached Python with no location it could parse -- it was blamed on
+        main.lua. This searcher finds modules exactly as Lua's does
+        (`package.searchpath` over `package.path`) and loads them the way
+        main.lua is loaded, so they report `[string "scripts/x.lua"]:N:`.
+        It runs before Lua's own, which still handles anything it declines.
+        """
+        root = self.project_path.as_posix().rstrip("/") + "/"
+        self.runtime.execute(
+            f"""
+            local root = {root!r}
+            local function relative(path)
+                path = path:gsub("\\\\", "/")
+                if path:sub(1, #root):lower() == root:lower() then
+                    return path:sub(#root + 1)
+                end
+                return path
+            end
+            table.insert(package.searchers, 2, function(name)
+                local path, missing = package.searchpath(name, package.path)
+                if not path then return missing end
+                local file = io.open(path, "rb")
+                if not file then return "\\n\\tcannot open " .. path end
+                local source = file:read("a")
+                file:close()
+                local chunk, problem = load(source, relative(path), "t")
+                if not chunk then
+                    error(("error loading module '%s':\\n\\t%s"):format(name, problem), 0)
+                end
+                return chunk, path
+            end)
+            """,
+            chunkname="<limekit:searcher>",
+        )
 
     def _on_error(self, error):
         self._errors.append(error)

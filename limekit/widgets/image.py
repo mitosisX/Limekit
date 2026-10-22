@@ -39,10 +39,16 @@ class Image(LimeWidget, QLabel):
     def setImageSize(self, width, height):
         if self._pixmap is None:
             raise BridgeError("Image has no source; call setImage first")
+        # Scaled for the screen, not for logical pixels: at 150% display
+        # scaling a 120x40 image needs 180x60 real pixels, or Qt upscales a
+        # 120x40 one and it comes out soft.
+        ratio = self.devicePixelRatioF()
         scaled = self._pixmap.scaled(
-            _to_int(width, "width"), _to_int(height, "height"),
+            round(_to_int(width, "width") * ratio),
+            round(_to_int(height, "height") * ratio),
             mode=Qt.TransformationMode.SmoothTransformation,
         )
+        scaled.setDevicePixelRatio(ratio)
         self.setPixmap(scaled)
         return self
 

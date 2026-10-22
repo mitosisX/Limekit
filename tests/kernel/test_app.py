@@ -114,3 +114,46 @@ def test_closing_a_window_lets_it_go(qapp, tmp_path):
         assert len(affinity._windows) == 1
         app.runtime.execute("_G.win:close()")
         assert len(affinity._windows) == 0
+
+
+# -- errors in required files point at the file ------------------------------
+
+def _project_requiring(tmp_path, helper_source):
+    scripts = tmp_path / "scripts" / "lib"
+    scripts.mkdir(parents=True)
+    (tmp_path / "scripts" / "main.lua").write_text('require("lib.helper")\n', encoding="utf-8")
+    (scripts / "helper.lua").write_text(helper_source, encoding="utf-8")
+    (tmp_path / "app.json").write_text('{"api": "2.0"}', encoding="utf-8")
+    return tmp_path
+
+
+def test_a_runtime_error_in_a_required_file_names_that_file_and_line(tmp_path):
+    """Lua names a required file by its absolute path and cuts it to 60
+    characters, so the error used to carry no usable location at all."""
+    from limekit.kernel.errors import LuaError
+    project = _project_requiring(tmp_path, 'local a = 1\nlocal b = 2\nerror("boom")\n')
+    with LimekitApp(project) as app:
+        with pytest.raises(LuaError) as caught:
+            app.load_project()
+    assert caught.value.source == "scripts/lib/helper.lua"
+    assert caught.value.line == 3
+    assert "boom" in str(caught.value)
+
+
+def test_a_syntax_error_in_a_required_file_names_that_file_and_line(tmp_path):
+    from limekit.kernel.errors import LuaError
+    project = _project_requiring(tmp_path, 'local a = 1\nlocal = oops\n')
+    with LimekitApp(project) as app:
+        with pytest.raises(LuaError) as caught:
+            app.load_project()
+    assert caught.value.source == "scripts/lib/helper.lua"
+    assert caught.value.line == 2
+
+
+def test_required_files_still_load_and_return_their_value(tmp_path):
+    project = _project_requiring(tmp_path, "return { answer = 42 }\n")
+    (project / "scripts" / "main.lua").write_text(
+        'ANSWER = require("lib.helper").answer\n', encoding="utf-8")
+    with LimekitApp(project) as app:
+        app.load_project()
+        assert app.runtime.execute("return ANSWER") == 42

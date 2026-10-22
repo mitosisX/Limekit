@@ -183,6 +183,35 @@ def test_image_setimagesize_without_image_raises_bridge_error(qapp):
         img.setImageSize(10, 10)
 
 
+def test_image_setimagesize_renders_for_the_screen_pixel_ratio(qapp, tmp_path, monkeypatch):
+    """Scaled for the screen, not for logical pixels: on a 150% display a
+    120x40 image is drawn from 180x60 real pixels, or it comes out soft."""
+    from PySide6.QtGui import QColor, QPixmap
+    from limekit.widgets.image import Image
+
+    source = QPixmap(600, 200)
+    source.fill(QColor("red"))
+    path = str(tmp_path / "logo.png")
+    assert source.save(path)
+
+    # The suite runs at 1x; stand in for a 2x screen. Patched on the class:
+    # an instance attribute does not shadow a method Shiboken binds.
+    monkeypatch.setattr(Image, "devicePixelRatioF", lambda self: 2.0)
+    # Inspect what setImageSize hands to Qt: QLabel.pixmap() returns the
+    # pixmap re-rendered for the label's real (1x, headless) screen.
+    handed = []
+    real_set = Image.setPixmap
+    monkeypatch.setattr(Image, "setPixmap",
+                        lambda self, pm: (handed.append(pm), real_set(self, pm))[1])
+    img = Image(path)
+    img.setImageSize(120, 40)
+    shown = handed[-1]
+    assert shown.devicePixelRatio() == pytest.approx(2.0)
+    assert (shown.width(), shown.height()) == (240, 80)
+    logical = shown.deviceIndependentSize()
+    assert (round(logical.width()), round(logical.height())) == (120, 40)
+
+
 # -- Spinner / DoubleSpinner -------------------------------------------------
 
 def test_spinner_value_and_range(qapp):

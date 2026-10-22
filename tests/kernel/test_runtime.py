@@ -92,3 +92,70 @@ def test_runtime_error_reports_the_real_line(rt):
         rt.execute(source, chunkname="scripts/main.lua")
     assert exc.value.source == "scripts/main.lua"
     assert exc.value.line == 2
+
+
+# -- colon syntax on Qt natives ------------------------------------------------
+#
+# lupa drops the duplicated self from `obj:m()` only for Python-defined bound
+# methods; a Qt native is a builtin method, so `b:toolTip()` reached Qt as
+# `toolTip(b)` and raised "takes no arguments (1 given)". The runtime's
+# attribute getter now extends lupa's own rule to builtin methods.
+
+def test_colon_call_on_a_raw_qt_object_works(rt):
+    from PySide6.QtWidgets import QTableWidgetItem
+
+    button = QPushButton("hi")
+    button.setToolTip("tip")
+    item = QTableWidgetItem("cell")
+    call = rt.eval("function(b, i) return b:toolTip(), i:text(), b:text() end")
+    assert call(button, item) == ("tip", "cell", "hi")
+
+
+def test_colon_call_passes_the_remaining_arguments(rt):
+    button = QPushButton()
+    rt.eval("function(b) b:setToolTip('set by colon') end")(button)
+    assert button.toolTip() == "set by colon"
+
+
+def test_dot_call_on_a_qt_native_still_works(rt):
+    button = QPushButton()
+    rt.eval("function(b) b.setToolTip('set by dot') end")(button)
+    assert button.toolTip() == "set by dot"
+    assert rt.eval("function(b) return b.toolTip() end")(button) == "set by dot"
+
+
+def test_dot_call_passing_the_object_to_itself_is_not_mangled(rt):
+    """`w.isAncestorOf(w)` legitimately passes w as an argument.
+
+    The first argument is the object the method is bound to, so it looks
+    exactly like a colon call. Dropping it leaves a call Qt refuses before
+    running anything, and the original arguments are then used as given.
+    """
+    from PySide6.QtWidgets import QWidget
+
+    w = QWidget()
+    assert rt.eval("function(w) return w.isAncestorOf(w) end")(w) is True
+    assert rt.eval("function(w) return w:isAncestorOf(w) end")(w) is True
+
+
+def test_python_methods_and_indexing_are_untouched(rt):
+    class Thing:
+        def __init__(self):
+            self.value = 4
+
+        def twice(self, n):
+            return n * 2
+
+    thing = Thing()
+    assert rt.eval("function(t) return t:twice(3), t.twice(5), t.value end")(thing) \
+        == (6, 10, 4)
+    # Objects with __getitem__ keep lupa's default: item access, 0-based.
+    assert rt.eval("function(l) return l[1] end")([5, 6]) == 6
+    assert rt.eval("function(d) return d.x, d['y'] end")({"x": 1, "y": 2}) == (1, 2)
+
+
+def test_missing_attribute_still_raises(rt):
+    rt.globals().probe = QPushButton()
+    # lupa re-raises the Python exception itself, as it did before the getter.
+    with pytest.raises(AttributeError, match="noSuchThing"):
+        rt.execute("probe.noSuchThing()")

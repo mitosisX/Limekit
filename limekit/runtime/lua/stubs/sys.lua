@@ -183,7 +183,7 @@ function ProjectRunner(project_path) end
 ---@return boolean
 function ProjectRunner.canSpawnProjects() end
 
---- The engine this project will run on: "1.0" or "2.0".
+--- Which Limekit the project was written for: "2.0", or "1.0" for a 1.x project, which no longer runs.
 ---@return string
 function ProjectRunner:getApiVersion() end
 

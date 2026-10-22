@@ -1,13 +1,8 @@
-"""Running a Limekit project as a child process, and working out which engine.
+"""Running a Limekit project as a child process.
 
-Engine-neutral on purpose. This used to live at
-`limekit/core/bootstrap/subprocess_runner.py` -- inside the 1.x tree -- even
-though the 2.0 build path needed it too, which is why `limekit/build/` still
-imported from `core/`. Both engines and the `sys.ProjectRunner` service now
-import it from here instead.
-
-`limekit/core/bootstrap/subprocess_runner.py` re-exports these names so the
-1.x engine keeps working unchanged.
+The 1.x engine has been retired, so every project runs on 2.0. A 1.x
+project is still recognised (`detect_api_version`) -- only so it can be told
+plainly why it will not run, instead of failing on its first flat global.
 """
 
 import json
@@ -17,12 +12,13 @@ from pathlib import Path
 
 from PySide6.QtCore import QProcess, QProcessEnvironment, QTimer
 
-# The two engines need different entry points, and a project run under the
-# wrong one fails confusingly: a 2.0 project launched by the 1.x runner dies
-# with "module 'limekit.ui' not found", because the 1.x engine injects flat
-# globals and never populates package.preload.
-LEGACY_ENTRY = ("-c", "from limekit import runner")
-MODERN_ENTRY = ("-m", "limekit")
+ENTRY = ("-m", "limekit")
+
+UNSUPPORTED_1X = (
+    "This project was made for Limekit 1.x, which this version no longer "
+    "runs. The Limer 1.x release still runs it; to bring it across instead, "
+    "see \"Migrating from 1.x\" in the Limekit documentation."
+)
 
 
 def _to_int(value):
@@ -71,8 +67,8 @@ def detect_api_version(project_path):
     projects working untouched (none of them require anything) without
     forcing a migration flag on people just to press Run.
 
-    Anything unreadable or ambiguous is treated as 1.0: that is the
-    behaviour every existing project already relies on.
+    Anything unreadable or ambiguous is treated as 1.0. That is the safe
+    reading: a 2.0 project always declares itself or requires a module.
     """
     root = Path(project_path)
 
@@ -94,11 +90,6 @@ def detect_api_version(project_path):
         pass
 
     return "1.0"
-
-
-def entry_for(project_path):
-    """The interpreter arguments that launch this project's engine."""
-    return MODERN_ENTRY if detect_api_version(project_path) == "2.0" else LEGACY_ENTRY
 
 
 # Implemented on 24 November, 2023 12:21 PM (Friday)
@@ -131,11 +122,9 @@ class ProjectRunner(QProcess):
         self.finished.connect(self._handleProcessFinished)
 
     def command(self):
-        """The argument list this runner will spawn. Worth showing a user:
-        which engine a project runs on is decided per project, so seeing the
-        command answers "why did it run like that?" without guesswork."""
-        return [python_command(), "-u", *entry_for(self.project_path),
-                self.project_path]
+        """The argument list this runner will spawn -- worth showing a user,
+        since it names the interpreter a project really runs on."""
+        return [python_command(), "-u", *ENTRY, self.project_path]
 
     def setEnvironmentValue(self, name, value):
         """Add one variable to the child's environment.
@@ -153,6 +142,15 @@ class ProjectRunner(QProcess):
 
     def run(self):
         self._stopping = False
+        if detect_api_version(self.project_path) != "2.0":
+            # Started anyway, it would die on its first flat global with a
+            # message about a nil value. Say what is actually going on, through
+            # the same callbacks a real run reports through.
+            if self.onProcessReadyRead:
+                self.onProcessReadyRead(UNSUPPORTED_1X)
+            if self.onProcessFinished:
+                self.onProcessFinished(1, False)
+            return
         # -u so the child does not buffer its output; a console that only
         # fills in at exit is no use while the app is running.
         self.start(self.command()[0], self.command()[1:])

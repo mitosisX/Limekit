@@ -28,6 +28,36 @@ def _to_int(value, label):
         raise BridgeError(f"expected a number for {label}, got {value!r}") from exc
 
 
+class CloseRequest:
+    """What an onClose handler gets in place of Qt's QCloseEvent.
+
+    The raw event was a trap in Lua, and it was the only way to refuse a
+    close. Now a handler refuses by returning false -- what an "unsaved
+    changes?" prompt needs -- and `request:ignore()` still works for code
+    written the old way.
+    """
+
+    def __init__(self, event):
+        self._event = event
+
+    def ignore(self):
+        self._event.ignore()
+
+    def accept(self):
+        self._event.accept()
+
+
+def close_permitted(handler, widget, event):
+    """Run an onClose handler; True if the close should go ahead.
+
+    A handler that raised was already reported by its guard and returns
+    nothing, so it never traps the user in a window.
+    """
+    if handler and handler(widget, CloseRequest(event)) is False:
+        event.ignore()
+    return event.isAccepted()
+
+
 class LimeWidget(LimeObject):
     """Mixin for every QWidget subclass exposed to Lua."""
 

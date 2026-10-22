@@ -5,17 +5,14 @@ Shared constants used across the build module
 
 # Hidden imports required for PyInstaller to bundle correctly.
 #
-# Both engines are listed, because a build targets whichever one the project
-# declares (see build/entry_script.py) and the spec is shared.
-#
-# The 2.0 entries matter more than they look: limekit/kernel/manifest.py
-# reaches every widget module through importlib.import_module() over a list of
-# strings, which PyInstaller's static analysis cannot follow. Without these,
-# a frozen 2.0 app can start and then fail at boot() with ModuleNotFoundError.
-# Keep this list in step with manifest.MODULES -- or rather, with the packages
-# containing them; PyInstaller pulls in submodules of a named package.
+# These matter more than they look: limekit/kernel/manifest.py reaches every
+# widget module through importlib.import_module() over a list of strings,
+# which PyInstaller's static analysis cannot follow. Without these, a frozen
+# app can start and then fail at boot() with ModuleNotFoundError. Keep this
+# list in step with manifest.MODULES -- or rather, with the packages
+# containing them.
 HIDDEN_IMPORTS = [
-    # Limekit 2.0 engine
+    "limekit",
     "limekit.kernel",
     "limekit.kernel.app",
     "limekit.kernel.manifest",
@@ -31,32 +28,6 @@ HIDDEN_IMPORTS = [
     "limekit.toolkit",
     "limekit.runtime",
     "limekit.assets",
-    # Limekit 1.x engine
-    "limekit",
-    "limekit.runner",
-    "limekit.core",
-    "limekit.core.error_handler",
-    "limekit.engine",
-    "limekit.engine.app_engine",
-    "limekit.engine.parts",
-    "limekit.engine.globals",
-    "limekit.engine.globals.global_engine",
-    "limekit.engine.lifecycle",
-    "limekit.engine.lifecycle.app",
-    "limekit.engine.lifecycle.shutdown",
-    # Components
-    "limekit.components",
-    "limekit.components.base",
-    "limekit.components.base.widget_base",
-    "limekit.components.widgets",
-    "limekit.components.layouts",
-    "limekit.components.dialogs",
-    "limekit.components.menu",
-    "limekit.components.toolbar",
-    "limekit.components.dockable",
-    # Utils and config
-    "limekit.utils",
-    "limekit.config",
     # Lupa/Lua
     "lupa",
     "lupa.lua54",
@@ -73,18 +44,11 @@ HIDDEN_IMPORTS = [
     "qt_material",
     "qdarkstyle",
     "qdarktheme",
+    # Imported by services the manifest loads by name, so analysis never
+    # reaches them on its own.
     "emoji",
-    # Imported only by modules the 1.x engine loads by name, so analysis
-    # never reaches them on its own.
     "psutil",
-    "playsound",
 ]
-
-# The 1.x engine imports its parts by name at runtime; listing them makes
-# PyInstaller bundle them, and follow their imports.
-from limekit.engine.frozen_modules import FROZEN_MODULES  # noqa: E402
-
-HIDDEN_IMPORTS += [m for m in FROZEN_MODULES if m not in HIDDEN_IMPORTS]
 
 # Default app configuration values
 DEFAULT_APP_NAME = "LimekitApp"

@@ -5650,13 +5650,36 @@ function Modal:getLayout() end
 ---@return Modal
 function Modal:setLayout(value) end
 
+--- Get the whole window's opacity, from 0.0 to 1.0.
+---@return number
+function Modal:getOpacity() end
+
+--- Set the whole window's opacity, from 0.0 to 1.0.
+---@param value number
+---@return Modal
+function Modal:setOpacity(value) end
+
 function Modal:close() end
 
 ---@return Modal
 function Modal:dismiss() end
 
+--- Shows the modal, fading it in over `duration` ms (default 450).
+---@param duration? integer
+---@return Modal
+function Modal:fadeIn(duration) end
+
+--- Fades the modal out over `duration` ms (default 250), then closes it. Calling it again while it fades does nothing.
+---@param duration? integer
+---@return Modal
+function Modal:fadeOut(duration) end
+
 ---@return Modal
 function Modal:hide() end
+
+--- Whether setFrameless is on.
+---@return boolean
+function Modal:isFrameless() end
 
 --- Blocking modal loop -- what 1.x's `show()` actually did.
 function Modal:open() end
@@ -5672,6 +5695,11 @@ function Modal:setFixedSize(width, height) end
 
 ---@return Modal
 function Modal:setFocus() end
+
+--- No title bar or border: the modal's own background is the whole surface, e.g. for a splash screen or an About card. Call before show().
+---@param on? boolean
+---@return Modal
+function Modal:setFrameless(on) end
 
 --- Resizes the height, leaving the width alone.
 ---@param height integer
@@ -5723,9 +5751,15 @@ function Modal:setMinSize(width, height) end
 ---@return Modal
 function Modal:setMinWidth(width) end
 
----@param handler any
+--- Runs when the modal is asked to close. Return false to keep it open.
+---@param handler fun(modal: ui.Modal, request: any): boolean?
 ---@return Modal
 function Modal:setOnClose(handler) end
+
+--- Runs when the modal is clicked, with where, in its own coordinates -- e.g. to dismiss a card on any click.
+---@param handler fun(modal: ui.Modal, x: integer, y: integer)
+---@return Modal
+function Modal:setOnMousePress(handler) end
 
 ---@param handler any
 ---@return Modal
@@ -9918,7 +9952,9 @@ function Window:setMinSize(width, height) end
 ---@return Window
 function Window:setMinWidth(width) end
 
----@param handler any
+--- Runs when the window is asked to close. Return false to keep it open -- e.g. after asking about unsaved changes.
+---@param handler fun(window: ui.Window, request: any): boolean?
+---@return Window
 function Window:setOnClose(handler) end
 
 ---@param handler any

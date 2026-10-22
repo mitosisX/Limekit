@@ -22,13 +22,8 @@ class SpecGenerator:
         self.project_path = os.path.abspath(project_path)
         self.config = config
         self.temp_dir = temp_dir
-
-        # Project directories
-        self.scripts_dir = os.path.join(self.project_path, "scripts")
-        self.images_dir = os.path.join(self.project_path, "images")
-        self.misc_dir = os.path.join(self.project_path, "misc")
-        self.app_json_path = os.path.join(self.project_path, "app.json")
-        self.require_file = os.path.join(self.project_path, ".require")
+        # builder.AppBuilder stages the whole project here (build/staging.py).
+        self.staged_dir = os.path.join(self.temp_dir, "project")
 
     def generate(
         self,
@@ -57,6 +52,14 @@ class SpecGenerator:
         """Convert Windows backslashes to forward slashes for spec file."""
         return path.replace('\\', '/')
 
+    def _literal(self, path: str) -> str:
+        """A path as Python source for the spec.
+
+        repr(), not r'...': a raw literal cannot hold a quote, so a project
+        in "Bob's App" produced a spec that did not parse.
+        """
+        return repr(self._normalize_path(str(path)))
+
     def _get_limekit_paths(self) -> Tuple[str, str]:
         """Get limekit package paths."""
         import limekit
@@ -69,49 +72,13 @@ class SpecGenerator:
         datas = []
         limekit_path, _ = self._get_limekit_paths()
 
-        # Compiled scripts
-        temp_scripts = os.path.join(self.temp_dir, "scripts")
-        if os.path.exists(temp_scripts):
-            datas.append((
-                f"r'{self._normalize_path(temp_scripts)}'",
-                "'scripts'"
-            ))
-
-        # Project images
-        if os.path.exists(self.images_dir):
-            datas.append((
-                f"r'{self._normalize_path(self.images_dir)}'",
-                "'images'"
-            ))
-
-        # Project misc
-        if os.path.exists(self.misc_dir):
-            datas.append((
-                f"r'{self._normalize_path(self.misc_dir)}'",
-                "'misc'"
-            ))
-
-        # app.json
-        if os.path.exists(self.app_json_path):
-            datas.append((
-                f"r'{self._normalize_path(self.app_json_path)}'",
-                "'.'"
-            ))
-
-        # .require file
-        if os.path.exists(self.require_file):
-            datas.append((
-                f"r'{self._normalize_path(self.require_file)}'",
-                "'.'"
-            ))
-
-        # Limekit lua files
-        limekit_lua = os.path.join(limekit_path, "lua")
-        if os.path.exists(limekit_lua):
-            datas.append((
-                f"r'{self._normalize_path(limekit_lua)}'",
-                "'limekit/lua'"
-            ))
+        # The whole staged project, laid out at the bundle's root exactly as
+        # it is on disk: folders keep their names, top-level files go to ".".
+        if os.path.isdir(self.staged_dir):
+            for entry in sorted(os.listdir(self.staged_dir)):
+                path = os.path.join(self.staged_dir, entry)
+                target = entry if os.path.isdir(path) else "."
+                datas.append((self._literal(path), repr(target)))
 
         return datas
 
@@ -137,12 +104,12 @@ class SpecGenerator:
         # Icon configuration
         icon_line = ""
         if self.config.icon:
-            icon_line = f"icon=r'{self._normalize_path(self.config.icon)}',"
+            icon_line = f"icon={self._literal(self.config.icon)},"
 
         # Version info (Windows only)
         version_line = ""
         if version_file:
-            version_line = f"version=r'{self._normalize_path(version_file)}',"
+            version_line = f"version={self._literal(version_file)},"
 
         # Console mode
         console_line = "True" if self.config.console_mode else "False"
@@ -151,9 +118,9 @@ class SpecGenerator:
         onefile = getattr(self.config, 'onefile', True)
 
         # Normalize paths
-        entry_script_normalized = self._normalize_path(entry_script)
-        project_path_normalized = self._normalize_path(self.project_path)
-        limekit_parent_normalized = self._normalize_path(limekit_parent)
+        entry_script_literal = self._literal(entry_script)
+        project_path_literal = self._literal(self.project_path)
+        limekit_parent_literal = self._literal(limekit_parent)
 
         # Build EXE section based on onefile mode
         if onefile:
@@ -223,7 +190,7 @@ coll = COLLECT(
 # Limekit App Build Spec - Auto-generated
 
 import sys
-sys.path.insert(0, r'{limekit_parent_normalized}')
+sys.path.insert(0, {limekit_parent_literal})
 
 from PyInstaller.utils.hooks import collect_submodules, collect_data_files, collect_all
 
@@ -236,8 +203,8 @@ limekit_datas, limekit_binaries, limekit_hiddenimports = collect_all('limekit')
 hiddenimports = limekit_hiddenimports + [{hidden_str}]
 
 a = Analysis(
-    [r'{entry_script_normalized}'],
-    pathex=[r'{project_path_normalized}', r'{limekit_parent_normalized}'],
+    [{entry_script_literal}],
+    pathex=[{project_path_literal}, {limekit_parent_literal}],
     binaries=limekit_binaries,
     datas=[
         {datas_str}

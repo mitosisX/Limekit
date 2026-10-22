@@ -7,7 +7,7 @@ setuptools.setup(
     author="Omega Msiska",
     author_email="omegamsiskah@gmail.com",
     description="Limekit is the first-ever modern lua GUI framework",
-    license="GNU",
+    license="GPLv3",
     packages=setuptools.find_packages(),
     package_data={
         # Generated runtime: limekit.lua and the LSP stubs (tools/generate_lua.py,
@@ -50,7 +50,7 @@ setuptools.setup(
     },
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: GNU General Public License",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ],
     project_urls={

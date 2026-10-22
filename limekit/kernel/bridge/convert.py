@@ -9,14 +9,16 @@ from limekit.kernel.errors import BridgeError
 
 _runtime = None
 _packer = None
+_counted_packer = None
 _pairs_packer = None
 
 
 def set_runtime(lua):
     """Called by LimeRuntime once the LuaRuntime exists."""
-    global _runtime, _packer, _pairs_packer
+    global _runtime, _packer, _counted_packer, _pairs_packer
     _runtime = lua
     _packer = None
+    _counted_packer = None
     _pairs_packer = None
 
 
@@ -50,6 +52,21 @@ def _pack():
     return _packer
 
 
+def _pack_counted():
+    """The same through `table.pack`, which also records the length in `n`.
+
+    For a sequence holding None. Lua cannot store nil in an array, so a SQL
+    NULL mid-row became a hole and `ipairs` stopped there, silently dropping
+    the rest of the row. `n` is Lua's own convention for this: the row reads
+    `for i = 1, row.n`. Only such sequences get it -- on any other list the
+    extra key would turn up in every `pairs` loop.
+    """
+    global _counted_packer
+    if _counted_packer is None:
+        _counted_packer = _runtime.eval("function(...) return table.pack(...) end")
+    return _counted_packer
+
+
 def _pack_pairs():
     """The same, for string-keyed tables: alternating key, value, ..."""
     global _pairs_packer
@@ -79,7 +96,9 @@ def to_lua(value):
             flat.append(to_lua(item))
         return _pack_pairs()(*flat)
     if isinstance(value, (list, tuple, set)):
-        return _pack()(*[to_lua(item) for item in value])
+        items = [to_lua(item) for item in value]
+        packer = _pack_counted() if any(item is None for item in items) else _pack()
+        return packer(*items)
     return value
 
 

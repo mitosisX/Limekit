@@ -260,6 +260,72 @@ def test_modal_onshown_guarded(qapp, sink):
     assert len(sink) == 1
 
 
+def test_modal_frameless_toggles_the_frame(qapp):
+    from PySide6.QtCore import Qt
+    from limekit.widgets.modal import Modal
+
+    modal = Modal("Card")
+    assert modal.isFrameless() is False
+    assert modal.setFrameless(True) is modal
+    assert modal.isFrameless() is True
+    assert modal.windowFlags() & Qt.WindowType.FramelessWindowHint
+    # Opaque: the modal is the surface. A translucent window on Windows 11
+    # gets a system border drawn round its transparent margin.
+    assert not modal.testAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+
+    modal.setFrameless(False)
+    assert modal.isFrameless() is False
+
+
+def test_modal_opacity_round_trips(qapp):
+    from limekit.widgets.modal import Modal
+
+    modal = Modal("Card")
+    assert modal.setOpacity(0.5) is modal
+    assert modal.getOpacity() == pytest.approx(0.5, abs=0.01)
+
+
+def test_modal_fade_in_shows_and_reaches_full_opacity(qapp, qtbot):
+    from limekit.widgets.modal import Modal
+
+    modal = Modal("Card")
+    assert modal.fadeIn(60) is modal
+    assert modal.isVisible()
+    qtbot.waitUntil(lambda: modal.getOpacity() > 0.99, timeout=2000)
+
+
+def test_modal_fade_out_closes_and_fires_onclose_once(qapp, qtbot):
+    from limekit.widgets.modal import Modal
+
+    closed = []
+    modal = Modal("Card")
+    modal.setOnClose(lambda *a: closed.append(True))
+    modal.fadeIn(1)
+    assert modal.fadeOut(60) is modal
+    modal.fadeOut(60)  # a second dismissal while fading is ignored
+    qtbot.waitUntil(lambda: not modal.isVisible(), timeout=2000)
+    assert closed == [True]
+
+
+def test_modal_onmousepress_reports_position_and_is_guarded(qapp, sink):
+    from PySide6.QtCore import QEvent, QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+    from limekit.widgets.modal import Modal
+
+    seen = []
+    modal = Modal("Card")
+    assert modal.setOnMousePress(lambda m, x, y: seen.append((m, x, y))) is modal
+    press = QMouseEvent(QEvent.Type.MouseButtonPress, QPointF(12, 34), QPointF(12, 34),
+                        Qt.MouseButton.LeftButton, Qt.MouseButton.LeftButton,
+                        Qt.KeyboardModifier.NoModifier)
+    modal.mousePressEvent(press)
+    assert seen == [(modal, 12, 34)]
+
+    modal.setOnMousePress(lambda *a: 1 / 0)
+    modal.mousePressEvent(press)
+    assert len(sink) == 1
+
+
 # -- Registration --------------------------------------------------------------
 
 def test_tier2_widgets_are_registered(qapp):

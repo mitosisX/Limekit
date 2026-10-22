@@ -26,7 +26,7 @@ from limekit.kernel.bridge.guard import guard
 from limekit.kernel.coerce import DOCK_AREAS, TOOLBAR_AREAS, Enum, Icon
 from limekit.kernel.errors import BridgeError
 from limekit.kernel.spec import Prop, method
-from limekit.widgets.base import LimeWidget, _to_int
+from limekit.widgets.base import LimeWidget, _to_int, close_permitted
 
 _dock_area = Enum(DOCK_AREAS, "dock area")
 _toolbar_area = Enum(TOOLBAR_AREAS, "toolbar area")
@@ -193,6 +193,9 @@ class Window(LimeWidget, QMainWindow):
     def setOnShown(self, handler):
         return self._attach("onShown", handler)
 
+    @method({"handler": "fun(window: ui.Window, request: any): boolean?"}, returns="self",
+            doc="Runs when the window is asked to close. Return false to keep "
+                "it open -- e.g. after asking about unsaved changes.")
     def setOnClose(self, handler):
         return self._attach("onClose", handler)
 
@@ -229,9 +232,7 @@ class Window(LimeWidget, QMainWindow):
             self._onShown(self)
 
     def closeEvent(self, event):
-        if self._onClose:
-            self._onClose(self, event)
-        if event.isAccepted():
+        if close_permitted(self._onClose, self, event):
             # Closed for good, so stop holding it open -- otherwise the
             # framework would leak every window an app ever showed.
             affinity.forget_window(self)

@@ -4,9 +4,8 @@ The 2.0 replacements for 1.x's `app.runProject(path)` and
 `app.buildProject(path, options)`. Those were the last two globals with no
 2.0 equivalent, and the reason Limer itself could not be ported.
 
-Both wrap an engine-neutral implementation (`limekit.launcher.ProjectRunner`,
-`limekit.build.runner.BuildProcess`) rather than reimplementing it, so the
-1.x and 2.0 paths cannot drift apart. What this module adds is the Lua
+Both wrap a plain-Python implementation (`limekit.launcher.ProjectRunner`,
+`limekit.build.runner.BuildProcess`) rather than reimplementing it. What this module adds is the Lua
 boundary: every callback crosses `guard()`, so an error inside a Lua handler
 is reported rather than escaping into the Qt event loop.
 """
@@ -32,9 +31,9 @@ def _require_path(value, label):
 class ProjectRunner(LimeObject, QObject):
     """Runs a Limekit project in a child process.
 
-    Replaces 1.x's `app.runProject(path)`. Which engine the project runs on
-    is decided per project -- see `getApiVersion` -- so a 2.0 launcher can
-    run 1.x projects and vice versa.
+    Replaces 1.x's `app.runProject(path)`. A 1.x project is recognised
+    (`getApiVersion` answers "1.0") and refused with a message saying why,
+    rather than started and left to fail on its first flat global.
     """
 
     __lime__ = "sys.ProjectRunner"
@@ -86,7 +85,8 @@ class ProjectRunner(LimeObject, QObject):
         return self._process.state() != QProcess.ProcessState.NotRunning
 
     @method(returns="string",
-            doc='The engine this project will run on: "1.0" or "2.0".')
+            doc='Which Limekit the project was written for: "2.0", or "1.0" '
+                'for a 1.x project, which no longer runs.')
     def getApiVersion(self):
         return detect_api_version(self._path)
 

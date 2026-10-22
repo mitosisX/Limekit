@@ -13,5 +13,5 @@ def test_qapplication_available(qapp):
 def test_declared_dependencies_are_importable():
     """Every module limekit imports at runtime must be installable."""
     import importlib
-    for mod in ("PySide6", "lupa", "playsound", "psutil", "emoji"):
+    for mod in ("PySide6", "lupa", "psutil", "emoji"):
         importlib.import_module(mod)

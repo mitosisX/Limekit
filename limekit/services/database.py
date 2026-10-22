@@ -10,6 +10,10 @@ of which had a try/except at all).
 
 The 1.x `__enter__`/`__exit__` (Python `with` support) are dropped: Lua has
 no `with` statement, so nothing could ever call them.
+
+A NULL arrives in Lua as nil, and a row-as-list holding one carries its true
+length in `n` (Lua's `table.pack` convention): loop it with
+`for i = 1, row.n`, because `ipairs` stops at the first nil.
 """
 
 import sqlite3

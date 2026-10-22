@@ -4,16 +4,10 @@
 Demos live outside the repo, so this skips cleanly when they are absent.
 Point LIMEKIT_DEMOS at the checkout to run them.
 
-Two populations:
-
-- `2.0-examples/*` are written against the current API and must **pass**.
-  They are the working proof that the kernel produces a usable framework,
-  not just a green unit suite.
-- Everything else is the original 1.x demo set, kept as it was. Those still
-  use the flat-global API and **xfail** here: they run on the 1.x engine,
-  which this test does not boot. Their subject matter has been rewritten
-  against 2.0 in `2.0-examples/`, so the xfail count is a record of what the
-  old engine still carries rather than a list of work outstanding.
+These are the 2.0 example apps, `2.0-examples/*`: the working proof that the
+kernel produces a usable framework, not just a green unit suite. (The old 1.x
+demo set lived beside them and ran on the retired 1.x engine; it has been
+moved to an archive branch of limekit-demos.)
 """
 
 import os
@@ -37,10 +31,6 @@ def _projects(root):
 
 def modern_projects():
     return _projects(DEMOS / MODERN_DIR)
-
-
-def legacy_projects():
-    return _projects(DEMOS)
 
 
 @pytest.mark.skipif(not modern_projects(), reason="2.0-examples not found")
@@ -74,21 +64,6 @@ def test_modern_demos_use_no_globals(qapp):
                 f"{project.name} calls a bare global {banned!r}; "
                 f"use the required module table"
             )
-
-
-@pytest.mark.skipif(not legacy_projects(), reason="limekit-demos checkout not found")
-@pytest.mark.parametrize("project", legacy_projects(), ids=lambda p: p.name)
-def test_legacy_demo_boots_without_error(project, qapp):
-    from limekit.kernel.app import LimekitApp
-
-    # These use the 1.x flat-global API and run on the 1.x engine, which
-    # this test does not boot. They are kept as the original demo set; the
-    # 2.0 rewrites live in 2.0-examples/ and are covered above.
-    pytest.xfail(f"{project.name} uses the 1.x API - see 2.0-examples/")
-
-    with LimekitApp(project) as app:
-        app.load_project()
-        assert app.errors == (), f"{project.name} reported: {app.errors}"
 
 
 @pytest.mark.skipif(not modern_projects(), reason="2.0-examples not found")

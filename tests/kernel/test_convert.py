@@ -69,6 +69,21 @@ def test_to_lua_round_trips(lua):
     assert convert.to_py(convert.to_lua({"x": 1})) == {"x": 1}
 
 
+def test_a_list_with_none_records_its_true_length_in_n(lua):
+    """A SQL NULL mid-row is a Lua nil, and ipairs stops at it. `n`, Lua's
+    own table.pack convention, keeps the rest of the row reachable."""
+    row = convert.to_lua(["ada", None, "london"])
+    assert row["n"] == 3
+    assert row[1] == "ada" and row[2] is None and row[3] == "london"
+    count = lua.eval("function(t) local c = 0 for i = 1, t.n do c = c + 1 end return c end")
+    assert count(row) == 3
+
+
+def test_a_list_without_none_gets_no_n_field(lua):
+    """Only lists that need it: an extra key would show up in every pairs()."""
+    assert convert.to_lua(["a", "b"])["n"] is None
+
+
 def test_to_lua_without_a_runtime_raises():
     convert.set_runtime(None)
     with pytest.raises(BridgeError, match="runtime"):

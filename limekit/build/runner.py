@@ -1,10 +1,7 @@
 """Running a build as a child process, so progress can be monitored live.
 
-Engine-neutral. `build/project_builder.py` was the same logic welded to
-`EnginePart`, the 1.x base class, which meant the 2.0 side could not reuse it
-without dragging in the legacy engine. The behaviour lives here now;
-`project_builder.ProjectBuilder` is a thin 1.x shim over it, and
-`services/projects.ProjectBuilder` is the guarded 2.0 wrapper.
+`services/projects.ProjectBuilder` is the guarded wrapper Lua reaches it
+through.
 
 Callbacks here are plain callables. `guard()` is applied at the Lua boundary,
 not in this module, so it stays usable from plain Python.
@@ -24,20 +21,14 @@ _FORWARDED_OPTIONS = ("name", "version", "author", "copyright", "description", "
 
 
 def _build_script(project_path, options, console_mode, output_dir):
-    """The Python source the child process runs to perform the build."""
-    project_path_escaped = project_path.replace("\\", "\\\\")
-    output_dir_escaped = output_dir.replace("\\", "\\\\") if output_dir else None
-    output_dir_str = f"'{output_dir_escaped}'" if output_dir_escaped else "None"
+    """The Python source the child process runs to perform the build.
 
-    forwarded = {}
-    for key in _FORWARDED_OPTIONS:
-        value = options.get(key)
-        if value:
-            if key == "icon":
-                value = value.replace("\\", "\\\\")
-            forwarded[key] = value
-
-    options_str = json.dumps(forwarded)
+    Every value goes in through repr(), never pasted between quotes: a
+    project in a folder called "Bob's App" used to yield a script that did
+    not parse. The options travel as JSON inside a repr'd string, since JSON
+    is not Python (true/false/null).
+    """
+    forwarded = {key: options[key] for key in _FORWARDED_OPTIONS if options.get(key)}
 
     return f'''
 import sys
@@ -46,15 +37,15 @@ import json
 try:
     from limekit.build.builder import AppBuilder
 
-    options = {options_str}
+    options = json.loads({json.dumps(forwarded)!r})
 
     builder = AppBuilder(
-        project_path='{project_path_escaped}',
-        output_dir={output_dir_str},
+        project_path={str(project_path)!r},
+        output_dir={(str(output_dir) if output_dir else None)!r},
         options=options
     )
 
-    success, message, output_path = builder.build(console_mode={console_mode})
+    success, message, output_path = builder.build(console_mode={bool(console_mode)!r})
 
     result = {{
         "success": success,
@@ -145,14 +136,9 @@ class BuildProcess:
             return
 
         self._output_buffer.append(data)
-
-        if "BUILD_RESULT:" in data:
-            try:
-                result = json.loads(data.split("BUILD_RESULT:")[1])
-                self._success = result.get("success", False)
-                self._output_path = result.get("output_path")
-            except (json.JSONDecodeError, IndexError) as exc:
-                logger.warning("Build: Failed to parse build result: %s", exc)
+        # The build script prints both markers to stdout; this used to look
+        # for BUILD_ERROR only on stderr, so onBuildError never fired.
+        self._read_markers(data)
 
         if self.onBuildOutput:
             self.onBuildOutput(data)
@@ -163,12 +149,34 @@ class BuildProcess:
             return
 
         self._output_buffer.append(f"Error: {data}")
-
-        if "BUILD_ERROR:" in data and self.onBuildError:
-            self.onBuildError(data.split("BUILD_ERROR:")[1])
+        self._read_markers(data)
 
         if self.onBuildOutput:
             self.onBuildOutput(data)
+
+    def _read_markers(self, data):
+        """Act on BUILD_RESULT / BUILD_ERROR lines in a chunk of output.
+
+        A build that finished but failed -- validation, PyInstaller -- is an
+        error to the caller too, not only one that raised.
+        """
+        for line in data.splitlines():
+            if line.startswith("BUILD_RESULT:"):
+                try:
+                    result = json.loads(line[len("BUILD_RESULT:"):])
+                except json.JSONDecodeError as exc:
+                    logger.warning("Build: Failed to parse build result: %s", exc)
+                    continue
+                self._success = bool(result.get("success", False))
+                self._output_path = result.get("output_path")
+                if not self._success:
+                    self._report_error(result.get("message") or "the build failed")
+            elif line.startswith("BUILD_ERROR:"):
+                self._report_error(line[len("BUILD_ERROR:"):])
+
+    def _report_error(self, message):
+        if self.onBuildError:
+            self.onBuildError(message)
 
     def _handleStarted(self):
         if self.onBuildStarted:

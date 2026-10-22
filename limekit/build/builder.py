@@ -18,9 +18,10 @@ from typing import Optional, Dict, Any, Tuple
 from limekit.build.constants import BUILD_DIR_NAME, DIST_DIR_NAME
 from limekit.build.config import ConfigLoader, BuildConfig
 from limekit.build.validator import ProjectValidator
-from limekit.build.lua_compiler import LuaCompiler
+from limekit.build.staging import stage_project
 from limekit.build.version_info import VersionInfoGenerator
 from limekit.build.entry_script import EntryScriptGenerator
+from limekit.launcher import UNSUPPORTED_1X, detect_api_version
 from limekit.build.spec_generator import SpecGenerator
 
 
@@ -36,7 +37,6 @@ class AppBuilder:
         self.project_path = os.path.abspath(project_path)
         self.output_dir = output_dir or os.path.join(self.project_path, DIST_DIR_NAME)
         self.build_dir = os.path.join(self.project_path, BUILD_DIR_NAME)
-        self.scripts_dir = os.path.join(self.project_path, "scripts")
 
         # Load configuration
         self.config_loader = ConfigLoader(self.project_path)
@@ -67,21 +67,21 @@ class AppBuilder:
         valid, errors = self.validate_project()
         if not valid:
             return False, f"Project validation failed: {'; '.join(errors)}", None
+        if detect_api_version(self.project_path) != "2.0":
+            return False, UNSUPPORTED_1X, None
 
         # Create temporary build directory
         temp_dir = tempfile.mkdtemp(prefix="limekit_build_")
 
         try:
-            # Step 1: Compile Lua scripts to bytecode
-            print("Compiling Lua scripts...")
-            temp_scripts = os.path.join(temp_dir, "scripts")
-            compiler = LuaCompiler(self.scripts_dir)
-            if not compiler.compile_to_directory(temp_scripts):
-                return False, "Failed to compile Lua scripts", None
+            # Step 1: Stage the project as it will ship -- whole, as source.
+            print("Collecting project files...")
+            stage_project(self.project_path, os.path.join(temp_dir, "project"),
+                          exclude=(self.output_dir, self.build_dir))
 
             # Step 2: Create entry script for frozen app
             print("Creating entry point...")
-            entry_generator = EntryScriptGenerator(temp_dir, self.project_path)
+            entry_generator = EntryScriptGenerator(temp_dir)
             entry_script = entry_generator.generate()
 
             # Step 3: Generate Windows version info (if on Windows)

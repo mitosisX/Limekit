@@ -199,3 +199,54 @@ def test_textfield_text_change_event_is_guarded(qapp, sink):
 
 def test_textfield_line_count(qapp):
     assert TextField("a\nb\nc").getLineCount() == 3
+
+
+# -- closing can be vetoed --------------------------------------------------
+
+@pytest.fixture
+def lua_rt(qapp):
+    from limekit.kernel.bridge.runtime import LimeRuntime
+    from limekit.kernel.registry import Registry
+    return LimeRuntime(Registry())
+
+
+@pytest.mark.parametrize("cls_path", ["limekit.widgets.window.Window",
+                                      "limekit.widgets.modal.Modal"])
+def test_onclose_returning_false_keeps_it_open(qapp, lua_rt, cls_path):
+    """An "unsaved changes?" prompt needs a way to say no."""
+    import importlib
+    module, name = cls_path.rsplit(".", 1)
+    widget = getattr(importlib.import_module(module), name)()
+    widget.setOnClose(lua_rt.eval("function(w) return false end"))
+    widget.show()
+    widget.close()
+    assert widget.isVisible()
+
+    widget.setOnClose(lua_rt.eval("function(w) end"))   # returns nothing
+    widget.close()
+    assert not widget.isVisible()
+
+
+@pytest.mark.parametrize("cls_path", ["limekit.widgets.window.Window",
+                                      "limekit.widgets.modal.Modal"])
+@pytest.mark.parametrize("call", ["event:ignore()", "event.ignore()"])
+def test_onclose_event_is_lua_safe(qapp, lua_rt, cls_path, call, sink):
+    """The raw QCloseEvent used to be handed over; `event:ignore()` raised."""
+    import importlib
+    module, name = cls_path.rsplit(".", 1)
+    widget = getattr(importlib.import_module(module), name)()
+    widget.setOnClose(lua_rt.eval(f"function(w, event) {call} end"))
+    widget.show()
+    widget.close()
+    assert sink == []
+    assert widget.isVisible()
+
+
+def test_onclose_is_not_handed_a_raw_qt_event(qapp):
+    from PySide6.QtGui import QCloseEvent
+    seen = []
+    window = Window()
+    window.setOnClose(lambda w, *rest: seen.extend(rest))
+    window.show()
+    window.close()
+    assert not any(isinstance(e, QCloseEvent) for e in seen)

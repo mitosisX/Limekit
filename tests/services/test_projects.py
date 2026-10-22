@@ -182,32 +182,6 @@ def test_builder_survives_a_malformed_result_line(qapp, tmp_path, lua):
 
 # -- the 1.x binding still works ----------------------------------------------
 
-def test_legacy_project_builder_keeps_its_surface(qapp):
-    """The 1.x `__appBuild` global is Limer's Build button today.
-
-    Its logic moved to build/runner.BuildProcess; this guards against the
-    move quietly dropping a method Limer calls.
-    """
-    from limekit.build.project_builder import ProjectBuilder as Legacy
-
-    assert Legacy.name == "__appBuild"
-    for expected in ("setOnBuildOutput", "setOnBuildStarted", "setOnBuildFinished",
-                     "setOnBuildError", "build", "stop", "getOutput",
-                     "isSuccess", "getOutputPath"):
-        assert callable(getattr(Legacy, expected)), expected
-
-
-def test_legacy_subprocess_runner_shim_still_exports(qapp):
-    """1.x imports these from core/bootstrap; they live in limekit.launcher now."""
-    from limekit.core.bootstrap import subprocess_runner as shim
-    from limekit import launcher
-
-    assert shim.detect_api_version is launcher.detect_api_version
-    assert shim.ProjectRunner is launcher.ProjectRunner
-    assert shim.LEGACY_ENTRY == ("-c", "from limekit import runner")
-    assert shim.MODERN_ENTRY == ("-m", "limekit")
-
-
 def test_setting_an_environment_value_adds_rather_than_replaces(qapp, tmp_path):
     """A project started with a bare environment loses PATH, and on Windows
     loses the interpreter with it -- so this must inherit first."""

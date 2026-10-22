@@ -1,28 +1,18 @@
-"""Running and building must pick the same engine for a given project.
+"""One engine: 2.0 projects run and build; 1.x projects are refused, plainly.
 
-Limer -- the tool people actually use to run and ship Limekit apps -- calls
-`app.runProject` and `app.buildProject`, which land in `ProjectRunner.run`
-and `EntryScriptGenerator.generate`. Both hardcoded the 1.x entry point, so a
-2.0 project died at startup with:
-
-    module 'limekit.ui' not found: no field package.preload['limekit.ui']
-
-because the 1.x engine injects flat globals and never populates
-package.preload. These tests pin the dispatch, and pin that Run and Build
-agree -- a project that runs but will not build is worse than one that does
-neither, because the failure surfaces at ship time.
+The 1.x engine was retired. A 1.x project is still recognised, so that both
+Run and Build can say why it will not work instead of starting it and
+letting it die on its first flat global (`attempt to call a nil value
+(global 'Window')`), which reads like the user's mistake rather than ours.
 """
 
 import json
 
 import pytest
 
+from limekit.build.builder import AppBuilder
 from limekit.build.entry_script import EntryScriptGenerator
-from limekit.core.bootstrap.subprocess_runner import (
-    LEGACY_ENTRY,
-    MODERN_ENTRY,
-    detect_api_version,
-)
+from limekit.launcher import ENTRY, UNSUPPORTED_1X, ProjectRunner, detect_api_version
 
 MODERN_MAIN = 'local ui = require("limekit.ui")\nui.Window{title="x"}\n'
 LEGACY_MAIN = 'window = Window{title="x"}\nwindow:show()\n'
@@ -43,7 +33,7 @@ def test_explicit_api_field_wins(tmp_path):
     assert detect_api_version(project) == "2.0"
 
 
-def test_explicit_api_field_can_force_legacy(tmp_path):
+def test_explicit_api_field_can_mark_1x(tmp_path):
     """An explicit 1.0 must beat the structural signal, not lose to it."""
     project = make_project(tmp_path, MODERN_MAIN, {"api": "1.0"})
     assert detect_api_version(project) == "1.0"
@@ -60,13 +50,12 @@ def test_both_lua_quote_styles_are_detected(tmp_path, quote):
     assert detect_api_version(make_project(tmp_path, source)) == "2.0"
 
 
-def test_a_1x_project_stays_1x(tmp_path):
-    """The ~52 existing demos must not be dragged onto the new engine."""
+def test_a_1x_project_is_recognised(tmp_path):
     project = make_project(tmp_path, LEGACY_MAIN, {"project": {"name": "old"}})
     assert detect_api_version(project) == "1.0"
 
 
-def test_missing_project_defaults_to_legacy(tmp_path):
+def test_missing_project_reads_as_1x(tmp_path):
     assert detect_api_version(tmp_path / "nope") == "1.0"
 
 
@@ -82,56 +71,37 @@ def test_malformed_app_json_still_allows_structural_detection(tmp_path):
     assert detect_api_version(project) == "2.0"
 
 
-# -- run dispatch ----------------------------------------------------------
+# -- run -------------------------------------------------------------------
 
-def test_entry_points_are_distinct():
-    assert LEGACY_ENTRY != MODERN_ENTRY
-    assert MODERN_ENTRY == ("-m", "limekit")
+def test_every_project_runs_on_the_one_entry(qapp, tmp_path):
+    project = make_project(tmp_path, MODERN_MAIN, {"api": "2.0"})
+    assert ENTRY == ("-m", "limekit")
+    assert ProjectRunner(str(project)).command()[2:4] == list(ENTRY)
 
 
-# -- build dispatch --------------------------------------------------------
+def test_running_a_1x_project_says_why_and_starts_nothing(qapp, tmp_path):
+    from PySide6.QtCore import QProcess
+    project = make_project(tmp_path, LEGACY_MAIN)
+    runner = ProjectRunner(str(project))
+    said, finished = [], []
+    runner.setOnProcessReadyRead(said.append)
+    runner.setOnProcessFinished(lambda code, crashed: finished.append((code, crashed)))
+    runner.run()
+    assert said == [UNSUPPORTED_1X]
+    assert finished == [(1, False)]
+    assert runner.state() == QProcess.ProcessState.NotRunning
 
-def test_build_emits_the_modern_entry_for_a_2_0_project(tmp_path):
-    project = make_project(tmp_path / "proj", MODERN_MAIN, {"api": "2.0"})
-    out = tmp_path / "out"
-    out.mkdir()
-    script = EntryScriptGenerator(str(out), str(project)).generate()
+
+# -- build -----------------------------------------------------------------
+
+def test_building_a_1x_project_is_refused_with_the_same_reason(tmp_path):
+    project = make_project(tmp_path / "proj", LEGACY_MAIN, {"project": {"name": "Old"}})
+    success, message, output = AppBuilder(str(project)).build()
+    assert (success, message, output) == (False, UNSUPPORTED_1X, None)
+
+
+def test_the_entry_script_is_the_2_0_one(tmp_path):
+    script = EntryScriptGenerator(str(tmp_path)).generate()
     text = open(script, encoding="utf-8").read()
     assert "LimekitApp" in text
-    assert "from limekit.runner import" not in text
-
-
-def test_build_emits_the_legacy_entry_for_a_1x_project(tmp_path):
-    project = make_project(tmp_path / "proj", LEGACY_MAIN)
-    out = tmp_path / "out"
-    out.mkdir()
-    script = EntryScriptGenerator(str(out), str(project)).generate()
-    text = open(script, encoding="utf-8").read()
-    assert "from limekit.runner import LimerApplication" in text
-    assert "LimekitApp" not in text
-
-
-def test_build_without_a_project_keeps_the_legacy_default(tmp_path):
-    """Any caller not yet passing a project must behave exactly as before."""
-    script = EntryScriptGenerator(str(tmp_path)).generate()
-    assert "from limekit.runner import LimerApplication" in open(
-        script, encoding="utf-8"
-    ).read()
-
-
-@pytest.mark.parametrize("main_lua,expected", [
-    (MODERN_MAIN, "2.0"),
-    (LEGACY_MAIN, "1.0"),
-])
-def test_run_and_build_never_disagree(tmp_path, main_lua, expected):
-    """The whole point: one project, one engine, both code paths."""
-    project = make_project(tmp_path / "proj", main_lua)
-    out = tmp_path / "out"
-    out.mkdir()
-
-    detected = detect_api_version(project)
-    script = EntryScriptGenerator(str(out), str(project)).generate()
-    built_modern = "LimekitApp" in open(script, encoding="utf-8").read()
-
-    assert detected == expected
-    assert built_modern is (detected == "2.0")
+    assert "limekit.runner" not in text

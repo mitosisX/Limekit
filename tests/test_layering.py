@@ -1,3 +1,4 @@
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -8,19 +9,8 @@ REPO = Path(__file__).resolve().parents[1]
 def test_import_contracts_hold():
     """Run the `.importlinter` contracts and assert they all pass.
 
-    Coverage note: this only meaningfully covers the two real packages named
-    in `.importlinter` -- limekit.kernel and limekit.widgets (plus
-    limekit.build). It does NOT cover the legacy-tree entries in that file's
-    `forbidden_modules` list (limekit.engine, .components, .utils, .gui,
-    .core): those are implicit namespace packages (no __init__.py), which
-    grimp cannot see, so import-linter cannot check imports against them --
-    see the long comment above `forbidden_modules` in `.importlinter` for the
-    experiment that proved this. The sibling test below,
-    test_kernel_does_not_import_the_legacy_engine, is what actually enforces
-    the legacy-tree rule. It is not redundant with this test even though it
-    looks like a weaker, ad hoc check -- deleting it as "covered by
-    import-linter already" would silently remove the only real enforcement
-    against the kernel reaching into limekit.engine / GlobalEngine.
+    The kernel imports nothing from the rest of limekit, and widgets sit
+    above the kernel. See `.importlinter`.
     """
     # Invoked by calling importlinter.cli.lint_imports() directly rather than
     # via `python -m importlinter.cli lint`: in import-linter 2.13,
@@ -45,15 +35,24 @@ def test_import_contracts_hold():
     assert result.returncode == 0, result.stdout + result.stderr
 
 
-def test_kernel_does_not_import_the_legacy_engine():
-    """The new kernel must not reach back into the 1.x runtime.
+# The 1.x engine was retired: these were its packages, and its runner.
+RETIRED = ("engine", "components", "core", "utils", "gui", "lua", "config")
 
-    The legacy tree itself survives P0 so existing apps keep working; it is
-    removed in P1. What matters here is that kernel/ never depends on it.
+
+def test_the_1x_engine_stays_retired():
+    """Nothing of the 1.x engine remains, and nothing reaches for it.
+
+    It was half the codebase and only ran 1.x projects; a 1.x project is now
+    recognised and refused (`launcher.detect_api_version`). An import of one
+    of its modules would fail only when that code path ran -- this fails now.
     """
-    offenders = []
-    for path in (REPO / "limekit" / "kernel").rglob("*.py"):
-        text = path.read_text(encoding="utf-8", errors="ignore")
-        if "limekit.engine" in text or "GlobalEngine" in text:
-            offenders.append(path.relative_to(REPO).as_posix())
-    assert offenders == [], f"kernel reaches into the legacy engine: {offenders}"
+    package = REPO / "limekit"
+    assert [n for n in RETIRED if (package / n).exists()] == []
+    assert not (package / "runner.py").exists()
+
+    # Anchored to the start of a line: a real import, not a comment quoting one.
+    pattern = re.compile(r"^\s*(?:from|import)\s+limekit\.(?:%s|runner)\b" % "|".join(RETIRED),
+                         re.MULTILINE)
+    offenders = [p.relative_to(REPO).as_posix() for p in package.rglob("*.py")
+                 if pattern.search(p.read_text(encoding="utf-8", errors="ignore"))]
+    assert offenders == [], f"code still imports the 1.x engine: {offenders}"

@@ -1,12 +1,10 @@
 PySide6
 lupa
-playsound
 psutil
 emoji
 pyqtdarktheme
 qdarkstyle
 qt_material
-qtmodern
 pytest
 pytest-qt
 import-linter
