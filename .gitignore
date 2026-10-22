@@ -158,3 +158,6 @@ cython_debug/
 
 # SDD / agent scratch workspace -- never a deliverable
 .superpowers/
+
+# VS Code's auto-generated Python completion cache -- machine output, not source
+.vscode/PythonImportHelper-v2-Completion.json
