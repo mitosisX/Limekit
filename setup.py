@@ -27,6 +27,8 @@ setuptools.setup(
                            "themes/qtthemes/*"],
     },
     include_package_data=True,
+    # Limer ships Python 3.13; 3.12 is the oldest CI checks.
+    python_requires=">=3.12",
     install_requires=[
         "PySide6",
         "lupa",

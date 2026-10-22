@@ -82,7 +82,7 @@ git rm -r -q "scripts/views (TO REFACTOR)" scripts/common scripts/config scripts
 
 ---
 
-## CI follow-ups `IN PROGRESS` (C.3 left)
+## CI follow-ups `IN PROGRESS` (C.3, C.5 left)
 
 From the first real run on GitHub (Limekit's workflow, after the push on
 2026-10-22): **windows-latest/3.12 ✅ · macos-latest/3.12 ✅ ·
@@ -93,6 +93,8 @@ ubuntu-latest/3.10 ❌ · ubuntu-latest/3.12 ❌** (failed in under a minute).
 | C.1 | Ubuntu fails on both Python versions | `DONE` 2026-10-22 — the job log (688 passed, **1 failed**) showed it was not environmental: `test_fontcombobox_onitemselect_guarded` assumed which font a QFontComboBox starts on. It starts on the system default font -- far down the list on Windows, item 2 on Ubuntu -- so `setCurrentIndex(2)` was a change on Windows and a no-op on Ubuntu, and `onItemSelect` (Qt's currentIndexChanged) rightly fired only on Windows. The test now picks an item that is not current. Framework unchanged. Note: `ubuntu-latest` moved to Ubuntu 26 on 2026-10-19 |
 | C.2 | Node.js 20 deprecation | `DONE` 2026-10-22 — `actions/checkout`, `actions/setup-python` and `actions/upload-artifact` moved to `@v7` in both workflows; each v7 tag's `action.yml` checked to declare `node24`. Confirmed by the next CI run |
 | C.3 | Once green: add CI badges to both READMEs | `TODO` |
+| C.4 | Python 3.10 crashed (exit 134, an abort) on the second run while 3.12 passed | `DONE` 2026-10-22 — owner's call: 3.10 is not needed (Limer ships 3.13; the owner develops on 3.13). Minimum raised to 3.12 (`python_requires`, both READMEs, Limer's `build.bat`); CI now tests 3.13 on all three OSes and 3.12 on Ubuntu. Not root-caused -- if the abort was a real threading bug rather than a 3.10 quirk, it will reappear on 3.12/3.13 |
+| C.5 | **MVP:** the docs' Getting Started still tells *users* to install Python 3.10+ -- wrong now that Limer bundles Python. Rewrite it around downloading Limer | `TODO` |
 
 ---
 

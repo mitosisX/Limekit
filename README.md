@@ -158,7 +158,7 @@ This is the part that needs Python. Users of Limer never see it.
 
 **Requirements**
 
-- Python 3.10+
+- Python 3.12+
 - Qt comes in with PySide6 via pip; on Linux you may also need the X11/XCB
   system libraries Qt links against (`libxcb-cursor0` and friends)
 

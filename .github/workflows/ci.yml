@@ -23,11 +23,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python: ["3.12"]
+        # 3.13 is what Limer ships (package_portable.py); test that everywhere.
+        python: ["3.13"]
         include:
-          # The oldest Python the README promises.
+          # The oldest Python setup.py accepts.
           - os: ubuntu-latest
-            python: "3.10"
+            python: "3.12"
 
     env:
       QT_QPA_PLATFORM: offscreen
