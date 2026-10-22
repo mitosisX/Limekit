@@ -37,12 +37,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # The 2.0 examples live on the demos repo's migration branch until it
-      # is merged; switch `ref` to master when it is.
+      # The 2.0 examples the suite boots.
       - uses: actions/checkout@v7
         with:
           repository: mitosisX/limekit-demos
-          ref: limekit-2.0-migration
+          ref: master
           path: limekit-demos
 
       - uses: actions/setup-python@v7
