@@ -293,8 +293,8 @@ much each unlocks.
 
 | # | Task | Status |
 |---|---|---|
-| 5.1 | Merge `limekit-2.0` → `main` and `limekit-2.0-port` → `master`. **Until this happens every visitor reads the 1.x README** — 75 commits in Limekit and 30 in Limer are invisible | `TODO` |
-| 5.2 | Tag `2.0.0` in both repos | `TODO` |
+| 5.1 | Make v2 the default branch everywhere | `DONE` 2026-10-22 — fast-forwarded, no merge commits: Limekit `main` → f7f2bc1, Limer `master` → 3b51d98, limekit-demos `master` → 925ab06, limekit-docs `master` → 61a5a5d. The 1.x demos are on the `1.x-demos` branch on GitHub |
+| 5.2 | Tag `2.0.0` in both repos | `DONE` 2026-10-22 — `v2.0.0` on Limer 3b51d98 and Limekit f7f2bc1, the commits `Limer-2.0-windows.zip` was built from (GUI check and a real Build passed on that zip). The GitHub Release itself is created by the owner in the browser; the Limekit 1.0 release stays up |
 | 5.3 | CI release workflow: Windows, Linux and macOS builds attached to every GitHub Release | `TODO` |
 | 5.4 | macOS: build on a GitHub `macos-latest` runner (free for public repos — no Mac needed). Document the Gatekeeper right-click→Open step until there is a signing certificate | `TODO` |
 | 5.5 | Linux: an AppImage or tarball, plus the Qt system libraries listed in `docker/Dockerfile:19-24` | `TODO` |
