@@ -72,3 +72,15 @@ def test_headers_cannot_be_picked_or_dragged(qapp):
     assert header.data(Qt.ItemDataRole.UserRole) is None
     assert not (header.flags() & Qt.ItemFlag.ItemIsSelectable)
     assert not (header.flags() & Qt.ItemFlag.ItemIsDragEnabled)
+
+
+def test_every_widget_the_groups_name_is_offered(qapp):
+    """GROUPS names widgets by hand. One that builds but was left off the
+    palette -- Spinner, DoubleSpinner and ProgressBar were, because they
+    have no __init__ of their own -- could never be dragged onto a design."""
+    from limekit.widgets.widgetpalette import GROUPS, palette_classes
+    offered = set(palette_classes())
+    unbuildable = {"GifPlayer"}         # needs a file to play
+    missing = [n for _, names in GROUPS for n in names
+               if f"ui.{n}" not in offered and n not in unbuildable]
+    assert missing == []

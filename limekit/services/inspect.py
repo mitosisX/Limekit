@@ -50,27 +50,68 @@ def top_level_widgets():
     return sorted(windows, key=lambda w: (w.windowTitle(), id(w)))
 
 
+def _is_limekit(widget):
+    return getattr(type(widget), "__lime__", None) is not None
+
+
 def child_widgets(widget):
-    """Direct child widgets, in creation order.
+    """The Limekit widgets directly inside `widget`, in creation order.
 
     `QObject.children()` also returns layouts, actions, timers and the like.
-    Only widgets are addressable here, and filtering rather than indexing
-    into children() keeps a path meaning the same thing whether or not the
-    widget happens to own a layout.
+    It returns the parts Qt builds for itself too -- a spinner's text box, a
+    list's viewport and scroll bars, a tab's bar -- and those are nobody's
+    project. They are looked through, not listed: a label inside a
+    scroller's viewport is the scroller's child here, as it is in the Lua
+    that put it there. Paths count only what this returns, so a path means
+    the same thing whatever Qt has made around a widget.
     """
-    return [c for c in widget.children() if isinstance(c, QWidget)]
+    found = []
+    for child in widget.children():
+        if not isinstance(child, QWidget):
+            continue
+        if _is_limekit(child):
+            found.append(child)
+        else:
+            found.extend(child_widgets(child))
+    return found
+
+
+# Where several Limekit classes share a Qt base, the one a widget of that
+# base most plausibly is.
+_PREFERRED = {"QLabel": "ui.Label", "QFrame": "ui.Container", "QWidget": "ui.Container"}
+
+
+def _name_by_base():
+    """Qt base class name -> the Limekit class built on it, where only one is."""
+    from limekit.kernel.registry import registry
+
+    seen = {}
+    for path in registry.paths():
+        if not path.startswith("ui."):
+            continue
+        for base in registry.get(path).__bases__:
+            if base.__module__.startswith("PySide6"):
+                seen.setdefault(base.__name__, set()).add(path)
+    names = {qt: paths.pop() for qt, paths in seen.items() if len(paths) == 1}
+    names.update(_PREFERRED)
+    return names
 
 
 def lime_name(widget):
-    """The name Lua knows this widget by, or Qt's class name.
+    """The name Lua knows this widget by: "ui.Button".
 
-    A widget built through Limekit carries `__lime__` ("ui.Button"). One Qt
-    made on its own behalf -- a scroll area's viewport, a tab bar -- does
-    not, and saying so is more honest than pretending it is part of the
-    project.
+    A widget Limekit did not build -- a dialog Qt raised, a top-level window
+    found by Qt's own list -- is named after the Limekit class it most
+    resembles. A Qt class name never reaches the person looking.
     """
     lime = getattr(type(widget), "__lime__", None)
-    return lime or f"<{type(widget).__name__}>"
+    if lime:
+        return lime
+    names = _name_by_base()
+    for cls in type(widget).__mro__:
+        if cls.__name__ in names:
+            return names[cls.__name__]
+    return "ui.Container"
 
 
 def label_for(widget):
@@ -158,6 +199,40 @@ def _as_option_name(prop, raw):
     return raw
 
 
+def describe(value):
+    """A value that is not a string, number or boolean, put in words.
+
+    repr() would say "<PySide6.QtGui.QIcon(null) at 0x...>": Qt's name for
+    it and an address, neither of which means anything to a Lua author.
+    """
+    from PySide6.QtCore import QSize
+    from PySide6.QtGui import QFont, QIcon, QImage, QKeySequence, QPixmap
+
+    if isinstance(value, QWidget):
+        return f"{lime_name(value)} {label_for(value)}".strip()
+    if isinstance(value, QIcon):
+        return "no icon" if value.isNull() else "icon"
+    if isinstance(value, (QPixmap, QImage)):
+        return "no image" if value.isNull() else f"image {value.width()} x {value.height()}"
+    if isinstance(value, QFont):
+        return f"{value.family()}, {value.pointSize()} pt"
+    if isinstance(value, QSize):
+        return f"{value.width()} x {value.height()}"
+    if isinstance(value, QKeySequence):
+        return value.toString() or "none"
+    if isinstance(value, (list, tuple)):
+        return ", ".join(str(v) if isinstance(v, _PRIMITIVES) else describe(v)
+                         for v in value) or "empty"
+    if hasattr(value, "name") and hasattr(type(value), "__members__"):
+        return str(value.name).lower()               # an enum member
+    try:
+        from limekit.kernel.bridge.engine import lupa
+        kind = lupa.lua_type(value)                       # a Lua table or function
+    except Exception:
+        kind = None
+    return kind or getattr(type(value), "__lime__", None) or "a value"
+
+
 def _readable(value):
     """A value the far end can render, and a note on what it really was."""
     if isinstance(value, bool):
@@ -166,7 +241,7 @@ def _readable(value):
         return value, type(value).__name__
     if value is None:
         return None, "nil"
-    return repr(value), "object"
+    return describe(value), "object"
 
 
 def properties(widget):
@@ -245,7 +320,10 @@ def buildable_classes():
     names = []
     for name, cls in registry.modules().get("ui", {}).items():
         ctor = reflection.constructor(cls)
-        if ctor is None or any(not has_default for _, _, has_default in ctor.params):
+        # No __init__ of Limekit's own means Qt's, which takes no arguments:
+        # ui.Spinner() builds. Counting that as "not buildable" kept Spinner,
+        # DoubleSpinner and ProgressBar off the designer's palette.
+        if ctor is not None and any(not has_default for _, _, has_default in ctor.params):
             continue
         names.append(name)
     return sorted(names)

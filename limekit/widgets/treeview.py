@@ -117,6 +117,13 @@ class TreeView(LimeWidget, QTreeWidget):
         super().setColumnWidth(LuaIndex(column), _to_int(width, "width"))
         return self
 
+    @method({"column": "integer", "hidden": "boolean"}, returns="self",
+            doc="Hides or shows a column. A hidden column still holds its "
+                "text, so it can carry data the tree should not show.")
+    def setColumnHidden(self, column, hidden=True):
+        super().setColumnHidden(LuaIndex(column), bool(hidden))
+        return self
+
     def addTopItem(self, item):
         """Qt native (`addTopLevelItem`) re-exposed so it chains."""
         self.addTopLevelItem(item)

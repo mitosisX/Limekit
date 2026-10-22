@@ -9144,6 +9144,12 @@ function TreeView:setBackgroundColor(colour) end
 ---@return TreeView
 function TreeView:setColumnCount(columns) end
 
+--- Hides or shows a column. A hidden column still holds its text, so it can carry data the tree should not show.
+---@param column integer
+---@param hidden? boolean
+---@return TreeView
+function TreeView:setColumnHidden(column, hidden) end
+
 ---@param column any
 ---@param width any
 ---@return TreeView
@@ -9401,6 +9407,12 @@ function TreeWidget:setBackgroundColor(colour) end
 ---@param columns integer
 ---@return TreeWidget
 function TreeWidget:setColumnCount(columns) end
+
+--- Hides or shows a column. A hidden column still holds its text, so it can carry data the tree should not show.
+---@param column integer
+---@param hidden? boolean
+---@return TreeWidget
+function TreeWidget:setColumnHidden(column, hidden) end
 
 ---@param column any
 ---@param width any

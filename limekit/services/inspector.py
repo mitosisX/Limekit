@@ -111,7 +111,9 @@ class ProjectInspector(QObject):
             reply["ok"] = True
         except Exception as exc:
             reply["ok"] = False
-            reply["error"] = f"{type(exc).__name__}: {exc}"
+            # The message alone: "ValueError: ..." names a Python class the
+            # person reading it never wrote.
+            reply["error"] = str(exc) or "it failed, without saying why"
         return reply
 
     # -- operations --------------------------------------------------------
@@ -168,7 +170,11 @@ class ProjectInspector(QObject):
         result = self._runtime.execute(code, chunkname="<injected>")
         if result is None:
             return ""
-        return repr(result)
+        if isinstance(result, bool):
+            return "true" if result else "false"
+        if isinstance(result, (str, int, float)):
+            return str(result)
+        return inspection.describe(result)
 
 
 def start_if_requested(runtime):

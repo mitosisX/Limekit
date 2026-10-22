@@ -29,6 +29,11 @@ def _build_script(project_path, options, console_mode, output_dir):
     is not Python (true/false/null).
     """
     forwarded = {key: options[key] for key in _FORWARDED_OPTIONS if options.get(key)}
+    # A yes/no choice, forwarded even when it is "no": the truthiness test
+    # above would drop False, and "Pack into a single file" unticked still
+    # built a single file.
+    if options.get("onefile") is not None:
+        forwarded["onefile"] = bool(options["onefile"])
 
     return f'''
 import sys
