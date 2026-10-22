@@ -49,7 +49,7 @@ Nothing here can break anything. Do it first.
 | 0.3 | Rewrite `Limer-Limekit/README.md`: lead with "download, unzip, run". Drop the `.rar`, the Python install steps, the "3 compressed files", and "I do not have a Mac" | `DONE` 2026-10-22 — describes the Phase 1 target; do not merge to `master` before Phase 1 lands |
 | 0.4 | Ship releases as `.zip`, never `.rar` | `DONE` 2026-10-22 — now `python package_portable.py --zip` (see 1.9), writing `Limer-<version>-<os>.zip` that unpacks to one `Limer/` folder |
 | 0.5 | Record two GIFs — the Designer, and the Inspector editing a live app — and put them at the top of Limer's README | `BLOCKED` — needs a human screen recording; shot list below |
-| 0.6 | Add CI: `.github/workflows/ci.yml` in both repos, matrix over ubuntu/windows/macos | `DONE` 2026-10-22 — every command verified locally; first GitHub run happens on push. Limekit: `pytest` (already covers import-linter, the three generator no-op checks and all 2.0 demo boots). Limer: its 36 checks + API-index staleness, plus a hand-triggered 3-OS PyInstaller build uploading zips |
+| 0.6 | Add CI: `.github/workflows/ci.yml` in both repos, matrix over ubuntu/windows/macos | `DONE` 2026-10-22 — every command verified locally; first GitHub run: Windows and macOS pass, Ubuntu fails -- see CI follow-ups. Limekit: `pytest` (already covers import-linter, the three generator no-op checks and all 2.0 demo boots). Limer: its 36 checks + API-index staleness, plus a hand-triggered 3-OS PyInstaller build uploading zips |
 | 0.7 | Delete Limer's dead code | `DONE` 2026-10-22 — owner approved; 14 files, 1,538 lines removed with `git rm` (list below). Limer's 36 checks pass and it boots |
 | 0.8 | Remove the stale 1.x comments and the 1.x `misc/templates/hello.lua` | `DONE` 2026-10-22 — stale comments fixed; template removed with 0.7. Other 1.x mentions in Limer are accurate history and stay |
 
@@ -79,6 +79,20 @@ One command, from `Limer-Limekit/` — reversible with `git restore --staged . &
 ```
 git rm -r -q "scripts/views (TO REFACTOR)" scripts/common scripts/config scripts/app/modals misc/templates "scripts/gui/tabs/properties_tab copy.lua" scripts/app/core/build_manager.lua scripts/app/bootstrap.lua scripts/app/core/init.lua scripts/app/core/utils.lua scripts/app/core/config/constants.lua scripts/gui/tabs/console.lua
 ```
+
+---
+
+## CI follow-ups `IN PROGRESS` (C.3 left)
+
+From the first real run on GitHub (Limekit's workflow, after the push on
+2026-10-22): **windows-latest/3.12 ✅ · macos-latest/3.12 ✅ ·
+ubuntu-latest/3.10 ❌ · ubuntu-latest/3.12 ❌** (failed in under a minute).
+
+| # | Task | Status |
+|---|---|---|
+| C.1 | Ubuntu fails on both Python versions | `DONE` 2026-10-22 — the job log (688 passed, **1 failed**) showed it was not environmental: `test_fontcombobox_onitemselect_guarded` assumed which font a QFontComboBox starts on. It starts on the system default font -- far down the list on Windows, item 2 on Ubuntu -- so `setCurrentIndex(2)` was a change on Windows and a no-op on Ubuntu, and `onItemSelect` (Qt's currentIndexChanged) rightly fired only on Windows. The test now picks an item that is not current. Framework unchanged. Note: `ubuntu-latest` moved to Ubuntu 26 on 2026-10-19 |
+| C.2 | Node.js 20 deprecation | `DONE` 2026-10-22 — `actions/checkout`, `actions/setup-python` and `actions/upload-artifact` moved to `@v7` in both workflows; each v7 tag's `action.yml` checked to declare `node24`. Confirmed by the next CI run |
+| C.3 | Once green: add CI badges to both READMEs | `TODO` |
 
 ---
 

@@ -244,7 +244,11 @@ def test_fontcombobox_onitemselect_guarded(qapp, sink):
     combo = FontComboBox()
     combo.addItems(["Arial", "Courier"])
     combo.setOnItemSelect(lambda *a: 1 / 0)
-    combo.setCurrentIndex(2)
+    # A QFontComboBox starts on the system's default font, which is a
+    # different item on every OS (Windows: far down; Ubuntu: item 2). The
+    # event fires only on a change, so pick an item that is not current.
+    target = 1 if combo.getCurrentIndex() != 1 else 2
+    combo.setCurrentIndex(target)
     assert len(sink) == 1
 
 
