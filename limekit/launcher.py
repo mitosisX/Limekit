@@ -16,8 +16,8 @@ ENTRY = ("-m", "limekit")
 
 UNSUPPORTED_1X = (
     "This project was made for Limekit 1.x, which this version no longer "
-    "runs. The Limer 1.x release still runs it; to bring it across instead, "
-    "see \"Migrating from 1.x\" in the Limekit documentation."
+    "runs. To bring it across, see \"Migrating from 1.x\" in the Limekit "
+    "documentation."
 )
 
 

@@ -146,8 +146,7 @@ breaks them here rather than in your hands.
 **2.0 is in alpha.** The 2.0 engine is a rewrite: a declarative kernel,
 generated bindings, an explicit application lifecycle and a test suite that did
 not exist before. The 1.x engine has been retired: a 1.x project is recognised
-and refused with a pointer to the migration guide, rather than run. The
-[Limer 1.x release](https://github.com/mitosisX/Limer-Limekit/releases) still runs 1.x projects.
+and refused with a pointer to the migration guide, rather than run.
 
 Known limits worth knowing before you start something ambitious: there is no
 canvas or custom painting yet, no drag and drop for app code, no HTTP client,
