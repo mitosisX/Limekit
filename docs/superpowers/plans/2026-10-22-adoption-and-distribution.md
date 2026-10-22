@@ -256,7 +256,7 @@ All 12 fixed test-first; Limekit suite 693 passed (from 666), Limer 39 checks. 2
 
 | # | Task | Status |
 |---|---|---|
-| 3.1 | Write `.luarc.json` into every new project so lua-language-server finds the bundled stubs with no setup (`project_creator.lua:137-213`) | `TODO` |
+| 3.1 | Write `.luarc.json` into every new project so lua-language-server finds the bundled stubs with no setup (`project_creator.lua:137-213`) | `DONE` 2026-10-22 — found the stubs could never resolve: `require("limekit.ui")` is looked up as `limekit/ui.lua`, and they sat at `stubs/ui.lua`. Moved to `stubs/limekit/`. New `sys.EditorSetup` writes/refreshes `.luarc.json` (replaces a dead Limekit path when Limer moves, keeps the author's own settings, leaves an unreadable file alone); Limer calls it on every project open. Verified with lua-language-server 3.19.2 against the file real Limer wrote: `button:setTxt` flagged |
 | 3.2 | Make `file.lua:42` in Limer's console clickable — jump to the file (needs 2.2) | `TODO` |
 | 3.3 | Stop flagging any output line containing "error" as an error (`project_runner.lua:195-203`) | `TODO` |
 | 3.4 | Let the user choose where projects live; today it is hardcoded to `Documents/limekit projects` (`app/core/config/paths.lua:10`) | `TODO` |
