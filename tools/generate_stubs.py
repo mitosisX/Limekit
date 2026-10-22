@@ -175,8 +175,15 @@ def render_module(module, members):
 
 def main():
     manifest.import_all()
-    target = REPO / "limekit" / "runtime" / "lua" / "stubs"
+    # stubs/limekit/ui.lua, not stubs/ui.lua: an editor resolves
+    # require("limekit.ui") to limekit/ui.lua under each library folder, so
+    # that is where the file has to be for completion to reach a project.
+    target = REPO / "limekit" / "runtime" / "lua" / "stubs" / "limekit"
     target.mkdir(parents=True, exist_ok=True)
+    # A module that no longer exists must not leave its stub behind.
+    for stale in target.glob("*.lua"):
+        if stale.stem not in registry.modules():
+            stale.unlink()
 
     for module, members in registry.modules().items():
         path = target / f"{module}.lua"

@@ -17,7 +17,7 @@ import pytest
 from limekit.kernel.bridge.engine import LuaRuntime
 
 STUBS = sorted((pathlib.Path(__file__).resolve().parent.parent
-                / "limekit" / "runtime" / "lua" / "stubs").glob("*.lua"))
+                / "limekit" / "runtime" / "lua" / "stubs" / "limekit").glob("*.lua"))
 
 
 def test_stubs_exist():

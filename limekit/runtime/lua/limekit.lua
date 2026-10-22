@@ -40,6 +40,7 @@ limekit.res = require("limekit.res")
 
 -- sys
 limekit.sys = require("limekit.sys")
+--   sys.EditorSetup
 --   sys.Expr
 --   sys.FileWatcher
 --   sys.Inspector

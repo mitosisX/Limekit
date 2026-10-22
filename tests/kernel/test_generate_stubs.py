@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-STUBS = REPO / "limekit" / "runtime" / "lua" / "stubs"
+STUBS = REPO / "limekit" / "runtime" / "lua" / "stubs" / "limekit"
 
 
 def test_a_stub_exists_per_module():

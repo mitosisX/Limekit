@@ -27,6 +27,7 @@ MODULES = (
     "limekit.services.database",
     "limekit.services.dialogs",
     "limekit.services.dropshadow",
+    "limekit.services.editor",
     "limekit.services.fs",
     "limekit.services.inspect",
     "limekit.services.inspector",

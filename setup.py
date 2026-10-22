@@ -15,7 +15,7 @@ setuptools.setup(
         # need __init__.py for find_packages() to see them at all -- without that,
         # these files silently land in no wheel (the exact "works in dev, missing
         # when shipped" defect this branch exists to eliminate).
-        "limekit.runtime.lua": ["*.lua", "stubs/*.lua"],
+        "limekit.runtime.lua": ["*.lua", "stubs/limekit/*.lua"],
         # Theme assets, shared by the 1.x and 2.0 engines. They used to live
         # under limekit/core/theming/ -- i.e. the 2.0 service reached into the
         # legacy tree for its data. The old key here also named
