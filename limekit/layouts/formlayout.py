@@ -13,10 +13,14 @@ class FormLayout(LimeLayout, QFormLayout):
         super().__init__(parent)
 
     def addChild(self, title, child=None):
-        """`addChild("Name", field)` for a labelled row, or `addChild(widget)`
-        (title is actually the widget) for a full-width unlabelled one -
-        mirrors QFormLayout.addRow's own two call shapes."""
+        """`addChild("Name", field)` for a labelled row, `addChild(label,
+        field)` for one whose label is a widget you made -- a ui.Label you
+        can style, or reach later -- or `addChild(widget)` (title is
+        actually the widget) for a full-width unlabelled one. Mirrors
+        QFormLayout.addRow's own call shapes."""
         if isinstance(title, str):
+            self.addRow(title, child)
+        elif child is not None:
             self.addRow(title, child)
         else:
             self.addRow(title)

@@ -23,7 +23,12 @@ the designer's model does that and rebuilds, so the tree on screen can never
 drift from the tree that will be written out.
 """
 
-from PySide6.QtCore import QElapsedTimer, QMimeData, QPoint, QRect, Qt, QTimer
+import os
+import sys
+import time
+import weakref
+
+from PySide6.QtCore import QElapsedTimer, QEvent, QMimeData, QObject, QPoint, QRect, Qt, QTimer
 from PySide6.QtGui import (QBrush, QColor, QDrag, QFontMetrics, QPainter,
                            QPalette, QPen, QPixmap)
 from PySide6.QtWidgets import (QApplication, QBoxLayout, QFormLayout,
@@ -109,6 +114,83 @@ class _Overlay(QWidget):
         self._surface._paint_overlay(self)
 
 
+class _PaintLog(QObject):
+    """LIMEKIT_DEBUG_PAINT: a record of what appears on a design surface.
+
+    For a flicker that cannot be reproduced outside the app it happens in
+    -- a white box at a surface's top-left, seen in Limer and in no test
+    harness. Set the variable to 1 to log to stderr, or to a file path to
+    log there. Logged: every top-level window shown, every native window
+    handle made, and in a surface's window, each Show, Paint, Move and
+    Resize of a widget at least 200x150 -- where it is relative to the
+    surface, and what holds it -- but only when that differs from what
+    was last logged for the same widget, so a repaint in place is quiet.
+    """
+
+    _installed = None
+    surfaces = weakref.WeakSet()
+
+    @classmethod
+    def install_if_asked(cls, surface):
+        target = os.environ.get("LIMEKIT_DEBUG_PAINT")
+        if not target:
+            return
+        cls.surfaces.add(surface)
+        if cls._installed is None:
+            out = sys.stderr if target == "1" else open(target, "a", encoding="utf-8", buffering=1)
+            cls._installed = cls(out)
+            QApplication.instance().installEventFilter(cls._installed)
+
+    def __init__(self, out):
+        super().__init__()
+        self._out = out
+        self._start = time.monotonic()
+        self._last = {}
+
+    def _write(self, text):
+        self._out.write(f"[{(time.monotonic() - self._start) * 1000:9.1f} ms] {text}\n")
+
+    def _surface_for(self, widget):
+        window = widget.window()
+        for surface in list(self.surfaces):
+            if surface.window() is window:
+                return surface
+        return None
+
+    def eventFilter(self, obj, event):
+        try:
+            kind = event.type()
+            if not isinstance(obj, QWidget):
+                return False
+            if kind == QEvent.Type.Show and obj.isWindow():
+                self._write(f"TOP-LEVEL SHOW {type(obj).__name__} {obj.geometry().getRect()} "
+                            f"title={obj.windowTitle()!r}")
+            elif kind == QEvent.Type.WinIdChange:
+                self._write(f"NATIVE HANDLE {type(obj).__name__} {obj.width()}x{obj.height()} "
+                            f"window={obj.isWindow()}")
+            elif kind in (QEvent.Type.Show, QEvent.Type.Paint, QEvent.Type.Move, QEvent.Type.Resize):
+                if obj.width() < 200 or obj.height() < 150 or obj.isWindow():
+                    return False
+                surface = self._surface_for(obj)
+                if surface is None:
+                    return False
+                at = obj.mapTo(obj.window(), QPoint(0, 0)) - surface.mapTo(obj.window(), QPoint(0, 0))
+                key = (kind, at.x(), at.y(), obj.width(), obj.height())
+                if self._last.get(id(obj)) == key:
+                    return False
+                self._last[id(obj)] = key
+                holders, parent = [], obj.parentWidget()
+                while parent is not None and len(holders) < 3:
+                    holders.append(type(parent).__name__)
+                    parent = parent.parentWidget()
+                design = "  (the design)" if obj is surface._child else ""
+                self._write(f"{kind.name:6} {type(obj).__name__} {obj.width()}x{obj.height()} "
+                            f"at surface {at.x()},{at.y()} in {'/'.join(holders)}{design}")
+        except RuntimeError:                # deleted under us
+            pass
+        return False
+
+
 def _is_dark(palette):
     return palette.color(QPalette.ColorRole.Window).lightness() < 128
 
@@ -187,6 +269,26 @@ def _holder_kind(widget):
     return None
 
 
+def _container_kind(widget):
+    """How `widget` holds children in a design -- "vbox", "hbox", "grid",
+    "form", "tab", "splitter", "scroller" -- or None if it holds none.
+
+    Only Limekit's own layouts and holders count. A design is built from
+    ui.VLayout, ui.Tab and the rest; a composite widget is built from Qt's
+    own, on the inside -- a Calendar is a QVBoxLayout of parts, an image
+    browser has a QScrollArea in it -- and counting those made a drop on a
+    Calendar land *in* the Calendar, and gave it a container's outline.
+    """
+    layout = widget.layout()
+    if isinstance(layout, LimeObject):
+        kind = _layout_kind(layout)
+        if kind is not None:
+            return kind
+    if isinstance(widget, LimeObject):
+        return _holder_kind(widget)
+    return None
+
+
 def _container_for(surface, hit):
     """The nearest widget at or above `hit` that holds children, and how.
 
@@ -196,7 +298,7 @@ def _container_for(surface, hit):
     """
     widget = hit
     while widget is not None and widget is not surface:
-        kind = _layout_kind(widget.layout()) or _holder_kind(widget)
+        kind = _container_kind(widget)
         if kind is not None:
             return widget, kind
         if widget is surface.getDesignChild():
@@ -298,7 +400,7 @@ def container_frames(surface):
         return []
     out = []
     for widget in [child] + child.findChildren(QWidget):
-        if widget.isVisible() and (_layout_kind(widget.layout()) or _holder_kind(widget)):
+        if widget.isVisible() and _container_kind(widget):
             out.append((widget, QRect(widget.mapTo(surface, QPoint(0, 0)), widget.size())))
     return out
 
@@ -457,6 +559,7 @@ class DesignSurface(LimeWidget, QWidget):
 
         self._overlay = _Overlay(self)
         self._overlay.raise_()
+        _PaintLog.install_if_asked(self)
 
     def _repaint(self):
         self.update()
@@ -494,6 +597,11 @@ class DesignSurface(LimeWidget, QWidget):
         self._hover = None
         self._labels = {}
         self._imageTargets = {}
+        # A flash still lit from the last edit names a widget of the design
+        # just replaced. Left running, it went on drawing a frame for a
+        # widget that is no longer on the surface.
+        self._flash = None
+        self._flashTimer.stop()
         if child is not None:
             self._layout.addWidget(child, 0, Qt.AlignmentFlag.AlignCenter)
             _make_inert(child)
@@ -521,7 +629,43 @@ class DesignSurface(LimeWidget, QWidget):
         return self
 
     def _label(self, widget):
-        return self._labels.get(widget) or type(widget).__name__
+        """The widget's tag: its label, or else what Limekit calls its class
+        ("Table") -- never Qt's ("QTableWidget"), which is not a name a
+        design uses."""
+        label = self._labels.get(widget)
+        if label:
+            return label
+        lime = getattr(type(widget), "__lime__", None)
+        if lime:
+            return lime.rsplit(".", 1)[-1]
+        return "widget"
+
+    def _design_widget(self, widget):
+        """The widget in the design that `widget` is, or is a part of.
+
+        `_deepest_at` finds the innermost Qt widget under the mouse, and for
+        a composite widget that is a part the design never made: a Table's
+        or a ListBox's viewport, a Scroller's, a Splitter's handle, a Tab's
+        page stack, the label a form row makes for itself. Selected,
+        hovered or double-clicked, such a part names nothing the designer
+        knows -- the tag read "QWidget", and a click on a Table's cells
+        selected nothing at all. So the hit climbs to the nearest widget
+        that is in the design: one given a label with setWidgetLabel when
+        the designer labels its widgets (Limer labels every one), or else
+        the nearest Limekit widget. The design child stops the climb.
+        """
+        labelled = bool(self._labels)
+        while widget is not None and widget is not self:
+            if widget is self._child:
+                return widget
+            if (widget in self._labels) if labelled else isinstance(widget, LimeObject):
+                return widget
+            widget = widget.parentWidget()
+        return None
+
+    def _hit(self, position):
+        """The design widget under `position`, or None over empty surface."""
+        return self._design_widget(_deepest_at(self, position))
 
     @method({"widget": "any", "slot": "string"}, returns="self",
             doc="Marks a widget as taking an image dragged from a "
@@ -703,8 +847,9 @@ class DesignSurface(LimeWidget, QWidget):
             return
 
         # childAt walks the same geometry Qt drew, so what is reported is
-        # what the eye picked -- no hit-testing of our own to disagree with.
-        hit = _deepest_at(self, position)
+        # what the eye picked -- no hit-testing of our own to disagree with --
+        # then climbs out of any part of a widget the design never made.
+        hit = self._hit(position)
         # The title bar stands for the window, which is the design child.
         title = self._title_rect()
         if hit is None and title is not None and title.contains(position):
@@ -725,7 +870,7 @@ class DesignSurface(LimeWidget, QWidget):
     def mouseDoubleClickEvent(self, event):
         position = event.position().toPoint()
         if self._onDoubleClick is not None:
-            self._onDoubleClick(_deepest_at(self, position), position.x(), position.y())
+            self._onDoubleClick(self._hit(position), position.x(), position.y())
         super().mouseDoubleClickEvent(event)
 
     def mouseMoveEvent(self, event):
@@ -748,7 +893,7 @@ class DesignSurface(LimeWidget, QWidget):
                 self.setCursor(_HANDLE_CURSORS[handle])
             else:
                 self.unsetCursor()
-            hover = _deepest_at(self, event.position().toPoint())
+            hover = self._hit(event.position().toPoint())
             if hover is not self._hover:
                 self._hover = hover
                 self._overlay.update()
@@ -1020,7 +1165,7 @@ class DesignSurface(LimeWidget, QWidget):
         for widget, frame in container_frames(self):
             if widget is self._child:
                 continue
-            kind = _layout_kind(widget.layout()) or _holder_kind(widget)
+            kind = _container_kind(widget)
             if _holds_nothing(widget, kind):
                 painter.fillRect(frame, tint)
                 if frame.width() > 60 and frame.height() > 18:

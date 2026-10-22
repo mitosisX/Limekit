@@ -76,6 +76,46 @@ def test_darklight_advertises_only_appliable_themes(lua):
         assert Theme.setTheme("darklight", name) is True
 
 
+def _pixel(widget, x, y):
+    """The colour drawn at (x, y); negative counts from the far edge."""
+    widget.resize(320, 200)
+    widget.show()
+    QApplication.processEvents()
+    image = widget.grab().toImage()
+    colour = image.pixelColor(x if x >= 0 else image.width() + x,
+                              y if y >= 0 else image.height() + y).name()
+    widget.close()
+    return colour
+
+
+def test_darklight_dark_tables_are_not_black():
+    """qdarktheme's dark sheet paints a table, and the strip its header
+    leaves bare, pure black. They get the colour lists and trees sit on."""
+    from PySide6.QtWidgets import QListWidget, QTableWidget
+    Theme.setTheme("darklight", "dark")
+    try:
+        table = QTableWidget(2, 1)
+        table.setColumnWidth(0, 60)
+        empty_area, header_strip = _pixel(table, -30, -30), _pixel(table, -30, 8)
+        list_area = _pixel(QListWidget(), -30, -30)
+        assert empty_area != "#000000" and header_strip != "#000000"
+        assert empty_area == list_area and header_strip == list_area
+    finally:
+        Theme.setTheme("darklight", "light")
+
+
+def test_darklight_applies_its_palette_and_leaves_light_tables_as_drawn():
+    from PySide6.QtGui import QPalette
+    from PySide6.QtWidgets import QTableWidget
+    import qdarktheme
+    role = QPalette.ColorRole.Base
+    Theme.setTheme("darklight", "dark")
+    assert QApplication.instance().palette().color(role) == qdarktheme.load_palette("dark").color(role)
+    Theme.setTheme("darklight", "light")
+    assert QApplication.instance().palette().color(role) == qdarktheme.load_palette("light").color(role)
+    assert _pixel(QTableWidget(2, 1), -30, -30) == "#ffffff"
+
+
 def test_material_missing_package_raises_bridge_error(monkeypatch):
     real_import = builtins.__import__
 

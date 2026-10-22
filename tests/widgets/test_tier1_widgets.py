@@ -104,6 +104,22 @@ def test_formlayout_addchild_accepts_bare_widget(qapp):
     assert form.getRowAt(1) is label
 
 
+def test_formlayout_addchild_takes_a_widget_as_the_label(qapp):
+    """A label made by the caller rather than by Qt, so it can be styled,
+    found again, and -- in Limer's designer -- clicked and renamed."""
+    from PySide6.QtWidgets import QFormLayout
+    from limekit.layouts.formlayout import FormLayout
+    from limekit.widgets.label import Label
+    from limekit.widgets.lineedit import LineEdit
+
+    form = FormLayout()
+    title, field = Label("Name"), LineEdit("")
+    form.addChild(title, field)
+    assert form.rowCount() == 1
+    assert form.getRowAt(1) is field
+    assert form.itemAt(0, QFormLayout.ItemRole.LabelRole).widget() is title
+
+
 # -- Container -------------------------------------------------------------
 
 def test_container_layout_prop_and_onkeypress(qapp, sink):

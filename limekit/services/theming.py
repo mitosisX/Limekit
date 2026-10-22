@@ -104,9 +104,34 @@ def _set_darklight(name):
         ) from exc
     try:
         stylesheet = qdarktheme.load_stylesheet(name)
+        palette = qdarktheme.load_palette(name)
     except Exception as exc:                                # noqa: BLE001
         raise BridgeError(f"could not apply darklight theme {name!r}: {exc}") from exc
-    _app().setStyleSheet(stylesheet)
+    app = _app()
+    # The palette as well as the stylesheet, as qdarktheme's own setup does.
+    # With the stylesheet alone, every role the sheet does not name stayed at
+    # Qt's light defaults, whatever the theme.
+    app.setPalette(palette)
+    app.setStyleSheet(stylesheet + _darklight_overrides(name, palette))
+
+
+def _darklight_overrides(name, palette):
+    """Rules appended to qdarktheme's own, for what it gets wrong.
+
+    Its light sheet gives a table the lightest surface it has, white, and its
+    dark sheet the inverse: pure black, for the table and for the strip its
+    header leaves bare. That reads as a hole in the window rather than a
+    surface in it. The dark theme's tables get the window's own colour
+    instead, the one its lists and trees already sit on; the light theme is
+    left exactly as qdarktheme draws it.
+    """
+    if name != "dark":
+        return ""
+    base = palette.color(QPalette.ColorRole.Base).name()
+    return (
+        "\nQTableView { background-color: %s; }"
+        "\nQTableView QHeaderView { background-color: %s; }\n" % (base, base)
+    )
 
 
 def _themes_darklight():
