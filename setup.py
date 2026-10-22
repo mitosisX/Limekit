@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="limekit",
-    version="2.0.0a1",
+    version="2.0.0",
     keywords="gui lua",
     author="Omega Msiska",
     author_email="omegamsiskah@gmail.com",
