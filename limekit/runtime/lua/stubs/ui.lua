@@ -1738,9 +1738,34 @@ function DesignSurface:flash(widget) end
 ---@return any
 function DesignSurface:getDesignChild() end
 
---- The selected widget, or nil.
+--- The grid step in px.
+---@return integer
+function DesignSurface:getGridSize() end
+
+--- Whether a resize shows and snaps to guide lines.
+---@return boolean
+function DesignSurface:getGuidesEnabled() end
+
+--- The selected widget, or nil. With several selected, the primary one.
 ---@return any
 function DesignSurface:getSelected() end
+
+--- Every selected widget, the primary one last.
+---@return any[]
+function DesignSurface:getSelection() end
+
+--- Whether a resize snaps to the grid.
+---@return boolean
+function DesignSurface:getSnapToGrid() end
+
+--- The width and height a widget of the design is laid out at, in its own px -- whatever the zoom. For matching one widget's size to another's.
+---@param widget any
+---@return integer, integer
+function DesignSurface:getWidgetSize(widget) end
+
+--- The zoom the design is drawn at; 1 is its real size.
+---@return number
+function DesignSurface:getZoom() end
 
 ---@return DesignSurface
 function DesignSurface:hide() end
@@ -1750,6 +1775,10 @@ function DesignSurface:isFlashing() end
 --- Re-applies design mode after the tree has been added to.
 ---@return DesignSurface
 function DesignSurface:refresh() end
+
+--- Back to the design's real size.
+---@return DesignSurface
+function DesignSurface:resetZoom() end
 
 ---@param colour any
 ---@return DesignSurface
@@ -1782,6 +1811,16 @@ function DesignSurface:setFocus() end
 ---@param title string
 ---@return DesignSurface
 function DesignSurface:setFrameTitle(title) end
+
+--- The grid step in px -- the backdrop's dots, and what snapping rounds to. 16 by default.
+---@param size integer
+---@return DesignSurface
+function DesignSurface:setGridSize(size) end
+
+--- Whether a resize shows -- and snaps to -- guide lines where the edge it pulls meets another widget's edge or matches another widget's size. On by default.
+---@param enabled boolean
+---@return DesignSurface
+function DesignSurface:setGuidesEnabled(enabled) end
 
 --- Resizes the height, leaving the width alone.
 ---@param height integer
@@ -1864,10 +1903,25 @@ function DesignSurface:setOnImageDrop(handler) end
 ---@return DesignSurface
 function DesignSurface:setOnResize(handler) end
 
+--- Called when a selection handle is dragged and released, with {widget, width, height} for every selected widget -- each pulled by the same amount. Preferred over setOnResize, which hears only the primary widget. The surface changes nothing.
+---@param handler fun(sizes: table[])
+---@return DesignSurface
+function DesignSurface:setOnResizeSelection(handler) end
+
 --- Called with the widget under a click, or nil for empty space.
 ---@param handler fun(widget: any)
 ---@return DesignSurface
 function DesignSurface:setOnSelect(handler) end
+
+--- Called when Ctrl- or Shift-clicking, or dragging a marquee, changes a selection of several widgets, with all of them, the primary one last. A plain click still reports through setOnSelect.
+---@param handler fun(widgets: any[])
+---@return DesignSurface
+function DesignSurface:setOnSelectionChange(handler) end
+
+--- Called whenever the zoom changes -- by setZoom or by Ctrl+wheel on the surface.
+---@param handler fun(factor: number)
+---@return DesignSurface
+function DesignSurface:setOnZoomChange(handler) end
 
 --- One definition, seven policies - not three in some widgets.
 ---@param horizontal any
@@ -1880,10 +1934,20 @@ function DesignSurface:setResizeRule(horizontal, vertical) end
 ---@return DesignSurface
 function DesignSurface:setSelected(widget) end
 
+--- Selects several widgets at once. The last is the primary one: the one with resize handles, the one getSelected returns.
+---@param widgets any[]
+---@return DesignSurface
+function DesignSurface:setSelection(widgets) end
+
 ---@param width any
 ---@param height any
 ---@return DesignSurface
 function DesignSurface:setSize(width, height) end
+
+--- Whether a resize snaps to the grid. Off by default.
+---@param enabled boolean
+---@return DesignSurface
+function DesignSurface:setSnapToGrid(enabled) end
 
 --- The name shown on a widget's hover, selection and drag tags, e.g. 'ok · Button'. Without one the widget's type is shown. Forgotten when the design child is replaced.
 ---@param widget any
@@ -1896,8 +1960,21 @@ function DesignSurface:setWidgetLabel(widget, label) end
 ---@return DesignSurface
 function DesignSurface:setWidth(width) end
 
+--- Draws the design at this scale -- 1 is its real size -- from 0.25 to 3. Widgets are not resized: the design is shown smaller or larger, and selecting, dropping and resizing work at any zoom.
+---@param factor number
+---@return DesignSurface
+function DesignSurface:setZoom(factor) end
+
 ---@return DesignSurface
 function DesignSurface:show() end
+
+--- The next zoom step up, to at most 3.
+---@return DesignSurface
+function DesignSurface:zoomIn() end
+
+--- The next zoom step down, to at least 0.25.
+---@return DesignSurface
+function DesignSurface:zoomOut() end
 
 ---@class Dialogs
 local Dialogs = {}
@@ -3055,6 +3132,12 @@ function FormLayout:getLayoutAt(index) end
 ---@param index any
 function FormLayout:getRowAt(index) end
 
+--- Where one child sits in the space the layout gives it, e.g. "left", or ("right", "bottom"). Aligned in a direction, a widget keeps its own size that way instead of stretching to fill; with no alignment given, it fills again.
+---@param child any
+---@param ... any
+---@return FormLayout
+function FormLayout:setChildAlignment(child, ...) end
+
 --- Combine one or more alignment names, e.g. ("center", "top").
 ---@param ... any
 ---@return FormLayout
@@ -3281,6 +3364,12 @@ function GridLayout:getCount() end
 
 ---@param index any
 function GridLayout:getLayoutAt(index) end
+
+--- Where one child sits in the space the layout gives it, e.g. "left", or ("right", "bottom"). Aligned in a direction, a widget keeps its own size that way instead of stretching to fill; with no alignment given, it fills again.
+---@param child any
+---@param ... any
+---@return GridLayout
+function GridLayout:setChildAlignment(child, ...) end
 
 ---@param column any
 ---@param stretch any
@@ -3552,6 +3641,12 @@ function HLayout:getCount() end
 
 ---@param index any
 function HLayout:getLayoutAt(index) end
+
+--- Where one child sits in the space the layout gives it, e.g. "left", or ("right", "bottom"). Aligned in a direction, a widget keeps its own size that way instead of stretching to fill; with no alignment given, it fills again.
+---@param child any
+---@param ... any
+---@return HLayout
+function HLayout:setChildAlignment(child, ...) end
 
 --- Combine one or more alignment names, e.g. ("center", "top").
 ---@param ... any
@@ -7223,6 +7318,12 @@ function StackedLayout:getCurrentIndex() end
 ---@param index any
 function StackedLayout:getLayoutAt(index) end
 
+--- Where one child sits in the space the layout gives it, e.g. "left", or ("right", "bottom"). Aligned in a direction, a widget keeps its own size that way instead of stretching to fill; with no alignment given, it fills again.
+---@param child any
+---@param ... any
+---@return StackedLayout
+function StackedLayout:setChildAlignment(child, ...) end
+
 --- Combine one or more alignment names, e.g. ("center", "top").
 ---@param ... any
 ---@return StackedLayout
@@ -9444,6 +9545,12 @@ function VLayout:getCount() end
 
 ---@param index any
 function VLayout:getLayoutAt(index) end
+
+--- Where one child sits in the space the layout gives it, e.g. "left", or ("right", "bottom"). Aligned in a direction, a widget keeps its own size that way instead of stretching to fill; with no alignment given, it fills again.
+---@param child any
+---@param ... any
+---@return VLayout
+function VLayout:setChildAlignment(child, ...) end
 
 --- Combine one or more alignment names, e.g. ("center", "top").
 ---@param ... any

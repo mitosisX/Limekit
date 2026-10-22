@@ -23,6 +23,7 @@ the designer's model does that and rebuilds, so the tree on screen can never
 drift from the tree that will be written out.
 """
 
+import math
 import os
 import sys
 import time
@@ -35,7 +36,7 @@ from PySide6.QtWidgets import (QApplication, QBoxLayout, QFormLayout,
                                QGridLayout, QScrollArea, QSplitter,
                                QTabWidget, QVBoxLayout, QWidget)
 
-from limekit.kernel.bridge.convert import to_lua
+from limekit.kernel.bridge.convert import as_sequence, to_lua
 from limekit.kernel.bridge.guard import guard
 from limekit.kernel.declarative import LimeObject
 from limekit.kernel.errors import BridgeError
@@ -62,7 +63,14 @@ _HANDLE_CURSORS = {"right": Qt.CursorShape.SizeHorCursor,
                    "bottom": Qt.CursorShape.SizeVerCursor,
                    "corner": Qt.CursorShape.SizeFDiagCursor}
 _MARGIN = 36         # px of backdrop around the framed design
-_GRID = 16           # px between backdrop dots
+_GRID = 16           # px between backdrop dots, and the default snapping step
+# The zoom steps zoomIn and zoomOut walk, and the range setZoom allows.
+_ZOOM_STEPS = (0.25, 0.33, 0.5, 0.67, 0.75, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0)
+_ZOOM_MIN, _ZOOM_MAX = _ZOOM_STEPS[0], _ZOOM_STEPS[-1]
+_GUIDE_COLOUR = "#E5376B"
+_GUIDE_SNAP = 5      # px on screen within which a resized edge meets a guide
+# Far enough off the surface that no scroll position or screen ever shows it.
+_OFFSTAGE = QPoint(-100000, -100000)
 
 #: A class name from the palette: "ui.Button".
 CLASS_MIME = "application/x-limekit-class"
@@ -189,6 +197,30 @@ class _PaintLog(QObject):
         except RuntimeError:                # deleted under us
             pass
         return False
+
+
+class _Proxy(QWidget):
+    """Holds a zoomed design's place in the surface's layout, and draws it:
+    the design, grabbed at its real size, scaled to fit.
+
+    It draws the picture itself rather than leaving the surface to paint
+    under it: an app stylesheet gives every QWidget a background, and the
+    proxy's own fill then covered the design the surface had drawn.
+    """
+
+    def __init__(self, surface):
+        super().__init__(surface)
+        self._surface = surface
+        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, True)
+
+    def paintEvent(self, event):
+        shot = self._surface._design_shot()
+        if shot is None:
+            return
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform, True)
+        painter.drawPixmap(self.rect(), shot)
+        painter.end()
 
 
 def _is_dark(palette):
@@ -401,7 +433,7 @@ def container_frames(surface):
     out = []
     for widget in [child] + child.findChildren(QWidget):
         if widget.isVisible() and _container_kind(widget):
-            out.append((widget, QRect(widget.mapTo(surface, QPoint(0, 0)), widget.size())))
+            out.append((widget, surface._rect_in(widget)))
     return out
 
 
@@ -412,17 +444,23 @@ def resolve_drop(surface, position, dragging=None):
     selected. Returns None when there is nothing to drop into, or when the
     thing being moved would end up inside itself.
     """
-    hit = _deepest_at(surface, position) or surface.getDesignChild()
+    child = surface.getDesignChild()
+    hit = surface._raw_hit(position) or child
     if hit is None:
         return None
     container, kind = _container_for(surface, hit)
     if container is None:
         return None
-    if dragging is not None and _is_or_descends_from(container, dragging):
-        return None
+    # `dragging` is one widget, or every widget of a multiple selection.
+    for moving in (dragging if isinstance(dragging, (list, tuple)) else [dragging]):
+        if moving is not None and _is_or_descends_from(container, moving):
+            return None
 
     layout = container.layout()
-    local = container.mapFrom(surface, position)
+    # In the design's own coordinates, whatever the zoom: the layouts read
+    # their geometry there.
+    at = surface._to_design(position)
+    local = at if container is child else container.mapFrom(child, at)
     slot = {"target": container, "layout": kind}
     if kind in ("vbox", "hbox"):
         slot["index"] = _box_slot(layout, kind, local)
@@ -441,9 +479,14 @@ def resolve_drop(surface, position, dragging=None):
 
 def indicator_rect(surface, slot):
     """Where the drop indicator is drawn, in surface coordinates."""
+    return surface._rect_in(slot["target"], _indicator_local(slot))
+
+
+def _indicator_local(slot):
+    """The drop indicator in the target's own coordinates."""
     target = slot["target"]
     layout = target.layout()
-    origin = target.mapTo(surface, QPoint(0, 0))
+    origin = QPoint(0, 0)
     kind = slot["layout"]
     contents = target.contentsRect()
 
@@ -543,6 +586,37 @@ class DesignSurface(LimeWidget, QWidget):
         self._onImageDrop = None
         self._hover = None          # widget under the mouse, outside a drag
         self._cursor = None         # QPoint during a drag over the surface
+        # Several widgets selected at once. `_selected` stays the primary --
+        # the one with handles, the one Properties shows -- and is always
+        # the last of `_selection` when there is one.
+        self._selection = []
+        self._onSelectionChange = None
+        self._marquee = None        # (start QPoint, current QPoint) while drawing one
+        self._marqueeBase = []      # what was selected before a Ctrl/Shift marquee
+        self._marqueeKeep = (None, [])  # the selection to fall back to if it takes nothing
+        self._draggingAll = []      # every widget travelling in a move, the pressed one included
+        self._pressedInSelection = False
+        self._onResizeSelection = None
+        self._resizeSize = None     # (width, height) in design px, while resizing
+        self._guides = []           # [(x1, y1, x2, y2)] in surface px, while resizing
+        self._guidesEnabled = True
+        self._gridSize = _GRID
+        self._snapToGrid = False
+        # Zoom. Qt draws widgets at one size only, so at any zoom but 1 the
+        # design is laid out at its real size on a stage far off the surface,
+        # and painted from there, scaled, into a proxy that holds its place
+        # in the surface's layout. Every position the mouse gives and every
+        # frame drawn goes through _to_design and _rect_in, which at zoom 1
+        # are plain coordinate maps.
+        self._zoom = 1.0
+        self._onZoom = None
+        self._shot = None           # the design, grabbed, while zoomed
+        self._stage = QWidget(self)
+        self._stage.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, True)
+        self._stage.move(_OFFSTAGE)
+        self._stage.hide()
+        self._proxy = _Proxy(self)
+        self._proxy.hide()
         self.setAcceptDrops(True)
         # Hover feedback needs moves without a button held.
         self.setMouseTracking(True)
@@ -563,11 +637,180 @@ class DesignSurface(LimeWidget, QWidget):
 
     def _repaint(self):
         self.update()
+        self._proxy.update()
         self._overlay.update()
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
         self._overlay.setGeometry(self.rect())
+
+    # -- where the design is, at any zoom ------------------------------------
+
+    def _natural_size(self, child):
+        """The size the surface's centring layout gives the design: its size
+        hint, within its minimum and maximum. A fixed-size design is that."""
+        return child.sizeHint().expandedTo(child.minimumSize()).boundedTo(child.maximumSize())
+
+    def _place_child(self):
+        """Puts the design where the zoom says: in the surface's layout at
+        zoom 1, or on the off-surface stage with the proxy holding its
+        place, scaled, otherwise. Either way it is placed before this
+        returns -- see the note at the end."""
+        child = self._child
+        for widget in (child, self._proxy):
+            if widget is not None:
+                self._layout.removeWidget(widget)
+        self._shot = None
+        if child is None:
+            self._proxy.hide()
+            self._stage.hide()
+            return
+        if self._zoom == 1.0:
+            self._proxy.hide()
+            self._stage.hide()
+            if child.parentWidget() is not self:
+                child.setParent(self)
+            self._layout.addWidget(child, 0, Qt.AlignmentFlag.AlignCenter)
+        else:
+            size = self._natural_size(child)
+            if child.parentWidget() is not self._stage:
+                child.setParent(self._stage)
+            child.move(0, 0)
+            child.resize(size)
+            self._stage.resize(size)
+            self._stage.show()
+            self._proxy.setFixedSize(max(1, round(size.width() * self._zoom)),
+                                     max(1, round(size.height() * self._zoom)))
+            self._layout.addWidget(self._proxy, 0, Qt.AlignmentFlag.AlignCenter)
+            self._proxy.show()
+        # Placed now, not on the next turn of the event loop. Added to a
+        # layout, a widget is still hidden -- Qt shows it later -- and a
+        # layout skips a hidden widget, so the design stayed at (0, 0) until
+        # then. The window frame and the selection are drawn from where it
+        # is, so any paint in that gap -- a save made one -- drew a white,
+        # blue-edged box the size of the design at the surface's top-left,
+        # the title bar off the top. Shown first, then laid out, it is in
+        # place before anything can paint.
+        child.show()
+        self._layout.activate()
+
+    def _origin(self):
+        """Where the design's top-left corner is drawn, in surface px."""
+        if self._child is None:
+            return QPoint(0, 0)
+        if self._zoom == 1.0:
+            return self._child.pos()
+        return self._proxy.pos()
+
+    def _design_rect(self):
+        """Where the design is drawn, in surface px."""
+        if self._child is None:
+            return QRect()
+        if self._zoom == 1.0:
+            return self._child.geometry()
+        return self._proxy.geometry()
+
+    def _to_design(self, position):
+        """A surface position as a point in the design's own coordinates."""
+        # Floor, not int(): int truncates toward zero, and a point half a
+        # design pixel left of the design would have landed inside it.
+        origin, z = self._origin(), self._zoom
+        return QPoint(math.floor((position.x() - origin.x()) / z),
+                      math.floor((position.y() - origin.y()) / z))
+
+    def _rect_in(self, widget, local=None):
+        """A rectangle in `widget`'s own coordinates -- all of it by default --
+        as drawn on the surface, in surface px."""
+        local = widget.rect() if local is None else local
+        if widget is self._child:
+            top = local.topLeft()
+        else:
+            top = widget.mapTo(self._child, local.topLeft())
+        origin, z = self._origin(), self._zoom
+        if z == 1.0:
+            return QRect(origin + top, local.size())
+        return QRect(origin.x() + round(top.x() * z), origin.y() + round(top.y() * z),
+                     round(local.width() * z), round(local.height() * z))
+
+    def _raw_hit(self, position):
+        """Qt's innermost widget of the design under `position`, the design
+        itself where nothing inside it is, or None off the design."""
+        child = self._child
+        if child is None:
+            return None
+        at = self._to_design(position)
+        if not child.rect().contains(at):
+            return None
+        return _deepest_at(child, at) or child
+
+    def _design_shot(self):
+        """The design, rendered at its real size, for painting zoomed. Kept
+        until the design, its zoom or the theme changes."""
+        if self._shot is None and self._child is not None:
+            self._shot = self._child.grab()
+        return self._shot
+
+    def changeEvent(self, event):
+        # A theme switch repaints every widget; a grab of the old look would not.
+        if event.type() in (QEvent.Type.PaletteChange, QEvent.Type.StyleChange):
+            self._shot = None
+        super().changeEvent(event)
+
+    # -- zoom ---------------------------------------------------------------
+
+    @method({"factor": "number"}, returns="self",
+            doc="Draws the design at this scale -- 1 is its real size -- from 0.25 to 3. "
+                "Widgets are not resized: the design is shown smaller or larger, and "
+                "selecting, dropping and resizing work at any zoom.")
+    def setZoom(self, factor):
+        try:
+            factor = float(factor)
+        except (TypeError, ValueError) as exc:
+            raise BridgeError(f"zoom must be a number, got {factor!r}") from exc
+        factor = round(min(_ZOOM_MAX, max(_ZOOM_MIN, factor)), 2)
+        if factor == self._zoom:
+            return self
+        self._zoom = factor
+        self._hover = None
+        self._place_child()
+        self._overlay.raise_()
+        self._repaint()
+        if self._onZoom is not None:
+            self._onZoom(factor)
+        return self
+
+    @method(returns="number", doc="The zoom the design is drawn at; 1 is its real size.")
+    def getZoom(self):
+        return self._zoom
+
+    @method(returns="self", doc="The next zoom step up, to at most 3.")
+    def zoomIn(self):
+        return self.setZoom(next((s for s in _ZOOM_STEPS if s > self._zoom + 1e-9), _ZOOM_MAX))
+
+    @method(returns="self", doc="The next zoom step down, to at least 0.25.")
+    def zoomOut(self):
+        return self.setZoom(next((s for s in reversed(_ZOOM_STEPS) if s < self._zoom - 1e-9), _ZOOM_MIN))
+
+    @method(returns="self", doc="Back to the design's real size.")
+    def resetZoom(self):
+        return self.setZoom(1.0)
+
+    @method({"handler": "fun(factor: number)"}, returns="self",
+            doc="Called whenever the zoom changes -- by setZoom or by Ctrl+wheel on the surface.")
+    def setOnZoomChange(self, handler):
+        self._onZoom = guard(handler, widget="DesignSurface", event="onZoomChange")
+        return self
+
+    def wheelEvent(self, event):
+        """Ctrl+wheel zooms; the wheel alone scrolls, as anywhere else."""
+        if event.modifiers() & Qt.KeyboardModifier.ControlModifier:
+            if event.angleDelta().y() > 0:
+                self.zoomIn()
+            elif event.angleDelta().y() < 0:
+                self.zoomOut()
+            event.accept()
+            return
+        super().wheelEvent(event)
 
     @method({"child": "any"}, returns="self",
             doc="The widget being designed. Replaces whatever was there, and "
@@ -593,6 +836,7 @@ class DesignSurface(LimeWidget, QWidget):
 
         self._child = child
         self._selected = None
+        self._selection = []
         self._pending = None
         self._hover = None
         self._labels = {}
@@ -603,8 +847,8 @@ class DesignSurface(LimeWidget, QWidget):
         self._flash = None
         self._flashTimer.stop()
         if child is not None:
-            self._layout.addWidget(child, 0, Qt.AlignmentFlag.AlignCenter)
             _make_inert(child)
+        self._place_child()
         self._overlay.raise_()
         if had_focus:
             self.setFocus()
@@ -665,7 +909,7 @@ class DesignSurface(LimeWidget, QWidget):
 
     def _hit(self, position):
         """The design widget under `position`, or None over empty surface."""
-        return self._design_widget(_deepest_at(self, position))
+        return self._design_widget(self._raw_hit(position))
 
     @method({"widget": "any", "slot": "string"}, returns="self",
             doc="Marks a widget as taking an image dragged from a "
@@ -687,7 +931,7 @@ class DesignSurface(LimeWidget, QWidget):
     def _image_target_at(self, position):
         """The nearest image target at or above the widget under `position`;
         the design child itself when over its client area or title bar."""
-        widget = _deepest_at(self, position)
+        widget = self._raw_hit(position)
         title = self._title_rect()
         if widget is None and title is not None and title.contains(position):
             widget = self._child
@@ -710,8 +954,14 @@ class DesignSurface(LimeWidget, QWidget):
         """The mock title bar, in surface coordinates, or None."""
         if self._child is None:
             return None
-        g = self._child.geometry()
+        g = self._design_rect()
         return QRect(g.left(), g.top() - _TITLE_H, g.width(), _TITLE_H)
+
+    @method({"widget": "any"}, returns="integer, integer",
+            doc="The width and height a widget of the design is laid out at, in its "
+                "own px -- whatever the zoom. For matching one widget's size to another's.")
+    def getWidgetSize(self, widget):
+        return widget.width(), widget.height()
 
     @method(returns="any", doc="The widget being designed, or nil.")
     def getDesignChild(self):
@@ -729,6 +979,7 @@ class DesignSurface(LimeWidget, QWidget):
         """
         if self._child is not None:
             _make_inert(self._child)
+        self._shot = None
         self._overlay.raise_()
         self._repaint()
         return self
@@ -737,12 +988,84 @@ class DesignSurface(LimeWidget, QWidget):
             doc="Draws the selection outline around a widget.")
     def setSelected(self, widget):
         self._selected = widget
+        self._selection = [] if widget is None else [widget]
         self._repaint()
         return self
 
-    @method(returns="any", doc="The selected widget, or nil.")
+    @method(returns="any", doc="The selected widget, or nil. With several selected, the primary one.")
     def getSelected(self):
         return self._selected
+
+    @method({"widgets": "any[]"}, returns="self",
+            doc="Selects several widgets at once. The last is the primary one: the "
+                "one with resize handles, the one getSelected returns.")
+    def setSelection(self, widgets):
+        items = [w for w in as_sequence(widgets) if w is not None]
+        self._selection = items
+        self._selected = items[-1] if items else None
+        self._repaint()
+        return self
+
+    @method(returns="any[]", doc="Every selected widget, the primary one last.")
+    def getSelection(self):
+        return self._lua_list(self._selection)
+
+    @method({"handler": "fun(widgets: any[])"}, returns="self",
+            doc="Called when Ctrl- or Shift-clicking, or dragging a marquee, changes a "
+                "selection of several widgets, with all of them, the primary one last. "
+                "A plain click still reports through setOnSelect.")
+    def setOnSelectionChange(self, handler):
+        self._onSelectionChange = guard(handler, widget="DesignSurface", event="onSelectionChange")
+        return self
+
+    def _lua_list(self, items):
+        try:
+            return to_lua(list(items))
+        except BridgeError:
+            return list(items)      # no Lua runtime bound: a Python caller
+
+    def _announce_selection(self):
+        self._repaint()
+        if self._onSelectionChange is not None:
+            self._onSelectionChange(self._lua_list(self._selection))
+        elif self._onSelect is not None:
+            self._onSelect(self._selected)
+
+    @method({"size": "integer"}, returns="self",
+            doc="The grid step in px -- the backdrop's dots, and what snapping rounds to. 16 by default.")
+    def setGridSize(self, size):
+        try:
+            size = int(size)
+        except (TypeError, ValueError) as exc:
+            raise BridgeError(f"grid size must be a whole number, got {size!r}") from exc
+        self._gridSize = max(2, min(200, size))
+        self._repaint()
+        return self
+
+    @method(returns="integer", doc="The grid step in px.")
+    def getGridSize(self):
+        return self._gridSize
+
+    @method({"enabled": "boolean"}, returns="self",
+            doc="Whether a resize snaps to the grid. Off by default.")
+    def setSnapToGrid(self, enabled):
+        self._snapToGrid = bool(enabled)
+        return self
+
+    @method(returns="boolean", doc="Whether a resize snaps to the grid.")
+    def getSnapToGrid(self):
+        return self._snapToGrid
+
+    @method({"enabled": "boolean"}, returns="self",
+            doc="Whether a resize shows -- and snaps to -- guide lines where the edge it "
+                "pulls meets another widget's edge or matches another widget's size. On by default.")
+    def setGuidesEnabled(self, enabled):
+        self._guidesEnabled = bool(enabled)
+        return self
+
+    @method(returns="boolean", doc="Whether a resize shows and snaps to guide lines.")
+    def getGuidesEnabled(self):
+        return self._guidesEnabled
 
     @method({"handler": "fun(widget: any)"}, returns="self",
             doc="Called with the widget under a click, or nil for empty space.")
@@ -788,7 +1111,10 @@ class DesignSurface(LimeWidget, QWidget):
     def _selection_frame(self):
         if self._selected is None or self._selected is self._child:
             return None
-        return QRect(self._selected.mapTo(self, QPoint(0, 0)), self._selected.size())
+        try:
+            return self._rect_in(self._selected)
+        except RuntimeError:                # deleted under us
+            return None
 
     def _handles(self):
         """{name: QRect} for the three handles that make sense in a layout:
@@ -833,16 +1159,49 @@ class DesignSurface(LimeWidget, QWidget):
 
     # -- input: selecting, and starting a move -------------------------------
 
+    def _design_widgets(self):
+        """Every widget of the design that can be selected, the design itself
+        aside: each labelled one -- or, when nothing is labelled, each
+        Limekit widget -- that is showing."""
+        if self._child is None:
+            return []
+        labelled = bool(self._labels)
+        return [w for w in self._child.findChildren(QWidget)
+                if w.isVisible() and ((w in self._labels) if labelled else isinstance(w, LimeObject))]
+
+    def _enclosed(self, rect):
+        """The widgets a marquee takes: those wholly inside `rect`, outermost
+        only -- a row taken whole takes its buttons with it, and selecting
+        both would move or delete each button twice."""
+        inside = [w for w in self._design_widgets() if rect.contains(self._rect_in(w))]
+        taken = set(inside)
+
+        def outermost(widget):
+            holder = self._design_widget(widget.parentWidget())
+            while holder is not None and holder is not self._child:
+                if holder in taken:
+                    return False
+                holder = self._design_widget(holder.parentWidget())
+            return True
+
+        return [w for w in inside if outermost(w)]
+
     def mousePressEvent(self, event):
         position = event.position().toPoint()
+        left = event.button() == Qt.MouseButton.LeftButton
+        right = event.button() == Qt.MouseButton.RightButton
+        additive = bool(event.modifiers() & (Qt.KeyboardModifier.ControlModifier
+                                             | Qt.KeyboardModifier.ShiftModifier))
 
         # A press on a handle of the selection starts a resize, not a new
         # selection -- the handle sits on the widget's edge, where the
         # hit-test below would as likely pick the neighbour.
-        handle = self._handle_at(position) if event.button() == Qt.MouseButton.LeftButton else None
+        handle = self._handle_at(position) if left and not additive else None
         if handle is not None:
-            self._resizing = (self._selected, handle, position, self._selected.size())
+            self._resizing = (self._selected, handle, position, self._selected.size(),
+                              [(w, w.size()) for w in (self._selection or [self._selected])])
             self._resizeRect = self._selection_frame()
+            self._resizeSize = (self._selected.width(), self._selected.height())
             self._press = None
             return
 
@@ -855,45 +1214,155 @@ class DesignSurface(LimeWidget, QWidget):
         if hit is None and title is not None and title.contains(position):
             hit = self._child
 
+        # Ctrl- or Shift-click adds a widget to the selection, or takes it
+        # out; on the window or the empty surface it starts a marquee that
+        # adds to what is already selected.
+        if left and additive:
+            self._press = None
+            if hit is None or hit is self._child:
+                self._marquee = (position, position)
+                self._marqueeBase = [w for w in self._selection if w is not self._child]
+                self._marqueeKeep = (self._selected, list(self._selection))
+                return
+            if hit in self._selection:
+                self._selection = [w for w in self._selection if w is not hit]
+            else:
+                self._selection = [w for w in self._selection if w is not self._child] + [hit]
+            self._selected = self._selection[-1] if self._selection else None
+            self._announce_selection()
+            return
+
+        # A press on one of several selected widgets keeps them all: it may
+        # be the start of moving them together, or the right-click that
+        # deletes them. Released without a drag, a left press selects that
+        # one alone.
+        if hit is not None and hit in self._selection and len(self._selection) > 1:
+            if left:
+                self._pressedInSelection = True
+                self._press = (hit, position)
+                return
+            if right and self._onContextMenu is not None:
+                self._onContextMenu(hit, position.x(), position.y())
+                return
+
         self._selected = hit
+        self._selection = [] if hit is None else [hit]
         # The design child itself is never moved: it has nowhere else to go.
-        self._press = (hit, position) if hit is not None and hit is not self._child else None
+        # A drag that starts on it, or on the empty surface, draws a marquee.
+        if left and (hit is None or hit is self._child):
+            self._press = None
+            self._marquee = (position, position)
+            self._marqueeBase = []
+            self._marqueeKeep = (hit, list(self._selection))
+        else:
+            self._press = (hit, position) if hit is not None else None
         self._repaint()
 
         if self._onSelect is not None:
             self._onSelect(hit)
-        if event.button() == Qt.MouseButton.RightButton and self._onContextMenu is not None:
+        if right and self._onContextMenu is not None:
             self._press = None
+            self._marquee = None
             self._onContextMenu(hit, position.x(), position.y())
         super().mousePressEvent(event)
 
     def mouseDoubleClickEvent(self, event):
         position = event.position().toPoint()
+        self._marquee = None
         if self._onDoubleClick is not None:
             self._onDoubleClick(self._hit(position), position.x(), position.y())
         super().mouseDoubleClickEvent(event)
 
-    def mouseMoveEvent(self, event):
-        if self._resizing is not None:
-            widget, handle, start, size = self._resizing
-            delta = event.position().toPoint() - start
-            width = size.width() + (delta.x() if handle in ("right", "corner") else 0)
-            height = size.height() + (delta.y() if handle in ("bottom", "corner") else 0)
+    def _snap_length(self, length, start, axis, widget):
+        """A resized width or height (design px) adjusted to the nearest guide
+        within reach, or else to the grid when snapping. `start` is the
+        widget's fixed edge on the surface. Records the guide it used."""
+        z = self._zoom
+        edge = start + length * z
+        best = None                       # (distance, new length, guide)
+        if self._guidesEnabled:
             frame = self._selection_frame()
-            if frame is not None:
-                self._resizeRect = QRect(frame.topLeft(), frame.size())
-                self._resizeRect.setWidth(max(8, width))
-                self._resizeRect.setHeight(max(8, height))
+            for other in self._design_widgets():
+                if other is widget or _is_or_descends_from(other, widget):
+                    continue
+                try:
+                    r = self._rect_in(other)
+                except RuntimeError:
+                    continue
+                name = self._label(other)
+                if axis == "x":
+                    lines = [(r.left(), None), (r.right() + 1, None),
+                             (start + r.width(), f"width of {name}")]
+                else:
+                    lines = [(r.top(), None), (r.bottom() + 1, None),
+                             (start + r.height(), f"height of {name}")]
+                for at, match in lines:
+                    distance = abs(at - edge)
+                    if distance > _GUIDE_SNAP or at <= start or (best is not None and distance >= best[0]):
+                        continue
+                    if match is not None:
+                        # The same size: a line across the other widget, at its middle.
+                        guide = ((r.left(), r.center().y(), r.right(), r.center().y()) if axis == "x"
+                                 else (r.center().x(), r.top(), r.center().x(), r.bottom()), match)
+                    elif axis == "x":
+                        top = min(r.top(), frame.top()) if frame else r.top()
+                        bottom = max(r.bottom(), frame.bottom()) if frame else r.bottom()
+                        guide = ((at, top - 8, at, bottom + 8), None)
+                    else:
+                        lft = min(r.left(), frame.left()) if frame else r.left()
+                        rgt = max(r.right(), frame.right()) if frame else r.right()
+                        guide = ((lft - 8, at, rgt + 8, at), None)
+                    best = (distance, (at - start) / z, guide)
+        if best is not None:
+            self._guides.append(best[2])
+            return best[1]
+        if self._snapToGrid:
+            step = self._gridSize
+            return max(step, round(length / step) * step)
+        return length
+
+    def _drag_resize(self, position):
+        widget, handle, start, size, _ = self._resizing
+        z = self._zoom
+        width = size.width() + ((position.x() - start.x()) / z if handle in ("right", "corner") else 0)
+        height = size.height() + ((position.y() - start.y()) / z if handle in ("bottom", "corner") else 0)
+        frame = self._selection_frame()
+        self._guides = []
+        if frame is not None:
+            if handle in ("right", "corner"):
+                width = self._snap_length(width, frame.left(), "x", widget)
+            if handle in ("bottom", "corner"):
+                height = self._snap_length(height, frame.top(), "y", widget)
+        width, height = max(8, round(width)), max(8, round(height))
+        self._resizeSize = (width, height)
+        if frame is not None:
+            self._resizeRect = QRect(frame.left(), frame.top(), round(width * z), round(height * z))
+
+    def mouseMoveEvent(self, event):
+        position = event.position().toPoint()
+        if self._resizing is not None:
+            self._drag_resize(position)
             self._overlay.update()
             return
+        if self._marquee is not None:
+            if event.buttons() & Qt.MouseButton.LeftButton:
+                start = self._marquee[0]
+                self._marquee = (start, position)
+                if (position - start).manhattanLength() >= QApplication.startDragDistance():
+                    found = self._enclosed(QRect(start, position).normalized())
+                    self._selection = [w for w in self._marqueeBase if w not in found] + found
+                    self._selected = self._selection[-1] if self._selection else None
+                self._overlay.update()
+                return
+            self._marquee = None
         if not event.buttons():
             # Over a selection handle, the cursor says which way it resizes.
-            handle = self._handle_at(event.position().toPoint())
+            handle = self._handle_at(position)
             if handle is not None:
                 self.setCursor(_HANDLE_CURSORS[handle])
             else:
                 self.unsetCursor()
-            hover = self._hit(event.position().toPoint())
+            hover = self._hit(position)
             if hover is not self._hover:
                 self._hover = hover
                 self._overlay.update()
@@ -901,24 +1370,36 @@ class DesignSurface(LimeWidget, QWidget):
         if self._press is None or not (event.buttons() & Qt.MouseButton.LeftButton):
             return
         widget, origin = self._press
-        moved = (event.position().toPoint() - origin).manhattanLength()
+        moved = (position - origin).manhattanLength()
         if moved < QApplication.startDragDistance():
             return
 
         self._press = None
+        self._pressedInSelection = False
         self._hover = None
+        # One of several selected: they all travel, in the order they are in
+        # the design.
+        if widget in self._selection and len(self._selection) > 1:
+            order = {w: i for i, w in enumerate(self._child.findChildren(QWidget))}
+            moving = sorted(self._selection, key=lambda w: order.get(w, 0))
+        else:
+            moving = [widget]
         self._dragging = widget
+        self._draggingAll = moving
         mime = QMimeData()
         mime.setData(MOVE_MIME, str(id(widget)).encode())
         drag = QDrag(self)
         drag.setMimeData(mime)
-        grip = event.position().toPoint() - widget.mapTo(self, QPoint(0, 0))
-        pixmap, hotspot = self._drag_pixmap(widget, grip)
+        frame = self._rect_in(widget)
+        grip = QPoint(int((position.x() - frame.x()) / self._zoom),
+                      int((position.y() - frame.y()) / self._zoom))
+        pixmap, hotspot = self._drag_pixmap(widget, grip, len(moving))
         drag.setPixmap(pixmap)
         drag.setHotSpot(hotspot)
         self._repaint()             # ghost the source before the drag starts
         drag.exec(Qt.DropAction.MoveAction)
         self._dragging = None
+        self._draggingAll = []
         self._pending = None
         self._cursor = None
         self._repaint()
@@ -928,14 +1409,16 @@ class DesignSurface(LimeWidget, QWidget):
         self._overlay.update()
         super().leaveEvent(event)
 
-    def _drag_pixmap(self, widget, grip):
+    def _drag_pixmap(self, widget, grip, count=1):
         """What follows the cursor during a move: the widget, faded, framed
         in the selection colour, with its name on a tag above it.
 
         A bare grab of a container is a white rectangle on a white window --
         there is nothing to see moving. The frame and the tag are what make
-        it readable. Returns (pixmap, hotspot).
+        it readable. With several widgets moving, the tag says how many.
+        Returns (pixmap, hotspot).
         """
+        name = self._label(widget) if count == 1 else f"{count} widgets"
         shot = widget.grab()
         dpr = shot.devicePixelRatio()
         size = shot.deviceIndependentSize()
@@ -947,7 +1430,7 @@ class DesignSurface(LimeWidget, QWidget):
         tag_h = metrics.height() + 6
         pad = 2
 
-        pixmap = QPixmap(int((max(w, metrics.horizontalAdvance(self._label(widget)) + 16) + pad * 2) * dpr),
+        pixmap = QPixmap(int((max(w, metrics.horizontalAdvance(name) + 16) + pad * 2) * dpr),
                          int((h + tag_h + pad * 2) * dpr))
         pixmap.setDevicePixelRatio(dpr)
         pixmap.fill(Qt.GlobalColor.transparent)
@@ -961,24 +1444,64 @@ class DesignSurface(LimeWidget, QWidget):
         painter.setPen(QPen(QColor(_SELECTION_COLOUR), 2))
         painter.drawRect(body.adjusted(0, 0, -1, -1))
         painter.setFont(font)
-        _chip(painter, QRect(pad, tag_h + pad, w, h), self._label(widget),
+        _chip(painter, QRect(pad, tag_h + pad, w, h), name,
               QColor(_SELECTION_COLOUR), QColor("#FFFFFF"))
         painter.end()
         hotspot = QPoint(int(grip.x() * scale) + pad, int(grip.y() * scale) + tag_h + pad)
         return pixmap, hotspot
 
     def mouseReleaseEvent(self, event):
-        self._press = None
         if self._resizing is not None:
-            widget, handle, start, size = self._resizing
-            rect = self._resizeRect
-            self._resizing, self._resizeRect = None, None
+            widget, handle, start, size, starts = self._resizing
+            final = self._resizeSize
+            self._resizing, self._resizeRect, self._resizeSize = None, None, None
+            self._guides = []
             self.unsetCursor()
             self._repaint()
-            if rect is not None and self._onResize is not None and rect.size() != size:
-                self._onResize(widget, rect.width(), rect.height())
+            if final is None or final == (size.width(), size.height()):
+                return
+            # Every selected widget pulled by the same amount, along the
+            # handle's own direction only.
+            dw = final[0] - size.width() if handle in ("right", "corner") else 0
+            dh = final[1] - size.height() if handle in ("bottom", "corner") else 0
+            sizes = [{"widget": w, "width": max(8, s.width() + dw), "height": max(8, s.height() + dh)}
+                     for w, s in starts]
+            if self._onResizeSelection is not None:
+                self._onResizeSelection(self._lua_list(sizes))
+            elif self._onResize is not None:
+                self._onResize(widget, final[0], final[1])
             return
+        if self._marquee is not None:
+            start, end = self._marquee
+            self._marquee = None
+            if (end - start).manhattanLength() >= QApplication.startDragDistance():
+                if not self._selection:
+                    # Nothing enclosed: what was selected when the drag began stays.
+                    self._selected, self._selection = self._marqueeKeep
+                self._announce_selection()
+            self._overlay.update()
+            return
+        if self._pressedInSelection and self._press is not None:
+            # A press on one of several, released where it began: that one alone.
+            hit = self._press[0]
+            self._pressedInSelection = False
+            self._press = None
+            self._selected, self._selection = hit, [hit]
+            self._repaint()
+            if self._onSelect is not None:
+                self._onSelect(hit)
+            return
+        self._press = None
         super().mouseReleaseEvent(event)
+
+    @method({"handler": "fun(sizes: table[])"}, returns="self",
+            doc="Called when a selection handle is dragged and released, with "
+                "{widget, width, height} for every selected widget -- each pulled "
+                "by the same amount. Preferred over setOnResize, which hears only "
+                "the primary widget. The surface changes nothing.")
+    def setOnResizeSelection(self, handler):
+        self._onResizeSelection = guard(handler, widget="DesignSurface", event="onResizeSelection")
+        return self
 
     # -- input: being dropped on ---------------------------------------------
 
@@ -1015,7 +1538,7 @@ class DesignSurface(LimeWidget, QWidget):
         if self._image_drag(event):
             return
         self._cursor = event.position().toPoint()
-        slot = resolve_drop(self, self._cursor, self._dragging)
+        slot = resolve_drop(self, self._cursor, self._draggingAll or self._dragging)
         self._pending = slot
         self._overlay.update()
         if slot is None:
@@ -1047,7 +1570,7 @@ class DesignSurface(LimeWidget, QWidget):
             if self._onImageDrop is not None:
                 self._onImageDrop(target, bytes(mime.data(IMAGE_MIME)).decode())
             return
-        slot = resolve_drop(self, event.position().toPoint(), self._dragging)
+        slot = resolve_drop(self, event.position().toPoint(), self._draggingAll or self._dragging)
         if slot is None:
             event.ignore()
             return
@@ -1055,7 +1578,9 @@ class DesignSurface(LimeWidget, QWidget):
         if mime.hasFormat(CLASS_MIME):
             drop = {"kind": "class", "class": bytes(mime.data(CLASS_MIME)).decode()}
         elif self._dragging is not None:
-            drop = {"kind": "move", "widget": self._dragging}
+            # `widgets` is everything moving, in design order; `widget` the one held.
+            drop = {"kind": "move", "widget": self._dragging,
+                    "widgets": list(self._draggingAll or [self._dragging])}
         else:
             # A move mime from some other surface: there is no widget of
             # ours behind it.
@@ -1087,14 +1612,22 @@ class DesignSurface(LimeWidget, QWidget):
         painter.fillRect(self.rect(), window.darker(135) if dark else window.darker(106))
         dot = QColor(palette.color(QPalette.ColorRole.WindowText))
         dot.setAlpha(28 if dark else 34)
-        left, top = event.rect().left(), event.rect().top()
-        for x in range(left - left % _GRID, event.rect().right() + 1, _GRID):
-            for y in range(top - top % _GRID, event.rect().bottom() + 1, _GRID):
-                painter.fillRect(x, y, 1, 1, dot)
+        # The dots are the grid: one step apart at the current zoom, and in
+        # line with the design's corner, so a size snapped to the grid ends
+        # on a dot.
+        step = max(1, round(self._gridSize * self._zoom))
+        if step >= 4:
+            origin = self._origin()
+            left, top = event.rect().left(), event.rect().top()
+            first_x = left - (left - origin.x()) % step
+            first_y = top - (top - origin.y()) % step
+            for x in range(first_x, event.rect().right() + 1, step):
+                for y in range(first_y, event.rect().bottom() + 1, step):
+                    painter.fillRect(x, y, 1, 1, dot)
 
         title = self._title_rect()
         if title is not None:
-            client = self._child.geometry()
+            client = self._design_rect()
             frame = title.united(client)
             painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
             # A soft shadow: a few widening, fading outlines.
@@ -1144,7 +1677,7 @@ class DesignSurface(LimeWidget, QWidget):
 
         def frame_of(widget):
             try:
-                return QRect(widget.mapTo(self, QPoint(0, 0)), widget.size())
+                return self._rect_in(widget)
             except RuntimeError:            # deleted under us
                 return None
 
@@ -1153,7 +1686,7 @@ class DesignSurface(LimeWidget, QWidget):
             hint = QColor(ink)
             hint.setAlpha(110)
             painter.setPen(hint)
-            painter.drawText(self._child.geometry(), Qt.AlignmentFlag.AlignCenter, self._emptyHint)
+            painter.drawText(self._design_rect(), Qt.AlignmentFlag.AlignCenter, self._emptyHint)
 
         # Containers: a dashed outline on every one, and an empty one tinted
         # and labelled, since it has no look of its own to find it by.
@@ -1208,8 +1741,8 @@ class DesignSurface(LimeWidget, QWidget):
 
         # The widget being moved: ghosted where it stands, so it is plain
         # which one is travelling and where from.
-        if self._dragging is not None:
-            frame = frame_of(self._dragging)
+        for travelling in (self._draggingAll or ([self._dragging] if self._dragging is not None else [])):
+            frame = frame_of(travelling)
             if frame is not None:
                 veil = QColor(palette.color(QPalette.ColorRole.Window))
                 veil.setAlpha(190)
@@ -1221,6 +1754,18 @@ class DesignSurface(LimeWidget, QWidget):
                 pen.setStyle(Qt.PenStyle.DashLine)
                 painter.setPen(pen)
                 painter.drawRect(frame.adjusted(0, 0, -1, -1))
+
+        # The rest of a selection of several: outlined, without handles.
+        if self._dragging is None:
+            for other in self._selection:
+                if other is self._selected or other is self._child:
+                    continue
+                frame = frame_of(other)
+                if frame is not None:
+                    painter.setPen(QPen(QColor(_SELECTION_COLOUR), 2))
+                    painter.drawRect(frame.adjusted(0, 0, -1, -1))
+                    _chip(painter, frame, self._label(other),
+                          QColor(_SELECTION_COLOUR), QColor("#FFFFFF"))
 
         if self._selected is not None and self._dragging is None:
             frame = frame_of(self._selected)
@@ -1243,8 +1788,29 @@ class DesignSurface(LimeWidget, QWidget):
             painter.setPen(pen)
             painter.drawRect(self._resizeRect.adjusted(0, 0, -1, -1))
             painter.setPen(QColor(_INDICATOR_COLOUR))
-            size = f"{self._resizeRect.width()} × {self._resizeRect.height()}"
+            # The size the widget will get, in its own px whatever the zoom.
+            w, h = self._resizeSize or (self._resizeRect.width(), self._resizeRect.height())
+            matched = [tag for _, tag in self._guides if tag]
+            size = f"{w} × {h}" + (f"  = {matched[0]}" if matched else "")
             _chip(painter, self._resizeRect, size, QColor(_INDICATOR_COLOUR), QColor("#FFFFFF"))
+            # Guides: where the pulled edge met another widget's edge, or its size.
+            guide = QPen(QColor(_GUIDE_COLOUR), 1)
+            guide.setStyle(Qt.PenStyle.DashLine)
+            painter.setPen(guide)
+            for (x1, y1, x2, y2), _ in self._guides:
+                painter.drawLine(x1, y1, x2, y2)
+
+        if self._marquee is not None:
+            start, end = self._marquee
+            if (end - start).manhattanLength() >= QApplication.startDragDistance():
+                band = QRect(start, end).normalized()
+                fill = QColor(_SELECTION_COLOUR)
+                fill.setAlpha(30)
+                painter.fillRect(band, fill)
+                pen = QPen(QColor(_SELECTION_COLOUR), 1)
+                pen.setStyle(Qt.PenStyle.DashLine)
+                painter.setPen(pen)
+                painter.drawRect(band.adjusted(0, 0, -1, -1))
 
         if self._imagePending is not None:
             # An image on its way to a widget: the widget lit in green and
@@ -1274,7 +1840,7 @@ class DesignSurface(LimeWidget, QWidget):
         slot: a bar with end caps between widgets, or a cell in a grid."""
         colour = QColor(_INDICATOR_COLOUR)
         target = slot["target"]
-        frame = QRect(target.mapTo(self, QPoint(0, 0)), target.size())
+        frame = self._rect_in(target)
         fill = QColor(colour)
         fill.setAlpha(26)
         painter.fillRect(frame, fill)

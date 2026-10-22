@@ -9,6 +9,7 @@ live on the concrete `QLayout` subclass, so accessor installation is deferred
 until a concrete layout combines them with a real Qt base.
 """
 
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLayout
 
 from limekit.kernel.coerce import ALIGNMENTS, Enum, LuaIndex
@@ -59,6 +60,18 @@ class LimeLayout(LimeObject):
         for name in alignments[1:]:
             flags |= _alignment(name)
         self.setAlignment(flags)
+        return self
+
+    def setChildAlignment(self, child, *alignments):
+        """Where one child sits in the space the layout gives it, e.g. "left",
+        or ("right", "bottom"). Aligned in a direction, a widget keeps its
+        own size that way instead of stretching to fill; with no alignment
+        given, it fills again."""
+        flags = Qt.AlignmentFlag(0)
+        for name in alignments:
+            flags |= _alignment(name)
+        if not self.setAlignment(child, flags):
+            raise BridgeError("setChildAlignment: that widget is not in this layout")
         return self
 
     def clear(self):

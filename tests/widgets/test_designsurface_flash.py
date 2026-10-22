@@ -55,6 +55,37 @@ def test_a_flash_on_the_new_design_still_lights(qapp):
     assert surface.isFlashing()
 
 
+def test_a_new_design_is_in_place_before_anything_can_paint():
+    """The white box at the canvas's top-left. Added to a layout, the new
+    design stayed hidden at (0, 0) until the next turn of the event loop,
+    and the window frame is drawn from its geometry: a paint in that gap
+    drew the frame there. It must be where it will stay the moment
+    setDesignChild returns."""
+    from limekit.widgets.button import Button
+    surface = _surface_with(_column(Button("a")))
+    settled = surface.getDesignChild().geometry()
+    fresh = _column(Button("b"))
+    surface.setDesignChild(fresh)
+    # No processEvents here: this is the gap.
+    assert fresh.isVisible()
+    assert fresh.geometry() == settled
+    for _ in range(3):
+        QApplication.processEvents()
+    assert fresh.geometry() == settled
+
+
+def test_a_design_set_before_the_surface_shows_is_placed_once_it_does():
+    from limekit.widgets.button import Button
+    from limekit.widgets.designsurface import DesignSurface
+    surface = DesignSurface()
+    surface.resize(700, 600)
+    child = _column(Button("a"))
+    surface.setDesignChild(child)
+    surface.show()
+    QApplication.processEvents()
+    assert child.isVisible() and child.geometry().topLeft().x() > 0
+
+
 def test_debug_paint_logs_the_design_and_top_level_windows(monkeypatch, tmp_path):
     from limekit.widgets.button import Button
     from limekit.widgets.designsurface import _PaintLog
