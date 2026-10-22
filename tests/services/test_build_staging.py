@@ -71,3 +71,22 @@ def test_spec_bundles_every_staged_entry_and_parses_with_quotes_in_paths(tmp_pat
     for name in ("scripts", "images", "data", "design"):
         assert repr(name) in datas
     assert repr(".") in datas                                  # top-level files
+
+
+def test_a_build_leaves_no_build_folder_in_the_project(tmp_path, monkeypatch):
+    """PyInstaller's work folder used to be <project>/build, left behind after
+    every build. It now lives in the build's temporary folder."""
+    import subprocess
+    from limekit.build.builder import AppBuilder
+
+    project = _project(tmp_path / "app")
+    import shutil
+    shutil.rmtree(project / "build")                 # the fixture's junk folder
+    calls = []
+    monkeypatch.setattr(subprocess, "run",
+                        lambda args, **kw: calls.append(args) or subprocess.CompletedProcess(args, 0, "", ""))
+    AppBuilder(str(project)).build()
+
+    workpath = calls[0][calls[0].index("--workpath") + 1]
+    assert not workpath.startswith(str(project))
+    assert not (project / "build").exists()

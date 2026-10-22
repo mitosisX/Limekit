@@ -97,7 +97,9 @@ class AppBuilder:
 
             # Step 5: Run PyInstaller
             print("Building executable...")
-            result = self._run_pyinstaller(spec_path)
+            # PyInstaller's work files go in the temporary folder, removed below
+            # -- not <project>/build, which every build used to leave behind.
+            result = self._run_pyinstaller(spec_path, os.path.join(temp_dir, "work"))
 
             if not result[0]:
                 return result
@@ -117,14 +119,14 @@ class AppBuilder:
             # Cleanup temporary directory
             self._cleanup_temp_dir(temp_dir)
 
-    def _run_pyinstaller(self, spec_path: str) -> Tuple[bool, str, Optional[str]]:
+    def _run_pyinstaller(self, spec_path: str, work_dir: str) -> Tuple[bool, str, Optional[str]]:
         """Run PyInstaller with the generated spec file."""
         try:
             result = subprocess.run(
                 [
                     sys.executable, "-m", "PyInstaller",
                     "--distpath", self.output_dir,
-                    "--workpath", self.build_dir,
+                    "--workpath", work_dir,
                     "--clean",
                     "--noconfirm",
                     spec_path

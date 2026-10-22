@@ -83,3 +83,16 @@ def test_a_successful_build_reports_no_error():
     assert errors == []
     assert build.isSuccess() is True
     assert build.getOutputPath() == "dist/App.exe"
+
+
+@pytest.mark.parametrize("onefile", [True, False])
+def test_the_single_file_choice_reaches_the_builder(monkeypatch, capsys, onefile):
+    """Unticking "Pack into a single file" still built a single file: the
+    option was never forwarded, and False would have been dropped anyway."""
+    seen = _run_script(_build_script("C:\p", {"onefile": onefile}, False, None), monkeypatch)
+    assert seen["options"]["onefile"] is onefile
+
+
+def test_no_single_file_choice_leaves_the_default(monkeypatch, capsys):
+    seen = _run_script(_build_script("C:\p", {}, False, None), monkeypatch)
+    assert "onefile" not in seen["options"]
