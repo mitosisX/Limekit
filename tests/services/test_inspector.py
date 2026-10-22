@@ -50,6 +50,11 @@ class _FakeRuntime:
         self.ran.append((source, chunkname))
         if "boom" in source:
             raise ValueError("boom")
+        if "button" in source:
+            from limekit.widgets.button import Button
+            return Button("Save")
+        if "number" in source:
+            return 42
         return None
 
 
@@ -101,6 +106,19 @@ def test_a_failing_chunk_reports_rather_than_propagates(project_end):
     reply = project_end.handle({"id": 1, "op": "eval", "code": "boom"})
     assert reply["ok"] is False
     assert "boom" in reply["error"]
+
+
+def test_a_failure_reads_without_python_class_names(project_end):
+    reply = project_end.handle({"id": 1, "op": "eval", "code": "boom"})
+    assert reply["error"] == "boom"
+
+
+def test_eval_results_read_as_lua_would_name_them(project_end):
+    """A widget comes back as "ui.Button Save", not Qt's repr of it."""
+    reply = project_end.handle({"id": 1, "op": "eval", "code": "return button"})
+    assert reply["result"] == "ui.Button Save"
+    reply = project_end.handle({"id": 1, "op": "eval", "code": "return number"})
+    assert reply["result"] == "42"
 
 
 # -- the launcher end ------------------------------------------------------

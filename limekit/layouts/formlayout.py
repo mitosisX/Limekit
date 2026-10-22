@@ -19,7 +19,11 @@ class FormLayout(LimeLayout, QFormLayout):
         actually the widget) for a full-width unlabelled one. Mirrors
         QFormLayout.addRow's own call shapes."""
         if isinstance(title, str):
-            self.addRow(title, child)
+            # A Limekit label, not the QLabel Qt would make from the text:
+            # the row's title is then a widget like any other, and the
+            # Inspector shows it by a name the author knows.
+            from limekit.widgets.label import Label
+            self.addRow(Label(title), child)
         elif child is not None:
             self.addRow(title, child)
         else:
@@ -27,7 +31,8 @@ class FormLayout(LimeLayout, QFormLayout):
         return self
 
     def addLayout(self, title, layout):
-        self.addRow(str(title), layout)
+        from limekit.widgets.label import Label
+        self.addRow(Label(str(title)), layout)
         return self
 
     def getRowAt(self, index):

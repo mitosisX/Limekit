@@ -70,13 +70,82 @@ def test_resolve_returns_none_for_a_stale_path(project):
     assert inspect.resolve("0") is None            # paths are 1-based
 
 
-def test_a_widget_qt_made_for_itself_is_named_honestly(project):
-    """A viewport or tab bar is not part of anyone's project."""
+def test_a_widget_is_named_by_its_limekit_class_never_by_qt(project):
+    """No Qt class name reaches the person looking: a widget Limekit did not
+    build is named after the Limekit class nearest to what it is."""
     from limekit.widgets.button import Button
     assert inspect.lime_name(Button("x")) == "ui.Button"
 
-    from PySide6.QtWidgets import QWidget
-    assert inspect.lime_name(QWidget()) == "<QWidget>"
+    from PySide6.QtWidgets import QDialog, QLabel, QWidget
+    assert inspect.lime_name(QLabel("x")) == "ui.Label"
+    assert inspect.lime_name(QDialog()) == "ui.Modal"
+    assert inspect.lime_name(QWidget()) == "ui.Container"
+
+
+@pytest.fixture
+def busy(qapp):
+    """Widgets Qt fills with parts of its own: a spinner's text box, a
+    list's viewport and scroll bars, a scroller's viewport, a form's row
+    labels, a tab's bar."""
+    from limekit.layouts.formlayout import FormLayout
+    from limekit.layouts.vlayout import VLayout
+    from limekit.widgets.container import Container
+    from limekit.widgets.label import Label
+    from limekit.widgets.listbox import ListBox
+    from limekit.widgets.scroller import Scroller
+    from limekit.widgets.spinner import Spinner
+    from limekit.widgets.tab import Tab
+    from limekit.widgets.window import Window
+
+    window = Window()
+    window.setTitle("Busy")
+    box, layout = Container(), VLayout()
+
+    form_box, form = Container(), FormLayout()
+    form.addChild("Count", Spinner())
+    form_box.setLayout(form)
+
+    scroller, inside = Scroller(), Label("scrolled")
+    scroller.setChild(inside)
+
+    tab = Tab()
+    tab.addTab(ListBox(), "List")
+
+    for child in (form_box, scroller, tab):
+        layout.addChild(child)
+    box.setLayout(layout)
+    window.setMainChild(box)
+    window.show()
+
+    yield {"window": window, "inside": inside}
+
+    window.close()
+    affinity.forget_window(window)
+
+
+def test_the_tree_holds_only_limekit_widgets(busy):
+    nodes = [n for n in flatten(inspect.tree()) if n["path"].startswith("1")]
+    classes = {n["class"] for n in nodes}
+    assert {"ui.Spinner", "ui.ListBox", "ui.Scroller", "ui.Tab"} <= classes
+    for node in nodes:
+        assert node["class"].startswith("ui."), node
+
+
+def test_a_widget_inside_qt_parts_sits_under_its_limekit_parent(busy):
+    """A scroller's content lives in Qt's viewport; the tree skips the
+    viewport and the path still finds the content."""
+    nodes = list(flatten(inspect.tree()))
+    scroller = next(n for n in nodes if n["class"] == "ui.Scroller")
+    assert [c["label"] for c in scroller["children"]] == ["scrolled"]
+    assert inspect.resolve(scroller["children"][0]["path"]) is busy["inside"]
+
+    for node in nodes:
+        assert inspect.lime_name(inspect.resolve(node["path"])) == node["class"]
+
+
+def test_a_form_row_titled_with_text_gets_a_limekit_label(busy):
+    labels = {n["label"] for n in flatten(inspect.tree()) if n["class"] == "ui.Label"}
+    assert "Count" in labels
 
 
 def test_properties_are_read_from_the_registry_not_a_list(project):
@@ -91,6 +160,7 @@ def test_an_object_typed_property_is_shown_but_never_edited(project):
     icon = {p["name"]: p for p in inspect.properties(project["button"])}["icon"]
     assert icon["type"] == "object"
     assert icon["settable"] is False
+    assert "Q" not in str(icon["value"]) and "PySide" not in str(icon["value"])
 
 
 def test_an_enum_reads_as_its_own_name_and_offers_its_options(project):

@@ -185,6 +185,17 @@ def test_table_oncellclick_guarded(qapp, sink):
 
 # -- TreeView / TreeViewItem -----------------------------------------------------
 
+def test_treeview_hides_a_column_by_its_1_based_index(qapp):
+    from limekit.widgets.treeview import TreeView
+
+    tree = TreeView()
+    tree.setHeaderLabels(["widget", "address"])
+    assert tree.setColumnHidden(2, True) is tree
+    assert tree.isColumnHidden(1) and not tree.isColumnHidden(0)
+    tree.setColumnHidden(2, False)
+    assert not tree.isColumnHidden(1)
+
+
 def test_treeview_items_are_1_indexed(qapp):
     from limekit.widgets.treeview import TreeView, TreeViewItem
 
