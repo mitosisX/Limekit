@@ -35,7 +35,7 @@ GROUPS = (
 # Widgets that build, but are windows, chrome or designer machinery rather
 # than something that goes inside a layout.
 _NOT_ON_A_CANVAS = {
-    "Window", "Modal", "Dock", "Dockable", "Menu", "DropMenu", "Toolbar",
+    "Window", "Modal", "Dock", "Dockable", "Menu", "Menubar", "DropMenu", "Toolbar", "StatusBar",
     "TabItem", "SlidingStackedWidget", "DesignSurface", "WidgetPalette", "ImageBrowser",
 }
 

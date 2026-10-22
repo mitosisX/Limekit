@@ -245,7 +245,10 @@ def buildable_classes():
     names = []
     for name, cls in registry.modules().get("ui", {}).items():
         ctor = reflection.constructor(cls)
-        if ctor is None or any(not has_default for _, _, has_default in ctor.params):
+        # No __init__ of Limekit's own means Qt's, which takes no arguments:
+        # ui.Spinner() builds. Counting that as "not buildable" kept Spinner,
+        # DoubleSpinner and ProgressBar off the designer's palette.
+        if ctor is not None and any(not has_default for _, _, has_default in ctor.params):
             continue
         names.append(name)
     return sorted(names)
