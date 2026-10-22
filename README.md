@@ -3,6 +3,10 @@
   <p align="center">Desktop apps in Lua. One codebase for Windows, macOS and Linux.</p>
 </p>
 
+<p align="center">
+  <a href="https://buymeacoffee.com/omegamsiska"><img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-FFDD00?logo=buymeacoffee&logoColor=black" alt="Buy me a coffee"></a>
+</p>
+
 ```lua
 local ui = require("limekit.ui")
 
@@ -222,6 +226,13 @@ checks the retired 1.x engine stays gone.
 Contributions are welcome — widgets, bug fixes, documentation, platform testing
 (macOS especially). Open an issue before anything large so we can agree on the
 shape of it first.
+
+## ☕ Support
+
+Limekit and Limer are free, and made by one person. If they are useful to you,
+you can [buy me a coffee](https://buymeacoffee.com/omegamsiska).
+
+<a href="https://buymeacoffee.com/omegamsiska"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="180" alt="Buy me a coffee"></a>
 
 ## 📜 License
 
