@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  <a href="https://buymeacoffee.com/omegamsiska"><img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-FFDD00?logo=buymeacoffee&logoColor=black" alt="Buy me a coffee"></a>
+  <a href="https://buymeacoffee.com/omegamsiska"><img src="images/buy-me-a-coffee.png" width="160" alt="Buy me a coffee"></a>
 </p>
 
 ```lua
@@ -232,7 +232,7 @@ shape of it first.
 Limekit and Limer are free, and made by one person. If they are useful to you,
 you can [buy me a coffee](https://buymeacoffee.com/omegamsiska).
 
-<a href="https://buymeacoffee.com/omegamsiska"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="180" alt="Buy me a coffee"></a>
+<a href="https://buymeacoffee.com/omegamsiska"><img src="images/buy-me-a-coffee.png" width="220" alt="Buy me a coffee"></a>
 
 ## 📜 License
 
